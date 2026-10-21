@@ -13,8 +13,8 @@ final readonly class RequestData
         private ?string $body,
         private bool $bodyOmitted,
         private bool $bodyTruncated,
-        private string $requestId,
-        private string $correlationId,
+        private ?string $requestId,
+        private ?string $correlationId,
     ) {
     }
 
@@ -23,7 +23,7 @@ final readonly class RequestData
         return $this->body;
     }
 
-    public function getCorrelationId(): string
+    public function getCorrelationId(): ?string
     {
         return $this->correlationId;
     }
@@ -43,7 +43,7 @@ final readonly class RequestData
         return $this->query;
     }
 
-    public function getRequestId(): string
+    public function getRequestId(): ?string
     {
         return $this->requestId;
     }

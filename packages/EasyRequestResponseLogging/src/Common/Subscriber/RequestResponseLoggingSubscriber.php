@@ -30,6 +30,8 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
     private const JSON_CONTENT_TYPE_SUFFIX = '+json';
 
+    private const OMITTED_PATH_SEGMENT = '[omitted]';
+
     private const STARTED_AT_ATTRIBUTE = '_easy_request_response_logging_started_at';
 
     /**
@@ -138,13 +140,13 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         return new RequestData(
             method: $request->getMethod(),
             uri: $this->sanitizePath($request->getPathInfo()),
-            query: $this->sensitiveDataSanitizer->sanitize($request->query->all()),
-            headers: $this->sensitiveDataSanitizer->sanitize($request->headers->all()),
+            query: $this->sanitizeEntries($request->query->all()),
+            headers: $this->sanitizeEntries($request->headers->all()),
             body: $body,
             bodyOmitted: $bodyOmitted,
             bodyTruncated: $bodyTruncated,
-            requestId: $this->sensitiveDataSanitizer->sanitize($this->requestIdProvider->getRequestId()),
-            correlationId: $this->sensitiveDataSanitizer->sanitize($this->requestIdProvider->getCorrelationId())
+            requestId: $this->sanitizeString($this->requestIdProvider->getRequestId()),
+            correlationId: $this->sanitizeString($this->requestIdProvider->getCorrelationId())
         );
     }
 
@@ -160,7 +162,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
         return new ResponseData(
             statusCode: $response->getStatusCode(),
-            headers: $this->sensitiveDataSanitizer->sanitize($response->headers->all()),
+            headers: $this->sanitizeEntries($response->headers->all()),
             body: $body,
             bodyOmitted: $bodyOmitted,
             bodyTruncated: $bodyTruncated,
@@ -272,6 +274,23 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         return \urldecode(\http_build_query($this->sensitiveDataSanitizer->sanitize($fields)));
     }
 
+    /**
+     * Each entry is sanitized on its own, so an entry the sanitizer fails on (e.g. a JSON value with an infinite
+     * number) is logged as null instead of failing the whole record or being logged unsanitized.
+     */
+    private function sanitizeEntries(array $entries): array
+    {
+        foreach ($entries as $key => $value) {
+            try {
+                $entries[$key] = $this->sensitiveDataSanitizer->sanitize([$key => $value])[$key];
+            } catch (Throwable) {
+                $entries[$key] = null;
+            }
+        }
+
+        return $entries;
+    }
+
     private function sanitizeIntegers(array $data): array
     {
         foreach ($data as $key => $value) {
@@ -325,9 +344,9 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                 $mask = $this->getKeyMask($match[1][0]);
 
                 if ($mask !== null) {
-                    $segments[$index] = $this->sensitiveDataSanitizer->sanitize(
+                    $segments[$index] = $this->sanitizeString(
                         \substr($decodedSegment, 0, $match[0][1] + \strlen($match[0][0])) . $mask
-                    );
+                    ) ?? self::OMITTED_PATH_SEGMENT;
 
                     continue 2;
                 }
@@ -335,13 +354,22 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
             // Value-based sanitizers (e.g. card numbers) check the decoded segment, so an encoded grouping character
             // (e.g. "%20") cannot hide a value. The segment is kept normalized when nothing is masked
-            $sanitizedSegment = $this->sensitiveDataSanitizer->sanitize($decodedSegment);
+            $sanitizedSegment = $this->sanitizeString($decodedSegment);
 
             if ($sanitizedSegment !== $decodedSegment) {
-                $segments[$index] = $sanitizedSegment;
+                $segments[$index] = $sanitizedSegment ?? self::OMITTED_PATH_SEGMENT;
             }
         }
 
         return \implode('/', $segments);
+    }
+
+    private function sanitizeString(string $value): ?string
+    {
+        try {
+            return $this->sensitiveDataSanitizer->sanitize($value);
+        } catch (Throwable) {
+            return null;
+        }
     }
 }

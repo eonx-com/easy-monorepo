@@ -73,6 +73,8 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
 
         yield 'percent-encoded card number' => ['/lookup/4111%201111%201111%201111', '/lookup/411111*REDACTED*1111'];
 
+        yield 'non-sanitizable segment' => ['/some/%7B%22amount%22:1e400%7D', '/some/[omitted]'];
+
         yield 'key ending a masked encoded segment' => [
             '/token%2Ffirst-secret%2Fpassword/second-secret',
             '/token/*REDACTED*/*REDACTED*',
@@ -372,6 +374,40 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         $requestContext = self::getSingleRecord()->context['request'];
         self::assertIsArray($requestContext);
         self::assertSame('{"password":"*REDACTED*"}', $requestContext['body']);
+    }
+
+    public function testOnKernelTerminateSucceedsWithNonSanitizableMetadata(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response?filter=%7B%22amount%22:1e400%7D&name=John',
+            server: [
+                'HTTP_X_CORRELATION_ID' => 'some-correlation-id',
+                'HTTP_X_REQUEST_ID' => '{"amount":1e400}',
+                'HTTP_X_SOME_HEADER' => '{"amount":1e400}',
+            ]
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $record = self::getSingleRecord();
+        $requestContext = $record->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertIsArray($requestContext['headers']);
+        self::assertSame('some-correlation-id', $record->context['correlation_id']);
+        self::assertNull($record->context['request_id']);
+        self::assertSame(['some-correlation-id'], $requestContext['headers']['x-correlation-id']);
+        self::assertNull($requestContext['headers']['x-request-id']);
+        self::assertNull($requestContext['headers']['x-some-header']);
+        self::assertSame(
+            [
+                'filter' => null,
+                'name' => 'John',
+            ],
+            $requestContext['query']
+        );
     }
 
     public function testOnKernelTerminateSucceedsWithNullDurationWhenResponseIsReturnedEarly(): void

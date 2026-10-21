@@ -52,6 +52,8 @@ Only bodies which can be sanitized by key are logged: `application/json`, any `+
 A body is sanitized first and then truncated to `max_body_size` bytes (`body_truncated: true`). Bodies bigger than
 `max_raw_body_size` bytes, and bodies which cannot be sanitized, are not logged at all (`body: null`,
 `body_omitted: true`). A body with a `Content-Length` header bigger than `max_raw_body_size` is not even read.
+A query parameter, header or request/correlation ID which cannot be sanitized is logged as `null`, and such a path
+segment as `[omitted]`. Unsanitized data is never logged.
 
 The request path is sanitized as well, e.g. `/token/<value>` (or `/%74oken/<value>`) is logged as
 `/token/*REDACTED*`. `duration_ms` is the time between the `kernel.request` and `kernel.response` events. It is `null`
