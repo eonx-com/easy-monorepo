@@ -22,7 +22,6 @@ final class EasyRequestResponseLoggingBundle extends AbstractBundle
 
     public function build(ContainerBuilder $container): void
     {
-        // The sanitizer service can only be validated once all extensions are loaded
         $container->addCompilerPass(new ValidateSensitiveDataSanitizerCompilerPass());
     }
 

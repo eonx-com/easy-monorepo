@@ -180,8 +180,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
     private function getQueryParameters(Request $request): array
     {
-        // PHP alters some parameter names (e.g. "payment.secret" becomes "payment_secret"), which would then no longer
-        // match the configured keys, so the raw query string is parsed again with the names preserved
+        // PHP turns "payment.secret" into "payment_secret" in query->all(), so configured dotted keys would not match
         $queryString = $request->server->get('QUERY_STRING');
 
         return \is_string($queryString) && $queryString !== ''
@@ -221,7 +220,6 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
             return [null, false, false];
         }
 
-        // A body declared bigger than the limit is omitted without being read into memory
         $contentLength = $headers->get('Content-Length');
 
         if (\is_numeric($contentLength) && (int)$contentLength > $this->maxRawBodySize) {
@@ -255,16 +253,14 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
     private function sanitizeBody(string $body, string $mimeType): string
     {
         if ($mimeType !== self::FORM_CONTENT_TYPE) {
-            // The sanitizer falls back to free-text sanitization for invalid JSON, which does not mask keys, so an
-            // invalid JSON body must throw and be omitted instead
+            // Invalid JSON must throw: the sanitizer would treat it as free text and not mask its keys
             $decodedBody = \json_decode(
                 json: $body,
                 associative: true,
                 flags: \JSON_BIGINT_AS_STRING | \JSON_THROW_ON_ERROR
             );
 
-            // The body is sanitized decoded: escape sequences of a top-level JSON string (e.g. "\u0034") would hide
-            // a sensitive value from the string sanitizers, and numbers are not checked by the sanitizer at all
+            // Sanitized decoded: the sanitizer ignores numbers and does not decode a top-level JSON string
             if (\is_array($decodedBody) || \is_string($decodedBody)) {
                 return \json_encode(
                     $this->sensitiveDataSanitizer->sanitize(
@@ -274,7 +270,6 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                 );
             }
 
-            // A top-level number is checked like a nested one and kept as is when nothing is masked
             if (\is_int($decodedBody) || \is_float($decodedBody)) {
                 $sanitizedNumber = $this->sanitizeNumbers([$decodedBody])[0];
 
@@ -289,13 +284,10 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
             return $this->sensitiveDataSanitizer->sanitize($body);
         }
 
-        // Nested fields are percent-encoded on the wire (e.g. "user%5Bpassword%5D"), so the fields are
-        // sanitized once parsed and decoded back for readability. Dots in field names are preserved, so a configured
-        // key like "payment.secret" still matches
+        // Unlike parse_str(), parseQuery() keeps dots in field names, so configured dotted keys still match
         $fields = HeaderUtils::parseQuery($body);
 
-        // A top-level field name altered when parsed (e.g. a leading space is trimmed) would no longer match the
-        // configured keys, so such a body is omitted
+        // A field name still altered by parsing (e.g. a trimmed leading space) could bypass the configured keys
         foreach (\explode('&', $body) as $pair) {
             $fieldName = \explode('[', \urldecode(\explode('=', $pair, 2)[0]), 2)[0];
 
@@ -307,10 +299,6 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         return \urldecode(\http_build_query($this->sensitiveDataSanitizer->sanitize($fields)));
     }
 
-    /**
-     * Each entry is sanitized on its own, so an entry the sanitizer fails on (e.g. a JSON value with an infinite
-     * number) is logged as null instead of failing the whole record or being logged unsanitized.
-     */
     private function sanitizeEntries(array $entries): array
     {
         foreach ($entries as $key => $value) {
@@ -333,8 +321,6 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                 continue;
             }
 
-            // A card number sent as a JSON number, e.g. {"note":4111111111111111} or {"note":4.111111111111111e15},
-            // is masked like its string form. Floats are written without exponent, other numbers are kept as is
             $digits = match (true) {
                 \is_int($value) => (string)$value,
                 \is_float($value) && \is_finite($value) && \floor($value) === $value => \sprintf('%.0f', $value),
@@ -355,16 +341,12 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
     private function sanitizePath(Request $request, array $routeParameters, array $sanitizedRouteParameters): string
     {
-        // The path is logged decoded, as the router and the application see it
         $path = \rawurldecode($request->getPathInfo());
 
-        // Without a matched route the path has no known structure, so only the sanitizer itself applies to it
         if ($this->getRoute($request) === null) {
             return $this->sanitizeString($path) ?? self::OMITTED_VALUE;
         }
 
-        // The router has already split the path into named parameters, so each parameter value the sanitizer masked
-        // (by its name or by its value) is replaced in the path, however it was encoded in the request
         $replacements = [];
 
         foreach ($routeParameters as $name => $value) {
