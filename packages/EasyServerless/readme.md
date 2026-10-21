@@ -80,7 +80,7 @@ the SQS `ApproximateReceiveCount`.
 - The delay before the next attempt is the delay given to `release()`. When the job throws an exception, the worker
   releases it with the `$backoff` of the job for this attempt. When the job calls `$this->release($delay)` itself,
   this explicit delay is used, even if the job also has a `$backoff`. The delay is at least 1 second and at most
-  12 hours (SQS limit).
+  42000 seconds: SQS limits it to 12 hours from when the message was received.
 
 On the last attempt, the worker fails the job (the `failed()` method of the job is called), and the handler logs
 "SQS Record failed to process but will not be retried". Then it puts the message back in the queue so it can go to

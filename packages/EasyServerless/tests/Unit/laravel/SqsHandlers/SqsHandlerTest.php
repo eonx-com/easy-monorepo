@@ -149,10 +149,10 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             expectedJobFailedCount: 0,
         );
 
-        yield 'Job released with a delay above the SQS limit is retried after the SQS limit' => self::createRecordCase(
+        yield 'Job released with a delay above the SQS limit is retried before the SQS limit' => self::createRecordCase(
             receiveCount: 1,
             data: ['release' => 100000],
-            expectedVisibilityTimeout: 43200,
+            expectedVisibilityTimeout: 42000,
             expectedJobFailedCount: 0,
         );
 
