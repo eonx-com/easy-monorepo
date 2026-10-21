@@ -248,6 +248,15 @@ final class SqsHandlerTest extends AbstractLumenTestCase
             expectedJobFailedCount: 0,
         );
 
+        yield 'Job with negative max tries is failed and requeued at app max retries' => self::createRecordCase(
+            receiveCount: self::APP_MAX_RETRIES,
+            data: ['exception' => 'boom'],
+            expectedVisibilityTimeout: 1,
+            expectedJobFailedCount: 1,
+            maxTries: -1,
+            expectedRetryStopReason: 'app_max_retries',
+        );
+
         yield 'Job with unlimited max tries is failed and requeued at app max retries' => self::createRecordCase(
             receiveCount: self::APP_MAX_RETRIES,
             data: ['exception' => 'boom'],
@@ -314,6 +323,7 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         yield 'Above app max retries, before last attempt' => [2, 5, null];
         yield 'Above app max retries, last attempt' => [self::APP_MAX_RETRIES, 5, 'allows 5 tries'];
         yield 'Unlimited, last attempt' => [self::APP_MAX_RETRIES, 0, 'allows unlimited tries'];
+        yield 'Negative, last attempt' => [self::APP_MAX_RETRIES, -1, 'allows unlimited tries'];
         yield 'Equal to app max retries, last attempt' => [self::APP_MAX_RETRIES, self::APP_MAX_RETRIES, null];
         yield 'Below app max retries, last attempt' => [2, 2, null];
         yield 'Not set, last attempt' => [self::APP_MAX_RETRIES, null, null];

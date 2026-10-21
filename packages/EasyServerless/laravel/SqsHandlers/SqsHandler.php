@@ -137,7 +137,7 @@ final class SqsHandler extends AbstractSqsHandler
                 \sprintf(
                     'Job "%s" allows %s tries, but the SQS handler allows only %d attempts (appMaxRetries)',
                     $job->resolveName(),
-                    $job->getRawMaxTries() === 0 ? 'unlimited' : $job->getRawMaxTries(),
+                    $job->getRawMaxTries() <= 0 ? 'unlimited' : $job->getRawMaxTries(),
                     $this->appMaxRetries
                 ),
                 [

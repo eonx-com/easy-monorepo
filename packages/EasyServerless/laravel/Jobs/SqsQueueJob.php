@@ -77,13 +77,13 @@ final class SqsQueueJob extends SqsJob
     }
 
     /**
-     * True when the job allows more tries than appMaxRetries (0 means unlimited tries in Laravel).
+     * True when the job allows more tries than appMaxRetries (0 or less means unlimited tries in Laravel).
      */
     public function isMaxTriesLimitedByAppMaxRetries(): bool
     {
         $maxTries = $this->getRawMaxTries();
 
-        return $maxTries !== null && ($maxTries === 0 || $maxTries > $this->appMaxRetries);
+        return $maxTries !== null && ($maxTries <= 0 || $maxTries > $this->appMaxRetries);
     }
 
     /**
