@@ -52,12 +52,17 @@ Only bodies which can be sanitized by key are logged: `application/json`, any `+
 A body is sanitized first and then truncated to `max_body_size` bytes (`body_truncated: true`). Bodies bigger than
 `max_raw_body_size` bytes, and bodies which cannot be sanitized, are not logged at all (`body: null`,
 `body_omitted: true`). A body with a `Content-Length` header bigger than `max_raw_body_size` is not even read.
-A query parameter, header or request/correlation ID which cannot be sanitized is logged as `null`, and such a path
-segment as `[omitted]`. Unsanitized data is never logged.
+A query parameter, header, route parameter or request/correlation ID which cannot be sanitized is logged as `null`
+(as `[omitted]` in the path). Unsanitized data is never logged.
 
-The request path is sanitized as well, e.g. `/token/<value>` (or `/%74oken/<value>`) is logged as
-`/token/*REDACTED*`. `duration_ms` is the time between the `kernel.request` and `kernel.response` events. It is `null`
-when a listener with a priority higher than 1024 returned the response before the start time was recorded.
+The request path is logged decoded and sanitized using the matched route: its parameters are sanitized by name and by
+value, logged as `request.route_params` (with the route name as `request.route`), and every masked parameter value is
+masked in the path too. E.g. with the `/token/{token}` route, `/token/<value>` is logged as `/token/*REDACTED*`.
+Name the route parameters which carry secrets after a key from `keys_to_mask`, or add their names to it. A path
+without a matched route has no known structure, so only the sanitizer itself applies to it.
+
+`duration_ms` is the time between the `kernel.request` and `kernel.response` events. It is `null` when a listener with a
+priority higher than 1024 returned the response before the start time was recorded.
 
 Headers, query and body are masked by the EasyUtils sensitive data sanitizer, which matches keys exactly
 (case-insensitive). Its default keys already cover the `Authorization`, `Proxy-Authorization`, `Cookie`, `Set-Cookie`

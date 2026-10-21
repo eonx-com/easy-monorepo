@@ -49,46 +49,33 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
      */
     public static function provideSensitivePaths(): iterable
     {
-        yield 'plain segment name' => ['/token/some-token', '/token/*REDACTED*'];
+        yield 'route parameter masked by name' => ['/token/some-token', '/token/*REDACTED*'];
 
-        yield 'percent-encoded segment name' => ['/%74oken/some-token', '/token/*REDACTED*'];
+        yield 'route parameter masked by value' => ['/lookup/4111111111111111', '/lookup/411111*REDACTED*1111'];
 
-        yield 'percent-encoded delimiter in value' => ['/token/some%2Ftoken%26more', '/token/*REDACTED*'];
-
-        yield 'percent-encoded non-sensitive segment' => ['/some%20path/some-value', '/some%20path/some-value'];
-
-        yield 'literal ampersand in value' => ['/token/first&second', '/token/*REDACTED*'];
-
-        yield 'literal key=value segment' => ['/token=some-token', '/token=*REDACTED*'];
-
-        yield 'percent-encoded slash after segment name' => ['/token%2Fsome-token', '/token/*REDACTED*'];
-
-        yield 'percent-encoded equals after segment name' => ['/token%3Dsome-token', '/token=*REDACTED*'];
-
-        yield 'percent-encoded nested segments' => ['/some%2Ftoken%2Fsome-token', '/some/token/*REDACTED*'];
-
-        yield 'query-like segment' => ['/some/name=John&token=first,second', '/some/name=John&token=*REDACTED*'];
-
-        yield 'uppercase segment name' => ['/TOKEN/some-token', '/TOKEN/*REDACTED*'];
-
-        yield 'percent-encoded card number' => ['/lookup/4111%201111%201111%201111', '/lookup/411111*REDACTED*1111'];
-
-        yield 'non-sanitizable segment' => ['/some/%7B%22amount%22:1e400%7D', '/some/[omitted]'];
-
-        yield 'key ending a masked encoded segment' => [
-            '/token%2Ffirst-secret%2Fpassword/second-secret',
-            '/token/*REDACTED*/*REDACTED*',
+        yield 'percent-encoded route parameter' => [
+            '/lookup/4111%201111%201111%201111',
+            '/lookup/411111*REDACTED*1111',
         ];
 
-        yield 'key ending a masked value segment' => [
-            '/token/first-secret%2Fpassword/second-secret',
-            '/token/*REDACTED*/*REDACTED*',
+        yield 'percent-encoded static segment' => ['/%74oken/some-token', '/token/*REDACTED*'];
+
+        yield 'route parameter with encoded and literal delimiters' => [
+            '/token/first%2Fsecret%26more/second,third',
+            '/token/*REDACTED*',
         ];
 
-        yield 'literal delimiters in key=value segment' => [
-            "/some/token=first,second;third'fourth",
-            '/some/token=*REDACTED*',
-        ];
+        yield 'route parameter equal to a static segment' => ['/token/token', '/*REDACTED*/*REDACTED*'];
+
+        yield 'non-sensitive route parameter' => ['/lookup/some-value', '/lookup/some-value'];
+
+        yield 'non-sanitizable route parameter' => ['/lookup/%7B%22amount%22:1e400%7D', '/lookup/[omitted]'];
+
+        yield 'unmatched path with key segment' => ['/some/token/some-token', '/some/token/*REDACTED*'];
+
+        yield 'unmatched path with key=value segment' => ['/some/token=some-token', '/some/token=*REDACTED*'];
+
+        yield 'unmatched path with card number' => ['/some/4111%201111%201111%201111', '/some/411111*REDACTED*1111'];
     }
 
     /**
@@ -150,6 +137,8 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
             ],
             $requestContext['query']
         );
+        self::assertSame('response', $requestContext['route']);
+        self::assertSame([], $requestContext['route_params']);
         self::assertSame('/response', $requestContext['uri']);
         self::assertSame(
             '{"card_token":"*REDACTED*","float_note":"411111*REDACTED*1111","name":"John",'
@@ -527,7 +516,10 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         $record = self::getSingleRecord();
         $requestContext = $record->context['request'];
         self::assertIsArray($requestContext);
-        self::assertSame(\sprintf('Request: "GET %s" -> 404', $expectedPath), $record->message);
+        self::assertSame(
+            \sprintf('Request: "GET %s" -> %d', $expectedPath, $response->getStatusCode()),
+            $record->message
+        );
         self::assertSame($expectedPath, $requestContext['uri']);
     }
 
@@ -549,6 +541,26 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         $record = self::getSingleRecord();
         self::assertSame('555555*REDACTED*4444', $record->context['correlation_id']);
         self::assertSame('411111*REDACTED*1111', $record->context['request_id']);
+    }
+
+    public function testOnKernelTerminateSucceedsWithSanitizedRouteParams(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create('/token/some-token');
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame('token', $requestContext['route']);
+        self::assertSame(
+            [
+                'token' => '*REDACTED*',
+            ],
+            $requestContext['route_params']
+        );
     }
 
     public function testOnKernelTerminateSucceedsWithSanitizedTruncatedBody(): void

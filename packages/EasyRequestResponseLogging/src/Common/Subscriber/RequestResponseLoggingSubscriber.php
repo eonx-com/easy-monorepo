@@ -32,7 +32,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
     private const JSON_CONTENT_TYPE_SUFFIX = '+json';
 
-    private const OMITTED_PATH_SEGMENT = '[omitted]';
+    private const OMITTED_VALUE = '[omitted]';
 
     private const STARTED_AT_ATTRIBUTE = '_easy_request_response_logging_started_at';
 
@@ -116,6 +116,8 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                     'headers' => $requestData->getHeaders(),
                     'method' => $requestData->getMethod(),
                     'query' => $requestData->getQuery(),
+                    'route' => $requestData->getRoute(),
+                    'route_params' => $requestData->getRouteParameters(),
                     'uri' => $requestData->getUri(),
                 ],
                 'request_id' => $requestData->getRequestId(),
@@ -138,10 +140,14 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
             $request->headers,
             static fn (): string => $request->getContent()
         );
+        $routeParameters = $this->getRouteParameters($request);
+        $sanitizedRouteParameters = $this->sanitizeEntries($routeParameters);
 
         return new RequestData(
             method: $request->getMethod(),
-            uri: $this->sanitizePath($request->getPathInfo()),
+            uri: $this->sanitizePath($request, $routeParameters, $sanitizedRouteParameters),
+            route: $this->getRoute($request),
+            routeParameters: $sanitizedRouteParameters,
             query: $this->sanitizeEntries($this->getQueryParameters($request)),
             headers: $this->sanitizeEntries($request->headers->all()),
             body: $body,
@@ -172,15 +178,6 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         );
     }
 
-    private function getKeyMask(string $key): ?string
-    {
-        // The sanitizer is asked directly, so the path is masked with its own keys and mask pattern
-        $sanitized = $this->sensitiveDataSanitizer->sanitize([$key => true]);
-        $value = $sanitized[$key] ?? true;
-
-        return \is_string($value) ? $value : null;
-    }
-
     private function getQueryParameters(Request $request): array
     {
         // PHP alters some parameter names (e.g. "payment.secret" becomes "payment_secret"), which would then no longer
@@ -192,25 +189,25 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
             : $request->query->all();
     }
 
+    private function getRoute(Request $request): ?string
+    {
+        $route = $request->attributes->get('_route');
+
+        return \is_string($route) ? $route : null;
+    }
+
+    private function getRouteParameters(Request $request): array
+    {
+        $routeParameters = $request->attributes->get('_route_params');
+
+        return \is_array($routeParameters) ? $routeParameters : [];
+    }
+
     private function isLoggableMimeType(string $mimeType): bool
     {
         return $mimeType === self::FORM_CONTENT_TYPE
             || $mimeType === self::JSON_CONTENT_TYPE
             || \str_ends_with($mimeType, self::JSON_CONTENT_TYPE_SUFFIX);
-    }
-
-    private function normalizePathSegment(string $segment): string
-    {
-        // Only unreserved characters are decoded (RFC 3986 normalization), e.g. "%74oken" becomes "token"
-        return (string)\preg_replace_callback(
-            '/%([0-9A-Fa-f]{2})/',
-            static function (array $matches): string {
-                $char = \chr((int)\hexdec($matches[1]));
-
-                return \preg_match('/^[A-Za-z0-9._~-]$/', $char) === 1 ? $char : \strtoupper($matches[0]);
-            },
-            $segment
-        );
     }
 
     /**
@@ -356,55 +353,30 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         return $data;
     }
 
-    private function sanitizePath(string $path): string
+    private function sanitizePath(Request $request, array $routeParameters, array $sanitizedRouteParameters): string
     {
-        // The router decodes the whole path (e.g. "%2F" is a separator for it) while the path info keeps its
-        // percent-encoding. Each raw segment is decoded on its own and a sensitive value is masked up to the end of
-        // its raw segment, so neither an encoded key nor an encoded delimiter can leave part of the value unmasked
-        $segments = \explode('/', $path);
-        $nextSegmentMask = null;
+        // The path is logged decoded, as the router and the application see it
+        $path = \rawurldecode($request->getPathInfo());
 
-        foreach ($segments as $index => $segment) {
-            $decodedSegment = \rawurldecode($segment);
-            $segmentMask = $nextSegmentMask;
+        // Without a matched route the path has no known structure, so only the sanitizer itself applies to it
+        if ($this->getRoute($request) === null) {
+            return $this->sanitizeString($path) ?? self::OMITTED_VALUE;
+        }
 
-            // A key ending the segment, e.g. "/token/<value>", masks the whole next segment. It is checked for every
-            // segment, including masked ones, so a key hidden behind an encoded separator is never lost
-            $nextSegmentMask = $this->getKeyMask((string)\preg_replace('/^.*[\/=&;,]/s', '', $decodedSegment));
+        // The router has already split the path into named parameters, so each parameter value the sanitizer masked
+        // (by its name or by its value) is replaced in the path, however it was encoded in the request
+        $replacements = [];
 
-            if ($segmentMask !== null) {
-                $segments[$index] = $segmentMask;
+        foreach ($routeParameters as $name => $value) {
+            $sanitizedValue = $sanitizedRouteParameters[$name] ?? null;
 
-                continue;
-            }
-
-            $segments[$index] = $this->normalizePathSegment($segment);
-
-            // A key followed by "/" or "=" inside the segment, e.g. "token=<value>" or "token%2F<value>"
-            \preg_match_all('/([^\/=&;,]*)[\/=]/', $decodedSegment, $matches, \PREG_SET_ORDER | \PREG_OFFSET_CAPTURE);
-
-            foreach ($matches as $match) {
-                $mask = $this->getKeyMask($match[1][0]);
-
-                if ($mask !== null) {
-                    $segments[$index] = $this->sanitizeString(
-                        \substr($decodedSegment, 0, $match[0][1] + \strlen($match[0][0])) . $mask
-                    ) ?? self::OMITTED_PATH_SEGMENT;
-
-                    continue 2;
-                }
-            }
-
-            // Value-based sanitizers (e.g. card numbers) check the decoded segment, so an encoded grouping character
-            // (e.g. "%20") cannot hide a value. The segment is kept normalized when nothing is masked
-            $sanitizedSegment = $this->sanitizeString($decodedSegment);
-
-            if ($sanitizedSegment !== $decodedSegment) {
-                $segments[$index] = $sanitizedSegment ?? self::OMITTED_PATH_SEGMENT;
+            if (\is_string($value) && $value !== '' && $sanitizedValue !== $value) {
+                $replacements[$value] = \is_string($sanitizedValue) ? $sanitizedValue : self::OMITTED_VALUE;
             }
         }
 
-        return \implode('/', $segments);
+        // The longest values are replaced first, so a value containing another one is masked as a whole
+        return \strtr($path, $replacements);
     }
 
     private function sanitizeString(string $value): ?string

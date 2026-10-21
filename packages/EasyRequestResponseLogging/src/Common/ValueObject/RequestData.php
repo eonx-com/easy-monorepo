@@ -8,6 +8,8 @@ final readonly class RequestData
     public function __construct(
         private string $method,
         private string $uri,
+        private ?string $route,
+        private array $routeParameters,
         private array $query,
         private array $headers,
         private ?string $body,
@@ -46,6 +48,16 @@ final readonly class RequestData
     public function getRequestId(): ?string
     {
         return $this->requestId;
+    }
+
+    public function getRoute(): ?string
+    {
+        return $this->route;
+    }
+
+    public function getRouteParameters(): array
+    {
+        return $this->routeParameters;
     }
 
     public function getUri(): string

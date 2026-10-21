@@ -137,7 +137,7 @@ return static function (MonologConfig $monologConfig): void {
 
 Send a request to the application. One record is written for each request, with the `Request: "<METHOD> <path>" ->
 <status code>` message and the `request`, `response`, `request_id` and `correlation_id` context keys. Make sure that
-the sensitive values in headers, query and body are masked.
+the sensitive values in path, headers, query and body are masked.
 
 [1]: https://getcomposer.org/
 
