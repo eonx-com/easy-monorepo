@@ -71,6 +71,16 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
 
         yield 'uppercase segment name' => ['/TOKEN/some-token', '/TOKEN/*REDACTED*'];
 
+        yield 'key ending a masked encoded segment' => [
+            '/token%2Ffirst-secret%2Fpassword/second-secret',
+            '/token/*REDACTED*/*REDACTED*',
+        ];
+
+        yield 'key ending a masked value segment' => [
+            '/token/first-secret%2Fpassword/second-secret',
+            '/token/*REDACTED*/*REDACTED*',
+        ];
+
         yield 'literal delimiters in key=value segment' => [
             "/some/token=first,second;third'fourth",
             '/some/token=*REDACTED*',

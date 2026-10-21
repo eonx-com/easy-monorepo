@@ -256,14 +256,20 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         $nextSegmentMask = null;
 
         foreach ($segments as $index => $segment) {
-            if ($nextSegmentMask !== null) {
-                $segments[$index] = $nextSegmentMask;
-                $nextSegmentMask = null;
+            $decodedSegment = \rawurldecode($segment);
+            $segmentMask = $nextSegmentMask;
+
+            // A key ending the segment, e.g. "/token/<value>", masks the whole next segment. It is checked for every
+            // segment, including masked ones, so a key hidden behind an encoded separator is never lost
+            $nextSegmentMask = $this->getKeyMask((string)\preg_replace('/^.*[\/=&;,]/s', '', $decodedSegment));
+
+            if ($segmentMask !== null) {
+                $segments[$index] = $segmentMask;
 
                 continue;
             }
 
-            $decodedSegment = \rawurldecode($segment);
+            $segments[$index] = $this->normalizePathSegment($segment);
 
             // A key followed by "/" or "=" inside the segment, e.g. "token=<value>" or "token%2F<value>"
             \preg_match_all('/([^\/=&;,]*)[\/=]/', $decodedSegment, $matches, \PREG_SET_ORDER | \PREG_OFFSET_CAPTURE);
@@ -274,14 +280,9 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                 if ($mask !== null) {
                     $segments[$index] = \substr($decodedSegment, 0, $match[0][1] + \strlen($match[0][0])) . $mask;
 
-                    continue 2;
+                    break;
                 }
             }
-
-            $segments[$index] = $this->normalizePathSegment($segment);
-
-            // A key ending the segment, e.g. "/token/<value>", masks the whole next segment
-            $nextSegmentMask = $this->getKeyMask((string)\preg_replace('/^.*[\/=&;,]/s', '', $decodedSegment));
         }
 
         // Value-based sanitizers (e.g. card numbers) still apply to the whole path
