@@ -140,8 +140,8 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
             body: $body,
             bodyOmitted: $bodyOmitted,
             bodyTruncated: $bodyTruncated,
-            requestId: $this->requestIdProvider->getRequestId(),
-            correlationId: $this->requestIdProvider->getCorrelationId()
+            requestId: $this->sensitiveDataSanitizer->sanitize($this->requestIdProvider->getRequestId()),
+            correlationId: $this->sensitiveDataSanitizer->sanitize($this->requestIdProvider->getCorrelationId())
         );
     }
 

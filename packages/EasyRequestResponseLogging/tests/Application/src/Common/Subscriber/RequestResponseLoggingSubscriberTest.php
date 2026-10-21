@@ -350,6 +350,26 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertSame($expectedPath, $requestContext['uri']);
     }
 
+    public function testOnKernelTerminateSucceedsWithSanitizedRequestIds(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            server: [
+                'HTTP_X_CORRELATION_ID' => '5555555555554444',
+                'HTTP_X_REQUEST_ID' => '4111111111111111',
+            ]
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $record = self::getSingleRecord();
+        self::assertSame('555555*REDACTED*4444', $record->context['correlation_id']);
+        self::assertSame('411111*REDACTED*1111', $record->context['request_id']);
+    }
+
     public function testOnKernelTerminateSucceedsWithSanitizedTruncatedBody(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
