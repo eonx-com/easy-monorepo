@@ -36,6 +36,17 @@ return [
          * it is rejected at startup. To reach hosts this cannot express, use "enabled" => false.
          */
         'allowed_ranges' => [],
+
+        /**
+         * Hostnames whose requests bypass the SSRF check entirely, for a legitimate private target
+         * such as an internal load balancer published in public DNS with private addresses. An entry
+         * is "host", which matches the default port of the URL scheme only (443 for https, 80 for
+         * http), or "host:port" for any other port. Matching is case-insensitive; no scheme, path or
+         * wildcard, and an IP literal in a URL never matches. Redirects from an allowed host are never
+         * followed. All other hosts stay fully protected. Entries are trimmed and empty ones dropped,
+         * so an empty env var means an empty list.
+         */
+        'allowed_hosts' => [],
     ],
     'request_limits' => [
         'enabled' => true,

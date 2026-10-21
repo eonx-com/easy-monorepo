@@ -210,6 +210,7 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                     'easy-webhook.request_limits.max_response_bytes',
                     HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES
                 ) ?? HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES),
+                (array)\config('easy-webhook.ssrf_protection.allowed_hosts', []),
             )
         );
         $this->app->singleton(

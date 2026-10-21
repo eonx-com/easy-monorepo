@@ -17,8 +17,8 @@
         "symfony/messenger": "^7.4 || ^8.0"
     },
     "require-dev": {
-        "bref/bref": "^2 || ^3",
-        "bref/symfony-bridge": "^1.0.3",
+        "bref/bref": "^2.3.15 || ^3.0",
+        "bref/symfony-bridge": "^1.0.3 || ^2.0 || ^3.0",
         "bref/symfony-messenger": "^1.4.1",
         "doctrine/doctrine-bundle": "^2.12 || ^3.2",
         "eonx-com/easy-event-dispatcher": "^6.21",
