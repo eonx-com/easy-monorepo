@@ -56,6 +56,13 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         yield 'percent-encoded delimiter in value' => ['/token/some%2Ftoken%26more', '/token/*REDACTED*'];
 
         yield 'percent-encoded non-sensitive segment' => ['/some%20path/some-value', '/some%20path/some-value'];
+
+        yield 'literal ampersand in value' => ['/token/first&second', '/token/*REDACTED*'];
+
+        yield 'literal delimiters in key=value segment' => [
+            "/some/token=first,second;third'fourth",
+            '/some/token=*REDACTED*',
+        ];
     }
 
     public function testOnKernelTerminateSucceeds(): void

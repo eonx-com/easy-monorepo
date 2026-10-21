@@ -27,6 +27,8 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
     private const JSON_CONTENT_TYPE_SUFFIX = '+json';
 
+    private const PATH_VALUE_DELIMITERS_PATTERN = '/[\s&?#,;"\')\]}<>]/';
+
     private const STARTED_AT_ATTRIBUTE = '_easy_request_response_logging_started_at';
 
     /**
@@ -237,6 +239,14 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                 return \preg_match('/^[A-Za-z0-9._~-]$/', $char) === 1 ? $char : \strtoupper($matches[0]);
             },
             $path
+        );
+
+        // Characters allowed unencoded in a path segment (e.g. "&", ",", ";") end a value for the URL string
+        // sanitizer, so they are encoded to have the whole segment masked instead of only its first part
+        $normalizedPath = (string)\preg_replace_callback(
+            self::PATH_VALUE_DELIMITERS_PATTERN,
+            static fn (array $matches): string => \rawurlencode($matches[0]),
+            $normalizedPath
         );
 
         return $this->sensitiveDataSanitizer->sanitize($normalizedPath);
