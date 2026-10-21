@@ -184,7 +184,7 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
             server: [
                 'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
             ],
-            content: 'payment.secret=some-secret&name=John'
+            content: 'name=John&%20password=some-password'
         );
 
         $response = $kernel->handle($request);
@@ -379,6 +379,7 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
                 'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
             ],
             content: 'user%5Bname%5D=John&user%5Bpassword%5D=some-password&password=some-password'
+                . '&payment.secret=some-secret'
         );
 
         $response = $kernel->handle($request);
@@ -387,7 +388,7 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         $requestContext = self::getSingleRecord()->context['request'];
         self::assertIsArray($requestContext);
         self::assertSame(
-            'user[name]=John&user[password]=*REDACTED*&password=*REDACTED*',
+            'user[name]=John&user[password]=*REDACTED*&password=*REDACTED*&payment.secret=*REDACTED*',
             $requestContext['body']
         );
         self::assertFalse($requestContext['body_truncated']);
@@ -490,6 +491,26 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
             '{"id":100000000000,"items":[{"note":"411111*REDACTED*1111"}],"amount":1.5,'
             . '"float_note":"411111*REDACTED*1111","exponent_note":"411111*REDACTED*1111"}',
             $requestContext['body']
+        );
+    }
+
+    public function testOnKernelTerminateSucceedsWithSanitizedDottedQueryKey(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create('/response?payment.secret=some-secret&name=John');
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame(
+            [
+                'payment.secret' => '*REDACTED*',
+                'name' => 'John',
+            ],
+            $requestContext['query']
         );
     }
 

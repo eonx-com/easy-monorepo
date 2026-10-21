@@ -11,6 +11,7 @@ use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\HeaderBag;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -141,7 +142,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         return new RequestData(
             method: $request->getMethod(),
             uri: $this->sanitizePath($request->getPathInfo()),
-            query: $this->sanitizeEntries($request->query->all()),
+            query: $this->sanitizeEntries($this->getQueryParameters($request)),
             headers: $this->sanitizeEntries($request->headers->all()),
             body: $body,
             bodyOmitted: $bodyOmitted,
@@ -178,6 +179,17 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         $value = $sanitized[$key] ?? true;
 
         return \is_string($value) ? $value : null;
+    }
+
+    private function getQueryParameters(Request $request): array
+    {
+        // PHP alters some parameter names (e.g. "payment.secret" becomes "payment_secret"), which would then no longer
+        // match the configured keys, so the raw query string is parsed again with the names preserved
+        $queryString = $request->server->get('QUERY_STRING');
+
+        return \is_string($queryString) && $queryString !== ''
+            ? HeaderUtils::parseQuery($queryString)
+            : $request->query->all();
     }
 
     private function isLoggableMimeType(string $mimeType): bool
@@ -281,11 +293,12 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         }
 
         // Nested fields are percent-encoded on the wire (e.g. "user%5Bpassword%5D"), so the fields are
-        // sanitized once parsed and decoded back for readability
-        \parse_str($body, $fields);
+        // sanitized once parsed and decoded back for readability. Dots in field names are preserved, so a configured
+        // key like "payment.secret" still matches
+        $fields = HeaderUtils::parseQuery($body);
 
-        // Some top-level field names are altered when parsed (e.g. "payment.secret" becomes "payment_secret") and
-        // would then no longer match the configured keys, so such a body is omitted
+        // A top-level field name altered when parsed (e.g. a leading space is trimmed) would no longer match the
+        // configured keys, so such a body is omitted
         foreach (\explode('&', $body) as $pair) {
             $fieldName = \explode('[', \urldecode(\explode('=', $pair, 2)[0]), 2)[0];
 
