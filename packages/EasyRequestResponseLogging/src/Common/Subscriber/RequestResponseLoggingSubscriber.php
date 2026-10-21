@@ -134,7 +134,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
         return new RequestData(
             method: $request->getMethod(),
-            uri: $this->sensitiveDataSanitizer->sanitize($request->getPathInfo()),
+            uri: $this->sanitizePath($request->getPathInfo()),
             query: $this->sensitiveDataSanitizer->sanitize($request->query->all()),
             headers: $this->sensitiveDataSanitizer->sanitize($request->headers->all()),
             body: $body,
@@ -218,5 +218,23 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         \parse_str($body, $fields);
 
         return \urldecode(\http_build_query($this->sensitiveDataSanitizer->sanitize($fields)));
+    }
+
+    private function sanitizePath(string $path): string
+    {
+        // The path info keeps its percent-encoding, so a sensitive segment name could be encoded (e.g. "/%74oken/").
+        // Only unreserved characters are decoded (RFC 3986 normalization): encoded delimiters such as "%2F" or "%26"
+        // stay encoded and cannot split a sensitive value
+        $normalizedPath = (string)\preg_replace_callback(
+            '/%([0-9A-Fa-f]{2})/',
+            static function (array $matches): string {
+                $char = \chr((int)\hexdec($matches[1]));
+
+                return \preg_match('/^[A-Za-z0-9._~-]$/', $char) === 1 ? $char : \strtoupper($matches[0]);
+            },
+            $path
+        );
+
+        return $this->sensitiveDataSanitizer->sanitize($normalizedPath);
     }
 }

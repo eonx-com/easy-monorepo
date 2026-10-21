@@ -53,9 +53,9 @@ A body is sanitized first and then truncated to `max_body_size` bytes (`body_tru
 `max_raw_body_size` bytes, and bodies which cannot be sanitized, are not logged at all (`body: null`,
 `body_omitted: true`).
 
-The request path is sanitized as well, e.g. `/token/<value>` is logged as `/token/*REDACTED*`. `duration_ms` is the
-time between the `kernel.request` and `kernel.response` events. It is `null` when a listener with a priority higher
-than 1024 returned the response before the start time was recorded.
+The request path is sanitized as well, e.g. `/token/<value>` (or `/%74oken/<value>`) is logged as
+`/token/*REDACTED*`. `duration_ms` is the time between the `kernel.request` and `kernel.response` events. It is `null`
+when a listener with a priority higher than 1024 returned the response before the start time was recorded.
 
 Headers, query and body are masked by the EasyUtils sensitive data sanitizer, which matches keys exactly
 (case-insensitive). Its default keys already cover the `Authorization`, `Proxy-Authorization`, `Cookie`, `Set-Cookie`

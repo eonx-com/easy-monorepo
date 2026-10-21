@@ -34,6 +34,20 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         yield 'text xml' => ['text/xml', '<password>some-password</password>'];
     }
 
+    /**
+     * @see testOnKernelTerminateSucceedsWithSanitizedPath
+     */
+    public static function provideSensitivePaths(): iterable
+    {
+        yield 'plain segment name' => ['/token/some-token', '/token/*REDACTED*'];
+
+        yield 'percent-encoded segment name' => ['/%74oken/some-token', '/token/*REDACTED*'];
+
+        yield 'percent-encoded delimiter in value' => ['/token/some%2Ftoken%26more', '/token/*REDACTED*'];
+
+        yield 'percent-encoded non-sensitive segment' => ['/some%20path/some-value', '/some%20path/some-value'];
+    }
+
     public function testOnKernelTerminateSucceeds(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
@@ -289,11 +303,12 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertNull($responseContext['duration_ms']);
     }
 
-    public function testOnKernelTerminateSucceedsWithSanitizedPath(): void
+    #[DataProvider('provideSensitivePaths')]
+    public function testOnKernelTerminateSucceedsWithSanitizedPath(string $path, string $expectedPath): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
         $kernel = self::bootKernel();
-        $request = Request::create('/token/some-token');
+        $request = Request::create($path);
 
         $response = $kernel->handle($request);
         $kernel->terminate($request, $response);
@@ -301,8 +316,8 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         $record = self::getSingleRecord();
         $requestContext = $record->context['request'];
         self::assertIsArray($requestContext);
-        self::assertSame('Request: "GET /token/*REDACTED*" -> 404', $record->message);
-        self::assertSame('/token/*REDACTED*', $requestContext['uri']);
+        self::assertSame(\sprintf('Request: "GET %s" -> 404', $expectedPath), $record->message);
+        self::assertSame($expectedPath, $requestContext['uri']);
     }
 
     public function testOnKernelTerminateSucceedsWithSanitizedTruncatedBody(): void
