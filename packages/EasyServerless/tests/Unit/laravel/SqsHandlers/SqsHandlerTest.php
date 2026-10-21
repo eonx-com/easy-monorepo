@@ -4,374 +4,728 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Tests\Unit\Laravel\SqsHandlers;
 
 use Aws\CommandInterface;
+use Aws\MockHandler;
 use Aws\Result;
+use Aws\Sqs\SqsClient;
 use Bref\Context\Context;
 use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
-use EonX\EasyServerless\Tests\Stub\Laravel\ExceptionHandler\ExceptionHandlerStub;
-use EonX\EasyServerless\Tests\Stub\Laravel\JobHandler\JobHandlerStub;
-use EonX\EasyServerless\Tests\Unit\AbstractUnitTestCase;
-use GuzzleHttp\Promise\Create;
-use GuzzleHttp\Promise\PromiseInterface;
-use Illuminate\Cache\ArrayStore;
-use Illuminate\Cache\Repository as CacheRepository;
-use Illuminate\Config\Repository as ConfigRepository;
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Cache\Repository as CacheRepositoryInterface;
+use EonX\EasyServerless\Tests\Stub\Connector\SqsConnectorStub;
+use EonX\EasyServerless\Tests\Stub\JobHandler\JobHandlerStub;
+use EonX\EasyServerless\Tests\Unit\Laravel\AbstractLumenTestCase;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Contracts\Events\Dispatcher as DispatcherInterface;
-use Illuminate\Contracts\Queue\Factory as QueueFactoryInterface;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Queue\Connectors\SqsConnector;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\QueueManager;
+use Laravel\Lumen\Exceptions\Handler;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use Monolog\Logger;
 use Monolog\LogRecord;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Psr\Http\Message\RequestInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use RuntimeException;
-use stdClass;
 
-final class SqsHandlerTest extends AbstractUnitTestCase
+final class SqsHandlerTest extends AbstractLumenTestCase
 {
-    private const MESSAGE_ID = 'message-id';
+    private const APP_MAX_RETRIES = 3;
+
+    private const QUEUE_PREFIX = 'https://sqs.ap-southeast-2.amazonaws.com/123456789012';
+
+    private int $jobFailedCount = 0;
+
+    private TestHandler $logHandler;
+
+    /**
+     * @var array<int, \Aws\CommandInterface>
+     */
+    private array $sqsCommands = [];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        JobHandlerStub::reset();
+        $this->logHandler = new TestHandler();
+    }
 
     protected function tearDown(): void
     {
-        Container::setInstance();
+        // Lumen application registers its own error and exception handlers on construction
+        \restore_error_handler();
+        \restore_exception_handler();
 
         parent::tearDown();
     }
 
     /**
-     * @see testHandleFailedJob
+     * @see testHandleSqsFifoBatchSkipsMessageGroupAfterRequeue
      */
-    public static function provideFailedJobData(): iterable
+    public static function provideHandleSqsFifoBatchCases(): iterable
     {
-        // Job without tries, appMaxRetries is the maximum number of attempts
-        yield 'tries null, app 3, attempt 1: retry in 1s' => [1, 3, null, null, null, true, 0, 1, false, false];
-        yield 'tries null, app 3, attempt 2: retry in 1s' => [2, 3, null, null, null, true, 0, 1, false, false];
-        yield 'tries null, app 3, attempt 3: last attempt' => [3, 3, null, null, null, true, 1, 1, true, false];
-        yield 'tries null, app 3, attempt 4: not executed' => [4, 3, null, null, null, false, 0, 1, false, false];
-        yield 'tries null, app 1, attempt 1: last attempt' => [1, 1, null, null, null, true, 1, 1, true, false];
+        yield 'Failed job reaching app max retries' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'maxTries' => null,
+        ];
 
-        // Job backoff
-        yield 'backoff, app 5, attempt 1: retry in 10s' => [1, 5, null, '10,80,640', null, true, 0, 10, false, false];
-        yield 'backoff, app 5, attempt 2: retry in 80s' => [2, 5, null, '10,80,640', null, true, 0, 80, false, false];
-        yield 'backoff, app 5, attempt 3: retry in 640s' => [3, 5, null, '10,80,640', null, true, 0, 640, false, false];
-        yield 'backoff, app 5, attempt 4: retry in 640s' => [4, 5, null, '10,80,640', null, true, 0, 640, false, false];
-        yield 'backoff, app 5, attempt 5: last attempt' => [5, 5, null, '10,80,640', null, true, 1, 1, true, false];
-        yield 'backoff single, app 3, attempt 2: retry in 5s' => [2, 3, null, '5', null, true, 0, 5, false, false];
+        yield 'Failed job reaching its own max tries' => [
+            'receiveCount' => 2,
+            'maxTries' => 2,
+        ];
 
-        // Job tries below appMaxRetries
-        yield 'tries 2, app 3, attempt 1: retry in 1s' => [1, 3, 2, null, null, true, 0, 1, false, false];
-        yield 'tries 2, app 3, attempt 2: last attempt' => [2, 3, 2, null, null, true, 1, 1, true, false];
-        yield 'tries 2, app 3, attempt 3: not executed' => [3, 3, 2, null, null, false, 0, 1, false, false];
-
-        // Job tries above appMaxRetries: appMaxRetries wins
-        yield 'tries 5, app 3, attempt 2: retry in 1s' => [2, 3, 5, null, null, true, 0, 1, false, false];
-        yield 'tries 5, app 3, attempt 3: last attempt' => [3, 3, 5, null, null, true, 1, 1, true, false];
-        yield 'tries 0 (unlimited), app 3, attempt 3: last attempt' => [3, 3, 0, null, null, true, 1, 1, true, false];
-
-        // Explicitly unrecoverable: not retried and not requeued
-        yield 'tries 1, app 3, attempt 1: unrecoverable' => [1, 3, 1, null, null, true, 1, null, true, true];
-        yield 'manual fail, app 3, attempt 1: failed early' => [1, 3, null, null, 'fail', true, 1, null, true, false];
-
-        // Manual release
-        yield 'release 30s, app 3, attempt 1: retry in 30s' => [1, 3, null, null, 'release', true, 0, 30, false, false];
-        yield 'release 30s, app 3, attempt 3: last attempt' => [3, 3, null, null, 'release', true, 1, 1, true, false];
+        yield 'Job exceeding its own max tries' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'maxTries' => 2,
+        ];
     }
 
     /**
-     * @see testHandleFailedJobLogsWhyItWillNotBeRetried
+     * @see testHandleSqsRecord
      */
-    public static function provideRetryStopReasonData(): iterable
+    public static function provideHandleSqsRecordCases(): iterable
     {
-        yield 'tries null, app 3, attempt 2: retry' => [2, null, null, null];
-        yield 'tries null, app 3, attempt 3' => [3, null, null, 'app_max_retries'];
-        yield 'tries 5, app 3, attempt 3' => [3, 5, null, 'app_max_retries'];
-        yield 'tries 0 (unlimited), app 3, attempt 3' => [3, 0, null, 'app_max_retries'];
-        yield 'tries 2, app 3, attempt 2' => [2, 2, null, 'job_max_tries'];
-        yield 'tries 3, app 3, attempt 3: both stop' => [3, 3, null, 'job_max_tries'];
-        yield 'release 30s, app 3, attempt 3' => [3, null, 'release', 'app_max_retries'];
-        yield 'tries 1, app 3, attempt 1' => [1, 1, null, 'unrecoverable'];
-        yield 'manual fail, app 3, attempt 1' => [1, null, 'fail', 'job_failed'];
+        yield 'Successful job is acknowledged' => [
+            'receiveCount' => 1,
+            'data' => [],
+            'expectedVisibilityTimeout' => null,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        // Retries with the delay given to release(), computed by the worker from the backoff of the job
+        yield 'Failed job is retried on first attempt' => [
+            'receiveCount' => 1,
+            'data' => ['exception' => 'boom'],
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Failed job is retried with its backoff' => [
+            'receiveCount' => 2,
+            'data' => ['exception' => 'boom'],
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 30,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Failed job is retried with the backoff of its attempt (attempt 1)' => [
+            'receiveCount' => 1,
+            'appMaxRetries' => 5,
+            'data' => ['exception' => 'boom'],
+            'backoff' => '10,80,640',
+            'expectedVisibilityTimeout' => 10,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Failed job is retried with the backoff of its attempt (attempt 3)' => [
+            'receiveCount' => 3,
+            'appMaxRetries' => 5,
+            'data' => ['exception' => 'boom'],
+            'backoff' => '10,80,640',
+            'expectedVisibilityTimeout' => 640,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Failed job is retried with the last backoff after the list' => [
+            'receiveCount' => 4,
+            'appMaxRetries' => 5,
+            'data' => ['exception' => 'boom'],
+            'backoff' => '10,80,640',
+            'expectedVisibilityTimeout' => 640,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        // Explicit release delay
+        yield 'Job released with a delay is retried after it' => [
+            'receiveCount' => 1,
+            'data' => ['release' => 60],
+            'expectedVisibilityTimeout' => 60,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Job released without delay is retried after the minimum delay' => [
+            'receiveCount' => 1,
+            'data' => ['release' => 0],
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Job released with a delay above the SQS limit is retried after the SQS limit' => [
+            'receiveCount' => 1,
+            'data' => ['release' => 100000],
+            'expectedVisibilityTimeout' => 43200,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Explicit release delay wins over the backoff of the job' => [
+            'receiveCount' => 1,
+            'data' => ['release' => 60],
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 60,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        // Last attempt: the job is failed and the message is requeued for the DLQ
+        yield 'Failed job reaching app max retries is requeued without backoff' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'data' => ['exception' => 'boom'],
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'app_max_retries',
+        ];
+
+        yield 'Failed job reaching app max retries of 1 is requeued' => [
+            'receiveCount' => 1,
+            'appMaxRetries' => 1,
+            'data' => ['exception' => 'boom'],
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'app_max_retries',
+        ];
+
+        yield 'Failed job reaching its own max tries below app max retries is requeued without backoff' => [
+            'receiveCount' => 2,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => 2,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'job_max_tries',
+        ];
+
+        yield 'Failed job reaching its own max tries equal to app max retries is requeued' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => self::APP_MAX_RETRIES,
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'job_max_tries',
+        ];
+
+        yield 'Job released on its last attempt is failed and requeued' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'data' => ['release' => 60],
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'app_max_retries',
+        ];
+
+        // Job max tries above app max retries or unlimited: app max retries caps the attempts
+        yield 'Job with max tries above app max retries is retried before app max retries' => [
+            'receiveCount' => 2,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => 5,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 30,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Job with max tries above app max retries is failed and requeued at app max retries' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => 5,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'app_max_retries',
+        ];
+
+        yield 'Job with unlimited max tries is retried with its backoff' => [
+            'receiveCount' => 2,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => 0,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 30,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Job with negative max tries is run and retried with its backoff' => [
+            'receiveCount' => 2,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => -1,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 30,
+            'expectedJobFailedCount' => 0,
+        ];
+
+        yield 'Job with unlimited max tries is failed and requeued at app max retries' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => 0,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'app_max_retries',
+        ];
+
+        // Requeued without running
+        yield 'Job exceeding its own max tries is requeued without running nor failing again' => [
+            'receiveCount' => self::APP_MAX_RETRIES,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => 2,
+            'backoff' => 30,
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 0,
+            'expectedFired' => false,
+        ];
+
+        yield 'Job exceeding app max retries is requeued without running' => [
+            'receiveCount' => self::APP_MAX_RETRIES + 1,
+            'data' => ['exception' => 'boom'],
+            'expectedVisibilityTimeout' => 1,
+            'expectedJobFailedCount' => 0,
+            'expectedFired' => false,
+        ];
+
+        // Not requeued: SQS deletes the message
+        yield 'Explicitly unrecoverable job is not retried' => [
+            'receiveCount' => 1,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => 1,
+            'expectedVisibilityTimeout' => null,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'unrecoverable',
+        ];
+
+        yield 'Explicitly unrecoverable job received again is failed without running' => [
+            'receiveCount' => 2,
+            'data' => ['exception' => 'boom'],
+            'maxTries' => 1,
+            'expectedVisibilityTimeout' => null,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'unrecoverable',
+            'expectedFired' => false,
+        ];
+
+        yield 'Job failing itself before its last attempt is not requeued' => [
+            'receiveCount' => 1,
+            'data' => ['fail' => true],
+            'expectedVisibilityTimeout' => null,
+            'expectedJobFailedCount' => 1,
+            'expectedRetryStopReason' => 'job_failed',
+        ];
     }
 
     /**
-     * @see testHandleFailedJobWarnsWhenTriesAreLimitedByAppMaxRetries
+     * @see testHandleSqsRecordWarnsWhenJobMaxTriesIsLimitedByAppMaxRetries
      */
-    public static function provideTriesLimitedByAppMaxRetriesData(): iterable
+    public static function provideJobMaxTriesLimitedByAppMaxRetriesCases(): iterable
     {
-        yield 'tries 5, app 3, attempt 2: retry' => [2, 5, null];
-        yield 'tries 5, app 3, attempt 3: last attempt' => [3, 5, 'allows 5 tries'];
-        yield 'tries 0 (unlimited), app 3, attempt 3: last attempt' => [3, 0, 'allows unlimited tries'];
-        yield 'tries 3, app 3, attempt 3: last attempt' => [3, 3, null];
-        yield 'tries 2, app 3, attempt 2: last attempt' => [2, 2, null];
-        yield 'tries null, app 3, attempt 3: last attempt' => [3, null, null];
-        yield 'tries 1, app 3, attempt 1: unrecoverable' => [1, 1, null];
-    }
-
-    #[DataProvider('provideFailedJobData')]
-    public function testHandleFailedJob(
-        int $receiveCount,
-        int $appMaxRetries,
-        ?int $tries,
-        ?string $backoff,
-        ?string $behaviour,
-        bool $expectedExecuted,
-        int $expectedFailedCount,
-        ?int $expectedVisibilityTimeout,
-        bool $expectedWillNotBeRetriedLog,
-        bool $expectedUnrecoverableLog,
-    ): void {
-        $jobHandler = new JobHandlerStub(
-            throwable: new RuntimeException('Failure'),
-            failManually: $behaviour === 'fail',
-            releaseDelay: $behaviour === 'release' ? 30 : null
-        );
-        $logHandler = new TestHandler();
-        $commands = [];
-        $sut = $this->createSqsHandler($jobHandler, $appMaxRetries, $logHandler, $commands);
-
-        $result = $sut->handle($this->createSqsEvent($receiveCount, $tries, $backoff), $this->createContext());
-
-        $expectedResult = ['batchItemFailures' => [['itemIdentifier' => self::MESSAGE_ID]]];
-        self::assertSame($expectedExecuted ? 1 : 0, $jobHandler->getFiredCount());
-        self::assertSame($expectedFailedCount, $jobHandler->getFailedCount());
-        self::assertSame($expectedVisibilityTimeout === null ? null : $expectedResult, $result);
-        self::assertSame(
-            $expectedVisibilityTimeout === null ? [] : [$expectedVisibilityTimeout],
-            $this->getVisibilityTimeouts($commands)
-        );
-        self::assertSame(
-            $expectedWillNotBeRetriedLog,
-            $logHandler->hasErrorThatContains('SQS Record failed to process but will not be retried')
-        );
-        self::assertSame(
-            $expectedUnrecoverableLog,
-            $logHandler->hasErrorThatContains('explicitly marked as unrecoverable')
-        );
-    }
-
-    #[DataProvider('provideRetryStopReasonData')]
-    public function testHandleFailedJobLogsWhyItWillNotBeRetried(
-        int $receiveCount,
-        ?int $tries,
-        ?string $behaviour,
-        ?string $expectedRetryStopReason,
-    ): void {
-        $jobHandler = new JobHandlerStub(
-            throwable: new RuntimeException('Failure'),
-            failManually: $behaviour === 'fail',
-            releaseDelay: $behaviour === 'release' ? 30 : null
-        );
-        $logHandler = new TestHandler();
-        $commands = [];
-        $sut = $this->createSqsHandler($jobHandler, 3, $logHandler, $commands);
-
-        $sut->handle($this->createSqsEvent($receiveCount, $tries, null), $this->createContext());
-
-        $errors = \array_values(\array_filter(
-            $logHandler->getRecords(),
-            static fn (LogRecord $record): bool => $record->level === Level::Error
-        ));
-        self::assertSame(
-            $expectedRetryStopReason === null ? [] : [[
-                'app_max_retries' => 3,
-                'attempt' => $receiveCount,
-                'message_id' => self::MESSAGE_ID,
-                'retry_stop_reason' => $expectedRetryStopReason,
-            ]],
-            \array_map(static fn (LogRecord $record): array => $record->context, $errors)
-        );
-    }
-
-    public function testHandleFailedJobThrowsWithoutPartialBatchFailure(): void
-    {
-        $commands = [];
-        $sut = $this->createSqsHandler(
-            jobHandler: new JobHandlerStub(new RuntimeException('Failure')),
-            appMaxRetries: 3,
-            logHandler: new TestHandler(),
-            commands: $commands,
-            partialBatchFailure: false
-        );
-        $this->expectException(RuntimeException::class);
-
-        try {
-            $sut->handle($this->createSqsEvent(1, null, null), $this->createContext());
-        } finally {
-            self::assertSame([], $commands);
-        }
-    }
-
-    #[DataProvider('provideTriesLimitedByAppMaxRetriesData')]
-    public function testHandleFailedJobWarnsWhenTriesAreLimitedByAppMaxRetries(
-        int $receiveCount,
-        ?int $tries,
-        ?string $expectedWarning,
-    ): void {
-        $logHandler = new TestHandler();
-        $commands = [];
-        $sut = $this->createSqsHandler(new JobHandlerStub(new RuntimeException('Failure')), 3, $logHandler, $commands);
-
-        $sut->handle($this->createSqsEvent($receiveCount, $tries, null), $this->createContext());
-
-        $warnings = \array_filter(
-            $logHandler->getRecords(),
-            static fn (LogRecord $record): bool => $record->level === Level::Warning
-        );
-        self::assertCount($expectedWarning === null ? 0 : 1, $warnings);
-
-        if ($expectedWarning !== null) {
-            self::assertTrue($logHandler->hasWarningThatContains($expectedWarning));
-            self::assertTrue($logHandler->hasWarningThatContains('the SQS handler allows only 3 attempts'));
-        }
+        yield 'Above app max retries, before last attempt' => [2, 5, null];
+        yield 'Above app max retries, last attempt' => [self::APP_MAX_RETRIES, 5, 'allows 5 tries'];
+        yield 'Unlimited, last attempt' => [self::APP_MAX_RETRIES, 0, 'allows unlimited tries'];
+        yield 'Equal to app max retries, last attempt' => [self::APP_MAX_RETRIES, self::APP_MAX_RETRIES, null];
+        yield 'Below app max retries, last attempt' => [2, 2, null];
+        yield 'Not set, last attempt' => [self::APP_MAX_RETRIES, null, null];
+        yield 'Explicitly unrecoverable' => [1, 1, null];
     }
 
     public function testHandleReleasedJobOnLastAttemptWhenFailedMethodThrows(): void
     {
-        $jobHandler = new JobHandlerStub(
-            releaseDelay: 30,
-            failedThrowable: new RuntimeException('Failed method error')
+        $handler = $this->createHandler();
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'message-id',
+                    receiveCount: self::APP_MAX_RETRIES,
+                    data: ['failedException' => 'failed() error', 'release' => 60]
+                ),
+            ]),
+            self::createContext()
         );
-        $logHandler = new TestHandler();
-        $commands = [];
-        $sut = $this->createSqsHandler($jobHandler, 3, $logHandler, $commands);
 
-        $result = $sut->handle($this->createSqsEvent(3, null, null), $this->createContext());
-
-        self::assertSame(1, $jobHandler->getFailedCount());
-        self::assertSame(['batchItemFailures' => [['itemIdentifier' => self::MESSAGE_ID]]], $result);
-        self::assertSame([1], $this->getVisibilityTimeouts($commands));
-        self::assertTrue($logHandler->hasErrorThatContains('Error while failing the job'));
-        self::assertTrue($logHandler->hasErrorThatContains('will not be retried'));
+        self::assertSame(['batchItemFailures' => [['itemIdentifier' => 'message-id']]], $result);
+        self::assertSame([1], $this->getVisibilityTimeouts());
+        self::assertTrue($this->logHandler->hasErrorThatContains('Error while failing the job'));
+        self::assertTrue($this->logHandler->hasErrorThatContains('will not be retried'));
     }
 
-    public function testHandleSucceeds(): void
+    public function testHandleSqsBatchOnlyReportsFailedRecords(): void
     {
-        $jobHandler = new JobHandlerStub();
-        $commands = [];
-        $sut = $this->createSqsHandler($jobHandler, 3, new TestHandler(), $commands);
+        $handler = $this->createHandler();
 
-        $result = $sut->handle($this->createSqsEvent(2, null, null), $this->createContext());
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(messageId: 'first', receiveCount: 1, data: ['exception' => 'boom']),
+                self::createSqsRecord(messageId: 'second', receiveCount: 1),
+                self::createSqsRecord(messageId: 'third', receiveCount: 1, data: ['exception' => 'boom']),
+            ]),
+            self::createContext()
+        );
 
-        self::assertNull($result);
-        self::assertSame([], $commands);
-        self::assertSame(1, $jobHandler->getFiredCount());
-        self::assertSame(0, $jobHandler->getFailedCount());
+        self::assertSame(
+            ['batchItemFailures' => [['itemIdentifier' => 'first'], ['itemIdentifier' => 'third']]],
+            $result
+        );
+        self::assertCount(1, $this->sqsCommands);
+        $entries = $this->sqsCommands[0]['Entries'];
+        self::assertIsArray($entries);
+        self::assertSame(['first', 'third'], \array_column($entries, 'Id'));
     }
 
-    private function createContext(): Context
+    #[DataProvider('provideHandleSqsFifoBatchCases')]
+    public function testHandleSqsFifoBatchSkipsMessageGroupAfterRequeue(int $receiveCount, ?int $maxTries): void
     {
-        return new Context('request-id', (int)(\microtime(true) * 1000) + 300000, 'function-arn', '');
+        $handler = $this->createHandler();
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'first',
+                    receiveCount: $receiveCount,
+                    data: ['exception' => 'boom'],
+                    maxTries: $maxTries,
+                    messageGroupId: 'group-1'
+                ),
+                self::createSqsRecord(messageId: 'second', receiveCount: 1, messageGroupId: 'group-1'),
+                self::createSqsRecord(messageId: 'third', receiveCount: 1, messageGroupId: 'group-2'),
+            ]),
+            self::createContext()
+        );
+
+        // The requeued record and the following one from the same group are both reported to preserve order
+        self::assertSame(
+            ['batchItemFailures' => [['itemIdentifier' => 'first'], ['itemIdentifier' => 'second']]],
+            $result
+        );
+        self::assertCount(1, $this->sqsCommands);
+        $command = $this->sqsCommands[0];
+        self::assertSame(self::QUEUE_PREFIX . '/test.fifo', $command['QueueUrl']);
+        self::assertSame(
+            [
+                ['Id' => 'first', 'ReceiptHandle' => 'receipt-first', 'VisibilityTimeout' => 1],
+                ['Id' => 'second', 'ReceiptHandle' => 'receipt-second', 'VisibilityTimeout' => 1],
+            ],
+            $command['Entries']
+        );
     }
 
-    private function createSqsEvent(int $receiveCount, ?int $tries, ?string $backoff): array
+    #[DataProvider('provideHandleSqsRecordCases')]
+    public function testHandleSqsRecord(
+        int $receiveCount,
+        array $data,
+        ?int $expectedVisibilityTimeout,
+        int $expectedJobFailedCount,
+        ?int $appMaxRetries = null,
+        ?int $maxTries = null,
+        int|string|null $backoff = null,
+        ?string $expectedRetryStopReason = null,
+        bool $expectedFired = true,
+    ): void {
+        $appMaxRetries ??= self::APP_MAX_RETRIES;
+        $handler = $this->createHandler(appMaxRetries: $appMaxRetries);
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'message-id',
+                    receiveCount: $receiveCount,
+                    data: $data,
+                    maxTries: $maxTries,
+                    backoff: $backoff
+                ),
+            ]),
+            self::createContext()
+        );
+
+        self::assertSame($expectedFired ? 1 : 0, JobHandlerStub::getFiredCount());
+        self::assertSame($expectedJobFailedCount, $this->jobFailedCount);
+        self::assertSame(
+            $expectedRetryStopReason === null ? [] : [[
+                'app_max_retries' => $appMaxRetries,
+                'attempt' => $receiveCount,
+                'message_id' => 'message-id',
+                'retry_stop_reason' => $expectedRetryStopReason,
+            ]],
+            \array_map(static fn (LogRecord $record): array => $record->context, $this->getLogRecords(Level::Error))
+        );
+
+        if ($expectedVisibilityTimeout === null) {
+            self::assertNull($result);
+            self::assertSame([], $this->sqsCommands);
+
+            return;
+        }
+
+        self::assertSame(['batchItemFailures' => [['itemIdentifier' => 'message-id']]], $result);
+        self::assertCount(1, $this->sqsCommands);
+        $command = $this->sqsCommands[0];
+        self::assertSame('ChangeMessageVisibilityBatch', $command->getName());
+        self::assertSame(self::QUEUE_PREFIX . '/test', $command['QueueUrl']);
+        self::assertSame(
+            [
+                [
+                    'Id' => 'message-id',
+                    'ReceiptHandle' => 'receipt-message-id',
+                    'VisibilityTimeout' => $expectedVisibilityTimeout,
+                ],
+            ],
+            $command['Entries']
+        );
+    }
+
+    public function testHandleSqsRecordRequeuesJobExceedingItsMaxTriesWithPartialBatchFailure(): void
     {
-        $payload = [
+        $handler = $this->createHandler();
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'message-id',
+                    receiveCount: 3,
+                    data: ['exception' => 'boom'],
+                    maxTries: 2
+                ),
+            ]),
+            self::createContext()
+        );
+
+        self::assertSame(['batchItemFailures' => [['itemIdentifier' => 'message-id']]], $result);
+        self::assertSame([1], $this->getVisibilityTimeouts());
+        self::assertSame(0, JobHandlerStub::getFiredCount());
+    }
+
+    public function testHandleSqsRecordThrowsForJobExceedingItsMaxTriesWhenPartialBatchFailureDisabled(): void
+    {
+        $handler = $this->createHandler(partialBatchFailure: false);
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('SQS Record "message-id" has reached the job max tries (2)');
+
+        try {
+            $handler->handle(
+                self::createSqsEvent([
+                    self::createSqsRecord(
+                        messageId: 'message-id',
+                        receiveCount: 3,
+                        data: ['exception' => 'boom'],
+                        maxTries: 2
+                    ),
+                ]),
+                self::createContext()
+            );
+        } finally {
+            self::assertSame(0, JobHandlerStub::getFiredCount());
+            self::assertSame(0, $this->jobFailedCount);
+            self::assertSame([], $this->sqsCommands);
+        }
+    }
+
+    public function testHandleSqsRecordThrowsForReleasedJobWhenPartialBatchFailureDisabled(): void
+    {
+        $handler = $this->createHandler(partialBatchFailure: false);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('was released and will be retried');
+
+        $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(messageId: 'message-id', receiveCount: 1, data: ['release' => 60]),
+            ]),
+            self::createContext()
+        );
+    }
+
+    public function testHandleSqsRecordThrowsJobExceptionOnLastAttemptWhenPartialBatchFailureDisabled(): void
+    {
+        $handler = $this->createHandler(partialBatchFailure: false);
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('boom');
+
+        try {
+            $handler->handle(
+                self::createSqsEvent([
+                    self::createSqsRecord(
+                        messageId: 'message-id',
+                        receiveCount: self::APP_MAX_RETRIES,
+                        data: ['exception' => 'boom']
+                    ),
+                ]),
+                self::createContext()
+            );
+        } finally {
+            self::assertSame(1, $this->jobFailedCount);
+            self::assertTrue($this->logHandler->hasErrorThatContains('will not be retried'));
+        }
+    }
+
+    public function testHandleSqsRecordThrowsJobExceptionWhenPartialBatchFailureDisabled(): void
+    {
+        $handler = $this->createHandler(partialBatchFailure: false);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('boom');
+
+        $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(messageId: 'message-id', receiveCount: 1, data: ['exception' => 'boom']),
+            ]),
+            self::createContext()
+        );
+    }
+
+    #[DataProvider('provideJobMaxTriesLimitedByAppMaxRetriesCases')]
+    public function testHandleSqsRecordWarnsWhenJobMaxTriesIsLimitedByAppMaxRetries(
+        int $receiveCount,
+        ?int $maxTries,
+        ?string $expectedWarning,
+    ): void {
+        $handler = $this->createHandler();
+
+        $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'message-id',
+                    receiveCount: $receiveCount,
+                    data: ['exception' => 'boom'],
+                    maxTries: $maxTries
+                ),
+            ]),
+            self::createContext()
+        );
+
+        self::assertCount($expectedWarning === null ? 0 : 1, $this->getLogRecords(Level::Warning));
+
+        if ($expectedWarning !== null) {
+            self::assertTrue($this->logHandler->hasWarningThatContains($expectedWarning));
+            self::assertTrue($this->logHandler->hasWarningThatContains('the SQS handler allows only 3 attempts'));
+        }
+    }
+
+    private static function createContext(): Context
+    {
+        return new Context(
+            'aws-request-id',
+            (int)(\microtime(true) * 1000) + 60000,
+            'arn:aws:lambda:ap-southeast-2:123456789012:function:test',
+            'trace-id'
+        );
+    }
+
+    private static function createSqsEvent(array $records): array
+    {
+        return ['Records' => $records];
+    }
+
+    private static function createSqsRecord(
+        string $messageId,
+        int $receiveCount,
+        array $data = [],
+        ?int $maxTries = null,
+        int|string|null $backoff = null,
+        ?string $messageGroupId = null,
+    ): array {
+        $body = \json_encode([
+            'attempts' => 0,
             'backoff' => $backoff,
-            'data' => [],
+            'data' => $data,
             'displayName' => JobHandlerStub::class,
             'job' => JobHandlerStub::class . '@fire',
-            'maxTries' => $tries,
-            'uuid' => 'uuid',
+            'maxExceptions' => null,
+            'maxTries' => $maxTries,
+            'retryUntil' => null,
+            'timeout' => null,
+            'uuid' => $messageId,
+        ], \JSON_THROW_ON_ERROR);
+
+        $attributes = [
+            'ApproximateFirstReceiveTimestamp' => '0',
+            'ApproximateReceiveCount' => (string)$receiveCount,
+            'SenderId' => 'sender-id',
+            'SentTimestamp' => '0',
         ];
 
+        $queueName = 'test';
+
+        if ($messageGroupId !== null) {
+            $attributes['MessageDeduplicationId'] = 'dedup-' . $messageId;
+            $attributes['MessageGroupId'] = $messageGroupId;
+            $queueName = 'test.fifo';
+        }
+
         return [
-            'Records' => [
-                [
-                    'attributes' => [
-                        'ApproximateReceiveCount' => (string)$receiveCount,
-                    ],
-                    'body' => \json_encode($payload, \JSON_THROW_ON_ERROR),
-                    'eventSource' => 'aws:sqs',
-                    'eventSourceARN' => 'arn:aws:sqs:ap-southeast-2:123456789012:queue',
-                    'messageAttributes' => [],
-                    'messageId' => self::MESSAGE_ID,
-                    'receiptHandle' => 'receipt-handle',
-                ],
-            ],
+            'attributes' => $attributes,
+            'awsRegion' => 'ap-southeast-2',
+            'body' => $body,
+            'eventSource' => 'aws:sqs',
+            'eventSourceARN' => 'arn:aws:sqs:ap-southeast-2:123456789012:' . $queueName,
+            'md5OfBody' => \md5($body),
+            'messageAttributes' => [],
+            'messageId' => $messageId,
+            'receiptHandle' => 'receipt-' . $messageId,
         ];
     }
 
-    /**
-     * @param \Aws\CommandInterface[] $commands
-     */
-    private function createSqsHandler(
-        JobHandlerStub $jobHandler,
-        int $appMaxRetries,
-        TestHandler $logHandler,
-        array &$commands,
+    private function createHandler(
         bool $partialBatchFailure = true,
+        int $appMaxRetries = self::APP_MAX_RETRIES,
     ): SqsHandler {
-        $container = new Container();
-        Container::setInstance($container);
+        $app = $this->getApplication([]);
+        $app->configure('cache');
+        $app->configure('queue');
 
-        $awsHandler = static function (CommandInterface $command, RequestInterface $request) use (
-            &$commands
-        ): PromiseInterface {
-            $commands[] = $command;
-
-            return Create::promiseFor(new Result([]));
-        };
-
-        $container->instance('config', new ConfigRepository([
-            'queue' => [
-                'connections' => [
-                    'sqs' => [
-                        'driver' => 'sqs',
-                        'handler' => $awsHandler,
-                        'key' => 'key',
-                        'prefix' => 'https://sqs.ap-southeast-2.amazonaws.com/123456789012',
-                        'queue' => 'queue',
-                        'region' => 'ap-southeast-2',
-                        'secret' => 'secret',
-                    ],
-                ],
-                'default' => 'sqs',
+        \config([
+            'cache.default' => 'array',
+            'queue.connections.sqs' => [
+                'driver' => 'sqs',
+                'prefix' => self::QUEUE_PREFIX,
+                'queue' => 'test',
             ],
-        ]));
+            'queue.default' => 'sqs',
+        ]);
 
-        $events = new Dispatcher($container);
-        $container->instance('events', $events);
-        $container->instance(DispatcherInterface::class, $events);
-        $container->instance(ExceptionHandler::class, new ExceptionHandlerStub());
-        $container->instance(CacheRepositoryInterface::class, new CacheRepository(new ArrayStore()));
-        $container->instance('db', new stdClass());
-        $container->instance('log', new Logger('test', [$logHandler]));
-        $container->instance(JobHandlerStub::class, $jobHandler);
+        $app->alias('queue', QueueManager::class);
+        $app->bind(ExceptionHandler::class, Handler::class);
+        // The handler logs to "log", the Lumen exception handler reports to LoggerInterface
+        $app->instance('log', new Logger('test', [$this->logHandler]));
+        $app->instance(LoggerInterface::class, new NullLogger());
+        $app->make(Dispatcher::class)
+            ->listen(JobFailed::class, function (): void {
+                $this->jobFailedCount++;
+            });
 
-        // The queue manager only needs the container to resolve the config
-        // @phpstan-ignore argument.type
-        $queueManager = new QueueManager($container);
-        $queueManager->addConnector('sqs', static fn (): SqsConnector => new SqsConnector());
-        $container->instance(QueueManager::class, $queueManager);
-        $container->instance(QueueFactoryInterface::class, $queueManager);
+        $recordCommand = function (CommandInterface $command): Result {
+            $this->sqsCommands[] = $command;
+
+            return new Result();
+        };
+        $sqsClient = new SqsClient([
+            'credentials' => false,
+            'handler' => new MockHandler(\array_fill(0, 10, $recordCommand)),
+            'region' => 'ap-southeast-2',
+            'version' => 'latest',
+        ]);
+
+        $app->make(QueueManager::class)
+            ->extend('sqs', static fn (): SqsConnectorStub => new SqsConnectorStub($sqsClient));
 
         return new SqsHandler(
-            container: $container,
+            container: $app,
             connectionName: 'sqs',
             appMaxRetries: $appMaxRetries,
-            partialBatchFailure: $partialBatchFailure
+            partialBatchFailure: $partialBatchFailure,
         );
     }
 
     /**
-     * @param \Aws\CommandInterface[] $commands
-     *
+     * @return \Monolog\LogRecord[]
+     */
+    private function getLogRecords(Level $level): array
+    {
+        return \array_values(\array_filter(
+            $this->logHandler->getRecords(),
+            static fn (LogRecord $record): bool => $record->level === $level
+        ));
+    }
+
+    /**
      * @return int[]
      */
-    private function getVisibilityTimeouts(array $commands): array
+    private function getVisibilityTimeouts(): array
     {
         $visibilityTimeouts = [];
 
-        foreach ($commands as $command) {
-            if ($command->getName() !== 'ChangeMessageVisibilityBatch') {
-                continue;
-            }
-
+        foreach ($this->sqsCommands as $command) {
             /** @var array<array{VisibilityTimeout: int}> $entries */
             $entries = $command['Entries'];
 

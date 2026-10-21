@@ -250,6 +250,31 @@ final class SqsHandlerTest extends AbstractUnitTestCase
         }
     }
 
+    public function testHandleMessageNotAllowedByRetryStrategyThrowsWithoutPartialBatchFailure(): void
+    {
+        $bus = new MessageBusStub(new RuntimeException('Failure'));
+        $failedEvents = [];
+        $requestBodies = [];
+        $sut = $this->createSqsHandler(
+            bus: $bus,
+            maxRetries: 1,
+            appMaxRetries: 3,
+            logHandler: new TestHandler(),
+            requestBodies: $requestBodies,
+            failedEvents: $failedEvents,
+            partialBatchFailure: false
+        );
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('is not allowed another attempt by the retry strategy');
+
+        try {
+            $sut->handle($this->createSqsEvent(3), $this->createContext());
+        } finally {
+            self::assertSame([], $bus->getDispatchedEnvelopes());
+            self::assertSame([], $requestBodies);
+        }
+    }
+
     public function testHandleSucceedsWithRedeliveryStampHoldingRetryCount(): void
     {
         $bus = new MessageBusStub();

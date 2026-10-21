@@ -26,8 +26,8 @@ final class SqsQueueJob extends SqsJob
     }
 
     /**
-     * The message is never sent again to the queue, SQS retries the same message.
-     * The number of attempts is the number of times SQS delivered it.
+     * Bref counts attempts from the payload, which is only incremented when it re-sends the message on release.
+     * Since release is disabled to let SQS retry the message itself, the received count is the source of truth.
      */
     public function attempts(): int
     {
@@ -104,6 +104,13 @@ final class SqsQueueJob extends SqsJob
         // DO NOT release the job, just mark it as released
         // Releasing the job prevents SQS from retrying it
         $this->released = true;
+        // Keep the delay, either explicit or computed by the worker from the backoff of the job,
+        // so the handler can apply it to the SQS message visibility
         $this->releaseDelay = (int)$this->secondsUntil($delay);
+    }
+
+    public function setThrowable(?Throwable $throwable = null): void
+    {
+        $this->throwable = $throwable;
     }
 }

@@ -14,6 +14,7 @@ use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
 use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsReceivedStamp;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsXrayTraceHeaderStamp;
@@ -100,6 +101,16 @@ final class SqsHandler extends AbstractSqsHandler
                     $sqsRecord->getApproximateReceiveCount()
                 )
             );
+
+            // Without partial batch failure, the Lambda invocation must fail, otherwise SQS deletes the message
+            // instead of keeping it until it reaches the DLQ
+            if ($this->partialBatchFailure === false) {
+                throw new RuntimeException(\sprintf(
+                    'SQS Record "%s" is not allowed another attempt by the retry strategy and is requeued '
+                    . 'so it can reach the DLQ',
+                    $sqsRecord->getMessageId()
+                ));
+            }
 
             $this->scheduleForRetry($sqsRecord);
 

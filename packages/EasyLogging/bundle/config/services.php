@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
+use EonX\EasyLogging\Bundle\Enum\ConfigServiceId;
 use EonX\EasyLogging\Bundle\Enum\ConfigTag;
 use EonX\EasyLogging\Factory\LoggerFactory;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
+use EonX\EasyLogging\Formatter\JsonFormatter;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -30,4 +32,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('easy_logging.logger', (string)param(ConfigParam::LoggerClass->value))
         ->factory([service(LoggerFactoryInterface::class), 'create'])
         ->args([param(ConfigParam::DefaultChannel->value)]);
+
+    // Reusable in both the LoggerFactory and the symfony/monolog-bundle setups (e.g. "formatter: easy_logging.formatter.json")
+    $services->set(ConfigServiceId::JsonFormatter->value, JsonFormatter::class);
 };

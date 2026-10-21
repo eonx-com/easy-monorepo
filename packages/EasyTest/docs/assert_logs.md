@@ -34,6 +34,23 @@ final class SomeTest extends KernelTestCase
 The collected records are reset automatically before each test (and after each test by the `EasyTestExtension`
 PHPUnit extension).
 
+> **Handlers filter records before processors run.** Monolog only runs the processor chain once at least one handler
+> of the channel accepts the record (`isHandling()`), so with production-like handlers in the test environment
+> (e.g. `level: warning`) an `assertLoggerHasInfo()` fails with `Existing records: []`. Make sure the test environment
+> has a handler accepting every level on the channels you assert on, for example:
+>
+> ```php
+> # config/packages/test/monolog.php
+>
+> use Symfony\Config\MonologConfig;
+>
+> return static function (MonologConfig $monologConfig): void {
+>     $monologConfig->handler('main')
+>         ->type('null')
+>         ->level('debug');
+> };
+> ```
+
 > The legacy `\EonX\EasyTest\Common\Trait\LoggerTrait` and `\EonX\EasyTest\Monolog\Logger\LoggerStub` helpers cover
 > applications still using the `eonx-com/easy-logging` LoggerFactory; they are deprecated and will be removed in 7.0
 > together with it.
