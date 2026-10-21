@@ -278,6 +278,27 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertFalse($responseContext['body_truncated']);
     }
 
+    public function testOnKernelTerminateSucceedsWithEscapedJsonStringBody(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: '"\u0034' . \str_repeat('\u0031', 15) . '"'
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame('"411111*REDACTED*1111"', $requestContext['body']);
+    }
+
     public function testOnKernelTerminateSucceedsWithFormBody(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */

@@ -235,7 +235,16 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         if ($mimeType !== self::FORM_CONTENT_TYPE) {
             // The sanitizer falls back to free-text sanitization for invalid JSON, which does not mask keys, so an
             // invalid JSON body must throw and be omitted instead
-            \json_decode(json: $body, flags: \JSON_THROW_ON_ERROR);
+            $decodedBody = \json_decode(json: $body, flags: \JSON_THROW_ON_ERROR);
+
+            // The sanitizer only decodes JSON objects and arrays, so a top-level JSON string is sanitized decoded,
+            // otherwise its escape sequences (e.g. "\u0034") would hide the sensitive value from the string sanitizers
+            if (\is_string($decodedBody)) {
+                return \json_encode(
+                    $this->sensitiveDataSanitizer->sanitize($decodedBody),
+                    \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+                );
+            }
 
             return $this->sensitiveDataSanitizer->sanitize($body);
         }
