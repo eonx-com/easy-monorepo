@@ -91,6 +91,20 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         ];
     }
 
+    /**
+     * @see testOnKernelTerminateSucceedsWithTopLevelNumberBody
+     */
+    public static function provideTopLevelNumberBodies(): iterable
+    {
+        yield 'card number' => ['4111111111111111', '"411111*REDACTED*1111"'];
+
+        yield 'card number in exponent notation' => ['4.111111111111111e15', '"411111*REDACTED*1111"'];
+
+        yield 'decimal number' => ['1.5', '1.5'];
+
+        yield 'long number' => ['100000000000', '100000000000'];
+    }
+
     public function testOnKernelTerminateSucceeds(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
@@ -158,6 +172,29 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         $kernel->terminate($request, $response);
 
         self::assertSame([], self::getRecords());
+    }
+
+    public function testOnKernelTerminateSucceedsAndDoesNotLogFormBodyWithAlteredFieldNames(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+            ],
+            content: 'payment.secret=some-secret&name=John'
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertNull($requestContext['body']);
+        self::assertTrue($requestContext['body_omitted']);
+        self::assertFalse($requestContext['body_truncated']);
     }
 
     #[DataProvider('provideNonLoggableContentTypeBodies')]
@@ -519,6 +556,28 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertTrue($requestContext['body_truncated']);
         self::assertSame(1024, \strlen($requestContext['body']));
         self::assertStringStartsWith('{"password":"*REDACTED*","description":"aaa', $requestContext['body']);
+    }
+
+    #[DataProvider('provideTopLevelNumberBodies')]
+    public function testOnKernelTerminateSucceedsWithTopLevelNumberBody(string $content, string $expectedBody): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: $content
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame($expectedBody, $requestContext['body']);
     }
 
     /**

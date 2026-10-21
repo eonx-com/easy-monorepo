@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Throwable;
+use UnexpectedValueException;
 
 final readonly class RequestResponseLoggingSubscriber implements EventSubscriberInterface
 {
@@ -264,12 +265,34 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                 );
             }
 
+            // A top-level number is checked like a nested one and kept as is when nothing is masked
+            if (\is_int($decodedBody) || \is_float($decodedBody)) {
+                $sanitizedNumber = $this->sanitizeNumbers([$decodedBody])[0];
+
+                if ($sanitizedNumber !== $decodedBody) {
+                    return \json_encode(
+                        $sanitizedNumber,
+                        \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+                    );
+                }
+            }
+
             return $this->sensitiveDataSanitizer->sanitize($body);
         }
 
         // Nested fields are percent-encoded on the wire (e.g. "user%5Bpassword%5D"), so the fields are
         // sanitized once parsed and decoded back for readability
         \parse_str($body, $fields);
+
+        // Some top-level field names are altered when parsed (e.g. "payment.secret" becomes "payment_secret") and
+        // would then no longer match the configured keys, so such a body is omitted
+        foreach (\explode('&', $body) as $pair) {
+            $fieldName = \explode('[', \urldecode(\explode('=', $pair, 2)[0]), 2)[0];
+
+            if ($fieldName !== '' && \array_key_exists($fieldName, $fields) === false) {
+                throw new UnexpectedValueException('Form field names cannot be preserved.');
+            }
+        }
 
         return \urldecode(\http_build_query($this->sensitiveDataSanitizer->sanitize($fields)));
     }
