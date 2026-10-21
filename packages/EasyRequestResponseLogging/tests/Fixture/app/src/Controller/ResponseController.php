@@ -9,10 +9,8 @@ final class ResponseController
 {
     public function __invoke(): JsonResponse
     {
-        return new JsonResponse([
-            'card_token' => 'some-card-token',
-            'name' => 'John',
-            'note' => 4111111111111111,
-        ]);
+        return JsonResponse::fromJsonString(
+            '{"card_token":"some-card-token","float_note":4111111111111111.0,"name":"John","note":4111111111111111}'
+        );
     }
 }

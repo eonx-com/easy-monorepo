@@ -138,7 +138,8 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         );
         self::assertSame('/response', $requestContext['uri']);
         self::assertSame(
-            '{"card_token":"*REDACTED*","name":"John","note":"411111*REDACTED*1111"}',
+            '{"card_token":"*REDACTED*","float_note":"411111*REDACTED*1111","name":"John",'
+            . '"note":"411111*REDACTED*1111"}',
             $responseContext['body']
         );
         self::assertFalse($responseContext['body_omitted']);
@@ -439,7 +440,8 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
             server: [
                 'CONTENT_TYPE' => 'application/json',
             ],
-            content: '{"id":100000000000,"items":[{"note":4111111111111111}]}'
+            content: '{"id":100000000000,"items":[{"note":4111111111111111}],"amount":1.5,'
+                . '"float_note":4111111111111111.0,"exponent_note":4.111111111111111e15}'
         );
 
         $response = $kernel->handle($request);
@@ -447,7 +449,11 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
 
         $requestContext = self::getSingleRecord()->context['request'];
         self::assertIsArray($requestContext);
-        self::assertSame('{"id":100000000000,"items":[{"note":"411111*REDACTED*1111"}]}', $requestContext['body']);
+        self::assertSame(
+            '{"id":100000000000,"items":[{"note":"411111*REDACTED*1111"}],"amount":1.5,'
+            . '"float_note":"411111*REDACTED*1111","exponent_note":"411111*REDACTED*1111"}',
+            $requestContext['body']
+        );
     }
 
     #[DataProvider('provideSensitivePaths')]

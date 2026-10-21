@@ -254,11 +254,11 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
             );
 
             // The body is sanitized decoded: escape sequences of a top-level JSON string (e.g. "\u0034") would hide
-            // a sensitive value from the string sanitizers, and integers are not checked by the sanitizer at all
+            // a sensitive value from the string sanitizers, and numbers are not checked by the sanitizer at all
             if (\is_array($decodedBody) || \is_string($decodedBody)) {
                 return \json_encode(
                     $this->sensitiveDataSanitizer->sanitize(
-                        \is_array($decodedBody) ? $this->sanitizeIntegers($decodedBody) : $decodedBody
+                        \is_array($decodedBody) ? $this->sanitizeNumbers($decodedBody) : $decodedBody
                     ),
                     \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
                 );
@@ -291,20 +291,27 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         return $entries;
     }
 
-    private function sanitizeIntegers(array $data): array
+    private function sanitizeNumbers(array $data): array
     {
         foreach ($data as $key => $value) {
             if (\is_array($value)) {
-                $data[$key] = $this->sanitizeIntegers($value);
+                $data[$key] = $this->sanitizeNumbers($value);
 
                 continue;
             }
 
-            // A card number sent as a JSON number, e.g. {"note":4111111111111111}, is masked like its string form
-            if (\is_int($value) && \strlen((string)\abs($value)) >= self::CARD_NUMBER_MIN_DIGITS) {
-                $sanitizedValue = $this->sensitiveDataSanitizer->sanitize((string)$value);
+            // A card number sent as a JSON number, e.g. {"note":4111111111111111} or {"note":4.111111111111111e15},
+            // is masked like its string form. Floats are written without exponent, other numbers are kept as is
+            $digits = match (true) {
+                \is_int($value) => (string)$value,
+                \is_float($value) && \is_finite($value) && \floor($value) === $value => \sprintf('%.0f', $value),
+                default => null,
+            };
 
-                if ($sanitizedValue !== (string)$value) {
+            if ($digits !== null && \strlen(\ltrim($digits, '-')) >= self::CARD_NUMBER_MIN_DIGITS) {
+                $sanitizedValue = $this->sensitiveDataSanitizer->sanitize($digits);
+
+                if ($sanitizedValue !== $digits) {
                     $data[$key] = $sanitizedValue;
                 }
             }
