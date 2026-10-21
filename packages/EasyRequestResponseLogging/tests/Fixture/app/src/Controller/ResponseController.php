@@ -12,6 +12,7 @@ final class ResponseController
         return new JsonResponse([
             'card_token' => 'some-card-token',
             'name' => 'John',
+            'note' => 4111111111111111,
         ]);
     }
 }

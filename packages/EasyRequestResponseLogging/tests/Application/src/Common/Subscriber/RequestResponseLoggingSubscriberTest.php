@@ -71,6 +71,8 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
 
         yield 'uppercase segment name' => ['/TOKEN/some-token', '/TOKEN/*REDACTED*'];
 
+        yield 'percent-encoded card number' => ['/lookup/4111%201111%201111%201111', '/lookup/411111*REDACTED*1111'];
+
         yield 'key ending a masked encoded segment' => [
             '/token%2Ffirst-secret%2Fpassword/second-secret',
             '/token/*REDACTED*/*REDACTED*',
@@ -133,7 +135,10 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
             $requestContext['query']
         );
         self::assertSame('/response', $requestContext['uri']);
-        self::assertSame('{"card_token":"*REDACTED*","name":"John"}', $responseContext['body']);
+        self::assertSame(
+            '{"card_token":"*REDACTED*","name":"John","note":"411111*REDACTED*1111"}',
+            $responseContext['body']
+        );
         self::assertFalse($responseContext['body_omitted']);
         self::assertFalse($responseContext['body_truncated']);
         self::assertGreaterThan(0.0, $responseContext['duration_ms']);
@@ -216,6 +221,30 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
                 'password' => 'some-password',
                 'description' => \str_repeat('a', 5000),
             ], \JSON_THROW_ON_ERROR)
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertNull($requestContext['body']);
+        self::assertTrue($requestContext['body_omitted']);
+        self::assertFalse($requestContext['body_truncated']);
+    }
+
+    public function testOnKernelTerminateSucceedsAndDoesNotReadBodyWithTooBigContentLength(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_LENGTH' => '999999',
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: '{"name":"John"}'
         );
 
         $response = $kernel->handle($request);
@@ -362,6 +391,27 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         $responseContext = self::getSingleRecord()->context['response'];
         self::assertIsArray($responseContext);
         self::assertNull($responseContext['duration_ms']);
+    }
+
+    public function testOnKernelTerminateSucceedsWithNumericCardNumberBody(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: '{"id":100000000000,"items":[{"note":4111111111111111}]}'
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame('{"id":100000000000,"items":[{"note":"411111*REDACTED*1111"}]}', $requestContext['body']);
     }
 
     #[DataProvider('provideSensitivePaths')]

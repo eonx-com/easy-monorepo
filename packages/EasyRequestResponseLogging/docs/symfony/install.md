@@ -51,7 +51,7 @@ Only bodies which can be sanitized by key are logged: `application/json`, any `+
 `application/x-www-form-urlencoded`. Other bodies (XML, plain text, multipart, binary, streamed) are logged as `null`.
 A body is sanitized first and then truncated to `max_body_size` bytes (`body_truncated: true`). Bodies bigger than
 `max_raw_body_size` bytes, and bodies which cannot be sanitized, are not logged at all (`body: null`,
-`body_omitted: true`).
+`body_omitted: true`). A body with a `Content-Length` header bigger than `max_raw_body_size` is not even read.
 
 The request path is sanitized as well, e.g. `/token/<value>` (or `/%74oken/<value>`) is logged as
 `/token/*REDACTED*`. `duration_ms` is the time between the `kernel.request` and `kernel.response` events. It is `null`

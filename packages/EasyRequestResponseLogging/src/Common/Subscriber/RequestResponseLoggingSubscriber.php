@@ -10,6 +10,7 @@ use EonX\EasyRequestResponseLogging\Common\ValueObject\ResponseData;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -19,6 +20,8 @@ use Throwable;
 
 final readonly class RequestResponseLoggingSubscriber implements EventSubscriberInterface
 {
+    private const CARD_NUMBER_MIN_DIGITS = 12;
+
     private const DURATION_MS_ATTRIBUTE = '_easy_request_response_logging_duration_ms';
 
     private const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded';
@@ -128,7 +131,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
     {
         [$body, $bodyOmitted, $bodyTruncated] = $this->prepareBody(
             $this->logRequestBody,
-            $request->headers->get('Content-Type'),
+            $request->headers,
             static fn (): string => $request->getContent()
         );
 
@@ -149,7 +152,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
     {
         [$body, $bodyOmitted, $bodyTruncated] = $this->prepareBody(
             $this->logResponseBody,
-            $response->headers->get('Content-Type'),
+            $response->headers,
             static fn (): ?string => $response->getContent() === false ? null : $response->getContent()
         );
 
@@ -198,12 +201,19 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
     /**
      * @return array{0: string|null, 1: bool, 2: bool}
      */
-    private function prepareBody(bool $logBody, ?string $contentType, Closure $bodyResolver): array
+    private function prepareBody(bool $logBody, HeaderBag $headers, Closure $bodyResolver): array
     {
-        $mimeType = \strtolower(\trim(\explode(';', $contentType ?? '')[0]));
+        $mimeType = \strtolower(\trim(\explode(';', $headers->get('Content-Type') ?? '')[0]));
 
         if ($logBody === false || $this->isLoggableMimeType($mimeType) === false) {
             return [null, false, false];
+        }
+
+        // A body declared bigger than the limit is omitted without being read into memory
+        $contentLength = $headers->get('Content-Length');
+
+        if (\is_numeric($contentLength) && (int)$contentLength > $this->maxRawBodySize) {
+            return [null, true, false];
         }
 
         /** @var string|null $body */
@@ -235,13 +245,19 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         if ($mimeType !== self::FORM_CONTENT_TYPE) {
             // The sanitizer falls back to free-text sanitization for invalid JSON, which does not mask keys, so an
             // invalid JSON body must throw and be omitted instead
-            $decodedBody = \json_decode(json: $body, flags: \JSON_THROW_ON_ERROR);
+            $decodedBody = \json_decode(
+                json: $body,
+                associative: true,
+                flags: \JSON_BIGINT_AS_STRING | \JSON_THROW_ON_ERROR
+            );
 
-            // The sanitizer only decodes JSON objects and arrays, so a top-level JSON string is sanitized decoded,
-            // otherwise its escape sequences (e.g. "\u0034") would hide the sensitive value from the string sanitizers
-            if (\is_string($decodedBody)) {
+            // The body is sanitized decoded: escape sequences of a top-level JSON string (e.g. "\u0034") would hide
+            // a sensitive value from the string sanitizers, and integers are not checked by the sanitizer at all
+            if (\is_array($decodedBody) || \is_string($decodedBody)) {
                 return \json_encode(
-                    $this->sensitiveDataSanitizer->sanitize($decodedBody),
+                    $this->sensitiveDataSanitizer->sanitize(
+                        \is_array($decodedBody) ? $this->sanitizeIntegers($decodedBody) : $decodedBody
+                    ),
                     \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
                 );
             }
@@ -254,6 +270,28 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
         \parse_str($body, $fields);
 
         return \urldecode(\http_build_query($this->sensitiveDataSanitizer->sanitize($fields)));
+    }
+
+    private function sanitizeIntegers(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if (\is_array($value)) {
+                $data[$key] = $this->sanitizeIntegers($value);
+
+                continue;
+            }
+
+            // A card number sent as a JSON number, e.g. {"note":4111111111111111}, is masked like its string form
+            if (\is_int($value) && \strlen((string)\abs($value)) >= self::CARD_NUMBER_MIN_DIGITS) {
+                $sanitizedValue = $this->sensitiveDataSanitizer->sanitize((string)$value);
+
+                if ($sanitizedValue !== (string)$value) {
+                    $data[$key] = $sanitizedValue;
+                }
+            }
+        }
+
+        return $data;
     }
 
     private function sanitizePath(string $path): string
@@ -287,14 +325,23 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                 $mask = $this->getKeyMask($match[1][0]);
 
                 if ($mask !== null) {
-                    $segments[$index] = \substr($decodedSegment, 0, $match[0][1] + \strlen($match[0][0])) . $mask;
+                    $segments[$index] = $this->sensitiveDataSanitizer->sanitize(
+                        \substr($decodedSegment, 0, $match[0][1] + \strlen($match[0][0])) . $mask
+                    );
 
-                    break;
+                    continue 2;
                 }
+            }
+
+            // Value-based sanitizers (e.g. card numbers) check the decoded segment, so an encoded grouping character
+            // (e.g. "%20") cannot hide a value. The segment is kept normalized when nothing is masked
+            $sanitizedSegment = $this->sensitiveDataSanitizer->sanitize($decodedSegment);
+
+            if ($sanitizedSegment !== $decodedSegment) {
+                $segments[$index] = $sanitizedSegment;
             }
         }
 
-        // Value-based sanitizers (e.g. card numbers) still apply to the whole path
-        return $this->sensitiveDataSanitizer->sanitize(\implode('/', $segments));
+        return \implode('/', $segments);
     }
 }
