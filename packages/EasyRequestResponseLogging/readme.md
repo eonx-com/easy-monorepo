@@ -24,7 +24,8 @@ All configuration options are listed in [Symfony install docs][2].
 
 #### 1. Register bundles
 
-`EasyRequestIdBundle` and `EasyUtilsBundle` are required. If one of them is not registered, the container build fails.
+`EasyRequestIdBundle` (with `EasyRandomBundle`, which it depends on) and `EasyUtilsBundle` are required. If one of them
+is not registered, the container build fails.
 
 ```php
 // config/bundles.php
@@ -32,6 +33,7 @@ All configuration options are listed in [Symfony install docs][2].
 return [
     // Other bundles ...
 
+    EonX\EasyRandom\Bundle\EasyRandomBundle::class => ['all' => true],
     EonX\EasyRequestId\Bundle\EasyRequestIdBundle::class => ['all' => true],
     EonX\EasyRequestResponseLogging\Bundle\EasyRequestResponseLoggingBundle::class => ['all' => true],
     EonX\EasyUtils\Bundle\EasyUtilsBundle::class => ['all' => true],

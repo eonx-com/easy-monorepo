@@ -20,7 +20,8 @@ return [
 ];
 ```
 
-`EasyRequestIdBundle` and `EasyUtilsBundle` (with `sensitive_data_sanitizer` enabled) must be registered as well.
+`EasyRequestIdBundle` (with `EasyRandomBundle`, which it depends on) and `EasyUtilsBundle` (with
+`sensitive_data_sanitizer` enabled) must be registered as well.
 
 ### Configuration
 
