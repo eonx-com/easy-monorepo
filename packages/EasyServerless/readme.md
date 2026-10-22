@@ -44,7 +44,7 @@ The handler executes a message at most `min(appMaxRetries, max_retries + 1)` tim
 strategy, set `appMaxRetries` to `max_retries + 1`.
 
 When a failed attempt is the last one, the handler logs "SQS Record failed to process but will not be retried" and
-reports the failure with `willRetry = false`. Then it puts the message back in the queue with a delay of 1 second
+dispatches `ServerlessWorkerMessageFailedEvent` with `willRetry = false`. Then it puts the message back in the queue with a delay of 1 second
 and does not execute it again. SQS moves the message to the dead letter queue (DLQ) when the receive count is more
 than the `maxReceiveCount` of the redrive policy. Thus, set `maxReceiveCount` to `appMaxRetries + 1` or more. After
 the last attempt, the handler only puts the message back in the queue on each receive.
@@ -62,6 +62,11 @@ The log record has this context:
 
 If the message fails with an exception that implements `UnrecoverableExceptionInterface`, the handler does not retry
 it and does not put it back in the queue. SQS deletes the message, and it does not go to the DLQ.
+
+The handler dispatches `ServerlessWorkerMessageFailedEvent` for each failed attempt. It does not dispatch the Symfony
+`WorkerMessageFailedEvent`, because the Messenger listeners of that event send the message again. The
+`EasyErrorHandlerBundle` reports the failure from a listener of `ServerlessWorkerMessageFailedEvent`. Without this
+bundle, the handler does not report the failure.
 
 Example: `max_retries: 3`, `delay: 10000`, `multiplier: 8`, `appMaxRetries: 4` and `maxReceiveCount: 5` give
 4 attempts with delays of 10 s, 80 s and 640 s between them. Then the message goes to the DLQ.

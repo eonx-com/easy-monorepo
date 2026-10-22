@@ -25,7 +25,9 @@ use EonX\EasyErrorHandler\ErrorCodes\Processor\ErrorCodesGroupProcessor;
 use EonX\EasyErrorHandler\ErrorCodes\Processor\ErrorCodesGroupProcessorInterface;
 use EonX\EasyErrorHandler\ErrorCodes\Provider\ErrorCodesFromEnumProvider;
 use EonX\EasyErrorHandler\ErrorCodes\Provider\ErrorCodesFromInterfaceProvider;
+use EonX\EasyErrorHandler\Messenger\Listener\ServerlessWorkerMessageFailedListener;
 use EonX\EasyErrorHandler\Messenger\Listener\WorkerMessageFailedListener;
+use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -72,6 +74,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set(WorkerMessageFailedListener::class)
         ->tag('kernel.event_listener');
+
+    if (\class_exists(ServerlessWorkerMessageFailedEvent::class)) {
+        $services
+            ->set(ServerlessWorkerMessageFailedListener::class)
+            ->tag('kernel.event_listener');
+    }
 
     // ResponseFactory
     $services->set(ErrorResponseFactoryInterface::class, ErrorResponseFactory::class);

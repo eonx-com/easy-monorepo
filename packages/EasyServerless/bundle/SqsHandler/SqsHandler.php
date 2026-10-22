@@ -7,7 +7,6 @@ use AsyncAws\Sqs\SqsClient;
 use Bref\Context\Context;
 use Bref\Event\Sqs\SqsRecord;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
-use EonX\EasyErrorHandler\Common\Exception\RetryableException;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
@@ -195,10 +194,7 @@ final class SqsHandler extends AbstractSqsHandler
                 );
             }
 
-            if (\class_exists(RetryableException::class)) {
-                $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));
-            }
-
+            // EasyErrorHandler reports the failure from a listener of this event
             $this->dispatchWorkerMessageFailedEvent($envelope, $throwable, $shouldRetry);
 
             // SQS built-in retry mechanism uses the list of failed messages returned by the Lambda function,
