@@ -138,6 +138,32 @@ final class EasyLoggingMonologBundleTest extends AbstractUnitTestCase
         );
     }
 
+    public function testBugsnagHandlerIsNotRegisteredWhenDeclaredByApplicationUnderParameterServiceId(): void
+    {
+        $container = $this->bootMonologKernel(
+            [
+                self::FIXTURE_DIR . 'use_symfony_monolog_bundle_with_bugsnag_handler.php',
+                self::FIXTURE_DIR . 'use_symfony_monolog_bundle_with_bugsnag_handler_declared_by_app_parameter_id.php',
+            ],
+            'test_monolog_bugsnag_declared_by_app_parameter_id'
+        );
+
+        /** @var \Monolog\Logger $appLogger */
+        $appLogger = $container->get('logger');
+        /** @var \Monolog\Logger $otherLogger */
+        $otherLogger = $container->get('monolog.logger.other');
+
+        self::assertFalse(
+            $this->hasInstanceOf($appLogger->getHandlers(), BugsnagMonologHandler::class),
+            'The bundle must resolve container parameters in the service id declared by the application.'
+        );
+        self::assertSame(
+            1,
+            $this->countInstanceOf($otherLogger->getHandlers(), BugsnagMonologHandler::class),
+            'The handler declared by the application must be attached exactly once.'
+        );
+    }
+
     public function testBugsnagHandlerIsRegisteredForConfiguredChannelsOnly(): void
     {
         $container = $this->bootMonologKernel(
