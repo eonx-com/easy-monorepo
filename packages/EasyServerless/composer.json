@@ -23,7 +23,8 @@
         "symfony/http-kernel": "^7.2"
     },
     "conflict": {
-        "easycorp/easyadmin-bundle": "<4.13.1"
+        "easycorp/easyadmin-bundle": "<4.13.1",
+        "eonx-com/easy-error-handler": "<6.27"
     },
     "autoload": {
         "psr-4": {

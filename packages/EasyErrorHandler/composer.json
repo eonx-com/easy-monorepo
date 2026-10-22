@@ -23,11 +23,15 @@
     },
     "require-dev": {
         "eonx-com/easy-bugsnag": "^6.27",
+        "eonx-com/easy-serverless": "^6.27",
         "eonx-com/easy-test": "^6.27",
         "eonx-com/easy-webhook": "^6.27",
         "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
         "symfony/framework-bundle": "^7.2"
+    },
+    "conflict": {
+        "eonx-com/easy-serverless": "<6.27"
     },
     "autoload": {
         "psr-4": {
@@ -49,6 +53,7 @@
     "suggest": {
         "api-platform/core": "To use ApiPlatform integration",
         "eonx-com/easy-bugsnag": "To use EasyBugsnag integration",
+        "eonx-com/easy-serverless": "To report failed messages of the EasyServerless SQS handler",
         "eonx-com/easy-webhook": "To use EasyWebhook integration",
         "symfony/messenger": "To use Symfony Messenger integration",
         "symfony/validator": "To use ApiPlatform integration"
