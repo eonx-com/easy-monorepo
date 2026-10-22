@@ -754,6 +754,28 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'shared_key',
             ],
         ];
+        yield 'Mask legacy spellings of default keys in arrays and JSON' => [
+            'input' => [
+                'apikey' => 'secret',
+                'php-auth-pw' => 'secret',
+                'php-auth-user' => 'secret',
+                'securitycode' => 'secret',
+                'verificationcode' => 'secret',
+                'x-shared-key' => 'secret',
+                'json' => '{"apikey":"secret","x-shared-key":"secret","securitycode":"secret"}',
+            ],
+            'expectedOutput' => [
+                'apikey' => '*REDACTED*',
+                'php-auth-pw' => '*REDACTED*',
+                'php-auth-user' => '*REDACTED*',
+                'securitycode' => '*REDACTED*',
+                'verificationcode' => '*REDACTED*',
+                'x-shared-key' => '*REDACTED*',
+                'json' => '{"apikey":"*REDACTED*","x-shared-key":"*REDACTED*","securitycode":"*REDACTED*"}',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
         yield 'Mask legacy spellings of default keys in URL' => [
             'input' => [
                 'path' => 'https://example.com/x-shared-key/secret1/php-auth-pw/secret2/keep',
