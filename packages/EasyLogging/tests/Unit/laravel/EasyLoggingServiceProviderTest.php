@@ -6,6 +6,8 @@ namespace EonX\EasyLogging\Tests\Unit\Laravel;
 use EonX\EasyLogging\Bundle\Enum\BundleParam;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasyLogging\Logger\LazyLogger;
+use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
+use EonX\EasyUtils\Laravel\EasyUtilsServiceProvider;
 use Illuminate\Log\LogManager;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
@@ -71,5 +73,40 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
         self::assertInstanceOf(LoggerFactoryInterface::class, $app->get(LoggerFactoryInterface::class));
         self::assertInstanceOf(LoggerInterface::class, $app->get(LoggerInterface::class));
         self::assertInstanceOf(LoggerInterface::class, $app->get('logger'));
+    }
+
+    public function testSensitiveDataSanitizerProcessorIsAttachedToLogger(): void
+    {
+        $app = $this->getApp(
+            ['easy-logging.sensitive_data_sanitizer.enabled' => true],
+            [EasyUtilsServiceProvider::class]
+        );
+
+        /** @var \Monolog\Logger $logger */
+        $logger = $app->get(LoggerInterface::class);
+
+        self::assertTrue($this->hasSensitiveDataSanitizerProcessor($logger->getProcessors()));
+    }
+
+    public function testSensitiveDataSanitizerProcessorIsAttachedWhenDefaultLoggerNotOverridden(): void
+    {
+        $app = $this->getApp(
+            [
+                'easy-logging.override_default_logger' => false,
+                'easy-logging.sensitive_data_sanitizer.enabled' => true,
+            ],
+            [EasyUtilsServiceProvider::class]
+        );
+
+        /** @var \Monolog\Logger $logger */
+        $logger = $app->get(LoggerFactoryInterface::class)
+            ->create('app');
+
+        self::assertTrue($this->hasSensitiveDataSanitizerProcessor($logger->getProcessors()));
+    }
+
+    private function hasSensitiveDataSanitizerProcessor(array $processors): bool
+    {
+        return \array_any($processors, fn($processor): bool => $processor instanceof SensitiveDataSanitizerProcessor);
     }
 }
