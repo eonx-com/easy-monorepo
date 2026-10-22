@@ -11,7 +11,10 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
     private ?Application $app = null;
 
-    protected function getApp(?array $config = null): Application
+    /**
+     * @param class-string<\Illuminate\Support\ServiceProvider>[] $providers
+     */
+    protected function getApp(?array $config = null, ?array $providers = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
@@ -21,6 +24,10 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 
         if ($config !== null) {
             \config($config);
+        }
+
+        foreach ($providers ?? [] as $provider) {
+            $this->app->register($provider);
         }
 
         $this->app->register(EasyLoggingServiceProvider::class);
