@@ -769,6 +769,26 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
             'maskPattern' => '*REDACTED*',
             'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
         ];
+        yield 'Mask separator-only keys exactly' => [
+            'input' => [
+                '_' => 'secret',
+                'json' => '{"_":"secret","-":"keep","__":"keep"}',
+                '-' => 'keep',
+                '__' => 'keep',
+                'x_' => 'keep',
+            ],
+            'expectedOutput' => [
+                '_' => '*REDACTED*',
+                'json' => '{"_":"*REDACTED*","-":"keep","__":"keep"}',
+                '-' => 'keep',
+                '__' => 'keep',
+                'x_' => 'keep',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                '_',
+            ],
+        ];
         yield 'Leave unbalanced or truncated JSON untouched' => [
             'input' => [
                 'manyOpeners' => 'weird {{{{{{{{ end',

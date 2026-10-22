@@ -10,13 +10,10 @@ use EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface;
 final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
 {
     /**
-     * Optional prefix ignored when comparing keys, e.g. "x-api-key" header matches the "api_key" key
+     * "X-" header prefix, e.g. "x-api-key" matches the "api_key" key
      */
     private const KEY_PREFIX = 'x';
 
-    /**
-     * Characters ignored when comparing keys, so "api key", "api-key", "api_key" and "apiKey" are the same key
-     */
     private const KEY_SEPARATORS = [' ', '-', '_'];
 
     /**
@@ -33,6 +30,11 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
      * @var \EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface[]
      */
     private array $objectTransformers;
+
+    /**
+     * @var array<string, true>
+     */
+    private array $separatorOnlyKeysToMask;
 
     /**
      * @var \EonX\EasyUtils\SensitiveData\Sanitizer\StringSanitizerInterface[]
@@ -52,13 +54,23 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             static fn (string $keyToMask): string => \mb_strtolower($keyToMask),
             $keysToMask
         );
-        $this->normalizedKeysToMask = \array_fill_keys(
-            \array_filter(
-                \array_map(self::normalizeKey(...), $keysToMask),
-                static fn (string $normalizedKey): bool => $normalizedKey !== ''
-            ),
-            true
-        );
+        $normalizedKeysToMask = [];
+        $separatorOnlyKeysToMask = [];
+
+        foreach ($this->keysToMask as $keyToMask) {
+            $normalizedKeyToMask = self::normalizeKey($keyToMask);
+
+            if ($normalizedKeyToMask === '') {
+                $separatorOnlyKeysToMask[$keyToMask] = true;
+
+                continue;
+            }
+
+            $normalizedKeysToMask[$normalizedKeyToMask] = true;
+        }
+
+        $this->normalizedKeysToMask = $normalizedKeysToMask;
+        $this->separatorOnlyKeysToMask = $separatorOnlyKeysToMask;
         $this->objectTransformers = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($objectTransformers ?? [], ObjectTransformerInterface::class)
         );
@@ -121,6 +133,10 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
     private function isKeyToMask(string $key): bool
     {
         $normalizedKey = self::normalizeKey($key);
+
+        if ($normalizedKey === '') {
+            return isset($this->separatorOnlyKeysToMask[\mb_strtolower($key)]);
+        }
 
         if (isset($this->normalizedKeysToMask[$normalizedKey])) {
             return true;

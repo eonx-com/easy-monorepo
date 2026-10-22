@@ -20,23 +20,20 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
 
             // Keys come from configuration and are interpolated into the pattern, so escape any
             // regex metacharacters (and the "/" delimiter) to keep matching literal and safe.
-            // Runs of word separators are optional and interchangeable, so "api_key" also matches
-            // "api-key", "api key", "api__key" and "apiKey". Leading/trailing separators are kept
-            // as optional runs, so the configured spelling itself always matches
+            // Separator runs are optional and interchangeable ("api_key" matches "api-key", "apiKey"),
+            // edge ones are kept so the configured spelling itself always matches
             $parts = \preg_split('/[ _-]+/', $key) ?: [$key];
             $quotedKey = \implode(
                 '[ _-]*',
                 \array_map(static fn (string $part): string => \preg_quote($part, '/'), $parts)
             );
 
-            // A key made of separators only would turn into a pattern matching an empty key
+            // A separator-only key would otherwise produce a pattern matching an empty key
             if (\implode('', $parts) === '') {
                 $quotedKey = \preg_quote($key, '/');
             }
 
-            // The "x" prefix of the key is optional where the key starts right after a delimiter
-            // ("[key]=" and "/key/"), so "shared_key" also matches "[x-shared-key]=" and
-            // "/x-shared-key/". Plain "key=" has no left boundary and matches the prefix as is
+            // Optional "x" prefix for "[key]=" and "/key/"; plain "key=" has no left boundary and already matches it
             $prefixedQuotedKey = '(?:x[ _-]*)?' . $quotedKey;
 
             // Query/array style (key=..., [key]=...): the value ends at whitespace or a structural
