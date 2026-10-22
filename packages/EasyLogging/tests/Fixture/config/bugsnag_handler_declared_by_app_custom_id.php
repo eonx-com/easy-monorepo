@@ -3,15 +3,21 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\MonologHandler\BugsnagMonologHandler;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    // Loaded on top of use_symfony_monolog_bundle_with_bugsnag_handler.php
+    // Loaded on top of bugsnag_handler.php
+    $containerConfigurator->services()
+        ->set('app.bugsnag_handler', BugsnagMonologHandler::class)
+        ->autowire()
+        ->arg('$level', param(ConfigParam::BugsnagHandlerLevel->value));
+
     $containerConfigurator->extension('monolog', [
         'handlers' => [
             'bugsnag' => [
                 'type' => 'service',
-                'id' => BugsnagMonologHandler::class,
+                'id' => 'app.bugsnag_handler',
                 'channels' => ['other'],
             ],
         ],

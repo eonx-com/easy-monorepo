@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyDoctrineBundle extends AbstractBundle
 {
-    private bool $useSymfonyMonologBundle = false;
+    private bool $isMonologBundleEnabled = false;
 
     public function __construct()
     {
@@ -50,11 +50,9 @@ final class EasyDoctrineBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        // Resolved here because extension configs are only available during the prepend phase: loadExtension()
-        // receives a temporary container without them. All prepend hooks run before any loadExtension() call
-        $this->useSymfonyMonologBundle = $this->shouldUseSymfonyMonologBundle($builder);
+        $this->isMonologBundleEnabled = $this->isBundleEnabled('MonologBundle', $builder);
 
-        if ($this->useSymfonyMonologBundle === false) {
+        if ($this->isMonologBundleEnabled === false) {
             return;
         }
 
@@ -63,6 +61,14 @@ final class EasyDoctrineBundle extends AbstractBundle
                 BundleParam::LogChannel->value,
             ],
         ]);
+    }
+
+    private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool
+    {
+        /** @var array $bundles */
+        $bundles = $builder->getParameter('kernel.bundles');
+
+        return isset($bundles[$bundleName]);
     }
 
     private function registerAwsRdsConfiguration(
@@ -158,24 +164,10 @@ final class EasyDoctrineBundle extends AbstractBundle
             return $configuredLogger;
         }
 
-        if ($this->useSymfonyMonologBundle) {
+        if ($this->isMonologBundleEnabled) {
             return \sprintf('monolog.logger.%s', BundleParam::LogChannel->value);
         }
 
         return LoggerInterface::class;
-    }
-
-    private function shouldUseSymfonyMonologBundle(ContainerBuilder $builder): bool
-    {
-        $enabled = false;
-
-        foreach ($builder->getExtensionConfig('easy_logging') as $config) {
-            if (\array_key_exists('use_symfony_monolog_bundle', $config)) {
-                $enabled = $config['use_symfony_monolog_bundle'];
-            }
-        }
-
-        return (bool)$builder->getParameterBag()
-            ->resolveValue($enabled);
     }
 }

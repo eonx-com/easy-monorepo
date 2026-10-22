@@ -3,12 +3,13 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
-This package allows you to create and configure [Monolog Loggers][2] in centralised and reusable way:
+This package provides reusable building blocks for [Monolog Loggers][2]:
 
-- Configure channels using PHP
-- Control Handlers and Processors order
-- Integration with popular frameworks (e.g. Laravel, Symfony)
-- Discover Handlers and Processors automatically in your application
+- **Symfony:** a thin layer on top of [symfony/monolog-bundle][3] — a Bugsnag Monolog handler, a sensitive-data
+  sanitizer processor and a JSON formatter. The logger, channels and handlers are owned by symfony/monolog-bundle,
+  see the [Symfony documentation](docs/symfony/install.md)
+- **Laravel:** a `LoggerFactoryInterface` creating and configuring loggers in a centralised and reusable way
+  (channels configured using PHP, handlers and processors order, automatic discovery via container tags)
 
 <br>
 
@@ -22,7 +23,10 @@ $ composer require eonx-com/easy-logging
 
 <br>
 
-### Usage
+### LoggerFactory (Laravel)
+
+The rest of this page describes the `LoggerFactoryInterface`, which backs the Laravel integration of this package.
+It is not used by the Symfony bundle.
 
 Here is a simple example on how to use the `LoggerFactoryInterface` to create loggers:
 
@@ -36,18 +40,15 @@ $console = $loggerFactory->create('console'); // Create logger for console chann
 
 <br>
 
-### Usage in Framework
+### Usage in Laravel
 
-The different integrations provided by this package will by default register the logger for your default channel in the
-service container under the following service ids:
+The Laravel service provider registers the logger for your default channel in the service container under the
+following service ids:
 
 - `Psr\Log\LoggerInterface`
 - `logger`
 
 You can then use dependency injection anywhere you like!
-
-Thanks to [Autowiring via setters][3] in Symfony, you can use `\EonX\EasyLogging\Logger\LoggerAwareTrait`
-to simplify the injection of `Psr\Log\LoggerInterface`.
 
 <br>
 
@@ -210,4 +211,4 @@ final class UseMicrosecondsLoggerConfigurator extends AbstractLoggingConfig impl
 
 [2]: https://github.com/Seldaek/monolog
 
-[3]: https://symfony.com/doc/current/service_container/autowiring.html#autowiring-calls
+[3]: https://github.com/symfony/monolog-bundle

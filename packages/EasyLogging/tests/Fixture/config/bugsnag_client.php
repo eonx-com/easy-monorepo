@@ -6,11 +6,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Bugsnag\Client;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->extension('easy_logging', [
-        'use_symfony_monolog_bundle' => true,
-        'bugsnag_handler' => true,
-    ]);
-
+    // Base of the Bugsnag handler fixtures: the Bugsnag client the handler needs and the monolog channels to attach
+    // it to; the "easy_logging.bugsnag_handler" option itself comes from the other fixtures
     $containerConfigurator->extension('monolog', [
         'channels' => ['other'],
         'handlers' => [

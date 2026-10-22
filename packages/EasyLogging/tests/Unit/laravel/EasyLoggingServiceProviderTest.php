@@ -7,8 +7,12 @@ use EonX\EasyLogging\Bundle\Enum\BundleParam;
 use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasyLogging\Logger\LazyLogger;
 use EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor;
-use EonX\EasyUtils\Laravel\EasyUtilsServiceProvider;
+use Illuminate\Foundation\Application;
 use Illuminate\Log\LogManager;
+use LogicException;
+use Monolog\Handler\NullHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 
@@ -75,12 +79,25 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
         self::assertInstanceOf(LoggerInterface::class, $app->get('logger'));
     }
 
+    public function testSensitiveDataSanitizerCanBeDisabled(): void
+    {
+        $app = $this->getApp([
+            'easy-logging.sensitive_data_sanitizer' => [
+                'enabled' => false,
+            ],
+        ]);
+
+        self::assertFalse($app->bound(SensitiveDataSanitizerProcessor::class));
+    }
+
+    public function testSensitiveDataSanitizerIsRegisteredByDefault(): void
+    {
+        self::assertTrue($this->getApp()->bound(SensitiveDataSanitizerProcessor::class));
+    }
+
     public function testSensitiveDataSanitizerProcessorIsAttachedToLogger(): void
     {
-        $app = $this->getApp(
-            ['easy-logging.sensitive_data_sanitizer.enabled' => true],
-            [EasyUtilsServiceProvider::class]
-        );
+        $app = $this->getApp();
 
         /** @var \Monolog\Logger $logger */
         $logger = $app->get(LoggerInterface::class);
@@ -91,11 +108,7 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
     public function testSensitiveDataSanitizerProcessorIsAttachedWhenDefaultLoggerNotOverridden(): void
     {
         $app = $this->getApp(
-            [
-                'easy-logging.override_default_logger' => false,
-                'easy-logging.sensitive_data_sanitizer.enabled' => true,
-            ],
-            [EasyUtilsServiceProvider::class]
+            ['easy-logging.override_default_logger' => false]
         );
 
         /** @var \Monolog\Logger $logger */
@@ -103,6 +116,91 @@ final class EasyLoggingServiceProviderTest extends AbstractLaravelTestCase
             ->create('app');
 
         self::assertTrue($this->hasSensitiveDataSanitizerProcessor($logger->getProcessors()));
+    }
+
+    public function testStreamHandlerDisabled(): void
+    {
+        $app = $this->getApp([
+            'easy-logging.stream_handler' => [
+                'enabled' => false,
+            ],
+        ]);
+
+        $handlers = self::getDefaultChannelHandlers($app);
+
+        self::assertCount(1, $handlers);
+        self::assertInstanceOf(NullHandler::class, $handlers[0]);
+    }
+
+    public function testStreamHandlerDisabledWithBooleanShorthand(): void
+    {
+        $app = $this->getApp([
+            'easy-logging.stream_handler' => false,
+        ]);
+
+        $handlers = self::getDefaultChannelHandlers($app);
+
+        self::assertCount(1, $handlers);
+        self::assertInstanceOf(NullHandler::class, $handlers[0]);
+    }
+
+    public function testStreamHandlerEnabledByDefault(): void
+    {
+        $handlers = self::getDefaultChannelHandlers($this->getApp());
+
+        self::assertCount(1, $handlers);
+        self::assertInstanceOf(StreamHandler::class, $handlers[0]);
+        self::assertSame(Level::Debug, $handlers[0]->getLevel());
+    }
+
+    public function testStreamHandlerLevelAcceptsLevelName(): void
+    {
+        $app = $this->getApp([
+            'easy-logging.stream_handler' => [
+                'level' => 'warning',
+            ],
+        ]);
+
+        $handlers = self::getDefaultChannelHandlers($app);
+
+        self::assertInstanceOf(StreamHandler::class, $handlers[0]);
+        self::assertSame(Level::Warning, $handlers[0]->getLevel());
+    }
+
+    public function testStreamHandlerStaysEnabledWhenOnlyLevelIsSet(): void
+    {
+        $app = $this->getApp([
+            'easy-logging.stream_handler' => [
+                'level' => Level::Error->value,
+            ],
+        ]);
+
+        $handlers = self::getDefaultChannelHandlers($app);
+
+        self::assertCount(1, $handlers);
+        self::assertInstanceOf(StreamHandler::class, $handlers[0]);
+        self::assertSame(Level::Error, $handlers[0]->getLevel());
+    }
+
+    public function testThrowsWhenSensitiveDataSanitizerIsNotAvailable(): void
+    {
+        $app = $this->getApp(null, []);
+
+        $this->expectException(LogicException::class);
+
+        $app->get(LoggerInterface::class);
+    }
+
+    /**
+     * @return \Monolog\Handler\HandlerInterface[]
+     */
+    private static function getDefaultChannelHandlers(Application $app): array
+    {
+        /** @var \Monolog\Logger $logger */
+        $logger = $app->get(LoggerFactoryInterface::class)
+            ->create();
+
+        return $logger->getHandlers();
     }
 
     private function hasSensitiveDataSanitizerProcessor(array $processors): bool

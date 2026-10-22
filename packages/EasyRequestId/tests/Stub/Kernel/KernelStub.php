@@ -5,6 +5,7 @@ namespace EonX\EasyRequestId\Tests\Stub\Kernel;
 
 use EonX\EasyRandom\Bundle\EasyRandomBundle;
 use EonX\EasyRequestId\Bundle\EasyRequestIdBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,11 +23,11 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     /**
      * @param string[]|null $configs
      */
-    public function __construct(?array $configs = null)
+    public function __construct(?array $configs = null, ?string $environment = null)
     {
         $this->configs = $configs ?? [];
 
-        parent::__construct('test', true);
+        parent::__construct($environment ?? 'test', true);
     }
 
     public function process(ContainerBuilder $container): void
@@ -49,6 +50,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         yield new EasyRandomBundle();
         yield new EasyRequestIdBundle();
+        yield new MonologBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

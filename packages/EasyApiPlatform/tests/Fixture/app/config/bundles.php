@@ -7,7 +7,9 @@ use EonX\EasyApiPlatform\Bundle\EasyApiPlatformBundle;
 use EonX\EasyBugsnag\Bundle\EasyBugsnagBundle;
 use EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle;
 use EonX\EasyLogging\Bundle\EasyLoggingBundle;
+use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 
@@ -27,6 +29,9 @@ return [
     EasyLoggingBundle::class => [
         'all' => true,
     ],
+    EasyUtilsBundle::class => [
+        'all' => true,
+    ],
     EasyBugsnagBundle::class => [
         'all' => true,
     ],
@@ -37,6 +42,9 @@ return [
         'all' => true,
     ],
     SecurityBundle::class => [
+        'all' => true,
+    ],
+    MonologBundle::class => [
         'all' => true,
     ],
 ];

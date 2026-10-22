@@ -5,6 +5,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('easy_logging', [
-        'lazy_loggers' => ['*'],
+        'bugsnag_handler' => false,
     ]);
 };

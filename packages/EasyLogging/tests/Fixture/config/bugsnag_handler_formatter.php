@@ -8,7 +8,7 @@ use EonX\EasyLogging\MonologHandler\BugsnagMonologHandler;
 use Monolog\Formatter\LineFormatter;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    // Loaded on top of use_symfony_monolog_bundle_with_bugsnag_handler.php: the recipe documented in
+    // Loaded on top of bugsnag_handler.php: the recipe documented in
     // docs/symfony/install.md to customise the formatter (application definitions win over the bundle ones)
     $containerConfigurator->services()
         ->set(BugsnagMonologHandler::class)

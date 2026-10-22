@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return App::config([
-    'easy_logging' => [
-        'stream_handler' => false,
+    'easy_doctrine' => [
+        'aws_rds' => [
+            'iam' => true,
+            'ssl' => true,
+        ],
     ],
 ]);

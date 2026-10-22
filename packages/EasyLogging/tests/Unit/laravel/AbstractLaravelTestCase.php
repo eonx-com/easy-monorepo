@@ -5,6 +5,7 @@ namespace EonX\EasyLogging\Tests\Unit\Laravel;
 
 use EonX\EasyLogging\Laravel\EasyLoggingServiceProvider;
 use EonX\EasyLogging\Tests\Unit\AbstractUnitTestCase;
+use EonX\EasyUtils\Laravel\EasyUtilsServiceProvider;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Foundation\Application;
 
@@ -13,7 +14,9 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
     private ?Application $app = null;
 
     /**
-     * @param class-string<\Illuminate\Support\ServiceProvider>[] $providers
+     * The EasyUtils provider is registered by default, as the sensitive data sanitizer is enabled by default
+     *
+     * @param class-string<\Illuminate\Support\ServiceProvider>[]|null $providers
      */
     protected function getApp(?array $config = null, ?array $providers = null): Application
     {
@@ -28,7 +31,7 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
             \config($config);
         }
 
-        foreach ($providers ?? [] as $provider) {
+        foreach ($providers ?? [EasyUtilsServiceProvider::class] as $provider) {
             $this->app->register($provider);
         }
 

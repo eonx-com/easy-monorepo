@@ -7,7 +7,7 @@ use EonX\EasyLogging\Bundle\Enum\ConfigParam;
 use EonX\EasyLogging\MonologHandler\BugsnagMonologHandler;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    // Loaded on top of use_symfony_monolog_bundle_with_bugsnag_handler.php
+    // Loaded on top of bugsnag_handler.php
     $containerConfigurator->parameters()
         ->set('app.bugsnag_handler_id', 'app.bugsnag_handler');
 

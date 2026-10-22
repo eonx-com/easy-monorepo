@@ -8,6 +8,7 @@ use EonX\EasyErrorHandler\Bundle\EasyErrorHandlerBundle;
 use EonX\EasyEventDispatcher\Bundle\EasyEventDispatcherBundle;
 use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 
 return [
     EasyUtilsBundle::class => [
@@ -30,5 +31,8 @@ return [
     ],
     FrameworkBundle::class => [
         'all' => true,
+    ],
+    MonologBundle::class => [
+        'aws_rds_monolog' => true,
     ],
 ];
