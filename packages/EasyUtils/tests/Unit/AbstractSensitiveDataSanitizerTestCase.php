@@ -6,6 +6,7 @@ namespace EonX\EasyUtils\Tests\Unit;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
+use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\Tests\Fixture\SensitiveData\DummyObject;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -734,6 +735,39 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
             'keysToMask' => [
                 'api key',
             ],
+        ];
+        yield 'Mask key=value in free text with repeated, edge separators and "x" prefix' => [
+            'input' => [
+                'repeated' => 'https://example.com/api__key/secret1/keep?api__key=secret2',
+                'edge' => 'https://example.com?_token_=secret3',
+                'prefixed' => 'https://example.com/x-shared-key/secret4/keep?a[x_shared_key]=secret5',
+            ],
+            'expectedOutput' => [
+                'repeated' => 'https://example.com/api__key/*REDACTED*/keep?api__key=*REDACTED*',
+                'edge' => 'https://example.com?_token_=*REDACTED*',
+                'prefixed' => 'https://example.com/x-shared-key/*REDACTED*/keep?a[x_shared_key]=*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'api__key',
+                '_token_',
+                'shared_key',
+            ],
+        ];
+        yield 'Mask legacy spellings of default keys in URL' => [
+            'input' => [
+                'path' => 'https://example.com/x-shared-key/secret1/php-auth-pw/secret2/keep',
+                'query' => 'https://example.com?apikey=secret3&securitycode=secret4&verificationcode=secret5',
+                'array' => 'a[php-auth-user]=secret6&a[x-shared-key]=secret7',
+            ],
+            'expectedOutput' => [
+                'path' => 'https://example.com/x-shared-key/*REDACTED*/php-auth-pw/*REDACTED*/keep',
+                'query' => 'https://example.com?apikey=*REDACTED*&securitycode=*REDACTED*'
+                    . '&verificationcode=*REDACTED*',
+                'array' => 'a[php-auth-user]=*REDACTED*&a[x-shared-key]=*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
         ];
         yield 'Leave unbalanced or truncated JSON untouched' => [
             'input' => [
