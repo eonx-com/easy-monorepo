@@ -13,8 +13,20 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
 
         foreach ($keysToMask as $key) {
             // Keys come from configuration and are interpolated into the pattern, so escape any
-            // regex metacharacters (and the "/" delimiter) to keep matching literal and safe
-            $quotedKey = \preg_quote((string)$key, '/');
+            // regex metacharacters (and the "/" delimiter) to keep matching literal and safe.
+            // Word separators are optional and interchangeable, so "api_key" also matches
+            // "api-key", "api key" and "apiKey"
+            $quotedKey = \implode(
+                '[ _-]?',
+                \array_map(
+                    static fn (string $part): string => \preg_quote($part, '/'),
+                    \preg_split('/[ _-]+/', (string)$key, -1, \PREG_SPLIT_NO_EMPTY) ?: []
+                )
+            );
+
+            if ($quotedKey === '') {
+                continue;
+            }
 
             // Query/array style (key=..., [key]=...): the value ends at whitespace or a structural
             // delimiter (& ? # , ; " ' ) ] } < >) but may legitimately contain "/" (e.g. base64

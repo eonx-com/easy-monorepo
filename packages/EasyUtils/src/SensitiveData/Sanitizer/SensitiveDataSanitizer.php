@@ -10,9 +10,24 @@ use EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface;
 final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
 {
     /**
+     * Optional prefix ignored when comparing keys, e.g. "x-api-key" header matches the "api_key" key
+     */
+    private const KEY_PREFIX = 'x';
+
+    /**
+     * Characters ignored when comparing keys, so "api key", "api-key", "api_key" and "apiKey" are the same key
+     */
+    private const KEY_SEPARATORS = [' ', '-', '_'];
+
+    /**
      * @var string[]
      */
     private array $keysToMask;
+
+    /**
+     * @var array<string, true>
+     */
+    private array $normalizedKeysToMask;
 
     /**
      * @var \EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface[]
@@ -36,6 +51,13 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
         $this->keysToMask = \array_map(
             static fn (string $keyToMask): string => \mb_strtolower($keyToMask),
             $keysToMask
+        );
+        $this->normalizedKeysToMask = \array_fill_keys(
+            \array_filter(
+                \array_map(self::normalizeKey(...), $keysToMask),
+                static fn (string $normalizedKey): bool => $normalizedKey !== ''
+            ),
+            true
         );
         $this->objectTransformers = CollectorHelper::orderLowerPriorityFirstAsArray(
             CollectorHelper::filterByClass($objectTransformers ?? [], ObjectTransformerInterface::class)
@@ -91,10 +113,27 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
         return $data;
     }
 
+    private static function normalizeKey(string $key): string
+    {
+        return \str_replace(self::KEY_SEPARATORS, '', \mb_strtolower($key));
+    }
+
+    private function isKeyToMask(string $key): bool
+    {
+        $normalizedKey = self::normalizeKey($key);
+
+        if (isset($this->normalizedKeysToMask[$normalizedKey])) {
+            return true;
+        }
+
+        return \str_starts_with($normalizedKey, self::KEY_PREFIX)
+            && isset($this->normalizedKeysToMask[\substr($normalizedKey, \strlen(self::KEY_PREFIX))]);
+    }
+
     private function sanitizeArray(array $data): array
     {
         foreach ($data as $key => $value) {
-            $data[$key] = \in_array(\mb_strtolower((string)$key), $this->keysToMask, true)
+            $data[$key] = $this->isKeyToMask((string)$key)
                 ? $this->maskPattern
                 : $this->sanitize($value);
         }

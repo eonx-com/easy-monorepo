@@ -662,6 +662,79 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'token',
             ],
         ];
+        yield 'Mask keys regardless of separators, case and "x" prefix' => [
+            'input' => [
+                'api key' => 'secret',
+                'api-key' => 'secret',
+                'api_key' => 'secret',
+                'apikey' => 'secret',
+                'apiKey' => 'secret',
+                'API_KEY' => 'secret',
+                'x api key' => 'secret',
+                'x-api-key' => 'secret',
+                'X-Api-Key' => 'secret',
+                'x_api_key' => 'secret',
+                'xapi_key' => 'secret',
+                'xapikey' => 'secret',
+                'x-auth-token' => 'secret',
+                'headers' => [
+                    'x-access-token' => ['secret'],
+                ],
+                'json' => '{"accessToken":"secret","tokenType":"Bearer"}',
+                'api_key_id' => 'keep',
+                'my_api_key' => 'keep',
+                'token_type' => 'keep',
+                'next_page_token' => 'keep',
+                'x' => 'keep',
+            ],
+            'expectedOutput' => [
+                'api key' => '*REDACTED*',
+                'api-key' => '*REDACTED*',
+                'api_key' => '*REDACTED*',
+                'apikey' => '*REDACTED*',
+                'apiKey' => '*REDACTED*',
+                'API_KEY' => '*REDACTED*',
+                'x api key' => '*REDACTED*',
+                'x-api-key' => '*REDACTED*',
+                'X-Api-Key' => '*REDACTED*',
+                'x_api_key' => '*REDACTED*',
+                'xapi_key' => '*REDACTED*',
+                'xapikey' => '*REDACTED*',
+                'x-auth-token' => '*REDACTED*',
+                'headers' => [
+                    'x-access-token' => '*REDACTED*',
+                ],
+                'json' => '{"accessToken":"*REDACTED*","tokenType":"Bearer"}',
+                'api_key_id' => 'keep',
+                'my_api_key' => 'keep',
+                'token_type' => 'keep',
+                'next_page_token' => 'keep',
+                'x' => 'keep',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'access_token',
+                'api key',
+                'Auth-Token',
+            ],
+        ];
+        yield 'Mask key=value in free text regardless of separators' => [
+            'input' => [
+                'query' => 'https://example.com?api-key=secret1&apiKey=secret2&api_key=secret3&X-Api-Key=secret4',
+                'path' => 'https://example.com/api-key/secret5/keep',
+                'otherKey' => 'apikeys=keep',
+            ],
+            'expectedOutput' => [
+                'query' => 'https://example.com?api-key=*REDACTED*&apiKey=*REDACTED*&api_key=*REDACTED*'
+                    . '&X-Api-Key=*REDACTED*',
+                'path' => 'https://example.com/api-key/*REDACTED*/keep',
+                'otherKey' => 'apikeys=keep',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'api key',
+            ],
+        ];
         yield 'Leave unbalanced or truncated JSON untouched' => [
             'input' => [
                 'manyOpeners' => 'weird {{{{{{{{ end',
