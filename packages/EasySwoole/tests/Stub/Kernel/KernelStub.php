@@ -5,6 +5,7 @@ namespace EonX\EasySwoole\Tests\Stub\Kernel;
 
 use EonX\EasySwoole\Bundle\EasySwooleBundle;
 use EonX\EasySwoole\Tests\Stub\Resetter\ServicesResetterStub;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -54,6 +55,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function registerBundles(): iterable
     {
         yield new EasySwooleBundle();
+        yield new MonologBundle();
     }
 
     /**

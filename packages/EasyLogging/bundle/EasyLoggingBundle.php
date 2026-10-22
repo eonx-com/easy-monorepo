@@ -3,19 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyLogging\Bundle;
 
-use EonX\EasyLogging\Bundle\CompilerPass\DefaultStreamHandlerCompilerPass;
-use EonX\EasyLogging\Bundle\CompilerPass\ReplaceChannelsDefinitionCompilerPass;
+use EonX\EasyLogging\Bundle\CompilerPass\ValidateLoggerFactoryServicesCompilerPass;
 use EonX\EasyLogging\Bundle\CompilerPass\ValidateSensitiveDataSanitizerCompilerPass;
 use EonX\EasyLogging\Bundle\Enum\BundleParam;
 use EonX\EasyLogging\Bundle\Enum\ConfigParam;
-use EonX\EasyLogging\Bundle\Enum\ConfigTag;
-use EonX\EasyLogging\Configurator\LoggerConfiguratorInterface;
 use EonX\EasyLogging\MonologHandler\BugsnagMonologHandler;
-use EonX\EasyLogging\Provider\HandlerConfigProviderInterface;
-use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
-use Monolog\Logger;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
@@ -25,12 +18,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class EasyLoggingBundle extends AbstractBundle
 {
-    private const array AUTO_CONFIGS = [
-        HandlerConfigProviderInterface::class => ConfigTag::HandlerConfigProvider,
-        LoggerConfiguratorInterface::class => ConfigTag::LoggerConfigurator,
-        ProcessorConfigProviderInterface::class => ConfigTag::ProcessorConfigProvider,
-    ];
-
     private const string MONOLOG_MAIN_CHANNEL = 'app';
 
     public function __construct()
@@ -41,8 +28,7 @@ final class EasyLoggingBundle extends AbstractBundle
     public function build(ContainerBuilder $container): void
     {
         $container
-            ->addCompilerPass(new DefaultStreamHandlerCompilerPass())
-            ->addCompilerPass(new ReplaceChannelsDefinitionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10)
+            ->addCompilerPass(new ValidateLoggerFactoryServicesCompilerPass())
             ->addCompilerPass(new ValidateSensitiveDataSanitizerCompilerPass());
     }
 
@@ -53,33 +39,16 @@ final class EasyLoggingBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        if ($config['use_symfony_monolog_bundle'] && $this->isBundleEnabled('MonologBundle', $builder) === false) {
+        if ($this->isBundleEnabled('MonologBundle', $builder) === false) {
             throw new LogicException(
-                'The "easy_logging.use_symfony_monolog_bundle" option is enabled, but symfony/monolog-bundle '
-                . '(MonologBundle) is not registered. Register the bundle so it owns the "logger" service, '
-                . 'or disable the option.'
+                'EasyLoggingBundle requires symfony/monolog-bundle: install it (composer require '
+                . 'symfony/monolog-bundle) and register MonologBundle so it owns the "logger" service.'
             );
         }
 
         $container->import('config/services.php');
 
         $params = $container->parameters();
-
-        $params->set(ConfigParam::UseSymfonyMonologBundle->value, $config['use_symfony_monolog_bundle']);
-
-        $params->set(ConfigParam::LazyLoggers->value, $config['lazy_loggers']);
-
-        $params->set(ConfigParam::DefaultChannel->value, $config['default_channel']);
-
-        $params->set(ConfigParam::LoggerClass->value, Logger::class);
-
-        $params->set(ConfigParam::StreamHandler->value, $config['stream_handler']);
-        $params->set(ConfigParam::StreamHandlerLevel->value, $config['stream_handler_level']);
-
-        foreach (self::AUTO_CONFIGS as $interface => $tag) {
-            $builder->registerForAutoconfiguration($interface)
-                ->addTag($tag->value);
-        }
 
         $params->set(ConfigParam::SensitiveDataSanitizerEnabled->value, $config['sensitive_data_sanitizer']['enabled']);
 
@@ -89,8 +58,8 @@ final class EasyLoggingBundle extends AbstractBundle
             $container->import('config/sensitive_data_sanitizer.php');
         }
 
-        if ($config['bugsnag_handler']) {
-            $params->set(ConfigParam::BugsnagHandlerLevel->value, $config['bugsnag_handler_level']);
+        if ($config['bugsnag_handler']['enabled']) {
+            $params->set(ConfigParam::BugsnagHandlerLevel->value, $config['bugsnag_handler']['level']);
 
             $container->import('config/bugsnag_handler.php');
         }
@@ -98,15 +67,16 @@ final class EasyLoggingBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        $bugsnagHandlerConfigs = $this->getRawBugsnagHandlerConfigs($builder);
+
         if (
-            (bool)$this->getRawConfigValue($builder, 'use_symfony_monolog_bundle', false) === false
-            || (bool)$this->getRawConfigValue($builder, 'bugsnag_handler', false) === false
+            $this->isBugsnagHandlerEnabled($bugsnagHandlerConfigs) === false
             || $this->isBugsnagHandlerDeclaredByApplication($builder)
         ) {
             return;
         }
 
-        $channels = $this->getRawConfigList($builder, 'bugsnag_handler_channels');
+        $channels = $this->getBugsnagHandlerChannels($bugsnagHandlerConfigs);
 
         if (\count($channels) === 0) {
             $channels = [self::MONOLOG_MAIN_CHANNEL];
@@ -123,33 +93,48 @@ final class EasyLoggingBundle extends AbstractBundle
         ]);
     }
 
-    private function getRawConfigList(ContainerBuilder $builder, string $option): array
+    /**
+     * @param list<array|scalar|null> $bugsnagHandlerConfigs
+     *
+     * @return list<string>
+     */
+    private function getBugsnagHandlerChannels(array $bugsnagHandlerConfigs): array
     {
-        $values = [];
+        $channels = [];
 
-        foreach ($builder->getExtensionConfig($this->extensionAlias) as $config) {
-            /** @var array|scalar $resolved */
-            $resolved = $builder->getParameterBag()
-                ->resolveValue($config[$option] ?? []);
-
-            $values = [...$values, ...(array)$resolved];
-        }
-
-        return \array_values(\array_unique($values));
-    }
-
-    private function getRawConfigValue(ContainerBuilder $builder, string $option, mixed $default): mixed
-    {
-        $value = $default;
-
-        foreach ($builder->getExtensionConfig($this->extensionAlias) as $config) {
-            if (\array_key_exists($option, $config)) {
-                $value = $config[$option];
+        foreach ($bugsnagHandlerConfigs as $bugsnagHandlerConfig) {
+            if (\is_array($bugsnagHandlerConfig)) {
+                $channels = [
+                    ...$channels,
+                    ...\array_filter((array)($bugsnagHandlerConfig['channels'] ?? []), \is_string(...)),
+                ];
             }
         }
 
-        return $builder->getParameterBag()
-            ->resolveValue($value);
+        return \array_values(\array_unique($channels));
+    }
+
+    /**
+     * The "bugsnag_handler" node of every "easy_logging" config, in loading order. Prepend runs before the config
+     * tree processes them, so the values are raw: a boolean shorthand, null or an array with "enabled", "level"
+     * and "channels" keys.
+     *
+     * @return list<array|scalar|null>
+     */
+    private function getRawBugsnagHandlerConfigs(ContainerBuilder $builder): array
+    {
+        $bugsnagHandlerConfigs = [];
+
+        foreach ($builder->getExtensionConfig($this->extensionAlias) as $config) {
+            if (\array_key_exists('bugsnag_handler', $config)) {
+                /** @var array|scalar|null $bugsnagHandlerConfig */
+                $bugsnagHandlerConfig = $this->resolveParameterSafely($builder, $config['bugsnag_handler']);
+
+                $bugsnagHandlerConfigs[] = $bugsnagHandlerConfig;
+            }
+        }
+
+        return $bugsnagHandlerConfigs;
     }
 
     private function isBugsnagHandlerDeclaredByApplication(ContainerBuilder $builder): bool
@@ -181,6 +166,24 @@ final class EasyLoggingBundle extends AbstractBundle
         }
 
         return false;
+    }
+
+    /**
+     * @param list<array|scalar|null> $bugsnagHandlerConfigs
+     */
+    private function isBugsnagHandlerEnabled(array $bugsnagHandlerConfigs): bool
+    {
+        $enabled = false;
+
+        foreach ($bugsnagHandlerConfigs as $bugsnagHandlerConfig) {
+            $enabled = match (true) {
+                $bugsnagHandlerConfig === null => true,
+                \is_array($bugsnagHandlerConfig) => (bool)($bugsnagHandlerConfig['enabled'] ?? true),
+                default => (bool)$bugsnagHandlerConfig,
+            };
+        }
+
+        return $enabled;
     }
 
     private function isBundleEnabled(string $bundleName, ContainerBuilder $builder): bool

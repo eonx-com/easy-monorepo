@@ -5,6 +5,7 @@ namespace EonX\EasyLogging\Tests\Stub\Kernel;
 
 use EonX\EasyLogging\Bundle\EasyLoggingBundle;
 use EonX\EasyUtils\Bundle\EasyUtilsBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,7 +30,7 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     public function __construct(?array $configs = null, ?array $bundles = null, ?string $environment = null)
     {
         $this->configs = $configs ?? [];
-        $this->bundleList = $bundles ?? [new EasyLoggingBundle(), new EasyUtilsBundle()];
+        $this->bundleList = $bundles ?? [new MonologBundle(), new EasyUtilsBundle(), new EasyLoggingBundle()];
 
         parent::__construct($environment ?? 'test', true);
     }

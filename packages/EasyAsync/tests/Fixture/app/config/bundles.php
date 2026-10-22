@@ -4,8 +4,10 @@ declare(strict_types=1);
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use EonX\EasyAsync\Bundle\EasyAsyncBundle;
 use EonX\EasyLogging\Bundle\EasyLoggingBundle;
+use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use EonX\EasyServerless\Bundle\EasyServerlessBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 
 return [
     DoctrineBundle::class => [
@@ -17,11 +19,17 @@ return [
     EasyLoggingBundle::class => [
         'all' => true,
     ],
+    EasyUtilsBundle::class => [
+        'all' => true,
+    ],
     EasyServerlessBundle::class => [
         'serverless' => true,
         'serverless_close_disabled' => true,
     ],
     FrameworkBundle::class => [
+        'all' => true,
+    ],
+    MonologBundle::class => [
         'all' => true,
     ],
 ];

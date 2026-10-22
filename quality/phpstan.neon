@@ -168,12 +168,6 @@ parameters:
 
         # ---- EasyTemplatingBlock ----
         # ---- EasyTest ----
-        - message: '#Class EonX\\EasyTest\\Monolog\\Logger\\LoggerStub extends @final class Monolog\\Logger#'
-          path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
-
-        - message: '#Constructor of class EonX\\EasyTest\\Monolog\\Logger\\LoggerStub has an unused parameter \$handlers#'
-          path: %currentWorkingDirectory%/packages/EasyTest/src/Monolog/Logger/LoggerStub.php
-
         - identifier: trait.unused
           path: %currentWorkingDirectory%/packages/EasyTest
 

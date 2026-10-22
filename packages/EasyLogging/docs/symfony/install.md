@@ -5,10 +5,22 @@ is_section: true
 section_icon: fab fa-symfony
 ---eonx_docs---
 
-### Register Bundle
+### Register Bundles
 
-If you're using [Symfony Flex][1], this step has been done automatically for you. If not, you can register the bundle
-yourself:
+The bundle is a thin layer on top of [symfony/monolog-bundle][2]: the `logger` service, the channels and the handlers
+are owned by symfony/monolog-bundle, this package provides reusable services for it (the sensitive-data sanitizer
+processor, the Bugsnag Monolog handler and a JSON formatter).
+
+symfony/monolog-bundle is not installed with this package (the Laravel integration does not need it), so install it
+in Symfony applications:
+
+```bash
+$ composer require symfony/monolog-bundle
+```
+
+If you're using [Symfony Flex][1], this step has been done automatically for you. If not, register the bundles
+yourself — `MonologBundle` is required, the bundle throws a `LogicException` at container compilation without it
+(`EasyUtilsBundle` is required by the sensitive data sanitizer, enabled by default, see below):
 
 ```php
 // config/bundles.php
@@ -16,6 +28,8 @@ yourself:
 return [
     // Other bundles ...
 
+    Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
+    EonX\EasyUtils\Bundle\EasyUtilsBundle::class => ['all' => true],
     EonX\EasyLogging\Bundle\EasyLoggingBundle::class => ['all' => true],
 ];
 ```
@@ -24,7 +38,7 @@ return [
 
 ### Configuration
 
-There is no required configuration, but if you want to specify a custom default channel you can do it.
+There is no required configuration. All options with their default values:
 
 ```php
 # config/packages/easy_logging.php
@@ -36,52 +50,28 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return App::config([
     'easy_logging' => [
-        'default_channel' => 'my-channel',
+        'sensitive_data_sanitizer' => [
+            'enabled' => true,
+        ],
+        'bugsnag_handler' => [
+            'enabled' => false,
+            // Defaults to WARNING
+            'level' => null,
+            // The main "app" channel only when empty
+            'channels' => [],
+        ],
     ],
 ]);
-
 ```
+
+eonx-com packages that log to a dedicated channel (e.g. `easy_http_client`, `security`, `easy_doctrine`) register that
+channel with symfony/monolog-bundle and resolve their logger from it.
 
 <br>
 
-### Using symfony/monolog-bundle
+### Monolog handlers
 
-Historically this package replaced [symfony/monolog-bundle][2] because the bundle did not support processor priorities.
-Since [monolog-bundle 3.11.0][3] that feature is available, so you can now let symfony/monolog-bundle own the logger
-configuration and keep using the reusable services provided by this package (e.g. the sensitive-data sanitizer processor
-and the Bugsnag Monolog handler).
-
-To do so, install `symfony/monolog-bundle` (`^3.11.1`), register `Symfony\Bundle\MonologBundle\MonologBundle`, and enable
-the `use_symfony_monolog_bundle` option:
-
-```php
-# config/packages/easy_logging.php
-
-<?php
-declare(strict_types=1);
-
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
-
-use Symfony\Config\EasyLoggingConfig;
-
-return static function (EasyLoggingConfig $easyLoggingConfig): void {
-    $easyLoggingConfig->useSymfonyMonologBundle(true);
-};
-```
-
-> The option must be a compile-time value — a literal boolean or a container parameter. It cannot depend on runtime
-> environment variables because it switches how the container is wired. The same applies to `bugsnag_handler` and
-> `bugsnag_handler_channels` (see below), which are read at the same stage.
-
-When enabled:
-
-- the channel-replacement and default stream-handler compiler passes of this package step aside so that
-  symfony/monolog-bundle owns the `logger` service and the per-channel loggers;
-- the `SensitiveDataSanitizerProcessor` is registered as a `monolog.processor` (with the lowest priority so it runs last);
-- eonx-com packages that log to a dedicated channel (e.g. `easy_http_client`, `security`, `easy_doctrine`) register that
-  channel with monolog-bundle automatically and resolve their logger from it.
-
-Configuring the monolog handlers becomes the application's responsibility — without any handler, records go to a
+Configuring the monolog handlers is the application's responsibility — without any handler, records go to a
 `NullHandler` and are silently dropped. A minimal configuration:
 
 ```php
@@ -92,27 +82,58 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\MonologConfig;
-
-return static function (MonologConfig $monologConfig): void {
-    $monologConfig->handler('main')
-        ->type('stream')
-        ->path('php://stderr')
-        ->formatter('easy_logging.formatter.json');
-};
+return App::config([
+    'monolog' => [
+        'handlers' => [
+            'main' => [
+                'type' => 'stream',
+                'path' => 'php://stderr',
+                'formatter' => 'easy_logging.formatter.json',
+            ],
+        ],
+    ],
+]);
 ```
 
 The `easy_logging.formatter.json` service is this package's `\EonX\EasyLogging\Formatter\JsonFormatter`. The only
 difference from Monolog's own `monolog.formatter.json` is the record `datetime`: it is formatted without microseconds
-(`Y-m-d\TH:i:sP`), matching the log shape produced with the `LoggerFactory`. Use it if your log pipeline relies on it.
+(`Y-m-d\TH:i:sP`). Use it if your log pipeline relies on it.
 
 <br>
 
-### Bugsnag handler with symfony/monolog-bundle
+### Sensitive data sanitizer
 
-When both `use_symfony_monolog_bundle` and `bugsnag_handler` are enabled, the bundle registers
-`\EonX\EasyLogging\MonologHandler\BugsnagMonologHandler` with symfony/monolog-bundle automatically as a `service`
-handler named `easy_logging_bugsnag`, so no handler declaration is needed on the application side:
+`sensitive_data_sanitizer` is enabled by default: `\EonX\EasyLogging\Processor\SensitiveDataSanitizerProcessor` is
+registered as a `monolog.processor` (with the lowest priority so it runs last) and masks sensitive data in the record
+message, context, extra and formatted output.
+
+It requires `EonX\EasyUtils\Bundle\EasyUtilsBundle` to be registered (`eonx-com/easy-utils` is installed with this
+package) and its sensitive data sanitizer not to be disabled; otherwise the container compilation fails with a
+`LogicException`. To opt out, disable it explicitly:
+
+```php
+# config/packages/easy_logging.php
+
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+return App::config([
+    'easy_logging' => [
+        'sensitive_data_sanitizer' => false,
+    ],
+]);
+```
+
+<br>
+
+### Bugsnag handler
+
+When `bugsnag_handler` is enabled (`enabled: true`, or the `bugsnag_handler` node set at all — like any Symfony
+"enableable" node, `bugsnag_handler: true` is a shorthand for it), the bundle registers `\EonX\EasyLogging\MonologHandler\BugsnagMonologHandler` with
+symfony/monolog-bundle automatically as a `service` handler named `easy_logging_bugsnag`, so no handler declaration is
+needed on the application side:
 
 ```php
 # config/packages/easy_logging.php
@@ -123,21 +144,22 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Monolog\Level;
-use Symfony\Config\EasyLoggingConfig;
 
-return static function (EasyLoggingConfig $easyLoggingConfig): void {
-    $easyLoggingConfig->useSymfonyMonologBundle(true);
-    $easyLoggingConfig->bugsnagHandler(true);
-    $easyLoggingConfig->bugsnagHandlerLevel(Level::Error->value);
-    // Optional: the channels to attach the handler to (the main "app" channel only when empty)
-    $easyLoggingConfig->bugsnagHandlerChannels(['app', 'easy_http_client']);
-};
+return App::config([
+    'easy_logging' => [
+        'bugsnag_handler' => [
+            'enabled' => true,
+            'level' => Level::Error->value,
+            // Optional: the channels to attach the handler to (the main "app" channel only when empty)
+            'channels' => ['app', 'easy_http_client'],
+        ],
+    ],
+]);
 ```
 
-- `bugsnag_handler` and `bugsnag_handler_channels` are read while the container is being wired, so, like
-  `use_symfony_monolog_bundle`, they must be compile-time values (literals or container parameters, not env vars).
-- `bugsnag_handler_level` keeps working: the handler service is still owned by this package.
-- `bugsnag_handler_channels` accepts the same channel list as monolog-bundle handlers; lists split across several
+- `bugsnag_handler.enabled` and `bugsnag_handler.channels` are read while the container is being wired, so they must
+  be compile-time values (literals or container parameters, not env vars).
+- `bugsnag_handler.channels` accepts the same channel list as monolog-bundle handlers; lists split across several
   config files (e.g. `config/packages/` and `config/packages/prod/`) are merged. When empty, the handler is attached
   to the main `app` channel only — not to every channel on purpose: for instance the `request` channel logs every
   uncaught exception at `error`/`critical` level, which would duplicate the reports sent by EasyErrorHandler and
@@ -147,8 +169,10 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
 - If the application already attaches a `BugsnagMonologHandler` service itself (a `service` handler in its `monolog`
   configuration, whatever the service id), the bundle does not register a second one.
 - symfony/monolog-bundle does not allow configuring a `formatter` on `service` handlers, so the handler uses its
-  default formatter. To customise it, re-declare the handler service in the application (application definitions win
-  over the bundle ones) and call `setFormatter()` on it:
+  default formatter: a `LineFormatter` with the `[%datetime%] %channel%.%level_name%: %message%` format (context and
+  extra are not part of the report message, they are attached to the report as metadata). To customise it, re-declare
+  the handler service in the application (application definitions win over the bundle ones) and call `setFormatter()`
+  on it:
 
   ```php
   # config/packages/easy_logging_bugsnag.php
@@ -168,7 +192,7 @@ return static function (EasyLoggingConfig $easyLoggingConfig): void {
           ->autowire()
           ->arg('$level', param('easy_logging.bugsnag_handler_level'))
           ->call('setFormatter', [
-              inline_service(LineFormatter::class)->args(['[%%datetime%%] %%channel%%.%%level_name%%: %%message%%']),
+              inline_service(LineFormatter::class)->args(['%%channel%%.%%level_name%%: %%message%%']),
           ]);
   };
   ```
@@ -178,18 +202,13 @@ default implementation is registered together with the handler and maps Monolog 
 
 | Monolog level | Bugsnag severity |
 |---------------|------------------|
-| `Critical` and above | `error` |
-| `Error` | `warning` |
-| `Warning` and below | `info` |
+| `Error` and above | `error` |
+| `Warning` | `warning` |
+| `Notice` and below | `info` |
 
 Register your own implementation of the interface in the application to change this mapping. If you disable
 `bugsnag_handler` to own the handler service yourself, register the resolver (or your own implementation) as well.
 
-> The `LoggerFactory` and the config-provider mechanism remain available but are deprecated and will be removed in `7.0`
-> in favour of symfony/monolog-bundle.
-
 [1]: https://symfony.com/doc/current/setup/flex.html
 
 [2]: https://github.com/symfony/monolog-bundle
-
-[3]: https://github.com/symfony/monolog-bundle/releases/tag/v3.11.0

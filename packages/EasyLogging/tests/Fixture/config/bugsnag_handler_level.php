@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Monolog\Level;
+
 return static function (ContainerConfigurator $containerConfigurator): void {
-    // Loaded on top of use_symfony_monolog_bundle_with_bugsnag_handler.php
+    // Loaded on top of bugsnag_client.php only: like canBeEnabled(), the "level" key alone enables the handler
     $containerConfigurator->extension('easy_logging', [
-        'bugsnag_handler_channels' => ['other'],
+        'bugsnag_handler' => [
+            'level' => Level::Error->value,
+        ],
     ]);
 };

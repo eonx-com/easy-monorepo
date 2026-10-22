@@ -11,8 +11,8 @@ final class BugsnagSeverityResolver implements BugsnagSeverityResolverInterface
     public function resolve(Level $level): BugsnagSeverity
     {
         return match (true) {
-            $level->value >= Level::Critical->value => BugsnagSeverity::Error,
-            $level->value >= Level::Error->value => BugsnagSeverity::Warning,
+            $level->value >= Level::Error->value => BugsnagSeverity::Error,
+            $level->value >= Level::Warning->value => BugsnagSeverity::Warning,
             default => BugsnagSeverity::Info
         };
     }

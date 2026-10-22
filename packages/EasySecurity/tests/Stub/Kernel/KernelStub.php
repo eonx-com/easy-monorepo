@@ -6,9 +6,9 @@ namespace EonX\EasySecurity\Tests\Stub\Kernel;
 use EonX\EasyApiToken\Bundle\EasyApiTokenBundle;
 use EonX\EasyApiToken\Bundle\Enum\ConfigTag;
 use EonX\EasyBugsnag\Bundle\EasyBugsnagBundle;
-use EonX\EasyLogging\Bundle\EasyLoggingBundle;
 use EonX\EasySecurity\Bundle\EasySecurityBundle;
 use EonX\EasySecurity\Tests\Stub\Provider\ApiTokenDecoderProviderStub;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -66,8 +66,8 @@ final class KernelStub extends Kernel implements CompilerPassInterface
     {
         yield new EasyApiTokenBundle();
         yield new EasyBugsnagBundle();
-        yield new EasyLoggingBundle();
         yield new EasySecurityBundle();
+        yield new MonologBundle();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

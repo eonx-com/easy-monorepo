@@ -7,7 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EonX\EasyBugsnag\Common\Configurator\ClientConfiguratorInterface;
 use EonX\EasyEncryption\Common\Encryptor\EncryptorInterface;
-use EonX\EasyLogging\Provider\ProcessorConfigProviderInterface;
+use EonX\EasyLogging\Bundle\EasyLoggingBundle;
 use EonX\EasySwoole\Bundle\CompilerPass\AddDoctrineDbalConnectionNameToParamsCompilerPass;
 use EonX\EasySwoole\Bundle\CompilerPass\EasyErrorHandlerPublicCompilerPass;
 use EonX\EasySwoole\Bundle\CompilerPass\EasyEventDispatcherPublicCompilerPass;
@@ -144,7 +144,7 @@ final class EasySwooleBundle extends AbstractBundle
         }
 
         if (($config['easy_logging']['enabled'] ?? true)
-            && \interface_exists(ProcessorConfigProviderInterface::class)) {
+            && \class_exists(EasyLoggingBundle::class)) {
             $container->import('config/easy_logging.php');
         }
 

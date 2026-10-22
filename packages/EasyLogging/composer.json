@@ -39,7 +39,7 @@
     },
     "suggest": {
         "bugsnag/bugsnag": "For Bugsnag integration",
-        "symfony/monolog-bundle": "To use the symfony/monolog-bundle integration"
+        "symfony/monolog-bundle": "Required by the Symfony bundle"
     },
     "extra": {
         "branch-alias": {

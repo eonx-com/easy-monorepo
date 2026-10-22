@@ -21,16 +21,18 @@ return [
         /**
          * Enable/Disable sensitive data sanitization.
          */
-        'enabled' => false,
+        'enabled' => true,
     ],
 
-    /**
-     * Enable/Disable the default stream handler.
-     */
-    'stream_handler' => true,
+    'stream_handler' => [
+        /**
+         * Enable/Disable the default stream handler.
+         */
+        'enabled' => true,
 
-    /**
-     * The log level to set on the default stream handler, defaults to DEBUG.
-     */
-    'stream_handler_level' => null,
+        /**
+         * The log level to set on the default stream handler, defaults to DEBUG.
+         */
+        'level' => null,
+    ],
 ];
