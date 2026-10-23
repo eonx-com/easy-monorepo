@@ -12,14 +12,20 @@ use EonX\EasyServerless\Laravel\Workers\SqsWorker;
 use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
+use Illuminate\Queue\MaxAttemptsExceededException;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Queue\SqsQueue;
 use Illuminate\Queue\WorkerOptions;
 use Illuminate\Support\Facades\Facade;
 use RuntimeException;
+use Throwable;
 
 final class SqsHandler extends AbstractSqsHandler
 {
+    private const RETRY_STOP_REASON_JOB_FAILED = 'job_failed';
+
+    private const RETRY_STOP_REASON_JOB_MAX_TRIES = 'job_max_tries';
+
     private readonly SqsClient $sqsClient;
 
     private readonly SqsWorker $worker;
@@ -61,97 +67,140 @@ final class SqsHandler extends AbstractSqsHandler
     {
         $timeout = $this->calculateJobTimeout($context->getRemainingTimeInMillis());
         $job = $this->makeSqsQueueJob($sqsRecord);
-        $receiveCount = $sqsRecord->getApproximateReceiveCount();
-        $jobMaxTries = $job->maxTries();
-        // The application can explicitly prevent retries by setting maxTries to 1
-        $isJobExplicitlyUnrecoverable = $jobMaxTries === 1;
-        // Like Laravel's worker, a non-positive job maxTries means unlimited, in which case only the application
-        // max retries caps the processing. A missing job maxTries falls back on the application max retries
-        $maxTries = match (true) {
-            $jobMaxTries === null => $this->appMaxRetries,
-            $jobMaxTries < 1 => \PHP_INT_MAX,
-            default => $jobMaxTries,
-        };
+        $workerOptions = $this->makeWorkerOptions($timeout);
 
-        // Parent::shouldSkipRecord() only knows about the application max retries. When the job-specific limit
-        // is lower and already exhausted, requeue the message without running the job so it keeps cycling
-        // until SQS moves it to the DLQ, without marking the job as failed a second time
-        if ($isJobExplicitlyUnrecoverable === false && $receiveCount > $maxTries) {
+        // SQS keeps no state about why a message was requeued, only how many times it was received.
+        // When the job failed on its last attempt before appMaxRetries was reached, the message was requeued
+        // so it can reach the DLQ, and must not be executed (and failed) again.
+        // An explicitly unrecoverable job is left to the worker, which fails it without running it
+        if ($job->isExplicitlyUnrecoverable() === false && $job->attempts() > $job->maxTries()) {
             $this->logger?->debug(
                 \sprintf(
                     'Skipping MessageId "%s" because it has reached the job max tries (%d)',
                     $sqsRecord->getMessageId(),
-                    $maxTries
+                    $job->maxTries()
                 )
             );
 
-            // Flag it as a failure so subsequent records from the same FIFO message group are skipped too
-            $this->scheduleForRetry($sqsRecord, forFailure: true);
+            $this->requeue(
+                $sqsRecord,
+                \sprintf(
+                    'SQS Record "%s" has reached the job max tries (%d) and is requeued so it can reach the DLQ',
+                    $sqsRecord->getMessageId(),
+                    $job->maxTries()
+                )
+            );
 
             return;
         }
 
-        $workerOptions = $this->makeWorkerOptions($timeout);
-
         $this->worker->runSqsJob($job, $this->connectionName, $workerOptions);
 
-        // Laravel marks the job as failed only when it has exceeded its max attempts, otherwise it releases it.
-        // Since release is disabled on the job to let SQS retry the message, a released job must be handled
-        // like a failed one, otherwise the record is acknowledged and the message is deleted without retry
-        if ($job->hasFailed() || $job->isReleased()) {
-            $shouldRetry = $isJobExplicitlyUnrecoverable === false && $receiveCount < $maxTries;
-
-            // As explained in parent::shouldSkipRecord(), in some scenarios we must requeue messages even when
-            // the application will not retry them so they can end up in the DLQ if configured,
-            // except when the application is explicitly preventing retries.
-            // The same applies when the job-specific max tries is lower than the application one and exhausted
-            $shouldRequeue = $isJobExplicitlyUnrecoverable === false
-                && ($receiveCount >= $this->appMaxRetries || $receiveCount >= $maxTries);
-
-            if ($shouldRetry === false) {
-                $this->logger?->error(
-                    \sprintf(
-                        'SQS Record failed to process but will not be retried%s',
-                        $isJobExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
-                    ),
-                    [
-                        'message_id' => $sqsRecord->getMessageId(),
-                    ]
-                );
+        // The worker released the job, it will be retried after the delay given to release(): either explicit,
+        // or computed by the worker from the backoff of the job
+        if ($job->isReleased() && $job->hasFailed() === false && $job->attempts() < $job->maxTries()) {
+            if ($this->partialBatchFailure === false) {
+                throw $job->getThrowable()
+                    ?? new RuntimeException(\sprintf('Job "%s" was released and will be retried', $job->getJobId()));
             }
 
-            // SQS built-in retry mechanism uses the list of failed messages returned by the Lambda function,
-            // this is why we mark the record as failed only if we want it to be retried by SQS.
-            // Failure reports should be handled by the application itself (e.g. logging, error tracking, etc.)
-            if ($shouldRetry || $shouldRequeue) {
-                // As identified during experimenting, this is not ideal as by default Lambda gets a batch of records
-                // and if one fails, all are retried creating side effects of reprocessing successful ones.
-                // It is highly recommended to enable partial batch failure, but still support not having it enabled
-                if ($this->partialBatchFailure === false) {
-                    throw $job->getThrowable() ?? new RuntimeException('Job failed without an exception');
-                }
+            $this->scheduleForRetry(
+                sqsRecord: $sqsRecord,
+                retryDelaySeconds: $this->resolveRetryDelay($job),
+                forFailure: true
+            );
 
-                if ($shouldRequeue) {
-                    // Flag it as a failure so subsequent records from the same FIFO message group are skipped too
-                    $this->scheduleForRetry($sqsRecord, forFailure: true);
-
-                    return;
-                }
-
-                // We want to add a delay only if we are actually retrying the message
-                // We consider a message as failed only if we are not triggering this logic because of a requeue
-                $this->scheduleForRetry(
-                    sqsRecord: $sqsRecord,
-                    retryDelaySeconds: \is_int($job->backoff()) ? $job->backoff() : null,
-                    forFailure: true
-                );
-            }
+            return;
         }
+
+        // The job released itself on its last attempt, the worker would fail it on the next attempt
+        if ($job->isReleased() && $job->hasFailed() === false) {
+            $this->failJob($job);
+        }
+
+        if ($job->hasFailed() === false) {
+            return;
+        }
+
+        $isJobExplicitlyUnrecoverable = $job->isExplicitlyUnrecoverable();
+
+        // The worker failed the job before its last attempt, e.g. $this->fail() in the job, FailOnException,
+        // $maxExceptions or retryUntil. It cannot be requeued for the DLQ, as it would be executed again
+        // on the next attempt
+        $hasJobFailedBeforeLastAttempt = $isJobExplicitlyUnrecoverable === false
+            && $job->attempts() < $job->maxTries();
+        $shouldRequeue = $isJobExplicitlyUnrecoverable === false && $hasJobFailedBeforeLastAttempt === false;
+
+        // The tries of the job are known only at runtime, from the message payload
+        if ($shouldRequeue && $job->isMaxTriesLimitedByAppMaxRetries()) {
+            $this->logger?->warning(
+                \sprintf(
+                    'Job "%s" allows %s tries, but the SQS handler allows only %d attempts (appMaxRetries)',
+                    $job->resolveName(),
+                    $job->getRawMaxTries() <= 0 ? 'unlimited' : $job->getRawMaxTries(),
+                    $this->appMaxRetries
+                ),
+                [
+                    'message_id' => $sqsRecord->getMessageId(),
+                ]
+            );
+        }
+
+        $this->logger?->error(
+            \sprintf(
+                'SQS Record failed to process but will not be retried%s',
+                match (true) {
+                    $isJobExplicitlyUnrecoverable => ' - explicitly marked as unrecoverable',
+                    $hasJobFailedBeforeLastAttempt => ' - failed by the job before its last attempt',
+                    default => '',
+                }
+            ),
+            [
+                'app_max_retries' => $this->appMaxRetries,
+                'attempt' => $job->attempts(),
+                'message_id' => $sqsRecord->getMessageId(),
+                'retry_stop_reason' => $this->resolveRetryStopReason(
+                    $job,
+                    $isJobExplicitlyUnrecoverable,
+                    $hasJobFailedBeforeLastAttempt
+                ),
+            ]
+        );
+
+        // SQS built-in retry mechanism uses the list of failed messages returned by the Lambda function,
+        // this is why we mark the record as failed only if we want it to be retried or requeued by SQS.
+        // As explained in parent::shouldSkipRecord(), we requeue messages the application will not retry
+        // so they can end up in the DLQ if configured, except when the job is explicitly unrecoverable
+        if ($shouldRequeue === false) {
+            return;
+        }
+
+        $this->requeue(
+            $sqsRecord,
+            $job->getThrowable() ?? new RuntimeException('Job failed without an exception')
+        );
     }
 
     private function calculateJobTimeout(int $remainingInvocationTimeInMs): int
     {
         return \max((int)(($remainingInvocationTimeInMs - self::SAFETY_TIMEOUT_MARGIN_MILLISECONDS) / 1000), 0);
+    }
+
+    /**
+     * The worker fails jobs within its own error handling, the same is needed here so an error in the failed()
+     * method of the job or in a JobFailed listener does not fail the whole Lambda invocation.
+     */
+    private function failJob(SqsQueueJob $job): void
+    {
+        try {
+            // Like the worker, fail the job with the exception of this attempt when there is one
+            $job->fail($job->getThrowable() ?? MaxAttemptsExceededException::forJob($job));
+        } catch (Throwable $throwable) {
+            $this->logger?->error('Error while failing the job', [
+                'error' => $throwable->getMessage(),
+                'message_id' => $job->getJobId(),
+            ]);
+        }
     }
 
     private function makeSqsQueueJob(SqsRecord $sqsRecord): SqsQueueJob
@@ -170,6 +219,7 @@ final class SqsHandler extends AbstractSqsHandler
             job: $job,
             connectionName: $this->connectionName,
             queue: $sqsRecord->getQueueName(),
+            appMaxRetries: $this->appMaxRetries,
         );
     }
 
@@ -207,6 +257,25 @@ final class SqsHandler extends AbstractSqsHandler
     }
 
     /**
+     * Requeues a record the application will not retry, so it can reach the DLQ.
+     *
+     * @throws \Throwable
+     */
+    private function requeue(SqsRecord $sqsRecord, Throwable|string $reason): void
+    {
+        // As identified during experimenting, this is not ideal as by default Lambda gets a batch of records
+        // and if one fails, all are retried creating side effects of reprocessing successful ones.
+        // It is highly recommended to enable partial batch failure, but still support not having it enabled:
+        // without it, the Lambda invocation must fail, otherwise SQS deletes the message instead of retrying it
+        if ($this->partialBatchFailure === false) {
+            throw \is_string($reason) ? new RuntimeException($reason) : $reason;
+        }
+
+        // Flag it as a failure so subsequent records from the same FIFO message group are skipped too
+        $this->scheduleForRetry($sqsRecord, forFailure: true);
+    }
+
+    /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     private function resetWorkerScope(): void
@@ -232,5 +301,34 @@ final class SqsHandler extends AbstractSqsHandler
         $this->container->forgetScopedInstances();
 
         Facade::clearResolvedInstances();
+    }
+
+    private function resolveRetryDelay(SqsQueueJob $job): int
+    {
+        // Ensure a minimum delay to ensure the Lambda function has time to complete before the message
+        // becomes visible again, and prevent to exceed SQS limit
+        return \min(
+            \max($job->getReleaseDelay() ?? 0, self::DEFAULT_RETRY_DELAY_SECONDS),
+            self::MAX_RETRY_DELAY_SECONDS
+        );
+    }
+
+    private function resolveRetryStopReason(
+        SqsQueueJob $job,
+        bool $isJobExplicitlyUnrecoverable,
+        bool $hasJobFailedBeforeLastAttempt,
+    ): string {
+        if ($isJobExplicitlyUnrecoverable) {
+            return self::RETRY_STOP_REASON_UNRECOVERABLE;
+        }
+
+        if ($hasJobFailedBeforeLastAttempt) {
+            return self::RETRY_STOP_REASON_JOB_FAILED;
+        }
+
+        // When the tries of the job and appMaxRetries are equal, the tries of the job are reported
+        return $job->getRawMaxTries() !== null && $job->isMaxTriesLimitedByAppMaxRetries() === false
+            ? self::RETRY_STOP_REASON_JOB_MAX_TRIES
+            : self::RETRY_STOP_REASON_APP_MAX_RETRIES;
     }
 }
