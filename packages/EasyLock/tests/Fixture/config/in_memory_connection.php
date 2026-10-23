@@ -5,10 +5,11 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Symfony\Config\EasyLockConfig;
 
-return static function (EasyLockConfig $easyLockConfig, ContainerConfigurator $containerConfigurator): void {
-    $easyLockConfig->connection('in_memory_connection');
+return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->extension('easy_lock', [
+        'connection' => 'in_memory_connection',
+    ]);
 
     $services = $containerConfigurator->services();
 
