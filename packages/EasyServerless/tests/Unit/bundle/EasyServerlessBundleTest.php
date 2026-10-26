@@ -5,12 +5,22 @@ namespace EonX\EasyServerless\Tests\Unit\Bundle;
 
 use Bref\Symfony\Messenger\BrefMessengerBundle;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
+use EonX\EasyServerless\Datadog\Listener\PhpRuntimeInfoListener;
 use EonX\EasyServerless\Messenger\Listener\ResetServicesListener;
 use EonX\EasyServerless\Monolog\Processor\PhpSourceProcessor;
 use EonX\EasyServerless\Tests\Unit\AbstractSymfonyTestCase;
 
 final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
 {
+    public function testDisableDatadogSucceeds(): void
+    {
+        $container = $this->getKernel(
+            configs: [__DIR__ . '/../../Fixture/config/datadog_disabled.php']
+        )->getContainer();
+
+        self::assertFalse($container->has(PhpRuntimeInfoListener::class));
+    }
+
     public function testDisableMonologSucceeds(): void
     {
         $container = $this->getKernel(
@@ -45,6 +55,7 @@ final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
             ->getContainer();
 
         self::assertTrue($container->has(PhpSourceProcessor::class));
+        self::assertTrue($container->has(PhpRuntimeInfoListener::class));
         self::assertTrue($container->hasParameter(ConfigParam::AssetsSeparateDomainEnabled->value));
     }
 }

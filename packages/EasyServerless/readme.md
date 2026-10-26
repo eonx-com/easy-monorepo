@@ -122,6 +122,16 @@ The log record has the same context as for Symfony. The values of `retry_stop_re
 `$tries` of the job), `app_max_retries` (`max_retries` of the queue connection), `job_failed` (the job failed before
 its last attempt) and `unrecoverable` (`$tries = 1`).
 
+<br>
+
+### Datadog
+
+When the [ddtrace extension][4] is loaded, PHP runtime information (version, SAPI, OS, memory limit, OPcache/JIT
+status, extra version if set) is added as `php.*` tags on the root span of incoming requests, messages/jobs and
+console commands, and `PHP_VERSION_ID` is added as the `php.version_id` metric.
+Nothing happens when the extension is not loaded or no trace is active. Disable it with `datadog.enabled: false`.
+
 [1]: https://getcomposer.org/
 [2]: https://packagist.org/packages/bref/bref
 [3]: https://packagist.org/packages/bref/symfony-bridge
+[4]: https://docs.datadoghq.com/tracing/trace_collection/automatic_instrumentation/dd_libraries/php/
