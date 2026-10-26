@@ -31,6 +31,8 @@ When the [ddtrace extension][4] is loaded, PHP runtime information (version, SAP
 status, extra version if set) is added as `php.*` tags on the root span of incoming requests, messages/jobs and
 console commands, and `PHP_VERSION_ID` is added as the `php.version_id` metric.
 Nothing happens when the extension is not loaded or no trace is active. Disable it with `datadog.enabled: false`.
+In Laravel, requests are covered by a global middleware so unmatched routes and maintenance-mode responses are
+enriched as well.
 
 [1]: https://getcomposer.org/
 [2]: https://packagist.org/packages/bref/bref
