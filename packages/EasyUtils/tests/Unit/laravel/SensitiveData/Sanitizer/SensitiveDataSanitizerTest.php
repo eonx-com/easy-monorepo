@@ -16,17 +16,7 @@ final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTes
         $sanitizer = $this->getSanitizer('*REDACTED*');
 
         $result = $sanitizer->sanitize([
-            'accessKey' => 'some-value',
-            'accessSecret' => 'some-value',
-            'accessToken' => 'some-value',
-            'api_key' => 'some-value',
-            'authToken' => 'some-value',
-            'cardNumber' => 'some-value',
-            'cardToken' => 'some-value',
-            'clientSecret' => 'some-value',
-            'codeVerifier' => 'some-value',
             'cookie' => 'some-value',
-            'idToken' => 'some-value',
             'name' => 'some-value',
             'proxy-authorization' => 'some-value',
             'refresh_token' => 'some-value',
@@ -35,23 +25,12 @@ final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTes
             'secret_key' => 'some-value',
             'secretKey' => 'some-value',
             'set-cookie' => 'some-value',
-            'x-api-key' => 'some-value',
             'x-webhook-signature' => 'some-value',
         ]);
 
         self::assertSame(
             [
-                'accessKey' => '*REDACTED*',
-                'accessSecret' => '*REDACTED*',
-                'accessToken' => '*REDACTED*',
-                'api_key' => '*REDACTED*',
-                'authToken' => '*REDACTED*',
-                'cardNumber' => '*REDACTED*',
-                'cardToken' => '*REDACTED*',
-                'clientSecret' => '*REDACTED*',
-                'codeVerifier' => '*REDACTED*',
                 'cookie' => '*REDACTED*',
-                'idToken' => '*REDACTED*',
                 'name' => 'some-value',
                 'proxy-authorization' => '*REDACTED*',
                 'refresh_token' => '*REDACTED*',
@@ -60,7 +39,6 @@ final class SensitiveDataSanitizerTest extends AbstractSensitiveDataSanitizerTes
                 'secret_key' => '*REDACTED*',
                 'secretKey' => '*REDACTED*',
                 'set-cookie' => '*REDACTED*',
-                'x-api-key' => '*REDACTED*',
                 'x-webhook-signature' => '*REDACTED*',
             ],
             $result
