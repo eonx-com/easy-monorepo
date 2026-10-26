@@ -94,8 +94,15 @@ final class RootSpanHelper
             return false;
         }
 
-        $ini = \PHP_SAPI === 'cli' ? 'opcache.enable_cli' : 'opcache.enable';
+        // The opcache.enable ini is the master switch, opcache.enable_cli does not override it when disabled
+        if (\filter_var(\ini_get('opcache.enable'), \FILTER_VALIDATE_BOOL) === false) {
+            return false;
+        }
 
-        return \filter_var(\ini_get($ini), \FILTER_VALIDATE_BOOL);
+        if (\PHP_SAPI === 'cli') {
+            return \filter_var(\ini_get('opcache.enable_cli'), \FILTER_VALIDATE_BOOL);
+        }
+
+        return true;
     }
 }
