@@ -47,6 +47,9 @@ final class SqsHandlerTest extends AbstractUnitTestCase
             symfonyEventDispatcher: $symfonyEventDispatcher
         );
         $encoded = $serializer->encode(new Envelope(new stdClass()));
+        // Explicit casts as older symfony/messenger versions do not type the encoded array shape
+        $body = (string)$encoded['body'];
+        $headers = (array)($encoded['headers'] ?? []);
 
         $handler->handleSqs(
             new SqsEvent([
@@ -59,14 +62,14 @@ final class SqsHandlerTest extends AbstractUnitTestCase
                             'SentTimestamp' => '0',
                         ],
                         'awsRegion' => 'ap-southeast-2',
-                        'body' => $encoded['body'],
+                        'body' => $body,
                         'eventSource' => 'aws:sqs',
                         'eventSourceARN' => 'arn:aws:sqs:ap-southeast-2:123456789012:test',
-                        'md5OfBody' => \md5($encoded['body']),
+                        'md5OfBody' => \md5($body),
                         'messageAttributes' => [
                             'X-Symfony-Messenger' => [
                                 'dataType' => 'String',
-                                'stringValue' => \json_encode($encoded['headers'] ?? [], \JSON_THROW_ON_ERROR),
+                                'stringValue' => \json_encode($headers, \JSON_THROW_ON_ERROR),
                             ],
                         ],
                         'messageId' => 'message-id',
