@@ -360,6 +360,7 @@
         "policy": {
             "advisories": {
                 "ignore-id": {
+                    "PKSA-b41t-wbzk-9q51": "laravel/framework: fix requires Laravel upgrade, blocked by team lead",
                     "PKSA-mdq4-51ck-6kdq": "laravel/framework: fix requires Laravel upgrade, blocked by team lead",
                     "PKSA-m5cs-t1y6-qpcs": "laravel/framework: fix requires Laravel upgrade, blocked by team lead",
                     "PKSA-3r5d-mb8f-1qw9": "laravel/framework: fix requires Laravel upgrade, blocked by team lead",
