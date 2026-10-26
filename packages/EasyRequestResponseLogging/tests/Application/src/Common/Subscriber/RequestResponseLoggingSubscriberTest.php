@@ -635,6 +635,32 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertStringStartsWith('{"password":"*REDACTED*","description":"aaa', $requestContext['body']);
     }
 
+    public function testOnKernelTerminateSucceedsWithTruncatedMultibyteBody(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: \json_encode([
+                'description' => 'a' . \str_repeat('я', 1024),
+            ], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_UNICODE)
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertIsString($requestContext['body']);
+        self::assertTrue($requestContext['body_truncated']);
+        self::assertSame(1023, \strlen($requestContext['body']));
+        self::assertTrue(\mb_check_encoding($requestContext['body'], 'UTF-8'));
+    }
+
     #[DataProvider('provideTopLevelNumberBodies')]
     public function testOnKernelTerminateSucceedsWithTopLevelNumberBody(string $content, string $expectedBody): void
     {

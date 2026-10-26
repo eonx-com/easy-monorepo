@@ -251,7 +251,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
             return [$body, false, false];
         }
 
-        return [\substr($body, 0, $this->maxBodySize), false, true];
+        return [\mb_strcut($body, 0, $this->maxBodySize, 'UTF-8'), false, true];
     }
 
     private function sanitizeBody(string $body, string $mimeType): string
