@@ -142,7 +142,7 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         );
         self::assertSame('response', $requestContext['route']);
         self::assertSame([], $requestContext['route_params']);
-        self::assertSame('/response', $requestContext['uri']);
+        self::assertSame('/response', $requestContext['path']);
         self::assertSame(
             '{"card_token":"*REDACTED*","float_note":"411111*REDACTED*1111","name":"John",'
             . '"note":"411111*REDACTED*1111"}',
@@ -564,7 +564,7 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
             \sprintf('Request: "GET %s" -> %d', $expectedPath, $response->getStatusCode()),
             $record->message
         );
-        self::assertSame($expectedPath, $requestContext['uri']);
+        self::assertSame($expectedPath, $requestContext['path']);
     }
 
     public function testOnKernelTerminateSucceedsWithSanitizedRequestIds(): void

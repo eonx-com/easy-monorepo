@@ -105,7 +105,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                 \sprintf(
                     'Request: "%s %s" -> %d',
                     $requestData->getMethod(),
-                    $requestData->getUri(),
+                    $requestData->getPath(),
                     $responseData->getStatusCode()
                 ),
                 [
@@ -116,10 +116,10 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
                         'body_truncated' => $requestData->isBodyTruncated(),
                         'headers' => $requestData->getHeaders(),
                         'method' => $requestData->getMethod(),
+                        'path' => $requestData->getPath(),
                         'query' => $requestData->getQuery(),
                         'route' => $requestData->getRoute(),
                         'route_params' => $requestData->getRouteParameters(),
-                        'uri' => $requestData->getUri(),
                     ],
                     'request_id' => $requestData->getRequestId(),
                     'response' => [
@@ -149,7 +149,7 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
         return new RequestData(
             method: $request->getMethod(),
-            uri: $this->sanitizePath($request, $routeParameters, $sanitizedRouteParameters),
+            path: $this->sanitizePath($request, $routeParameters, $sanitizedRouteParameters),
             route: $this->getRoute($request),
             routeParameters: $sanitizedRouteParameters,
             query: $this->sanitizeEntries($this->getQueryParameters($request)),

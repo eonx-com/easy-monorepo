@@ -7,7 +7,7 @@ final readonly class RequestData
 {
     public function __construct(
         private string $method,
-        private string $uri,
+        private string $path,
         private ?string $route,
         private array $routeParameters,
         private array $query,
@@ -40,6 +40,11 @@ final readonly class RequestData
         return $this->method;
     }
 
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
     public function getQuery(): array
     {
         return $this->query;
@@ -58,11 +63,6 @@ final readonly class RequestData
     public function getRouteParameters(): array
     {
         return $this->routeParameters;
-    }
-
-    public function getUri(): string
-    {
-        return $this->uri;
     }
 
     public function isBodyOmitted(): bool

@@ -3,7 +3,7 @@ title: Introduction
 weight: 0
 ---eonx_docs---
 
-Logs every incoming HTTP request and its response (method, URI, query, headers, body, status code, duration,
+Logs every incoming HTTP request and its response (method, path, query, headers, body, status code, duration,
 request/correlation IDs) to a dedicated `easy_request_response_logging` log channel. All logged data is sanitized
 with the EasyUtils sensitive data sanitizer. The feature is disabled by default.
 
