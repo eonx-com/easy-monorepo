@@ -26,6 +26,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Event\WorkerMessageHandledEvent;
+use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Retry\RetryStrategyInterface;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
@@ -337,6 +339,41 @@ final class SqsHandlerTest extends AbstractUnitTestCase
 
         self::assertCount(1, $bus->getDispatchedEnvelopes());
         self::assertNull($bus->getDispatchedEnvelopes()[0]->last(RedeliveryStamp::class));
+    }
+
+    public function testWorkerMessageReceivedEventIsDispatchedThroughSymfonyDispatcherFallback(): void
+    {
+        $receivedEvent = null;
+        $handledEvent = null;
+        $symfonyEventDispatcher = new EventDispatcher();
+        $symfonyEventDispatcher->addListener(
+            WorkerMessageReceivedEvent::class,
+            static function (WorkerMessageReceivedEvent $event) use (&$receivedEvent): void {
+                $receivedEvent = $event;
+            }
+        );
+        $symfonyEventDispatcher->addListener(
+            WorkerMessageHandledEvent::class,
+            static function (WorkerMessageHandledEvent $event) use (&$handledEvent): void {
+                $handledEvent = $event;
+            }
+        );
+        // No EasyEventDispatcher, only the Symfony one, as when EasyEventDispatcherBundle is not installed
+        $sut = new SqsHandler(
+            bus: new MessageBusStub(),
+            serializer: new PhpSerializer(),
+            retryStrategyLocator: new ServiceLocator([]),
+            sqsClient: new SqsClient(['region' => 'ap-southeast-2']),
+            transportName: self::TRANSPORT_NAME,
+            symfonyEventDispatcher: $symfonyEventDispatcher
+        );
+
+        $sut->handle($this->createSqsEvent(1), $this->createContext());
+
+        self::assertInstanceOf(WorkerMessageReceivedEvent::class, $receivedEvent);
+        self::assertSame(self::TRANSPORT_NAME, $receivedEvent->getReceiverName());
+        self::assertInstanceOf(stdClass::class, $receivedEvent->getEnvelope()->getMessage());
+        self::assertInstanceOf(WorkerMessageHandledEvent::class, $handledEvent);
     }
 
     private function createContext(): Context
