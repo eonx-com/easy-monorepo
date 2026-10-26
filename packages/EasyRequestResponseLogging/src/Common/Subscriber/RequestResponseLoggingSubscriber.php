@@ -91,46 +91,50 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
 
     public function onKernelTerminate(TerminateEvent $event): void
     {
-        $request = $event->getRequest();
+        try {
+            $request = $event->getRequest();
 
-        if (\in_array($request->getPathInfo(), $this->doNotLogPaths, true)) {
-            return;
+            if (\in_array($request->getPathInfo(), $this->doNotLogPaths, true)) {
+                return;
+            }
+
+            $requestData = $this->createRequestData($request);
+            $responseData = $this->createResponseData($request, $event->getResponse());
+
+            $this->logger->info(
+                \sprintf(
+                    'Request: "%s %s" -> %d',
+                    $requestData->getMethod(),
+                    $requestData->getUri(),
+                    $responseData->getStatusCode()
+                ),
+                [
+                    'correlation_id' => $requestData->getCorrelationId(),
+                    'request' => [
+                        'body' => $requestData->getBody(),
+                        'body_omitted' => $requestData->isBodyOmitted(),
+                        'body_truncated' => $requestData->isBodyTruncated(),
+                        'headers' => $requestData->getHeaders(),
+                        'method' => $requestData->getMethod(),
+                        'query' => $requestData->getQuery(),
+                        'route' => $requestData->getRoute(),
+                        'route_params' => $requestData->getRouteParameters(),
+                        'uri' => $requestData->getUri(),
+                    ],
+                    'request_id' => $requestData->getRequestId(),
+                    'response' => [
+                        'body' => $responseData->getBody(),
+                        'body_omitted' => $responseData->isBodyOmitted(),
+                        'body_truncated' => $responseData->isBodyTruncated(),
+                        'duration_ms' => $responseData->getDurationMs(),
+                        'headers' => $responseData->getHeaders(),
+                        'status_code' => $responseData->getStatusCode(),
+                    ],
+                ]
+            );
+        } catch (Throwable) {
+            // Do nothing
         }
-
-        $requestData = $this->createRequestData($request);
-        $responseData = $this->createResponseData($request, $event->getResponse());
-
-        $this->logger->info(
-            \sprintf(
-                'Request: "%s %s" -> %d',
-                $requestData->getMethod(),
-                $requestData->getUri(),
-                $responseData->getStatusCode()
-            ),
-            [
-                'correlation_id' => $requestData->getCorrelationId(),
-                'request' => [
-                    'body' => $requestData->getBody(),
-                    'body_omitted' => $requestData->isBodyOmitted(),
-                    'body_truncated' => $requestData->isBodyTruncated(),
-                    'headers' => $requestData->getHeaders(),
-                    'method' => $requestData->getMethod(),
-                    'query' => $requestData->getQuery(),
-                    'route' => $requestData->getRoute(),
-                    'route_params' => $requestData->getRouteParameters(),
-                    'uri' => $requestData->getUri(),
-                ],
-                'request_id' => $requestData->getRequestId(),
-                'response' => [
-                    'body' => $responseData->getBody(),
-                    'body_omitted' => $responseData->isBodyOmitted(),
-                    'body_truncated' => $responseData->isBodyTruncated(),
-                    'duration_ms' => $responseData->getDurationMs(),
-                    'headers' => $responseData->getHeaders(),
-                    'status_code' => $responseData->getStatusCode(),
-                ],
-            ]
-        );
     }
 
     private function createRequestData(Request $request): RequestData

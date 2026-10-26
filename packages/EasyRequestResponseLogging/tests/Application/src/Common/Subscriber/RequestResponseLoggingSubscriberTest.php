@@ -5,8 +5,11 @@ namespace EonX\EasyRequestResponseLogging\Tests\Application\Common\Subscriber;
 
 use EonX\EasyRequestResponseLogging\Bundle\Enum\BundleParam;
 use EonX\EasyRequestResponseLogging\Tests\Application\AbstractApplicationTestCase;
+use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Controller\ResponseController;
 use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Listener\EarlyResponseListener;
+use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Listener\LastTerminateListener;
 use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Listener\SlowTerminateListener;
+use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Processor\FailingProcessor;
 use EonX\EasyTest\Monolog\Processor\LogCollectorProcessor;
 use EonX\EasyTest\Monolog\Trait\MonologTrait;
 use Monolog\Level;
@@ -305,6 +308,24 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertLessThan(300.0, $responseContext['duration_ms']);
     }
 
+    public function testOnKernelTerminateSucceedsAndRunsRemainingListenersWhenLoggerFails(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            server: [
+                'HTTP_' . \strtoupper(\str_replace('-', '_', FailingProcessor::HEADER)) => '1',
+            ]
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        self::assertSame([], self::getRecords());
+        self::assertTrue($request->attributes->get(LastTerminateListener::ATTRIBUTE));
+    }
+
     public function testOnKernelTerminateSucceedsWithBodiesDisabled(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
@@ -334,6 +355,29 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertNull($responseContext['body']);
         self::assertFalse($responseContext['body_omitted']);
         self::assertFalse($responseContext['body_truncated']);
+    }
+
+    public function testOnKernelTerminateSucceedsWithBodyAlreadyReadAsStream(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_' . \strtoupper(\str_replace('-', '_', ResponseController::READ_BODY_AS_STREAM_HEADER)) => '1',
+            ],
+            content: '{"password":"some-password"}'
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame('{"password":"*REDACTED*"}', $requestContext['body']);
+        self::assertTrue($request->attributes->get(LastTerminateListener::ATTRIBUTE));
     }
 
     public function testOnKernelTerminateSucceedsWithEscapedJsonStringBody(): void

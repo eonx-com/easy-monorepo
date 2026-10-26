@@ -5,7 +5,9 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Controller\ResponseController;
 use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Listener\EarlyResponseListener;
+use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Listener\LastTerminateListener;
 use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Listener\SlowTerminateListener;
+use EonX\EasyRequestResponseLogging\Tests\Fixture\App\Processor\FailingProcessor;
 use EonX\EasyTest\Monolog\Processor\LogCollectorProcessor;
 
 return static function (ContainerConfigurator $container): void {
@@ -21,6 +23,10 @@ return static function (ContainerConfigurator $container): void {
     $services->set(LogCollectorProcessor::class);
 
     $services->set(EarlyResponseListener::class);
+
+    $services->set(FailingProcessor::class);
+
+    $services->set(LastTerminateListener::class);
 
     $services->set(SlowTerminateListener::class);
 };
