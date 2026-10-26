@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyRequestResponseLogging\Bundle;
 
-use EonX\EasyRequestResponseLogging\Bundle\CompilerPass\ValidateSensitiveDataSanitizerCompilerPass;
 use EonX\EasyRequestResponseLogging\Bundle\Enum\ConfigParam;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,11 +17,6 @@ final class EasyRequestResponseLoggingBundle extends AbstractBundle
     public function __construct()
     {
         $this->path = \realpath(__DIR__);
-    }
-
-    public function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass(new ValidateSensitiveDataSanitizerCompilerPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void

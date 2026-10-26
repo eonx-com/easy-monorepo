@@ -10,6 +10,7 @@ use EonX\EasyRequestResponseLogging\Common\Subscriber\RequestResponseLoggingSubs
 use EonX\EasyRequestResponseLogging\Tests\Application\AbstractApplicationTestCase;
 use EonX\EasyTest\Monolog\Logger\LoggerStub;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 
 final class EasyRequestResponseLoggingBundleTest extends AbstractApplicationTestCase
@@ -63,8 +64,8 @@ final class EasyRequestResponseLoggingBundleTest extends AbstractApplicationTest
 
     public function testThrowsWhenSensitiveDataSanitizerIsDisabled(): void
     {
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('sensitive data sanitizer must not be disabled');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('SensitiveDataSanitizerInterface" but no such service exists');
 
         self::bootKernel([
             'environment' => 'test_sanitizer_disabled',
