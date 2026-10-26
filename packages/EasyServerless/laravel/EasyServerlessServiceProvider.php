@@ -13,12 +13,15 @@ use EonX\EasyServerless\Datadog\Helper\RootSpanHelper;
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
+use EonX\EasyServerless\Laravel\Middleware\PhpRuntimeInfoMiddleware;
 use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
 use Psr\Log\LoggerInterface;
 
 final class EasyServerlessServiceProvider extends ServiceProvider
@@ -93,11 +96,28 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         // a no-op when the ddtrace extension is not loaded
         $this->app->make('events')
             ->listen(
-                [RouteMatched::class, JobProcessing::class, CommandStarting::class],
+                [JobProcessing::class, CommandStarting::class],
                 static function (): void {
                     RootSpanHelper::addPhpRuntimeInfo();
                 }
             );
+
+        // Requests are covered by a global middleware rather than RouteMatched, so unmatched routes (404/405)
+        // and requests short-circuited by other global middleware (e.g. maintenance mode) are enriched too
+        if ($this->app instanceof LumenApplication) {
+            $this->app->middleware([PhpRuntimeInfoMiddleware::class]);
+
+            return;
+        }
+
+        if ($this->app->bound(HttpKernelContract::class)) {
+            $httpKernel = $this->app->make(HttpKernelContract::class);
+
+            if ($httpKernel instanceof HttpKernel) {
+                // Prepend so it runs before maintenance mode and any other global middleware
+                $httpKernel->prependMiddleware(PhpRuntimeInfoMiddleware::class);
+            }
+        }
     }
 
     private function registerHealth(): void
