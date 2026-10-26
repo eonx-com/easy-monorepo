@@ -18,6 +18,8 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
+use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
@@ -156,9 +158,12 @@ final class EasyLoggingBundle extends AbstractBundle
         foreach ($builder->getExtensionConfig('monolog') as $config) {
             /** @var array $handler */
             foreach ($config['handlers'] ?? [] as $handler) {
-                $serviceId = $handler['id'] ?? null;
+                $serviceId = $this->resolveParameterSafely($builder, $handler['id'] ?? null);
 
-                if (($handler['type'] ?? null) !== 'service' || \is_string($serviceId) === false) {
+                if (
+                    $this->resolveParameterSafely($builder, $handler['type'] ?? null) !== 'service'
+                    || \is_string($serviceId) === false
+                ) {
                     continue;
                 }
 
@@ -184,5 +189,16 @@ final class EasyLoggingBundle extends AbstractBundle
         $bundles = $builder->getParameter('kernel.bundles');
 
         return isset($bundles[$bundleName]);
+    }
+
+    private function resolveParameterSafely(ContainerBuilder $builder, mixed $value): mixed
+    {
+        try {
+            return $builder->getParameterBag()
+                ->resolveValue($value);
+        } catch (ParameterNotFoundException|RuntimeException) {
+            // Parameters not defined yet (or not resolvable at this stage) must not break the compilation
+            return $value;
+        }
     }
 }
