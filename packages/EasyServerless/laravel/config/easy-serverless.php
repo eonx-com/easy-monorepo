@@ -6,6 +6,9 @@ return [
         'enabled' => true,
         'namespace' => null,
     ],
+    'datadog' => [
+        'enabled' => true,
+    ],
     'health' => [
         'enabled' => true,
     ],
