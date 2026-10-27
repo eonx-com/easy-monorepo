@@ -41,15 +41,16 @@ final readonly class TagVersionReleaseWorker implements ReleaseWorkerInterface
             // Nothing to commit
         }
 
-        // Create Release in GitHub
+        // Create Release in GitHub, pre-releases (e.g. 7.0.0-beta.1) must not become the latest release
+        $isPreRelease = $version->hasPreReleaseSuffix();
         $url = 'https://api.github.com/repos/eonx-com/easy-monorepo/releases';
         $options = [
             'body' => \json_encode([
                 'draft' => false,
                 'generate_release_notes' => true,
-                'make_latest' => 'legacy',
+                'make_latest' => $isPreRelease ? 'false' : 'legacy',
                 'name' => $version->getVersionString(),
-                'prerelease' => false,
+                'prerelease' => $isPreRelease,
                 'tag_name' => $version->getVersionString(),
                 'target_commitish' => $this->gitManager->getCurrentBranch(),
             ]),
