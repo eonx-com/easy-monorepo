@@ -71,6 +71,13 @@ final class EasyLockBundle extends AbstractBundle
             return;
         }
 
+        $container
+            ->parameters()
+            ->set(
+                ConfigParam::MessengerMiddlewareLockNotAcquiredLogLevel->value,
+                $config['messenger']['middleware']['lock_not_acquired_log_level']
+            );
+
         $container->import('config/messenger_middleware.php');
     }
 }

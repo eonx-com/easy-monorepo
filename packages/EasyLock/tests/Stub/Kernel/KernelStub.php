@@ -29,6 +29,12 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         parent::__construct('test', true);
     }
 
+    public function getCacheDir(): string
+    {
+        // Each set of configs must get its own compiled container
+        return parent::getCacheDir() . '/' . \md5(\serialize($this->configs));
+    }
+
     public function process(ContainerBuilder $container): void
     {
         $container->setDefinition(LoggerInterface::class, new Definition(NullLogger::class));
