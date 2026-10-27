@@ -6,11 +6,11 @@
     "require": {
         "php": "^8.4",
         "doctrine/dbal": "^3.8 || ^4.4",
-        "eonx-com/easy-event-dispatcher": "^6.21",
-        "eonx-com/easy-lock": "^6.21",
-        "eonx-com/easy-pagination": "^6.21",
-        "eonx-com/easy-random": "^6.21",
-        "eonx-com/easy-utils": "^6.21",
+        "eonx-com/easy-event-dispatcher": "^7.0",
+        "eonx-com/easy-lock": "^7.0",
+        "eonx-com/easy-pagination": "^7.0",
+        "eonx-com/easy-random": "^7.0",
+        "eonx-com/easy-utils": "^7.0",
         "nesbot/carbon": "^3.12",
         "symfony/config": "^7.4 || ^8.0",
         "symfony/dependency-injection": "^7.4 || ^8.0",
@@ -18,8 +18,8 @@
         "symfony/messenger": "^7.4 || ^8.0"
     },
     "require-dev": {
-        "eonx-com/easy-encryption": "^6.21",
-        "eonx-com/easy-test": "^6.21",
+        "eonx-com/easy-encryption": "^7.0",
+        "eonx-com/easy-test": "^7.0",
         "phpunit/phpunit": "^12.5|^13.0"
     },
     "autoload": {

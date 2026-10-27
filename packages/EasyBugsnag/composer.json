@@ -6,7 +6,7 @@
     "require": {
         "php": "^8.4",
         "bugsnag/bugsnag": "^3.29.2",
-        "eonx-com/easy-utils": "^6.21",
+        "eonx-com/easy-utils": "^7.0",
         "guzzlehttp/guzzle": "^7.0",
         "nesbot/carbon": "^3.12",
         "nette/utils": "^4.0",
@@ -27,7 +27,7 @@
         "doctrine/dbal": "^3.8 || ^4.4",
         "doctrine/doctrine-bundle": "^2.12 || ^3.2",
         "doctrine/orm": "^2.20 || ^3.6",
-        "eonx-com/easy-test": "^6.21",
+        "eonx-com/easy-test": "^7.0",
         "laravel/framework": "^13.0",
         "phpunit/phpunit": "^12.5|^13.0",
         "symfony/doctrine-bridge": "^7.4 || ^8.0",
