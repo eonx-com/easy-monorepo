@@ -60,6 +60,10 @@ final class EasyServerlessBundle extends AbstractBundle
             $container->import('config/console.php');
         }
 
+        if ($config['datadog']['enabled']) {
+            $container->import('config/datadog.php');
+        }
+
         if ($config['health']['enabled']) {
             $container->import('config/health.php');
         }

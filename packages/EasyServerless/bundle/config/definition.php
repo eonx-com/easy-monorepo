@@ -25,6 +25,10 @@ return static function (DefinitionConfigurator $definition) {
             ->arrayNode('console')
                 ->canBeDisabled()
             ->end()
+            ->arrayNode('datadog')
+                ->canBeDisabled()
+                ->info('Add PHP runtime information to the Datadog root span when the ddtrace extension is loaded.')
+            ->end()
             ->arrayNode('easy_error_handler')
                 ->setDeprecated(
                     'eonx-com/easy-serverless',
