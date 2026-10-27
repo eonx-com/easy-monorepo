@@ -141,10 +141,9 @@ final class DynamoDbAdapter extends AbstractAdapter
             foreach ($items as $item) {
                 $idAttr = isset($item[$this->idAttr]) ? $item[$this->idAttr]->getS() : null;
                 $dataAttr = isset($item[$this->dataAttr]) ? $item[$this->dataAttr]->getS() : null;
-                $expirationAttr = isset($item[$this->expirationAttr]) ? $item[$this->expirationAttr]->getN() : null;
 
                 // Skip item if expired, dynamodb will remove it automatically
-                if ($expirationAttr !== null && ((float)$expirationAttr) < \microtime(true)) {
+                if ($this->isExpired($item)) {
                     continue;
                 }
 
@@ -175,10 +174,8 @@ final class DynamoDbAdapter extends AbstractAdapter
             return false;
         }
 
-        $expirationAttr = isset($item[$this->expirationAttr]) ? $item[$this->expirationAttr]->getN() : null;
-
         // Treat expired items as not existing
-        return $expirationAttr !== null && ((float)$expirationAttr) > \microtime(true);
+        return $this->isExpired($item) === false;
     }
 
     protected function doSave(array $values, int $lifetime): array|bool
@@ -196,18 +193,24 @@ final class DynamoDbAdapter extends AbstractAdapter
                 $writeRequests = [];
 
                 foreach ($values as $id => $data) {
-                    $expiration = \microtime(true) + $lifetime;
-
                     // Prevent malformed utf-8 data error from DynamoDB
                     $data = \strtr(\base64_encode((string)$data), '/+', '._');
 
+                    $item = [
+                        $this->dataAttr => new AttributeValue(['S' => $data]),
+                        $this->idAttr => new AttributeValue(['S' => $id]),
+                    ];
+
+                    // Lifetime 0 means "persist until manual cleaning", so DynamoDB TTL must not remove the item
+                    if ($lifetime > 0) {
+                        $item[$this->expirationAttr] = new AttributeValue([
+                            'N' => (string)(\microtime(true) + $lifetime),
+                        ]);
+                    }
+
                     $writeRequests[] = new WriteRequest([
                         'PutRequest' => new PutRequest([
-                            'Item' => [
-                                $this->dataAttr => new AttributeValue(['S' => $data]),
-                                $this->expirationAttr => new AttributeValue(['N' => (string)$expiration]),
-                                $this->idAttr => new AttributeValue(['S' => $id]),
-                            ],
+                            'Item' => $item,
                         ]),
                     ]);
                 }
@@ -225,5 +228,16 @@ final class DynamoDbAdapter extends AbstractAdapter
         } while ($hasUnprocessedItems);
 
         return true;
+    }
+
+    /**
+     * @param array<string, \AsyncAws\DynamoDb\ValueObject\AttributeValue> $item
+     */
+    private function isExpired(array $item): bool
+    {
+        $expirationAttr = isset($item[$this->expirationAttr]) ? $item[$this->expirationAttr]->getN() : null;
+
+        // Items without expiration never expire
+        return $expirationAttr !== null && ((float)$expirationAttr) <= \microtime(true);
     }
 }
