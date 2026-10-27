@@ -52,6 +52,7 @@
         "ext-simplexml": "To check coverage in Clover format",
         "doctrine/collections": "To use InvalidDataMaker",
         "doctrine/orm": "To use ContainerServiceTrait",
+        "eonx-com/easy-error-handler": "To use EasyErrorHandlerAssertionTrait and TraceableErrorHandlerStub",
         "fakerphp/faker": "To use UniqueGroupGenerator",
         "monolog/monolog": "To use the Monolog test helpers (LogCollectorProcessor, MonologTrait)",
         "nesbot/carbon": "To use InvalidDataMaker and CarbonClock",
