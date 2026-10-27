@@ -12,7 +12,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 
 final class DynamoDbAdapterTest extends AbstractUnitTestCase
 {
-    private const string TABLE_NAME = 'cache_items';
+    private const TABLE_NAME = 'cache_items';
 
     /**
      * @var array<string, array<string, array<string, string>>>
