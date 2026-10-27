@@ -48,49 +48,60 @@ final class StrictTestResponse extends AbstractTestResponse
 
     private function checkData(array $options): void
     {
-        if (isset($options['body'])) {
-            $expectedRequestData = null;
-            $actualRequestData = [];
-
-            if ($this->body !== null) {
-                $expectedRequestData = $this->body;
-                \parse_str((string)($options['body']), $actualRequestData);
-            }
-
-            if ($this->json !== null) {
-                $expectedRequestData = $this->json;
-
-                try {
-                    $actualRequestData = \json_decode((string)$options['body'], true, 512, \JSON_THROW_ON_ERROR);
-                } catch (JsonException) {
-                    TestResponseFactory::throwException(new UnexpectedValueException(\sprintf(
-                        'Invalid JSON in request body, probably you should pass `body` instead of `json` for %s',
-                        $this->url
-                    )));
-                }
-            }
-
+        if (isset($options['body']) === false || $options['body'] === '') {
             try {
-                Assert::assertIsArray(
-                    $expectedRequestData,
-                    \sprintf('You should provide request data for %s', $this->url)
+                Assert::assertEmpty(
+                    $this->json ?? $this->body,
+                    \sprintf('Request to %s has no body, but request data is expected', $this->url)
                 );
             } catch (Throwable $exception) {
                 TestResponseFactory::throwException($exception);
             }
 
-            self::normalizeData($expectedRequestData);
-            self::normalizeData($actualRequestData);
+            return;
+        }
+
+        $expectedRequestData = null;
+        $actualRequestData = [];
+
+        if ($this->body !== null) {
+            $expectedRequestData = $this->body;
+            \parse_str((string)($options['body']), $actualRequestData);
+        }
+
+        if ($this->json !== null) {
+            $expectedRequestData = $this->json;
 
             try {
-                Assert::assertSame(
-                    $expectedRequestData,
-                    $actualRequestData,
-                    \sprintf('Request body parameters for %s do not match', $this->url)
-                );
-            } catch (Throwable $exception) {
-                TestResponseFactory::throwException($exception);
+                $actualRequestData = \json_decode((string)$options['body'], true, 512, \JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                TestResponseFactory::throwException(new UnexpectedValueException(\sprintf(
+                    'Invalid JSON in request body, probably you should pass `body` instead of `json` for %s',
+                    $this->url
+                )));
             }
+        }
+
+        try {
+            Assert::assertIsArray(
+                $expectedRequestData,
+                \sprintf('You should provide request data for %s', $this->url)
+            );
+        } catch (Throwable $exception) {
+            TestResponseFactory::throwException($exception);
+        }
+
+        self::normalizeData($expectedRequestData);
+        self::normalizeData($actualRequestData);
+
+        try {
+            Assert::assertSame(
+                $expectedRequestData,
+                $actualRequestData,
+                \sprintf('Request body parameters for %s do not match', $this->url)
+            );
+        } catch (Throwable $exception) {
+            TestResponseFactory::throwException($exception);
         }
     }
 
