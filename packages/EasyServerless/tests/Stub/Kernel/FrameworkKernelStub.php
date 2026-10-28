@@ -15,11 +15,13 @@ final class FrameworkKernelStub extends Kernel
 {
     /**
      * @param string[] $configs
+     * @param \Symfony\Component\HttpKernel\Bundle\BundleInterface[] $extraBundles
      */
     public function __construct(
         string $environment,
         bool $debug,
         private readonly array $configs,
+        private readonly array $extraBundles = [],
     ) {
         parent::__construct($environment, $debug);
     }
@@ -31,6 +33,10 @@ final class FrameworkKernelStub extends Kernel
     {
         yield new FrameworkBundle();
         yield new EasyServerlessBundle();
+
+        foreach ($this->extraBundles as $bundle) {
+            yield $bundle;
+        }
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
