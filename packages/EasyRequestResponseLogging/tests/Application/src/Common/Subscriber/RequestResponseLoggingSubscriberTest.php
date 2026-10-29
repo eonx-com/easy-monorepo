@@ -122,6 +122,7 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertIsArray($requestContext);
         self::assertIsArray($requestContext['headers']);
         self::assertIsArray($responseContext);
+        self::assertIsArray($responseContext['headers']);
         self::assertSame(Level::Info, $record->level);
         self::assertSame('Request: "POST /response" -> 200', $record->message);
         self::assertSame('some-correlation-id', $record->context['correlation_id']);
@@ -151,6 +152,8 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertFalse($responseContext['body_omitted']);
         self::assertFalse($responseContext['body_truncated']);
         self::assertGreaterThan(0.0, $responseContext['duration_ms']);
+        self::assertSame(['application/json'], $responseContext['headers']['content-type']);
+        self::assertSame('*REDACTED*', $responseContext['headers']['set-cookie']);
         self::assertSame(200, $responseContext['status_code']);
     }
 
