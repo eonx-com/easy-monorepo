@@ -15,6 +15,26 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class EasyRequestResponseLoggingBundleTest extends AbstractApplicationTestCase
 {
+    public function testBootKernelThrowsExceptionWhenEasyRequestIdBundleIsNotEnabled(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('EasyRequestIdBundle is not enabled.');
+
+        self::bootKernel([
+            'environment' => 'test_easy_request_id_disabled',
+        ]);
+    }
+
+    public function testBootKernelThrowsExceptionWhenSensitiveDataSanitizerIsDisabled(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('SensitiveDataSanitizerInterface" but no such service exists');
+
+        self::bootKernel([
+            'environment' => 'test_sanitizer_disabled',
+        ]);
+    }
+
     public function testSubscriberIsNotRegisteredByDefault(): void
     {
         self::bootKernel([
@@ -50,25 +70,5 @@ final class EasyRequestResponseLoggingBundleTest extends AbstractApplicationTest
         }
         self::assertInstanceOf(LoggerStub::class, $logger);
         self::assertTrue($logger->hasInfo('Request: "GET /response" -> 200'));
-    }
-
-    public function testThrowsWhenEasyRequestIdBundleIsNotEnabled(): void
-    {
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('EasyRequestIdBundle is not enabled.');
-
-        self::bootKernel([
-            'environment' => 'test_easy_request_id_disabled',
-        ]);
-    }
-
-    public function testThrowsWhenSensitiveDataSanitizerIsDisabled(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('SensitiveDataSanitizerInterface" but no such service exists');
-
-        self::bootKernel([
-            'environment' => 'test_sanitizer_disabled',
-        ]);
     }
 }

@@ -17,6 +17,30 @@ use Monolog\Logger;
 
 final class EasyRequestResponseLoggingServiceProviderTest extends AbstractLumenTestCase
 {
+    public function testBootThrowsExceptionWhenEasyRequestIdServiceProviderIsNotRegistered(): void
+    {
+        $app = $this->createApplication(providers: [EasyUtilsServiceProvider::class]);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('EasyRequestIdServiceProvider is not registered.');
+
+        $app->boot();
+    }
+
+    public function testBootThrowsExceptionWhenSensitiveDataSanitizerIsDisabled(): void
+    {
+        $app = $this->createApplication(
+            config: [
+                'easy-utils.sensitive_data.enabled' => false,
+            ]
+        );
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('SensitiveDataSanitizerInterface is not registered');
+
+        $app->boot();
+    }
+
     public function testMiddlewareIsNotRegisteredByDefault(): void
     {
         $app = $this->createLumenApplication();
@@ -37,30 +61,6 @@ final class EasyRequestResponseLoggingServiceProviderTest extends AbstractLumenT
             RequestResponseLoggingMiddleware::class,
             $app->make(RequestResponseLoggingMiddleware::class)
         );
-    }
-
-    public function testThrowsWhenEasyRequestIdServiceProviderIsNotRegistered(): void
-    {
-        $app = $this->createApplication(providers: [EasyUtilsServiceProvider::class]);
-
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('EasyRequestIdServiceProvider is not registered.');
-
-        $app->boot();
-    }
-
-    public function testThrowsWhenSensitiveDataSanitizerIsDisabled(): void
-    {
-        $app = $this->createApplication(
-            config: [
-                'easy-utils.sensitive_data.enabled' => false,
-            ]
-        );
-
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('SensitiveDataSanitizerInterface is not registered');
-
-        $app->boot();
     }
 
     public function testUsesEasyLoggingLoggerWhenEasyLoggingServiceProviderIsRegistered(): void
