@@ -64,8 +64,9 @@ without a matched route has no known structure, so only the sanitizer itself app
 `duration_ms` is the time between the `kernel.request` and `kernel.response` events. It is `null` when a listener with a
 priority higher than 1024 returned the response before the start time was recorded.
 
-Headers, query and body are masked by the EasyUtils sensitive data sanitizer, which matches keys exactly
-(case-insensitive). Its default keys already cover the `Authorization`, `Proxy-Authorization`, `Cookie`, `Set-Cookie`
+Headers, query and body are masked by the EasyUtils sensitive data sanitizer. It matches keys regardless of case,
+separators (space, `-` and `_`) and an `x` prefix, e.g. the `X-Api-Key` header and the `apiKey` field match the
+`api_key` key. Its default keys already cover the `Authorization`, `Proxy-Authorization`, `Cookie`, `Set-Cookie`
 and `X-Api-Key` headers. Add your application specific keys (e.g. `paymentIntentSecret`, custom signature headers) to
 `easy_utils.sensitive_data_sanitizer.keys_to_mask`. If the sanitizer is disabled, the container build fails.
 

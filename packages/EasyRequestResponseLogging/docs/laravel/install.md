@@ -94,8 +94,10 @@ In a Lumen application, load the config file in `bootstrap/app.php`:
 $app->configure('easy-request-response-logging');
 ```
 
-All logged data goes through the EasyUtils sensitive data sanitizer. Keep `easy-utils.sensitive_data.enabled` set to
-`true` and add your application specific keys to `easy-utils.sensitive_data.keys_to_mask`.
+All logged data goes through the EasyUtils sensitive data sanitizer. It matches keys regardless of case, separators
+(space, `-` and `_`) and an `x` prefix, e.g. the `X-Api-Key` header and the `apiKey` field match the `api_key` key.
+Keep `easy-utils.sensitive_data.enabled` set to `true` and add your application specific keys to
+`easy-utils.sensitive_data.keys_to_mask`.
 
 <br>
 
