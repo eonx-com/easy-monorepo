@@ -5,6 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-mbstring": "*",
         "eonx-com/easy-request-id": "^6.27",
         "eonx-com/easy-utils": "^6.27",
         "psr/log": "^3.0",
