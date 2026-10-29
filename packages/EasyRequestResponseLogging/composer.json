@@ -17,6 +17,7 @@
     "require-dev": {
         "eonx-com/easy-logging": "^6.27",
         "eonx-com/easy-test": "^6.27",
+        "laravel/lumen-framework": "^11.0",
         "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
         "symfony/framework-bundle": "^7.2",
         "symfony/monolog-bundle": "^3.11.1"
@@ -24,7 +25,8 @@
     "autoload": {
         "psr-4": {
             "EonX\\EasyRequestResponseLogging\\": "src",
-            "EonX\\EasyRequestResponseLogging\\Bundle\\": "bundle"
+            "EonX\\EasyRequestResponseLogging\\Bundle\\": "bundle",
+            "EonX\\EasyRequestResponseLogging\\Laravel\\": "laravel"
         }
     },
     "autoload-dev": {
@@ -32,11 +34,15 @@
             "EonX\\EasyRequestResponseLogging\\Tests\\": "tests",
             "EonX\\EasyRequestResponseLogging\\Tests\\Application\\": "tests/Application/src",
             "EonX\\EasyRequestResponseLogging\\Tests\\Application\\Bundle\\": "tests/Application/bundle",
-            "EonX\\EasyRequestResponseLogging\\Tests\\Fixture\\App\\": "tests/Fixture/app/src"
+            "EonX\\EasyRequestResponseLogging\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
+            "EonX\\EasyRequestResponseLogging\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
     "suggest": {
         "eonx-com/easy-logging": "To use EasyLogging LoggerFactory for the log channel",
+        "illuminate/http": "To use this package with Laravel/Lumen",
+        "illuminate/support": "To use this package with Laravel/Lumen",
+        "laravel/lumen-framework": "To use this package with Lumen",
         "symfony/monolog-bundle": "To use Symfony MonologBundle for the log channel"
     },
     "extra": {

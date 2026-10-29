@@ -5,6 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyRequestResponseLogging\Bundle\Enum\BundleParam;
 use EonX\EasyRequestResponseLogging\Bundle\Enum\ConfigParam;
+use EonX\EasyRequestResponseLogging\Common\Logger\RequestResponseLogger;
 use EonX\EasyRequestResponseLogging\Common\Subscriber\RequestResponseLoggingSubscriber;
 
 return static function (ContainerConfigurator $container): void {
@@ -14,11 +15,13 @@ return static function (ContainerConfigurator $container): void {
         ->autowire();
 
     $services
-        ->set(RequestResponseLoggingSubscriber::class)
+        ->set(RequestResponseLogger::class)
         ->arg('$doNotLogPaths', param(ConfigParam::DoNotLogPaths->value))
         ->arg('$logRequestBody', param(ConfigParam::LogRequestBody->value))
         ->arg('$logResponseBody', param(ConfigParam::LogResponseBody->value))
         ->arg('$maxBodySize', param(ConfigParam::MaxBodySize->value))
         ->arg('$maxRawBodySize', param(ConfigParam::MaxRawBodySize->value))
         ->tag('monolog.logger', ['channel' => BundleParam::LogChannel->value]);
+
+    $services->set(RequestResponseLoggingSubscriber::class);
 };
