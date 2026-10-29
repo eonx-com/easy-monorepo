@@ -7,6 +7,7 @@ use EonX\EasyLogging\Factory\LoggerFactoryInterface;
 use EonX\EasyRequestId\Common\Provider\RequestIdProviderInterface;
 use EonX\EasyRequestResponseLogging\Bundle\Enum\BundleParam;
 use EonX\EasyRequestResponseLogging\Bundle\Enum\ConfigServiceId;
+use EonX\EasyRequestResponseLogging\Common\Builder\RequestResponseDataBuilder;
 use EonX\EasyRequestResponseLogging\Common\Logger\RequestResponseLogger;
 use EonX\EasyRequestResponseLogging\Laravel\Middleware\RequestResponseLoggingMiddleware;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
@@ -80,16 +81,23 @@ final class EasyRequestResponseLoggingServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            RequestResponseLogger::class,
-            static fn (Container $app): RequestResponseLogger => new RequestResponseLogger(
-                logger: $app->make(ConfigServiceId::Logger->value),
+            RequestResponseDataBuilder::class,
+            static fn (Container $app): RequestResponseDataBuilder => new RequestResponseDataBuilder(
                 sensitiveDataSanitizer: $app->make(SensitiveDataSanitizerInterface::class),
                 requestIdProvider: $app->make(RequestIdProviderInterface::class),
-                doNotLogPaths: (array)\config('easy-request-response-logging.do_not_log_paths', []),
                 logRequestBody: (bool)\config('easy-request-response-logging.log_request_body', true),
                 logResponseBody: (bool)\config('easy-request-response-logging.log_response_body', true),
                 maxBodySize: (int)\config('easy-request-response-logging.max_body_size', 32768),
                 maxRawBodySize: (int)\config('easy-request-response-logging.max_raw_body_size', 1048576)
+            )
+        );
+
+        $this->app->singleton(
+            RequestResponseLogger::class,
+            static fn (Container $app): RequestResponseLogger => new RequestResponseLogger(
+                logger: $app->make(ConfigServiceId::Logger->value),
+                requestResponseDataBuilder: $app->make(RequestResponseDataBuilder::class),
+                doNotLogPaths: (array)\config('easy-request-response-logging.do_not_log_paths', [])
             )
         );
 
