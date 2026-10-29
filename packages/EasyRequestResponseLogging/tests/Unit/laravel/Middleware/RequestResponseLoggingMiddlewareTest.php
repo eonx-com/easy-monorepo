@@ -89,6 +89,25 @@ final class RequestResponseLoggingMiddlewareTest extends AbstractLumenTestCase
         self::assertSame(200, $response->getStatusCode());
     }
 
+    public function testTerminateSucceedsWithEncodedRouteParameter(): void
+    {
+        $app = $this->createApplicationWithRoutes();
+
+        $app->handle(Request::create(uri: '/token/some%2Dtoken', method: 'POST'));
+
+        $record = $this->getSingleRecord();
+        $requestContext = $record->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame('Request: "POST /token/*REDACTED*" -> 200', $record->message);
+        self::assertSame('/token/*REDACTED*', $requestContext['path']);
+        self::assertSame(
+            [
+                'token' => '*REDACTED*',
+            ],
+            $requestContext['route_params']
+        );
+    }
+
     public function testTerminateSucceedsWithExceptionResponse(): void
     {
         $app = $this->createApplicationWithRoutes();

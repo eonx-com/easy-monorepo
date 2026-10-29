@@ -63,8 +63,16 @@ final readonly class RequestResponseLoggingMiddleware
         // Lumen: [status, action, parameters]
         if (\is_array($route)) {
             $name = $route[1]['as'] ?? null;
+            $parameters = \is_array($route[2] ?? null) ? $route[2] : [];
 
-            return [\is_string($name) ? $name : null, \is_array($route[2] ?? null) ? $route[2] : []];
+            // Unlike Laravel, Lumen keeps parameters percent-encoded, while the logged path is decoded
+            foreach ($parameters as $key => $value) {
+                if (\is_string($value)) {
+                    $parameters[$key] = \rawurldecode($value);
+                }
+            }
+
+            return [\is_string($name) ? $name : null, $parameters];
         }
 
         return [null, null];
