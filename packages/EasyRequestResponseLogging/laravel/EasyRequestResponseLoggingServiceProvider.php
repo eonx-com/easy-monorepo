@@ -43,7 +43,7 @@ final class EasyRequestResponseLoggingServiceProvider extends ServiceProvider
         if ($this->app->bound(SensitiveDataSanitizerInterface::class) === false) {
             throw new LogicException(
                 'SensitiveDataSanitizerInterface is not registered, register EasyUtilsServiceProvider and keep'
-                . ' easy-utils.sensitive_data.enabled'
+                . ' easy-utils.sensitive_data.enabled.'
             );
         }
 

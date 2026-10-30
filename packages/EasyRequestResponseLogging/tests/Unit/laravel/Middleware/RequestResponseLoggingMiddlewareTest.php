@@ -136,7 +136,7 @@ final class RequestResponseLoggingMiddlewareTest extends AbstractLumenTestCase
         $middleware->terminate($request, new JsonResponse([]));
 
         $requestContext = $this->getSingleRecord()
-->context['request'];
+            ->context['request'];
 
         self::assertIsArray($requestContext);
         self::assertSame('/lookup/411111*REDACTED*1111', $requestContext['path']);
@@ -157,7 +157,7 @@ final class RequestResponseLoggingMiddlewareTest extends AbstractLumenTestCase
 
         self::assertSame(404, $response->getStatusCode());
         $requestContext = $this->getSingleRecord()
-->context['request'];
+            ->context['request'];
         self::assertIsArray($requestContext);
         self::assertSame('/some/token=*REDACTED*', $requestContext['path']);
         self::assertNull($requestContext['route']);
@@ -171,7 +171,7 @@ final class RequestResponseLoggingMiddlewareTest extends AbstractLumenTestCase
         $app->handle(Request::create('/lookup/4111111111111111'));
 
         $requestContext = $this->getSingleRecord()
-->context['request'];
+            ->context['request'];
 
         self::assertIsArray($requestContext);
         self::assertSame('/lookup/411111*REDACTED*1111', $requestContext['path']);
