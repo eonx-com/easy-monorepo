@@ -10,6 +10,7 @@ use EonX\EasySecurity\EasyBugsnag\Configurator\SecurityContextClientConfigurator
 use EonX\EasySecurity\SymfonySecurity\Listener\AddWwwAuthenticateHeaderListener;
 use EonX\EasySecurity\Tests\Unit\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -44,6 +45,17 @@ final class EasySecurityBundleTest extends AbstractSymfonyTestCase
 
         self::assertInstanceOf(SecurityContextInterface::class, $result->resolveContext());
         self::assertTrue($container->has(SecurityContextClientConfigurator::class));
+    }
+
+    public function testWwwAuthenticateHeaderBlankDefaultChallengeThrowsInvalidConfigurationException(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage(
+            'Invalid configuration for path "easy_security.www_authenticate_header.default_challenge":' .
+            ' The default challenge must not be blank.'
+        );
+
+        $this->getKernel([__DIR__ . '/../../Fixture/config/www_authenticate_header_blank_default_challenge.php']);
     }
 
     public function testWwwAuthenticateHeaderIsNotSentWhenDisabled(): void
