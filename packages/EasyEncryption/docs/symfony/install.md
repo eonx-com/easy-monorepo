@@ -149,3 +149,59 @@ final class SomeMessage implements EncryptableInterface
 ```
 
 Warning: encryptable message fields must not be `readonly`
+
+#### Message signing
+
+Every envelope produced by `EncryptableAwareMessengerSerializer` is signed with an HMAC derived from
+`default_encryption_key` (`%env(APP_SECRET)%` by default). On decode the signature is verified **before** the body
+is unserialized, so a forged transport payload cannot reach PHP's native `unserialize()`. All producers and
+consumers sharing a transport must therefore share the same key.
+
+The signature moves the trust boundary from "who can write to the transport" to "who holds the signing key". That
+only buys you something when the two are separate secrets: give the signing key its own dedicated value via
+`messenger.signing_keys` (see below) and store it so that access to it is narrower than the ability to write to the
+transport. Reusing `default_encryption_key` (the default) is convenient but means anything that already exposes
+that key — or any place it is shared — also lets an attacker forge a valid envelope.
+
+`messenger.allow_unsigned_messages` controls whether an envelope without a valid signature is still accepted. It
+defaults to `true` so that messages queued before the signing roll-out keep decoding during the upgrade:
+
+```php
+// config/packages/easy_encryption.php
+
+$easyEncryptionConfig->messenger()
+    ->allowUnsignedMessages(false); // set to false once every queue holds only signed messages
+```
+
+While `allow_unsigned_messages` is `true`, unsigned envelopes still reach the legacy native-unserialize path, so
+the protection is only complete once it is set to `false`. Recommended roll-out:
+
+1. Deploy with `allow_unsigned_messages` left at its default (`true`). New messages are signed; messages queued
+   before the upgrade keep decoding.
+2. Wait until every transport (including the failure transport) holds only signed messages — e.g. watch the queue
+   drain to zero or let the oldest pre-upgrade message age out.
+3. Set `allow_unsigned_messages` to `false`. Unsigned envelopes are now rejected and the native-unserialize path
+   is closed.
+
+A future major will default `allow_unsigned_messages` to `false`.
+
+#### Rotating the signing key
+
+`messenger.signing_keys` takes a list of keys. The first key signs every outgoing envelope; every key in the list
+is tried when verifying, so a key that is being rotated out keeps accepting messages that were signed with it until
+they drain. When the option is omitted it defaults to `default_encryption_key`.
+
+```php
+// config/packages/easy_encryption.php
+
+$easyEncryptionConfig->messenger()
+    ->signingKeys(['%env(MESSENGER_SIGNING_KEY)%', '%env(APP_SECRET)%']);
+```
+
+To rotate a key without losing the messages already queued:
+
+1. Add the new key **last**: `[current, new]`. Envelopes are still signed with `current`, but `new` is already
+   accepted. Deploy this to every producer and consumer.
+2. Move the new key **first**: `[new, current]`. New envelopes are signed with `new`; messages still in the queue
+   signed with `current` keep verifying.
+3. Once every transport holds only messages signed with `new`, drop the old key: `[new]`.

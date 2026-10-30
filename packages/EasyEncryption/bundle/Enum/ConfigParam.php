@@ -48,4 +48,8 @@ enum ConfigParam: string
     case FullyEncryptedMessages = 'easy_encryption.fully_encrypted_messages';
 
     case MaxChunkSize = 'easy_encryption.max_chunk_size';
+
+    case MessengerAllowUnsignedMessages = 'easy_encryption.messenger.allow_unsigned_messages';
+
+    case MessengerSigningKeys = 'easy_encryption.messenger.signing_keys';
 }
