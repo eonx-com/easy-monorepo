@@ -16,7 +16,11 @@ The challenge is resolved from the token the configured API token decoder (`toke
 | JWT (`Authorization: Bearer ...`) | `Bearer` |
 | API key (`Authorization: Basic ...` with an API key as the username) | `Basic realm="api-key"` |
 | Username and password (`Authorization: Basic ...`) | `Basic realm="user"` |
-| No token | `default_challenge`, `Bearer` by default |
+| No token, or a token the decoder rejects (for example an invalid or expired JWT) | `default_challenge`, `Bearer` by default |
+
+Decoders return `null` for a token they cannot read: `BearerTokenDecoder` does it for an invalid or expired JWT.
+Such a request gets `default_challenge`, so keep `Bearer` as the default when the API accepts JWTs. With
+`default_challenge: 'Basic realm="..."'`, clients with an expired JWT are asked for `Basic`.
 
 ### Configuration
 

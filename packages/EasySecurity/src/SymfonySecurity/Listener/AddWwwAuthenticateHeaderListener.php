@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasySecurity\SymfonySecurity\Listener;
 
-use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateResolver;
+use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateHeaderResolver;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
@@ -12,7 +12,7 @@ final readonly class AddWwwAuthenticateHeaderListener
     private const HEADER_WWW_AUTHENTICATE = 'WWW-Authenticate';
 
     public function __construct(
-        private WwwAuthenticateResolver $wwwAuthenticateResolver,
+        private WwwAuthenticateHeaderResolver $wwwAuthenticateHeaderResolver,
     ) {
     }
 
@@ -30,7 +30,7 @@ final readonly class AddWwwAuthenticateHeaderListener
 
         $response->headers->set(
             self::HEADER_WWW_AUTHENTICATE,
-            $this->wwwAuthenticateResolver->resolve($event->getRequest())
+            $this->wwwAuthenticateHeaderResolver->resolve($event->getRequest())
         );
     }
 }

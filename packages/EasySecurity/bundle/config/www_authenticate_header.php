@@ -6,7 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use EonX\EasyApiToken\Common\Factory\ApiTokenDecoderFactoryInterface;
 use EonX\EasySecurity\Bundle\Enum\ConfigParam;
 use EonX\EasySecurity\SymfonySecurity\Listener\AddWwwAuthenticateHeaderListener;
-use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateResolver;
+use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateHeaderResolver;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -15,7 +15,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     $services
-        ->set(WwwAuthenticateResolver::class)
+        ->set(WwwAuthenticateHeaderResolver::class)
         ->arg('$defaultChallenge', param(ConfigParam::WwwAuthenticateHeaderDefaultChallenge->value))
         ->arg('$apiTokenDecoderFactory', service(ApiTokenDecoderFactoryInterface::class)->nullOnInvalid())
         ->arg('$apiTokenDecoder', param(ConfigParam::TokenDecoder->value));

@@ -12,7 +12,7 @@ use EonX\EasyApiToken\Common\ValueObject\ApiKey;
 use EonX\EasyApiToken\Common\ValueObject\BasicAuth;
 use EonX\EasyApiToken\Common\ValueObject\HashedApiKey;
 use EonX\EasyApiToken\Common\ValueObject\Jwt;
-use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateResolver;
+use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateHeaderResolver;
 use EonX\EasySecurity\Tests\Stub\Decoder\TokenDecoderStub;
 use EonX\EasySecurity\Tests\Stub\Factory\ApiTokenDecoderFactoryStub;
 use EonX\EasySecurity\Tests\Unit\AbstractUnitTestCase;
@@ -20,7 +20,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
 
-final class WwwAuthenticateResolverTest extends AbstractUnitTestCase
+final class WwwAuthenticateHeaderResolverTest extends AbstractUnitTestCase
 {
     /**
      * @see testResolveSucceeds
@@ -98,7 +98,7 @@ final class WwwAuthenticateResolverTest extends AbstractUnitTestCase
         if ($authorization !== null) {
             $request->headers->set('Authorization', $authorization);
         }
-        $sut = new WwwAuthenticateResolver('Default', new ApiTokenDecoderFactoryStub($decoder));
+        $sut = new WwwAuthenticateHeaderResolver('Default', new ApiTokenDecoderFactoryStub($decoder));
 
         $result = $sut->resolve($request);
 
@@ -107,7 +107,7 @@ final class WwwAuthenticateResolverTest extends AbstractUnitTestCase
 
     public function testResolveSucceedsWithoutDecoderFactory(): void
     {
-        $sut = new WwwAuthenticateResolver('Default');
+        $sut = new WwwAuthenticateHeaderResolver('Default');
 
         $result = $sut->resolve(new Request());
 

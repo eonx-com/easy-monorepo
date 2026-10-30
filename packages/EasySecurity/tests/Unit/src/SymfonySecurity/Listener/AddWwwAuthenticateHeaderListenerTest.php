@@ -5,7 +5,7 @@ namespace EonX\EasySecurity\Tests\Unit\SymfonySecurity\Listener;
 
 use EonX\EasyApiToken\Common\ValueObject\ApiKey;
 use EonX\EasySecurity\SymfonySecurity\Listener\AddWwwAuthenticateHeaderListener;
-use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateResolver;
+use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateHeaderResolver;
 use EonX\EasySecurity\Tests\Stub\Decoder\TokenDecoderStub;
 use EonX\EasySecurity\Tests\Stub\Factory\ApiTokenDecoderFactoryStub;
 use EonX\EasySecurity\Tests\Unit\AbstractUnitTestCase;
@@ -55,7 +55,7 @@ final class AddWwwAuthenticateHeaderListenerTest extends AbstractUnitTestCase
         /** @var \Symfony\Component\HttpKernel\HttpKernelInterface $kernel */
         $kernel = $this->prophesize(HttpKernelInterface::class)->reveal();
         $event = new ResponseEvent($kernel, new Request(), $requestType, $response);
-        $sut = new AddWwwAuthenticateHeaderListener(new WwwAuthenticateResolver(
+        $sut = new AddWwwAuthenticateHeaderListener(new WwwAuthenticateHeaderResolver(
             'Bearer',
             new ApiTokenDecoderFactoryStub(new TokenDecoderStub(new ApiKey('api-key')))
         ));

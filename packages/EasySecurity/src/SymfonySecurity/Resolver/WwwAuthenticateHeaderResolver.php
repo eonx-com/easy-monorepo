@@ -11,7 +11,7 @@ use EonX\EasyApiToken\Common\ValueObject\Jwt;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
 
-final readonly class WwwAuthenticateResolver
+final readonly class WwwAuthenticateHeaderResolver
 {
     private const CHALLENGE_API_KEY = 'Basic realm="api-key"';
 
