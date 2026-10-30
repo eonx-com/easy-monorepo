@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace EonX\EasySwoole\EasyLogging\Processor;
 
-use EonX\EasyLogging\Processor\AbstractSelfConfigProvidingProcessor;
 use EonX\EasySwoole\Common\Enum\RequestAttribute;
 use Monolog\Attribute\AsMonologProcessor;
 use Monolog\LogRecord;
+use Monolog\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 #[AsMonologProcessor]
-final class SwooleWorkerIdProcessor extends AbstractSelfConfigProvidingProcessor
+final readonly class SwooleWorkerIdProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly RequestStack $requestStack,
+        private RequestStack $requestStack,
     ) {}
 
     public function __invoke(LogRecord $record): LogRecord

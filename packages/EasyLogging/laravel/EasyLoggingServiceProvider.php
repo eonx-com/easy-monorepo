@@ -14,7 +14,7 @@ use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use LogicException;
-use Monolog\Level;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
 final class EasyLoggingServiceProvider extends ServiceProvider
@@ -42,10 +42,15 @@ final class EasyLoggingServiceProvider extends ServiceProvider
                 $handlerConfigProviders = $app->tagged(ConfigTag::HandlerConfigProvider->value);
                 $handlerConfigProviders = CollectorHelper::convertToArray($handlerConfigProviders);
 
-                if (\config('easy-logging.stream_handler', true) && \count($handlerConfigProviders) < 1) {
-                    $level = \config('easy-logging.stream_handler_level')
-                        ? Level::tryFrom((int)\config('easy-logging.stream_handler_level'))
-                        : null;
+                $streamHandlerConfig = \config('easy-logging.stream_handler', true);
+                $streamHandlerConfig = \is_array($streamHandlerConfig)
+                    ? $streamHandlerConfig
+                    : ['enabled' => (bool)$streamHandlerConfig];
+
+                if (($streamHandlerConfig['enabled'] ?? true) && \count($handlerConfigProviders) < 1) {
+                    /** @var int|string|\Monolog\Level|null $level */
+                    $level = $streamHandlerConfig['level'] ?? null;
+                    $level = $level !== null ? Logger::toMonologLevel($level) : null;
 
                     $handlerConfigProviders = [new StreamHandlerConfigProvider(null, $level)];
                 }
@@ -62,7 +67,7 @@ final class EasyLoggingServiceProvider extends ServiceProvider
         );
 
         // Sensitive data sanitizer, registered regardless of override_default_logger as it is used by the factory
-        if (\config('easy-logging.sensitive_data_sanitizer.enabled', false)) {
+        if (\config('easy-logging.sensitive_data_sanitizer.enabled', true)) {
             $this->app->singleton(
                 SensitiveDataSanitizerProcessor::class,
                 static function (Container $app): SensitiveDataSanitizerProcessor {

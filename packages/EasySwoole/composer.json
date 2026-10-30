@@ -26,6 +26,7 @@
         "eonx-com/easy-logging": "^7.0",
         "openswoole/ide-helper": "^22.0",
         "phpunit/phpunit": "^12.5|^13.0",
+        "symfony/monolog-bundle": "^3.11.1 || ^4.0",
         "symfony/twig-bundle": "^7.4 || ^8.0"
     },
     "autoload": {

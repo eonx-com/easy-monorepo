@@ -42,17 +42,18 @@ PHPUnit extension).
 > ```php
 > # config/packages/test/monolog.php
 >
-> use Symfony\Config\MonologConfig;
+> namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 >
-> return static function (MonologConfig $monologConfig): void {
->     $monologConfig->handler('main')
->         ->type('null')
->         ->level('debug');
+> return static function (ContainerConfigurator $containerConfigurator): void {
+>     $containerConfigurator->extension('monolog', [
+>         'handlers' => [
+>             'main' => [
+>                 'type' => 'null',
+>                 'level' => 'debug',
+>             ],
+>         ],
+>     ]);
 > };
 > ```
-
-> The legacy `\EonX\EasyTest\Common\Trait\LoggerTrait` and `\EonX\EasyTest\Monolog\Logger\LoggerStub` helpers cover
-> applications still using the `eonx-com/easy-logging` LoggerFactory; they are deprecated and will be removed in 7.0
-> together with it.
 
 [1]: https://github.com/symfony/monolog-bundle

@@ -33,6 +33,7 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^12.5|^13.0",
         "symfony/event-dispatcher-contracts": "^3.5",
+        "symfony/monolog-bundle": "^3.11.1 || ^4.0",
         "symfony/validator": "^7.4 || ^8.0"
     },
     "autoload": {

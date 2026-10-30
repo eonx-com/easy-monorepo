@@ -14,8 +14,10 @@
         "symfony/service-contracts": "^3.5"
     },
     "require-dev": {
+        "eonx-com/easy-logging": "^6.21",
         "laravel/framework": "^13.0",
-        "phpunit/phpunit": "^12.5|^13.0"
+        "phpunit/phpunit": "^12.5|^13.0",
+        "symfony/monolog-bundle": "^3.11.1 || ^4.0"
     },
     "autoload": {
         "psr-4": {

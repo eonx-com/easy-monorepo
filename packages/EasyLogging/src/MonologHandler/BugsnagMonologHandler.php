@@ -6,6 +6,8 @@ namespace EonX\EasyLogging\MonologHandler;
 use Bugsnag\Client;
 use Bugsnag\Report;
 use EonX\EasyLogging\Resolver\BugsnagSeverityResolverInterface;
+use Monolog\Formatter\FormatterInterface;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Level;
 use Monolog\LogRecord;
@@ -22,6 +24,11 @@ final class BugsnagMonologHandler extends AbstractProcessingHandler
         ?bool $bubble = null,
     ) {
         parent::__construct($level ?? Level::Warning, $bubble ?? true);
+    }
+
+    protected function getDefaultFormatter(): FormatterInterface
+    {
+        return new LineFormatter('[%datetime%] %channel%.%level_name%: %message%');
     }
 
     protected function write(LogRecord $record): void

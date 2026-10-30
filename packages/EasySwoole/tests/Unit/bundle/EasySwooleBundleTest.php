@@ -5,6 +5,7 @@ namespace EonX\EasySwoole\Tests\Unit\Bundle;
 
 use EonX\EasySwoole\Common\Listener\ApplicationStateCheckListener;
 use EonX\EasySwoole\Common\Listener\ApplicationStateResetListener;
+use EonX\EasySwoole\EasyLogging\Processor\SwooleWorkerIdProcessor;
 
 final class EasySwooleBundleTest extends AbstractSymfonyTestCase
 {
@@ -21,5 +22,18 @@ final class EasySwooleBundleTest extends AbstractSymfonyTestCase
             ApplicationStateResetListener::class,
             $container->get(ApplicationStateResetListener::class)
         );
+    }
+
+    public function testSwooleWorkerIdProcessorIsRegisteredAsMonologProcessor(): void
+    {
+        /** @var \Monolog\Logger $logger */
+        $logger = $this->getKernel([__DIR__ . '/../../Fixture/config/default.php'])
+            ->getContainer()
+            ->get('logger');
+
+        self::assertTrue(\array_any(
+            $logger->getProcessors(),
+            static fn(callable $processor): bool => $processor instanceof SwooleWorkerIdProcessor
+        ));
     }
 }

@@ -15,6 +15,45 @@ use Monolog\LogRecord;
 
 final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
 {
+    public function testItFormatsReportMessageWithoutContextAndExtraByDefault(): void
+    {
+        $client = new Client(new Configuration('some-api-key'));
+        $sut = new BugsnagMonologHandler(new BugsnagSeverityResolver(), $client);
+
+        $sut->handle(new LogRecord(
+            datetime: new DateTimeImmutable('2026-10-21T10:00:00+00:00'),
+            channel: 'app',
+            level: Level::Error,
+            message: 'message',
+            context: [
+                'key' => 'value',
+            ],
+            extra: [
+                'extra-key' => 'extra-value',
+            ],
+        ));
+
+        /** @var object $clientHttp */
+        $clientHttp = self::getPrivatePropertyValue($client, 'http');
+        /** @var \Bugsnag\Report[] $reports */
+        $reports = self::getPrivatePropertyValue($clientHttp, 'queue');
+        self::assertCount(1, $reports);
+        $report = $reports[0];
+        self::assertSame('message', $report->getName());
+        self::assertSame('[2026-10-21T10:00:00+00:00] app.ERROR: message', $report->getMessage());
+        self::assertSame(
+            [
+                'context' => [
+                    'key' => 'value',
+                ],
+                'extra' => [
+                    'extra-key' => 'extra-value',
+                ],
+            ],
+            $report->getMetaData()
+        );
+    }
+
     public function testItSucceeds(): void
     {
         $client = new Client(new Configuration('some-api-key'));
@@ -37,7 +76,7 @@ final class BugsnagMonologHandlerTest extends AbstractSymfonyTestCase
         $reports = self::getPrivatePropertyValue($clientHttp, 'queue');
         self::assertCount(1, $reports);
         $report = $reports[0];
-        self::assertSame('info', $report->getSeverity());
+        self::assertSame('warning', $report->getSeverity());
         self::assertSame('message', $report->getName());
         self::assertSame('formatted', $report->getMessage());
     }

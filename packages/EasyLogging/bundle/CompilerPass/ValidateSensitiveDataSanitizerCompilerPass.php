@@ -22,8 +22,9 @@ final class ValidateSensitiveDataSanitizerCompilerPass implements CompilerPassIn
             || $container->has(SensitiveDataSanitizerInterface::class) === false
         ) {
             throw new LogicException(
-                'To use sensitive data sanitization, the package eonx-com/easy-utils must be installed, '
-                . 'its bundle must be enabled, and its sensitive data sanitizer must not be disabled.'
+                'Sensitive data sanitization of logs ("easy_logging.sensitive_data_sanitizer", enabled by default) '
+                . 'requires the eonx-com/easy-utils bundle to be registered and its sensitive data sanitizer not to be '
+                . 'disabled. Register EasyUtilsBundle, or disable "easy_logging.sensitive_data_sanitizer" explicitly.'
             );
         }
     }

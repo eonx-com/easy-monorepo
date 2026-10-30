@@ -19,8 +19,8 @@ final class BugsnagSeverityResolverTest extends AbstractSymfonyTestCase
         yield 'debug' => [Level::Debug, BugsnagSeverity::Info];
         yield 'info' => [Level::Info, BugsnagSeverity::Info];
         yield 'notice' => [Level::Notice, BugsnagSeverity::Info];
-        yield 'warning' => [Level::Warning, BugsnagSeverity::Info];
-        yield 'error' => [Level::Error, BugsnagSeverity::Warning];
+        yield 'warning' => [Level::Warning, BugsnagSeverity::Warning];
+        yield 'error' => [Level::Error, BugsnagSeverity::Error];
         yield 'critical' => [Level::Critical, BugsnagSeverity::Error];
         yield 'alert' => [Level::Alert, BugsnagSeverity::Error];
         yield 'emergency' => [Level::Emergency, BugsnagSeverity::Error];
