@@ -78,6 +78,7 @@ final class EasySecurityBundle extends AbstractBundle
         $this->registerDefaultConfiguratorsConfiguration($config, $container, $builder);
         $this->registerVotersConfiguration($config, $container, $builder);
         $this->registerLoginFormConfiguration($config, $container, $builder);
+        $this->registerWwwAuthenticateHeaderConfiguration($config, $container);
     }
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -192,6 +193,22 @@ final class EasySecurityBundle extends AbstractBundle
 
             $builder->setDefinition($class, $voterDefinition);
         }
+    }
+
+    private function registerWwwAuthenticateHeaderConfiguration(array $config, ContainerConfigurator $container): void
+    {
+        if ($config['www_authenticate_header']['enabled'] === false) {
+            return;
+        }
+
+        $container
+            ->parameters()
+            ->set(
+                ConfigParam::WwwAuthenticateHeaderDefaultChallenge->value,
+                $config['www_authenticate_header']['default_challenge']
+            );
+
+        $container->import('config/www_authenticate_header.php');
     }
 
     private function shouldUseSymfonyMonologBundle(ContainerBuilder $builder): bool
