@@ -754,6 +754,34 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'shared_key',
             ],
         ];
+        yield 'Mask default keys' => [
+            'input' => [
+                'cookie' => 'some-value',
+                'name' => 'some-value',
+                'proxy-authorization' => 'some-value',
+                'refresh_token' => 'some-value',
+                'refreshToken' => 'some-value',
+                'secret' => 'some-value',
+                'secret_key' => 'some-value',
+                'secretKey' => 'some-value',
+                'set-cookie' => 'some-value',
+                'x-webhook-signature' => 'some-value',
+            ],
+            'expectedOutput' => [
+                'cookie' => '*REDACTED*',
+                'name' => 'some-value',
+                'proxy-authorization' => '*REDACTED*',
+                'refresh_token' => '*REDACTED*',
+                'refreshToken' => '*REDACTED*',
+                'secret' => '*REDACTED*',
+                'secret_key' => '*REDACTED*',
+                'secretKey' => '*REDACTED*',
+                'set-cookie' => '*REDACTED*',
+                'x-webhook-signature' => '*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
         yield 'Mask legacy spellings of default keys in arrays and JSON' => [
             'input' => [
                 'apikey' => 'secret',
