@@ -34,7 +34,7 @@ The common configuration options for Laravel and Symfony are as follows:
 | `ssrf_protection.enabled`        | `true`        | Whether outgoing webhook requests are blocked from reaching private/reserved IP ranges (SSRF protection) |
 | `ssrf_protection.extra_blocked_ranges` | `[]`    | Additional CIDR ranges to reject **on top of** the standard private + reserved defaults (incl. link-local `169.254.0.0/16`) |
 | `ssrf_protection.allowed_ranges` | `[]`          | CIDR ranges to unblock by **removing a matching entry** from the default block list (e.g. `127.0.0.0/8` for IPv4 localhost). Must match a default verbatim and not be covered by another default (e.g. `::1/128` is inside `::/96`), else rejected at startup |
-| `ssrf_protection.allowed_hosts`  | `[]`          | Hostnames whose requests **bypass the SSRF check entirely** (`host` matches the scheme's default port only, `host:port` any other port; exact case-insensitive match, no wildcards; an IP literal in a URL never matches). Redirects from an allowed host are never followed. Accepts `%env(csv:VAR)%`; an empty variable means an empty list |
+| `ssrf_protection.allowed_hosts`  | `[]`          | Hostnames whose requests **bypass the SSRF check entirely** (`host` matches the scheme's default port only, `host:port` any other port; exact case-insensitive match, no wildcards; an IP literal in a URL never matches; applies only to absolute `http://`/`https://` URLs). Redirects from an allowed host are never followed. Accepts `%env(csv:VAR)%`; an empty variable means an empty list |
 | `request_limits.enabled`            | `false`    | Enable the DoS request limits below (opt-in; the default will flip to `true` in a future major) |
 | `request_limits.timeout`            | `10`       | Idle timeout in seconds — abort when the target stops sending data. `0` keeps PHP's `default_socket_timeout` |
 | `request_limits.max_duration`       | `30`       | Total request-duration cap in seconds, regardless of activity. `0` = unlimited                          |
@@ -126,9 +126,12 @@ redirect checks. An entry is either `host`, which matches only the default port 
 (443 for `https`, 80 for `http`), or `host:port`, which matches that port only; reaching any other
 port on an allowed host needs its own `host:port` entry. The match is
 exact and case-insensitive: no scheme, path or wildcard, and an IP literal in a webhook URL never
-matches. Because redirects from an allowed host are not IP-checked, they are never followed: the
-request is sent with `max_redirects: 0` regardless of the webhook's own HTTP client options. Entries
-are trimmed and empty ones dropped, so the list can come straight from an environment variable:
+matches. The list applies only to absolute `http://` or `https://` URLs: a scheme-relative
+(`//host/path`) or relative URL is resolved against `base_uri`, so its real scheme and port are not
+known up front, and it always gets the full SSRF check. Because redirects from an allowed host are
+not IP-checked, they are never followed: the request is sent with `max_redirects: 0` regardless of
+the webhook's own HTTP client options. Entries are trimmed and empty ones dropped, so the list can
+come straight from an environment variable:
 
 ```php
 <?php

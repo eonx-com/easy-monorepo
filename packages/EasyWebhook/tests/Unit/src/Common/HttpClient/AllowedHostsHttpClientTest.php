@@ -85,6 +85,23 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         ];
     }
 
+    /**
+     * @see testUrlResolvedAgainstBaseUriGoesToProtectedClient
+     * @see testUrlResolvedAgainstBaseUriFromWithOptionsGoesToProtectedClient
+     */
+    public static function provideUrlsResolvedAgainstBaseUri(): iterable
+    {
+        yield 'Scheme-relative, host entry' => ['//internal.example/', ['internal.example']];
+
+        yield 'Scheme-relative, host:80 entry' => ['//internal.example/', ['internal.example:80']];
+
+        yield 'Scheme-relative with port' => ['//internal.example:443/', ['internal.example:443']];
+
+        yield 'Path only' => ['/webhooks', ['internal.example', 'internal.example:443']];
+
+        yield 'Relative path' => ['webhooks', ['internal.example', 'internal.example:443']];
+    }
+
     #[DataProvider('provideAllowedHostUrls')]
     public function testAllowedHostGoesToUnprotectedClientRegardlessOfCase(string $url): void
     {
@@ -116,6 +133,19 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
             ->getContent();
 
         self::assertSame(0, $captured['max_redirects']);
+    }
+
+    public function testExplicitUpperCaseHttpSchemeIsAllowed(): void
+    {
+        $protectedClient = new MockHttpClient(new MockResponse('protected'));
+        $unprotectedClient = new MockHttpClient(new MockResponse('unprotected'));
+        $client = new AllowedHostsHttpClient($protectedClient, $unprotectedClient, ['internal.example']);
+
+        $content = $client->request('POST', 'HTTP://INTERNAL.EXAMPLE/')
+            ->getContent();
+
+        self::assertSame('unprotected', $content);
+        self::assertSame(0, $protectedClient->getRequestsCount());
     }
 
     public function testForcesMaxRedirectsToZeroForAllowedHostEvenWhenWebhookSetsIt(): void
@@ -264,6 +294,37 @@ final class AllowedHostsHttpClientTest extends AbstractUnitTestCase
         self::assertSame('unprotected', $allowedContent);
         self::assertSame(2, $protectedBaseClient->getRequestsCount());
         self::assertSame(1, $unprotectedClient->getRequestsCount());
+    }
+
+    #[DataProvider('provideUrlsResolvedAgainstBaseUri')]
+    public function testUrlResolvedAgainstBaseUriFromWithOptionsGoesToProtectedClient(
+        string $url,
+        array $allowedHosts,
+    ): void {
+        $protectedClient = new MockHttpClient(new MockResponse('protected'));
+        $unprotectedClient = new MockHttpClient(new MockResponse('unprotected'));
+        $client = (new AllowedHostsHttpClient($protectedClient, $unprotectedClient, $allowedHosts))
+            ->withOptions(['base_uri' => 'https://internal.example/']);
+
+        $content = $client->request('POST', $url)
+            ->getContent();
+
+        self::assertSame('protected', $content);
+    }
+
+    #[DataProvider('provideUrlsResolvedAgainstBaseUri')]
+    public function testUrlResolvedAgainstBaseUriGoesToProtectedClient(string $url, array $allowedHosts): void
+    {
+        $protectedClient = new MockHttpClient(new MockResponse('protected'));
+        $unprotectedClient = new MockHttpClient(new MockResponse('unprotected'));
+        $client = new AllowedHostsHttpClient($protectedClient, $unprotectedClient, $allowedHosts);
+
+        $content = $client->request('POST', $url, ['base_uri' => 'https://internal.example/'])
+            ->getContent();
+
+        self::assertSame('protected', $content);
+        self::assertSame(1, $protectedClient->getRequestsCount());
+        self::assertSame(0, $unprotectedClient->getRequestsCount());
     }
 
     public function testWithOptionsCannotStreamAllowedAndProtectedResponsesTogether(): void

@@ -15,6 +15,11 @@ final class RegisterTraceableErrorHandlerStubCompilerPass implements CompilerPas
 {
     public function process(ContainerBuilder $container): void
     {
+        // EasyErrorHandler is optional, there is nothing to decorate without it
+        if ($container->has(ErrorHandlerInterface::class) === false) {
+            return;
+        }
+
         if ($container->hasDefinition(TraceableErrorHandlerInterface::class) === false) {
             $container
                 ->register(TraceableErrorHandlerInterface::class, TraceableErrorHandler::class)

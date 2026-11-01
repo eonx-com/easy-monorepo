@@ -35,13 +35,18 @@ after the delay. The handler counts attempts with the SQS `ApproximateReceiveCou
 
 Two settings control the retries:
 
-- `$appMaxRetries` argument of the `SqsHandler` service (default `3`): the maximum number of **attempts** (executions)
-  of a message, including the first one.
-- The retry strategy of the transport (`retry_strategy` in the Messenger config): `max_retries` is the maximum number
-  of **retries** after the first attempt. The delays come from this strategy.
+- `$appMaxRetries` argument of the `SqsHandler` service (default `3`): the maximum number of **attempts** of a
+  message, including the first one. This is a hard limit: the handler does not execute a message received more than
+  `appMaxRetries` times.
+- The retry strategy of the transport (`retry_strategy` in the Messenger config): it decides whether the handler asks
+  SQS for a retry after a failure, and the delay. `max_retries` is the maximum number of **retries** after the first
+  attempt.
 
-The handler executes a message at most `min(appMaxRetries, max_retries + 1)` times. To use all the retries of the
-strategy, set `appMaxRetries` to `max_retries + 1`.
+The retry strategy stops asking for retries after `max_retries` retries, so a failing message usually runs
+`min(appMaxRetries, max_retries + 1)` times. Only `appMaxRetries` is a hard limit: without partial batch failure,
+when another record fails the Lambda invocation, SQS gives the whole batch back, and a message that the retry strategy
+already stopped (or that succeeded) runs again while its receive count is within `appMaxRetries`. To use all the
+retries of the strategy, set `appMaxRetries` to `max_retries + 1`.
 
 When a failed attempt is the last one, the handler logs "SQS Record failed to process but will not be retried" and
 reports the failure with `willRetry = false`. Then:

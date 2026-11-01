@@ -58,6 +58,12 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
             return false;
         }
 
+        $scheme = \mb_strtolower((string)\parse_url($url, \PHP_URL_SCHEME));
+
+        if (\in_array($scheme, ['http', 'https'], true) === false) {
+            return false;
+        }
+
         $host = \parse_url($url, \PHP_URL_HOST);
 
         if (\is_string($host) === false || $host === '') {
@@ -70,7 +76,7 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
             return false;
         }
 
-        $defaultPort = \mb_strtolower((string)\parse_url($url, \PHP_URL_SCHEME)) === 'https' ? 443 : 80;
+        $defaultPort = $scheme === 'https' ? 443 : 80;
         $port = \parse_url($url, \PHP_URL_PORT) ?? $defaultPort;
 
         return (\in_array($host, $this->allowedHosts, true) && $port === $defaultPort)

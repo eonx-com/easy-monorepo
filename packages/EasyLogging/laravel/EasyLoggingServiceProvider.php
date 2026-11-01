@@ -61,6 +61,26 @@ final class EasyLoggingServiceProvider extends ServiceProvider
             }
         );
 
+        // Sensitive data sanitizer, registered regardless of override_default_logger as it is used by the factory
+        if (\config('easy-logging.sensitive_data_sanitizer.enabled', false)) {
+            $this->app->singleton(
+                SensitiveDataSanitizerProcessor::class,
+                static function (Container $app): SensitiveDataSanitizerProcessor {
+                    $sanitizerId = SensitiveDataSanitizerInterface::class;
+
+                    if (\interface_exists($sanitizerId) === false || $app->has($sanitizerId) === false) {
+                        throw new LogicException(
+                            'To use sensitive data sanitization, the package eonx-com/easy-utils must be installed,
+                            and its service provider must be registered'
+                        );
+                    }
+
+                    return new SensitiveDataSanitizerProcessor($app->make($sanitizerId));
+                }
+            );
+            $this->app->tag(SensitiveDataSanitizerProcessor::class, [ConfigTag::ProcessorConfigProvider->value]);
+        }
+
         // Override default logger only if enabled
         if (\config('easy-logging.override_default_logger', true) === false) {
             return;
@@ -78,24 +98,5 @@ final class EasyLoggingServiceProvider extends ServiceProvider
 
         // Override default logger alias
         $this->app->alias(LoggerInterface::class, 'logger');
-
-        // Sensitive data sanitizer
-        if (\config('easy-logging.sensitive_data_sanitizer.enabled', false)) {
-            $this->app->singleton(
-                SensitiveDataSanitizerProcessor::class,
-                static function (Container $app): SensitiveDataSanitizerProcessor {
-                    $sanitizerId = SensitiveDataSanitizerInterface::class;
-
-                    if (\interface_exists($sanitizerId) === false || $app->has($sanitizerId) === false) {
-                        throw new LogicException(
-                            'To use sensitive data sanitization, the package eonx-com/easy-utils must be installed,
-                            and its service provider must be registered'
-                        );
-                    }
-
-                    return new SensitiveDataSanitizerProcessor($app->make($sanitizerId));
-                }
-            );
-        }
     }
 }
