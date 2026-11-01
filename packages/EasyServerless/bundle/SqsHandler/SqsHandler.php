@@ -14,7 +14,6 @@ use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
 use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsReceivedStamp;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsXrayTraceHeaderStamp;
@@ -90,33 +89,6 @@ final class SqsHandler extends AbstractSqsHandler
         // The number of retries comes only from SQS, a RedeliveryStamp serialized in the message is not relevant
         $envelope = $envelope->withoutAll(RedeliveryStamp::class);
 
-        // SQS keeps no state about why a message was requeued, only how many times it was received.
-        // When the retry strategy gave up on the previous attempt before appMaxRetries was reached, the message
-        // was requeued so it can reach the DLQ, and must not be executed again
-        if ($this->isAttemptAllowedByRetryStrategy($envelope, $sqsRecord) === false) {
-            $this->logger?->debug(
-                \sprintf(
-                    'Skipping MessageId "%s" because the retry strategy did not allow attempt %d',
-                    $sqsRecord->getMessageId(),
-                    $sqsRecord->getApproximateReceiveCount()
-                )
-            );
-
-            // Without partial batch failure, the Lambda invocation must fail, otherwise SQS deletes the message
-            // instead of keeping it until it reaches the DLQ
-            if ($this->partialBatchFailure === false) {
-                throw new RuntimeException(\sprintf(
-                    'SQS Record "%s" is not allowed another attempt by the retry strategy and is requeued '
-                    . 'so it can reach the DLQ',
-                    $sqsRecord->getMessageId()
-                ));
-            }
-
-            $this->scheduleForRetry($sqsRecord);
-
-            return;
-        }
-
         try {
             $stamps = [
                 new AmazonSqsReceivedStamp($sqsRecord->getMessageId()),
@@ -175,10 +147,14 @@ final class SqsHandler extends AbstractSqsHandler
             };
             $shouldRetry = $retryStopReason === null;
 
-            // As explained in parent::shouldSkipRecord(), when the application will not retry a message we must
-            // still requeue it so it can end up in the DLQ if configured, except when the application is explicitly
-            // preventing retries using an Unrecoverable throwable
-            $shouldRequeue = $shouldRetry === false && $isThrowableExplicitlyUnrecoverable === false;
+            // As explained in parent::shouldSkipRecord(), when the application will not retry a message on its last
+            // attempt we must still requeue it so it can end up in the DLQ if configured, except when the application
+            // is explicitly preventing retries using an Unrecoverable throwable.
+            // When the retry strategy stops earlier, the record is acknowledged: SQS only counts receives, so the next
+            // receive could not tell this message from one that was never executed (e.g. skipped by the handler)
+            $shouldRequeue = $shouldRetry === false
+                && $isThrowableExplicitlyUnrecoverable === false
+                && $hasReachedAppMaxRetries;
 
             if ($shouldRetry === false) {
                 $this->logger?->error(
@@ -276,27 +252,6 @@ final class SqsHandler extends AbstractSqsHandler
         }
 
         return null;
-    }
-
-    /**
-     * The first attempt is always allowed. Any next attempt is allowed only if the retry strategy allowed a retry
-     * after the previous attempt. The throwable of the previous attempt is not known anymore.
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    private function isAttemptAllowedByRetryStrategy(Envelope $envelope, SqsRecord $sqsRecord): bool
-    {
-        $receiveCount = $sqsRecord->getApproximateReceiveCount();
-
-        if ($receiveCount <= 1) {
-            return true;
-        }
-
-        $retryStrategy = $this->getRetryStrategyForTransport($this->transportName);
-
-        return $retryStrategy !== null
-            && $retryStrategy->isRetryable($envelope->with(new RedeliveryStamp($receiveCount - 2)));
     }
 
     private function isThrowableExplicitlyUnRecoverable(Throwable $throwable): bool
