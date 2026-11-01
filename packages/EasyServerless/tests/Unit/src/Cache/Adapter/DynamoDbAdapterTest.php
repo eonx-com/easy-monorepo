@@ -41,7 +41,10 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
             'key',
             $this->batchWriteRequests[1]['RequestItems'][self::TABLE_NAME][0]['PutRequest']['Item']['key_id']['S']
         );
-        self::assertSame('value', $sut->getItem('key')->get());
+        self::assertSame(
+            $this->batchWriteRequests[0]['RequestItems'][self::TABLE_NAME][0]['PutRequest']['Item'],
+            $this->items['key']
+        );
     }
 
     /**
