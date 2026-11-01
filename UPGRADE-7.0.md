@@ -2,24 +2,14 @@
 
 This guide has two parts:
 
-1. [Prepare on 6.x](#1-prepare-on-6x): changes you can make now, on the latest 6.x release. Test them before you switch.
+1. [Prepare on 6.x](#1-prepare-on-6x): changes you can make on the latest 6.x release. Test them before you switch.
 2. [Upgrade to 7.0](#2-upgrade-to-70): changes that apply when you switch to 7.0.
 
-Packages that are not listed have no changes other than the [requirements](#requirements).
+Packages that are not listed have no changes other than the [requirements](#requirements). All `eonx-com/*`
+packages in one app must use the same major version.
 
-## Install a pre-release
-
-7.0 pre-releases (`7.0.0-alpha.*`) are tagged from the `7.x` branch. To install one, allow unstable versions in your
-`composer.json`:
-
-```json
-{
-    "minimum-stability": "alpha",
-    "prefer-stable": true
-}
-```
-
-Then require the packages with `^7.0`. All `eonx-com/*` packages in one app must use the same major version.
+Config examples use `App::config()` in `config/packages/*.php` (namespace
+`Symfony\Component\DependencyInjection\Loader\Configurator`).
 
 <br>
 
@@ -39,7 +29,7 @@ Then require the packages with `^7.0`. All `eonx-com/*` packages in one app must
 ### EasyLogging (Symfony)
 
 - [ ] Install `symfony/monolog-bundle` (3.11.1 or later) and register `MonologBundle`.
-- [ ] Set `easy_logging.use_symfony_monolog_bundle: true`. In 7.0 this is the only mode.
+- [ ] Set `'use_symfony_monolog_bundle' => true` in `easy_logging`. In 7.0 this is the only mode.
 - [ ] Declare your Monolog handlers in `monolog.handlers`. See [EasyLogging](#easylogging) below.
 - [ ] Replace services that implement `HandlerConfigProviderInterface` or `LoggerConfiguratorInterface` with Monolog
   config. In this mode 6.x already ignores them.
@@ -51,8 +41,8 @@ Then require the packages with `^7.0`. All `eonx-com/*` packages in one app must
 
 ### EasyLogging (Symfony and Laravel)
 
-- [ ] Enable the sensitive data sanitizer: `easy_logging.sensitive_data_sanitizer.enabled: true` (Laravel:
-  `easy-logging.sensitive_data_sanitizer.enabled => true`). It needs `EasyUtilsBundle` (Laravel:
+- [ ] Enable the sensitive data sanitizer: `'sensitive_data_sanitizer' => ['enabled' => true]` in `easy_logging`
+  (Laravel: the same in `config/easy-logging.php`). It needs `EasyUtilsBundle` (Laravel:
   `EonX\EasyUtils\Laravel\EasyUtilsServiceProvider`). In 7.0 it is enabled by default.
 
 ### EasyDoctrine
@@ -67,13 +57,19 @@ Then require the packages with `^7.0`. All `eonx-com/*` packages in one app must
   `batch_class` / `batch_item_class` config). 7.0 does not convert old names on read anymore:
 
   ```sql
+  -- PostgreSQL, SQLite
+  UPDATE easy_batches SET class = REPLACE(class, 'EonX\EasyBatch\Objects\', 'EonX\EasyBatch\Common\ValueObject\');
+  UPDATE easy_batch_items SET class = REPLACE(class, 'EonX\EasyBatch\Objects\', 'EonX\EasyBatch\Common\ValueObject\');
+
+  -- MySQL, MariaDB (a backslash in a string literal must be doubled)
   UPDATE easy_batches SET class = REPLACE(class, 'EonX\\EasyBatch\\Objects\\', 'EonX\\EasyBatch\\Common\\ValueObject\\');
   UPDATE easy_batch_items SET class = REPLACE(class, 'EonX\\EasyBatch\\Objects\\', 'EonX\\EasyBatch\\Common\\ValueObject\\');
   ```
 
 ### EasyServerless
 
-- [ ] Use `EonX\EasyServerless\Bundle\SqsHandler\SqsHandler` as the Lambda SQS handler. Stop using `ReportBusDriver`.
+- [ ] Symfony: use `EonX\EasyServerless\Bundle\SqsHandler\SqsHandler` as the Lambda SQS handler. Stop using
+  `ReportBusDriver`. Laravel is not affected.
 - [ ] Remove the `easy_serverless.easy_error_handler` config key. It does nothing on 6.x.
 
 ### EasyUtils
@@ -83,8 +79,8 @@ Then require the packages with `^7.0`. All `eonx-com/*` packages in one app must
 
 ### EasyWebhook
 
-- [ ] Enable `easy_webhook.request_limits.enabled: true` (Laravel: `easy-webhook.request_limits.enabled => true`)
-  and test it. In 7.0 it is enabled by default.
+- [ ] Enable `'request_limits' => ['enabled' => true]` in `easy_webhook` (Laravel: the same in
+  `config/easy-webhook.php`) and test it. In 7.0 it is enabled by default.
 
 ### EasyTest
 
@@ -202,7 +198,7 @@ Then require the packages with `^7.0`. All `eonx-com/*` packages in one app must
   `#[AsEntityDeletedEventListener]`.
 - `FixPostgreSqlDefaultSchemaListener` is removed. If you registered it, remove the registration.
 - The `easy_doctrine` Monolog channel is registered when `MonologBundle` is registered (6.x: only with
-  `use_symfony_monolog_bundle: true`).
+  `'use_symfony_monolog_bundle' => true`).
 
 ### EasyEncryption
 
@@ -212,10 +208,14 @@ Then require the packages with `^7.0`. All `eonx-com/*` packages in one app must
   `default_hash_normalizations`. If you call `HashCalculatorInterface` directly, use
   `EncryptableFieldHasherInterface::hashForField()` instead.
 - AWS CloudHSM: the default `lowercase` normalization now applies before hashing, so hashes of mixed-case values
-  change. To keep 6.x hashes, set `default_hash_normalizations: []`.
-- The HMAC secret is now `easy_encryption.default_encryption_key` (6.x: `APP_SECRET`). The default is still
-  `%env(APP_SECRET)%`. If you changed `default_encryption_key`, all hashes change: set the `$secret` argument of
-  `HashCalculatorInterface` to `APP_SECRET`, or rehash your data.
+  change. To keep 6.x hashes, set `'default_hash_normalizations' => []` in `easy_encryption`.
+- HMAC secret:
+  - Symfony: the secret is now the `easy_encryption.default_encryption_key` parameter (6.x: `APP_SECRET`). The
+    default is still `%env(APP_SECRET)%`. If you changed `default_encryption_key`, all hashes change: set the
+    `$secret` argument of `HashCalculatorInterface` to `%env(APP_SECRET)%`, or rehash your data.
+  - Laravel: without AWS CloudHSM, the provider now registers `HmacSha512HashCalculator` with
+    `easy-encryption.default_encryption_key` (default `env('APP_KEY')`). 6.x did not register it. If you bound your
+    own `HashCalculatorInterface`, make sure your binding still wins, or rehash your data.
 - If you implement these interfaces yourself:
   - `ObjectEncryptor`: `$hashCalculator` argument → `$fieldHasher` (`EncryptableFieldHasherInterface`).
   - The hash callable passed to `EncryptableInterface::encrypt()` is now
@@ -266,14 +266,19 @@ Symfony:
 - The default stream handler is removed. **Without `monolog.handlers`, all logs are lost.** Declare at least one
   handler:
 
-  ```yaml
-  # config/packages/monolog.yaml
-  monolog:
-      handlers:
-          main:
-              type: stream
-              path: 'php://stderr'
-              formatter: easy_logging.formatter.json
+  ```php
+  // config/packages/monolog.php
+  return App::config([
+      'monolog' => [
+          'handlers' => [
+              'main' => [
+                  'type' => 'stream',
+                  'path' => 'php://stderr',
+                  'formatter' => 'easy_logging.formatter.json',
+              ],
+          ],
+      ],
+  ]);
   ```
 
 - `LoggerFactoryInterface`, `easy_logging.logger` and the `logger` alias to it are removed. MonologBundle provides
@@ -284,12 +289,17 @@ Symfony:
 - `DefaultStreamHandlerCompilerPass` and `ReplaceChannelsDefinitionCompilerPass` are removed.
 - `bugsnag_handler` is now an object. `true` / `false` still work:
 
-  ```yaml
-  easy_logging:
-      bugsnag_handler:
-          enabled: true
-          level: 400        # was bugsnag_handler_level
-          channels: [app]   # was bugsnag_handler_channels
+  ```php
+  // config/packages/easy_logging.php
+  return App::config([
+      'easy_logging' => [
+          'bugsnag_handler' => [
+              'enabled' => true,
+              'level' => 400, // was 'bugsnag_handler_level'
+              'channels' => ['app'], // was 'bugsnag_handler_channels'
+          ],
+      ],
+  ]);
   ```
 
   The handler is always added to Monolog for these channels. `enabled` and `channels` must be compile-time values:
@@ -300,7 +310,8 @@ Symfony and Laravel:
 - The sensitive data sanitizer is enabled by default. It needs `EasyUtilsBundle` (Laravel:
   `EonX\EasyUtils\Laravel\EasyUtilsServiceProvider`). Without it you get a `LogicException` (Symfony: at compilation,
   Laravel: when the first logger is created). Register it, or disable the sanitizer:
-  `easy_logging.sensitive_data_sanitizer: false` (Laravel: `easy-logging.sensitive_data_sanitizer.enabled => false`).
+  `'sensitive_data_sanitizer' => false` in `easy_logging` (Laravel: `'sensitive_data_sanitizer' => ['enabled' => false]`
+  in `config/easy-logging.php`).
 - `EonX\EasyLogging\Logger\LoggerAwareTrait` is removed.
 - `BugsnagMonologHandler` has a new default formatter: `[%datetime%] %channel%.%level_name%: %message%`. Context and
   extra are only in the report metadata now. To get the old text, call `setFormatter()` on the handler.
@@ -339,8 +350,9 @@ Laravel:
 
 ### EasyServerless
 
-- `ReportBusDriver` and its alias `EonX\EasyServerless\EasyErrorHandler\BusDriver\ReportBusDriver` are removed. Use
-  `EonX\EasyServerless\Bundle\SqsHandler\SqsHandler`. With the Bref SQS consumer, errors are not reported anymore.
+- Symfony: `ReportBusDriver` and its alias `EonX\EasyServerless\EasyErrorHandler\BusDriver\ReportBusDriver` are
+  removed. Use `EonX\EasyServerless\Bundle\SqsHandler\SqsHandler`. With the Bref SQS consumer, errors are not
+  reported anymore. Laravel keeps `EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler`.
 - The `easy_serverless.easy_error_handler` config key is removed.
 - `LumenHttpKernel` is removed.
 
@@ -375,8 +387,26 @@ Laravel:
   - `$expectedFailures`: `[Exception::class => code]` means "fails at least once, nothing else fails".
     `[[Exception::class => code], ...]` means "exactly this list".
   - `$expectedDelays`: the exact clock moves between retries. `null` skips the check. For exact values set
-    `retry_strategy.jitter: 0`.
-  - Test transports must use `dsn: 'in-memory-persistent://'`. EasyTestBundle registers this transport factory.
+    `'jitter' => 0` in the transport `retry_strategy`.
+  - Test transports must use the `in-memory-persistent://` DSN. EasyTestBundle registers this transport factory:
+
+    ```php
+    // config/packages/test/messenger.php
+    return App::config([
+        'framework' => [
+            'messenger' => [
+                'transports' => [
+                    'async' => [
+                        'dsn' => 'in-memory-persistent://',
+                        'retry_strategy' => ['jitter' => 0],
+                    ],
+                    'failed' => 'in-memory-persistent://',
+                ],
+            ],
+        ],
+    ]);
+    ```
+
 
   ```php
   // 6.x
@@ -406,10 +436,15 @@ Laravel:
 ### EasyWebhook
 
 - `request_limits` is enabled by default (Symfony and Laravel). Defaults: 10 s idle timeout, 30 s max duration, 1 MiB
-  max response. Change `easy_webhook.request_limits.*`, or disable it:
+  max response. Change the `request_limits` options, or disable it:
 
-  ```yaml
-  easy_webhook:
-      request_limits:
-          enabled: false
+  ```php
+  // config/packages/easy_webhook.php
+  return App::config([
+      'easy_webhook' => [
+          'request_limits' => [
+              'enabled' => false,
+          ],
+      ],
+  ]);
   ```
