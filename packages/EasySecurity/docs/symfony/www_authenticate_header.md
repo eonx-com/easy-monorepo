@@ -9,6 +9,10 @@ weight: 1003
 of the main request that does not have one yet, whichever code built the response (the authenticator, an
 exception handler, a controller).
 
+This feature is available for Symfony only. The Laravel integration does not build 401 responses, so Laravel
+applications have to add the header themselves (for example in the middleware or the exception handler that returns
+401).
+
 The challenge is resolved from the token the configured API token decoder (`token_decoder`) finds in the request:
 
 | Token | Header |
