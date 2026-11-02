@@ -8,6 +8,8 @@ use EonX\EasyApiToken\Common\ValueObject\ApiKey;
 use EonX\EasyApiToken\Common\ValueObject\BasicAuth;
 use EonX\EasyApiToken\Common\ValueObject\HashedApiKey;
 use EonX\EasyApiToken\Common\ValueObject\Jwt;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
 
@@ -23,6 +25,7 @@ final readonly class WwwAuthenticateHeaderResolver
         private string $defaultChallenge,
         private ?ApiTokenDecoderFactoryInterface $apiTokenDecoderFactory = null,
         private ?string $apiTokenDecoder = null,
+        private LoggerInterface $logger = new NullLogger(),
     ) {
     }
 
@@ -31,7 +34,11 @@ final readonly class WwwAuthenticateHeaderResolver
         try {
             $token = $this->apiTokenDecoderFactory?->build($this->apiTokenDecoder)
                 ->decode($request);
-        } catch (Throwable) {
+        } catch (Throwable $throwable) {
+            $this->logger->warning('Cannot resolve WWW-Authenticate challenge, the default one is used', [
+                'exception' => $throwable,
+            ]);
+
             return $this->defaultChallenge;
         }
 

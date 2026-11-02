@@ -16,6 +16,9 @@ use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateHeaderResolver;
 use EonX\EasySecurity\Tests\Stub\Decoder\TokenDecoderStub;
 use EonX\EasySecurity\Tests\Stub\Factory\ApiTokenDecoderFactoryStub;
 use EonX\EasySecurity\Tests\Unit\AbstractUnitTestCase;
+use Monolog\Handler\TestHandler;
+use Monolog\Level;
+use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
@@ -80,12 +83,6 @@ final class WwwAuthenticateHeaderResolverTest extends AbstractUnitTestCase
             'authorization' => 'Basic ' . \base64_encode('api-key:'),
             'expectedChallenge' => 'Default',
         ];
-
-        yield 'Decoder factory throws exception' => [
-            'decoder' => new InvalidDefaultDecoderException('No default decoder set'),
-            'authorization' => null,
-            'expectedChallenge' => 'Default',
-        ];
     }
 
     #[DataProvider('provideResolveData')]
@@ -103,6 +100,25 @@ final class WwwAuthenticateHeaderResolverTest extends AbstractUnitTestCase
         $result = $sut->resolve($request);
 
         self::assertSame($expectedChallenge, $result);
+    }
+
+    public function testResolveSucceedsAndLogsExceptionWhenDecoderFactoryThrows(): void
+    {
+        $exception = new InvalidDefaultDecoderException('No default decoder set');
+        $logHandler = new TestHandler();
+        $sut = new WwwAuthenticateHeaderResolver(
+            defaultChallenge: 'Default',
+            apiTokenDecoderFactory: new ApiTokenDecoderFactoryStub($exception),
+            logger: new Logger('test', [$logHandler]),
+        );
+
+        $result = $sut->resolve(new Request());
+
+        self::assertSame('Default', $result);
+        self::assertTrue($logHandler->hasRecordThatPasses(
+            static fn ($record): bool => $record->context['exception'] === $exception,
+            Level::Warning
+        ));
     }
 
     public function testResolveSucceedsWithoutDecoderFactory(): void
