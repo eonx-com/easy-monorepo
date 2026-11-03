@@ -89,6 +89,24 @@ final class RequestResponseLoggingMiddlewareTest extends AbstractLumenTestCase
         self::assertSame(200, $response->getStatusCode());
     }
 
+    public function testTerminateSucceedsWithDurationFromRequestTimeFloat(): void
+    {
+        $app = $this->createApplicationWithRoutes();
+        $request = Request::create(
+            uri: '/ping-free',
+            server: [
+                'REQUEST_TIME_FLOAT' => \microtime(true) - 5,
+            ]
+        );
+
+        $app->handle($request);
+
+        $responseContext = $this->getSingleRecord()
+            ->context['response'];
+        self::assertIsArray($responseContext);
+        self::assertGreaterThanOrEqual(5000.0, $responseContext['duration_ms']);
+    }
+
     public function testTerminateSucceedsWithEncodedRouteParameter(): void
     {
         $app = $this->createApplicationWithRoutes();
@@ -147,6 +165,20 @@ final class RequestResponseLoggingMiddlewareTest extends AbstractLumenTestCase
             ],
             $requestContext['route_params']
         );
+    }
+
+    public function testTerminateSucceedsWithNullDurationWhenRequestTimeFloatIsMissing(): void
+    {
+        $app = $this->createApplicationWithRoutes();
+        $request = Request::create('/ping-free');
+        $request->server->remove('REQUEST_TIME_FLOAT');
+
+        $app->handle($request);
+
+        $responseContext = $this->getSingleRecord()
+            ->context['response'];
+        self::assertIsArray($responseContext);
+        self::assertNull($responseContext['duration_ms']);
     }
 
     public function testTerminateSucceedsWithUnmatchedPath(): void

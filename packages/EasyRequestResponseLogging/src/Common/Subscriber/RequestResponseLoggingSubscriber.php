@@ -5,15 +5,12 @@ namespace EonX\EasyRequestResponseLogging\Common\Subscriber;
 
 use EonX\EasyRequestResponseLogging\Common\Logger\RequestResponseLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 
 final readonly class RequestResponseLoggingSubscriber implements EventSubscriberInterface
 {
     private const DURATION_MS_ATTRIBUTE = '_easy_request_response_logging_duration_ms';
-
-    private const STARTED_AT_ATTRIBUTE = '_easy_request_response_logging_started_at';
 
     public function __construct(
         private RequestResponseLogger $requestResponseLogger,
@@ -26,21 +23,9 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
     public static function getSubscribedEvents(): array
     {
         return [
-            RequestEvent::class => ['onKernelRequest', 1024],
             ResponseEvent::class => ['onKernelResponse', -1024],
             TerminateEvent::class => ['onKernelTerminate', -1024],
         ];
-    }
-
-    public function onKernelRequest(RequestEvent $event): void
-    {
-        if ($event->isMainRequest() === false) {
-            return;
-        }
-
-        $event->getRequest()
-            ->attributes
-            ->set(self::STARTED_AT_ATTRIBUTE, \microtime(true));
     }
 
     public function onKernelResponse(ResponseEvent $event): void
@@ -49,12 +34,15 @@ final readonly class RequestResponseLoggingSubscriber implements EventSubscriber
             return;
         }
 
-        $attributes = $event->getRequest()
-            ->attributes;
-        $startedAt = $attributes->get(self::STARTED_AT_ATTRIBUTE);
+        $request = $event->getRequest();
+        // Set per request by PHP-FPM, Bref and OpenSwoole, so it also covers the kernel boot and early listeners
+        $startedAt = $request->server->get('REQUEST_TIME_FLOAT');
 
         if (\is_float($startedAt)) {
-            $attributes->set(self::DURATION_MS_ATTRIBUTE, \round((\microtime(true) - $startedAt) * 1000, 2));
+            $request->attributes->set(
+                self::DURATION_MS_ATTRIBUTE,
+                \round((\microtime(true) - $startedAt) * 1000, 2)
+            );
         }
     }
 

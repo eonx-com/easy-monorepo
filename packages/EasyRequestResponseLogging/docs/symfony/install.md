@@ -61,8 +61,10 @@ masked in the path too. E.g. with the `/token/{token}` route, `/token/<value>` i
 Name the route parameters which carry secrets after a key from `keys_to_mask`, or add their names to it. A path
 without a matched route has no known structure, so only the sanitizer itself applies to it.
 
-`duration_ms` is the time between the `kernel.request` and `kernel.response` events. It is `null` when a listener with a
-priority higher than 1024 returned the response before the start time was recorded.
+`duration_ms` is the time between the request start (`REQUEST_TIME_FLOAT` server parameter) and the `kernel.response`
+event, so it includes the kernel boot and all `kernel.request` listeners. The request start depends on the runtime:
+PHP-FPM sets it when it receives the request, Bref when it converts the Lambda event (a cold start is not included),
+OpenSwoole when it dispatches the request to a worker. It is `null` when the runtime does not set `REQUEST_TIME_FLOAT`.
 
 Headers, query and body are masked by the EasyUtils sensitive data sanitizer. It matches keys regardless of case,
 separators (space, `-` and `_`) and an `x` prefix, e.g. the `X-Api-Key` header and the `apiKey` field match the

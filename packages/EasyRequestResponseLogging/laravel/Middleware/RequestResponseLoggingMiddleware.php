@@ -20,16 +20,19 @@ final readonly class RequestResponseLoggingMiddleware
 
     public function handle(Request $request, Closure $next): mixed
     {
-        $startedAt = \microtime(true);
-
         try {
             return $next($request);
         } finally {
+            // Set per request by PHP-FPM, Bref and OpenSwoole, so it also covers the application boot
+            $startedAt = $request->server->get('REQUEST_TIME_FLOAT');
+
             // Set also when an exception is thrown, as Lumen renders it outside the middleware pipeline
-            $request->attributes->set(
-                self::DURATION_MS_ATTRIBUTE,
-                \round((\microtime(true) - $startedAt) * 1000, 2)
-            );
+            if (\is_float($startedAt)) {
+                $request->attributes->set(
+                    self::DURATION_MS_ATTRIBUTE,
+                    \round((\microtime(true) - $startedAt) * 1000, 2)
+                );
+            }
         }
     }
 

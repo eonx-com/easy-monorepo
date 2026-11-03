@@ -44,7 +44,14 @@ The service provider registers the `RequestResponseLoggingMiddleware` global ter
 
 - Laravel: the middleware is prepended to the global middleware, so the logged duration covers the whole pipeline.
 - Lumen: the middleware is appended to the global middleware. Register `EasyRequestResponseLoggingServiceProvider`
-  before the other service providers which register global middleware, to include them in the logged duration.
+  before the other service providers which register global middleware, to include their post-processing in the
+  logged duration.
+
+`duration_ms` is the time between the request start (`REQUEST_TIME_FLOAT` server parameter) and the moment the
+middleware gets the response, so it includes the application boot. The request start depends on the runtime: PHP-FPM
+sets it when it receives the request, Bref when it converts the Lambda event (a cold start is not included),
+OpenSwoole when it dispatches the request to a worker. It is `null` when the runtime does not set
+`REQUEST_TIME_FLOAT`.
 
 <br>
 

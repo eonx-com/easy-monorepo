@@ -383,6 +383,44 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertTrue($request->attributes->get(LastTerminateListener::ATTRIBUTE));
     }
 
+    public function testOnKernelTerminateSucceedsWithDurationFromRequestTimeFloat(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            server: [
+                'REQUEST_TIME_FLOAT' => \microtime(true) - 5,
+            ]
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $responseContext = self::getSingleRecord()->context['response'];
+        self::assertIsArray($responseContext);
+        self::assertGreaterThanOrEqual(5000.0, $responseContext['duration_ms']);
+    }
+
+    public function testOnKernelTerminateSucceedsWithDurationWhenResponseIsReturnedEarly(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            server: [
+                'HTTP_' . \strtoupper(\str_replace('-', '_', EarlyResponseListener::HEADER)) => '1',
+            ]
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $responseContext = self::getSingleRecord()->context['response'];
+        self::assertIsArray($responseContext);
+        self::assertIsFloat($responseContext['duration_ms']);
+    }
+
     public function testOnKernelTerminateSucceedsWithEscapedJsonStringBody(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
@@ -485,16 +523,12 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         );
     }
 
-    public function testOnKernelTerminateSucceedsWithNullDurationWhenResponseIsReturnedEarly(): void
+    public function testOnKernelTerminateSucceedsWithNullDurationWhenRequestTimeFloatIsMissing(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
         $kernel = self::bootKernel();
-        $request = Request::create(
-            uri: '/response',
-            server: [
-                'HTTP_' . \strtoupper(\str_replace('-', '_', EarlyResponseListener::HEADER)) => '1',
-            ]
-        );
+        $request = Request::create(uri: '/response');
+        $request->server->remove('REQUEST_TIME_FLOAT');
 
         $response = $kernel->handle($request);
         $kernel->terminate($request, $response);
