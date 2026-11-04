@@ -38,6 +38,43 @@ Config examples use `App::config()` in `config/packages/*.php` (namespace
 - [ ] Inject `monolog.logger.easy_http_client` instead of `easy_http_client.logger`.
 - [ ] Inject `monolog.logger.security` instead of `easy_security.logger`.
 - [ ] Stop using `EonX\EasyLogging\Logger\LoggerAwareTrait`. Use constructor injection.
+- [ ] EasyDoctrine AWS RDS: remove `aws_rds.iam.logger` / `aws_rds.ssl.logger` if they point to a logger created with
+  `LoggerFactory`. The bundle then uses `monolog.logger.easy_doctrine`.
+- [ ] Bugsnag: list every channel to report in `bugsnag_handler_channels` (for example `['app', 'easy_doctrine']`).
+  The default is `app` only.
+
+How to move the old config to Monolog:
+
+| 6.x (LoggerFactory) | Monolog config |
+|---|---|
+| `HandlerConfigProvider` with `channels([...])` | Handler with `'channels' => ['app', 'easy_http_client']` |
+| `HandlerConfigProvider` with `exceptChannels([...])` | Handler with `'channels' => ['!app', '!easy_http_client']` |
+| `ProcessorConfigProvider` | Register the processor as an autoconfigured service. MonologBundle tags every `ProcessorInterface`. |
+| `LoggerConfigurator` that filters levels | Handler `'level'` |
+| Custom formatter on a handler | Handler `'formatter'` (a service id, for example `easy_logging.formatter.json`) |
+
+Tips:
+
+- A channel without a handler loses its logs. Add a catch-all handler that excludes the channels you already route,
+  for example `'channels' => ['!app', '!easy_http_client', '!easy_doctrine']` with `'level' => 'warning'`.
+- MonologBundle adds its own `PsrLogMessageProcessor` to each handler. If you register `PsrLogMessageProcessor`
+  yourself (for example with `$removeUsedContextFields`), set `'process_psr_3_messages' => false` on the handlers.
+- Tests: replace `'stream_handler' => false` and the `LoggerStub` logger class parameter with `null` handlers in
+  `config/packages/test/monolog.php`. Override each handler by name, and the Bugsnag handler by
+  `easy_logging_bugsnag`. Keep `'level' => 'debug'` on test handlers: Monolog runs processors only if a handler
+  accepts the record, so `MonologTrait` sees nothing below the handler level.
+
+  ```php
+  // config/packages/test/monolog.php
+  return App::config([
+      'monolog' => [
+          'handlers' => [
+              'app' => ['type' => 'null', 'level' => 'debug', 'formatter' => null],
+              'easy_logging_bugsnag' => ['type' => 'null'],
+          ],
+      ],
+  ]);
+  ```
 
 ### EasyLogging (Symfony and Laravel)
 
@@ -84,7 +121,8 @@ Config examples use `App::config()` in `config/packages/*.php` (namespace
 
 ### EasyTest
 
-- [ ] Replace `LoggerTrait` and `LoggerStub` with `EonX\EasyTest\Monolog\Trait\MonologTrait`.
+- [ ] Replace `LoggerTrait` and `LoggerStub` with `EonX\EasyTest\Monolog\Trait\MonologTrait`. Replace
+  `getLoggerService()->hasRecord([...], $level)` with `assertLoggerHas($level, $message, $context)`.
 - [ ] `EasyErrorHandlerAssertionTrait`: replace `assertErrorCodeExistsInReportedErrors($code)` with
   `assertErrorHandlerReportedError($code)`. Remove `assertEmptyReportedErrors()` calls (the trait checks this after
   each test). Replace `getErrorHandlerReportedThrowables()` with `TraceableErrorHandlerStub::getAllReportedErrors()`.
@@ -263,8 +301,8 @@ Symfony:
 - Options are removed: `use_symfony_monolog_bundle`, `default_channel`, `lazy_loggers`, `stream_handler`,
   `stream_handler_level`, `bugsnag_handler_level`, `bugsnag_handler_channels`. Remove them, or compilation fails with
   "Unrecognized option".
-- The default stream handler is removed. **Without `monolog.handlers`, all logs are lost.** Declare at least one
-  handler:
+- The default stream handler is removed. **Without `monolog.handlers`, all logs are lost.** In 6.x it wrote all
+  channels except `event` to `php://stdout` at `debug` level. Declare at least one handler:
 
   ```php
   // config/packages/monolog.php
@@ -273,8 +311,10 @@ Symfony:
           'handlers' => [
               'main' => [
                   'type' => 'stream',
-                  'path' => 'php://stderr',
-                  'formatter' => 'easy_logging.formatter.json',
+                  'path' => 'php://stdout',
+                  'level' => 'debug',
+                  'channels' => ['!event'],
+                  'formatter' => 'easy_logging.formatter.json', // optional
               ],
           ],
       ],
@@ -314,7 +354,8 @@ Symfony and Laravel:
   in `config/easy-logging.php`).
 - `EonX\EasyLogging\Logger\LoggerAwareTrait` is removed.
 - `BugsnagMonologHandler` has a new default formatter: `[%datetime%] %channel%.%level_name%: %message%`. Context and
-  extra are only in the report metadata now. To get the old text, call `setFormatter()` on the handler.
+  extra are only in the report metadata now. To get the old text, call `setFormatter()` on the handler. If you
+  already set this format on 6.x, remove your handler service override.
 - `BugsnagSeverityResolver` mapping changed. To keep the old mapping, implement `BugsnagSeverityResolverInterface`:
 
   | Monolog level | 6.x | 7.0 |
