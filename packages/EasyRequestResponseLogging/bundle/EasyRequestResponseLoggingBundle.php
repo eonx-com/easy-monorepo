@@ -44,7 +44,7 @@ final class EasyRequestResponseLoggingBundle extends AbstractBundle
         $container->import('config/services.php');
 
         if ($this->useSymfonyMonologBundle === false && $this->isBundleEnabled('EasyLoggingBundle', $builder)) {
-            $container->import('config/services_easy_logging.php');
+            $container->import('config/easy_logging.php');
         }
     }
 
