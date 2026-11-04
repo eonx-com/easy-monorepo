@@ -8,6 +8,7 @@ use ReflectionProperty;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
 use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
@@ -139,19 +140,7 @@ trait MessengerAssertionsTrait
             $transports[$transportName] = $transport;
         }
 
-        $alreadyRejectedCounts = \array_map(
-            static fn(InMemoryTransport $transport): int => \count($transport->getRejected()),
-            $transports
-        );
-
-        $clockAdvances = self::runMessengerWorker($transports);
-
-        $messageFailures = [];
-        foreach ($transports as $transportName => $transport) {
-            foreach (self::getMessageFailures($transport, $alreadyRejectedCounts[$transportName]) as $failure) {
-                $messageFailures[] = $failure;
-            }
-        }
+        [$clockAdvances, $messageFailures] = self::runMessengerWorker($transports);
 
         if (\array_is_list($expectedFailures) && $expectedFailures !== []) {
             /** @var list<array<class-string<\Throwable>, int|string|null>> $exactExpectedFailures */
@@ -493,24 +482,6 @@ trait MessengerAssertionsTrait
         return $description . \PHP_EOL . \PHP_EOL . $flattenException->getAsString();
     }
 
-    /**
-     * @return \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp[]
-     */
-    private static function getMessageFailures(InMemoryTransport $transport, int $skipRejectedCount = 0): array
-    {
-        $messageFailures = [];
-
-        foreach (\array_slice($transport->getRejected(), $skipRejectedCount) as $envelope) {
-            $errorDetailsStamp = $envelope->last(ErrorDetailsStamp::class);
-
-            if ($errorDetailsStamp !== null) {
-                $messageFailures[] = $errorDetailsStamp;
-            }
-        }
-
-        return $messageFailures;
-    }
-
     private static function getNextId(InMemoryTransport $transport): int
     {
         /** @var int $nextId */
@@ -572,7 +543,7 @@ trait MessengerAssertionsTrait
     /**
      * @param array<string, \Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport> $transports
      *
-     * @return list<float>
+     * @return array{list<float>, list<\Symfony\Component\Messenger\Stamp\ErrorDetailsStamp>}
      */
     private static function runMessengerWorker(array $transports): array
     {
@@ -589,7 +560,14 @@ trait MessengerAssertionsTrait
                     ->stop();
             }
         };
+        $messageFailures = [];
+        $collectMessageFailuresListener = static function (WorkerMessageFailedEvent $event) use (
+            &$messageFailures,
+        ): void {
+            $messageFailures[] = ErrorDetailsStamp::create($event->getThrowable());
+        };
         $eventDispatcher->addListener(WorkerRunningEvent::class, $stopWorkerOnIdleListener);
+        $eventDispatcher->addListener(WorkerMessageFailedEvent::class, $collectMessageFailuresListener);
         $eventDispatcher->addSubscriber($resetServicesListener);
 
         $expectedSentCounts = \array_map(
@@ -636,6 +614,7 @@ trait MessengerAssertionsTrait
             }
         } finally {
             $eventDispatcher->removeListener(WorkerRunningEvent::class, $stopWorkerOnIdleListener);
+            $eventDispatcher->removeListener(WorkerMessageFailedEvent::class, $collectMessageFailuresListener);
             $eventDispatcher->removeSubscriber($resetServicesListener);
 
             if ($messageLimitListener !== null) {
@@ -670,6 +649,6 @@ trait MessengerAssertionsTrait
             self::MAX_WORKER_RUNS
         ));
 
-        return $clockAdvances;
+        return [$clockAdvances, $messageFailures];
     }
 }

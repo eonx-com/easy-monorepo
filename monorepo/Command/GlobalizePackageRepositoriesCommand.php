@@ -30,8 +30,13 @@ final class GlobalizePackageRepositoriesCommand extends Command
             unset(
                 $composerJsonFileContents['repositories'],
                 $composerJsonFileContents['minimum-stability'],
-                $composerJsonFileContents['prefer-stable']
+                $composerJsonFileContents['prefer-stable'],
+                $composerJsonFileContents['config']['policy']
             );
+
+            if (isset($composerJsonFileContents['config']) && \count($composerJsonFileContents['config']) === 0) {
+                unset($composerJsonFileContents['config']);
+            }
 
             // Restore original versions from 'extra' section
             if (isset($composerJsonFileContents['extra']['original-versions'])) {
