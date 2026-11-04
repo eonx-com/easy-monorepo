@@ -53,6 +53,7 @@ final readonly class RequestResponseLoggingMiddleware
      */
     private function resolveRoute(Request $request): array
     {
+        /** @var \Illuminate\Routing\Route|object|string|null $route */
         $route = $request->route();
 
         // Original parameters are the raw path values, before route model binding

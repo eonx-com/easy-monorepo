@@ -138,6 +138,9 @@ final class LocalizePackageRepositoriesCommand extends Command
             throw new UnexpectedValueException('Invalid root composer.json content.');
         }
 
-        return $rootComposerJsonContents['config']['policy'] ?? null;
+        $config = $rootComposerJsonContents['config'] ?? null;
+        $policy = \is_array($config) ? ($config['policy'] ?? null) : null;
+
+        return \is_array($policy) ? $policy : null;
     }
 }
