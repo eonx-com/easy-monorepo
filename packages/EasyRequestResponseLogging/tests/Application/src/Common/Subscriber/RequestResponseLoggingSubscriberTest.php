@@ -79,6 +79,8 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         yield 'unmatched path with key=value segment' => ['/some/token=some-token', '/some/token=*REDACTED*'];
 
         yield 'unmatched path with card number' => ['/some/4111%201111%201111%201111', '/some/411111*REDACTED*1111'];
+
+        yield 'unmatched path with encoded ampersand' => ['/some/token/first-secret%26second-secret', '[omitted]'];
     }
 
     /**

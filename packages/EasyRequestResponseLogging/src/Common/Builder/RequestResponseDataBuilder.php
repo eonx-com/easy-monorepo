@@ -237,6 +237,11 @@ final readonly class RequestResponseDataBuilder
         $path = \rawurldecode($request->getPathInfo());
 
         if ($routeParameters === null) {
+            // The sanitizer stops masking at "&", so a decoded ampersand could expose the rest of a secret
+            if (\str_contains($path, '&')) {
+                return self::OMITTED_VALUE;
+            }
+
             return $this->sanitizeString($path) ?? self::OMITTED_VALUE;
         }
 
