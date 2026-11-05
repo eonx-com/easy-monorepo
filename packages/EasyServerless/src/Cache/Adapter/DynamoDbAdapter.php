@@ -189,10 +189,10 @@ final class DynamoDbAdapter extends AbstractAdapter
             return $failed;
         }
 
-        $writeRequests = null;
+        $requestItems = null;
 
         do {
-            if ($writeRequests === null) {
+            if ($requestItems === null) {
                 $writeRequests = [];
 
                 foreach ($values as $id => $data) {
@@ -211,17 +211,19 @@ final class DynamoDbAdapter extends AbstractAdapter
                         ]),
                     ]);
                 }
+
+                $requestItems = [
+                    $this->tableName => $writeRequests,
+                ];
             }
 
             $response = $this->dynamoDbClient->batchWriteItem(new BatchWriteItemInput([
-                'RequestItems' => [
-                    $this->tableName => $writeRequests,
-                ],
+                'RequestItems' => $requestItems,
             ]));
 
             // If there are unprocessed items, we need to retry them
-            $writeRequests = $response->getUnprocessedItems();
-            $hasUnprocessedItems = \count($writeRequests) > 0;
+            $requestItems = $response->getUnprocessedItems();
+            $hasUnprocessedItems = \count($requestItems) > 0;
         } while ($hasUnprocessedItems);
 
         return true;
