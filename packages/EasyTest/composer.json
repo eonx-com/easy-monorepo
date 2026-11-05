@@ -19,6 +19,10 @@
     },
     "require-dev": {
         "monolog/monolog": "^3.9",
+        "symfony/clock": "^7.2",
+        "symfony/event-dispatcher": "^7.2",
+        "symfony/framework-bundle": "^7.2",
+        "symfony/messenger": "^7.2",
         "symfony/uid": "^7.2"
     },
     "autoload": {
