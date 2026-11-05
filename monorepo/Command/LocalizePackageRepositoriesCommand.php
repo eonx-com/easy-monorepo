@@ -31,6 +31,7 @@ final class LocalizePackageRepositoriesCommand extends Command
         $filesystem = new Filesystem();
         $monorepoPackages = $this->getMonorepoPackages($composerJsonFiles);
         $monorepoPackageNames = \array_keys($monorepoPackages);
+        $policy = $this->getRootPolicy();
         $repositories = [];
 
         foreach ($monorepoPackages as $dir) {
@@ -62,6 +63,11 @@ final class LocalizePackageRepositoriesCommand extends Command
             $composerJsonFileContents['repositories'] = $repositories;
             $composerJsonFileContents['minimum-stability'] = 'dev';
             $composerJsonFileContents['prefer-stable'] = true;
+
+            // Apply root policy (e.g. ignored security advisories) to standalone package resolution
+            if ($policy !== null) {
+                $composerJsonFileContents['config']['policy'] = $policy;
+            }
 
             $filesystem->dumpFile(
                 $filename,
@@ -119,5 +125,22 @@ final class LocalizePackageRepositoriesCommand extends Command
         \ksort($packages);
 
         return $packages;
+    }
+
+    private function getRootPolicy(): ?array
+    {
+        $rootComposerJsonContents = \json_decode(
+            (string)\file_get_contents(__DIR__ . '/../../composer.json'),
+            true
+        );
+
+        if (\is_array($rootComposerJsonContents) === false) {
+            throw new UnexpectedValueException('Invalid root composer.json content.');
+        }
+
+        $config = $rootComposerJsonContents['config'] ?? null;
+        $policy = \is_array($config) ? ($config['policy'] ?? null) : null;
+
+        return \is_array($policy) ? $policy : null;
     }
 }

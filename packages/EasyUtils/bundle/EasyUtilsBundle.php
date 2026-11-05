@@ -29,6 +29,7 @@ final class EasyUtilsBundle extends AbstractBundle
         'cert',
         'client_secret',
         'code_verifier',
+        'cookie',
         'cvc',
         'cvv',
         'id_token',
@@ -36,10 +37,16 @@ final class EasyUtilsBundle extends AbstractBundle
         'password',
         'php_auth_pw',
         'php_auth_user',
+        'proxy_authorization',
+        'refresh_token',
+        'secret',
+        'secret_key',
         'security_code',
+        'set_cookie',
         'shared_key',
         'token',
         'verification_code',
+        'webhook_signature',
         '40309', // Value of the CURLOPT_CAINFO_BLOB constant
         '40291', // Value of the CURLOPT_SSLCERT_BLOB constant
         '40292', // Value of the CURLOPT_SSLKEY_BLOB constant
