@@ -32,7 +32,8 @@ Config examples use `App::config()` in `config/packages/*.php` (namespace
 - [ ] Set `'use_symfony_monolog_bundle' => true` in `easy_logging`. In 7.0 this is the only mode.
 - [ ] Declare your Monolog handlers in `monolog.handlers`. See [EasyLogging](#easylogging) below.
 - [ ] Replace services that implement `HandlerConfigProviderInterface` or `LoggerConfiguratorInterface` with Monolog
-  config. In this mode 6.x already ignores them.
+  config. In this mode Monolog loggers already ignore them. `easy_logging.logger` and direct
+  `LoggerFactory::create()` calls still use them on 6.x.
 - [ ] Inject `LoggerInterface` or `monolog.logger.<channel>`. Do not inject `LoggerFactoryInterface` or
   `easy_logging.logger`.
 - [ ] Inject `monolog.logger.easy_http_client` instead of `easy_http_client.logger`.
@@ -76,11 +77,13 @@ Tips:
   ]);
   ```
 
-### EasyLogging (Symfony and Laravel)
+### EasyLogging (sensitive data sanitizer)
 
-- [ ] Enable the sensitive data sanitizer: `'sensitive_data_sanitizer' => ['enabled' => true]` in `easy_logging`
-  (Laravel: the same in `config/easy-logging.php`). It needs `EasyUtilsBundle` (Laravel:
-  `EonX\EasyUtils\Laravel\EasyUtilsServiceProvider`). In 7.0 it is enabled by default.
+- [ ] Symfony: enable the sensitive data sanitizer: `'sensitive_data_sanitizer' => ['enabled' => true]` in
+  `easy_logging`. It needs `EasyUtilsBundle`. In 7.0 it is enabled by default.
+- [ ] Laravel: in 6.26.1 and earlier this option has no effect, because the provider does not add the sanitizer to
+  the logger. Use a later 6.x release to test it, or check it after you switch to 7.0. It needs
+  `EonX\EasyUtils\Laravel\EasyUtilsServiceProvider`.
 
 ### EasyDoctrine
 
@@ -147,22 +150,22 @@ Tips:
 | PHPUnit | `^10.5 \|\| ^11.5 \|\| ^12.5` | `^12.5 \|\| ^13.0` |
 | Laravel | 11 | 13 |
 | Lumen | supported | **removed** |
-| API Platform | `^3.4.17 \|\| ^4.3.17` | `^4.4 \|\| ^5.0` |
+| API Platform | `^3.4.17 \|\| ^4.3.17` | `^4.4 \|\| ^5.0.1` |
 | Doctrine DBAL | `^3.8` | `^3.8 \|\| ^4.4` |
 | Doctrine ORM | `^2.20` | `^2.20 \|\| ^3.6` |
 | DoctrineBundle | `^2.12` | `^2.12 \|\| ^3.2` |
 | `nesbot/carbon` | `^3.8.4` | `^3.12` |
 | `symfony/monolog-bundle` | `^3.11.1` | `^3.11.1 \|\| ^4.0` |
+| `bref/laravel-bridge` (EasyServerless, Laravel) | `^2.6 \|\| ^3.0` | `^3.0` |
 | `eonx-com/*` | `^6.x` | `^7.0` |
 
 - Lumen: all Lumen code is removed (for example `LumenHttpKernel` in EasyServerless, the Lumen branches in
   EasyPagination and EasyUtils). Laravel service providers now use `Illuminate\Foundation\Application`.
-- EasyServerless: `bref/laravel-bridge` must be `^3.0`.
 
 ### EasyApiPlatform
 
 - `api-platform/core` is not a dependency anymore. Require API Platform yourself: `api-platform/core` `^4.4`, or the
-  split packages (`api-platform/symfony`, `api-platform/doctrine-orm`, ...) `^4.4 || ^5.0`.
+  split packages (`api-platform/symfony`, `api-platform/doctrine-orm`, ...) `^4.4 || ^5.0.1`.
 - `symfony/property-info` is now required. Install `symfony/validator` to get validation error responses.
 - `IriConverterTrait` is removed.
 - Error response builders are removed:
@@ -243,8 +246,10 @@ Tips:
 - New option `default_hash_normalizations` (`lowercase`, `trim`), default `['lowercase']`. You can override it per
   field with `#[EncryptableField(hashNormalizations: [...])]`.
 - `HmacSha512HashCalculator::calculate()` does not lowercase the value anymore. Lowercasing now comes from
-  `default_hash_normalizations`. If you call `HashCalculatorInterface` directly, use
-  `EncryptableFieldHasherInterface::hashForField()` instead.
+  `default_hash_normalizations`. If you call `HashCalculatorInterface::calculate()` directly (for example to search
+  by a value), the hash changes for mixed-case values. To keep 6.x hashes, call
+  `EncryptableFieldHasherInterface::hashForField($entityClass, $property, $value)` (it applies the field
+  normalizations), or call `mb_strtolower()` before `calculate()`.
 - AWS CloudHSM: the default `lowercase` normalization now applies before hashing, so hashes of mixed-case values
   change. To keep 6.x hashes, set `'default_hash_normalizations' => []` in `easy_encryption`.
 - HMAC secret:
@@ -254,9 +259,9 @@ Tips:
   - Laravel: without AWS CloudHSM, the provider now registers `HmacSha512HashCalculator` with
     `easy-encryption.default_encryption_key` (default `env('APP_KEY')`). 6.x did not register it. If you bound your
     own `HashCalculatorInterface`, make sure your binding still wins, or rehash your data.
-- If you implement these interfaces yourself:
-  - `ObjectEncryptor`: `$hashCalculator` argument → `$fieldHasher` (`EncryptableFieldHasherInterface`).
-  - The hash callable passed to `EncryptableInterface::encrypt()` is now
+- If you create or implement these yourself:
+  - `ObjectEncryptor` constructor: `$hashCalculator` argument → `$fieldHasher` (`EncryptableFieldHasherInterface`).
+  - `EncryptableInterface::encrypt()` without `EncryptableTrait`: the hash callable is now
     `callable(string $entityClass, string $property, string $value)`.
   - `EncryptableMetadataInterface` has a new method `getHashNormalizationsForField()`.
 
