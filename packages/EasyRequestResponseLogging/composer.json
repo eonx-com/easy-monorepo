@@ -1,0 +1,52 @@
+{
+    "name": "eonx-com/easy-request-response-logging",
+    "description": "Logging of incoming HTTP requests and responses with sanitized data",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "ext-mbstring": "*",
+        "eonx-com/easy-request-id": "^7.0",
+        "eonx-com/easy-utils": "^7.0",
+        "psr/log": "^3.0",
+        "symfony/config": "^7.4 || ^8.0",
+        "symfony/dependency-injection": "^7.4 || ^8.0",
+        "symfony/event-dispatcher": "^7.4 || ^8.0",
+        "symfony/http-foundation": "^7.4 || ^8.0",
+        "symfony/http-kernel": "^7.4 || ^8.0"
+    },
+    "require-dev": {
+        "eonx-com/easy-logging": "^7.0",
+        "eonx-com/easy-test": "^7.0",
+        "laravel/framework": "^13.0",
+        "phpunit/phpunit": "^12.5|^13.0",
+        "symfony/framework-bundle": "^7.4 || ^8.0",
+        "symfony/monolog-bundle": "^3.11.1 || ^4.0",
+        "symfony/validator": "^7.4 || ^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyRequestResponseLogging\\": "src",
+            "EonX\\EasyRequestResponseLogging\\Bundle\\": "bundle",
+            "EonX\\EasyRequestResponseLogging\\Laravel\\": "laravel"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyRequestResponseLogging\\Tests\\": "tests",
+            "EonX\\EasyRequestResponseLogging\\Tests\\Application\\": "tests/Application/src",
+            "EonX\\EasyRequestResponseLogging\\Tests\\Application\\Bundle\\": "tests/Application/bundle",
+            "EonX\\EasyRequestResponseLogging\\Tests\\Fixture\\App\\": "tests/Fixture/app/src",
+            "EonX\\EasyRequestResponseLogging\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
+        }
+    },
+    "suggest": {
+        "eonx-com/easy-logging": "To use EasyLogging LoggerFactory for the log channel in Laravel",
+        "symfony/monolog-bundle": "To use Symfony MonologBundle for the log channel"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "7.0-dev"
+        }
+    }
+}

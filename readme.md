@@ -33,6 +33,7 @@ you can look [there][1].
 - [EasyRandom](https://github.com/eonx-com/easy-random): Provides easy way to generate random values (string, int, uuids, ...)
 - [EasyRepository](https://github.com/eonx-com/easy-repository): Provides an easy way to implement the Repository Design Pattern in your applications
 - [EasyRequestId](https://github.com/eonx-com/easy-request-id): Uniquely identify each request across multiple projects
+- [EasyRequestResponseLogging](https://github.com/eonx-com/easy-request-response-logging): Logging of incoming HTTP requests and responses with sanitized data
 - [EasySchedule](https://github.com/eonx-com/easy-schedule): Provides the Command Scheduling logic of Laravel in a Symfony Console application
 - [EasySecurity](https://github.com/eonx-com/easy-security): Provides security features to be generic across applications
 - [EasyServerless](https://github.com/eonx-com/easy-serverless): Reusable functionalities to ease running PHP applications in serverless context

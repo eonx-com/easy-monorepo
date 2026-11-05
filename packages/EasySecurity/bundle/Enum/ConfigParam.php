@@ -12,4 +12,6 @@ enum ConfigParam: string
     case RolesLocations = 'easy_security.roles_locations';
 
     case TokenDecoder = 'easy_security.token_decoder';
+
+    case WwwAuthenticateHeaderDefaultChallenge = 'easy_security.www_authenticate_header.default_challenge';
 }

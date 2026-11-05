@@ -515,31 +515,21 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         self::assertNull($advanced);
     }
 
-    public function testItReportsOneFailurePerDeliveryAttempt(): void
+    public function testItReportsOnlyFailuresOfTheCurrentConsume(): void
     {
-        $transport = new InMemoryTransport();
-        $firstException = new RuntimeException('Attempt 1', 42);
-        $firstAttempt = $transport->send(new Envelope(new DummyMessage(), [
-            ErrorDetailsStamp::create($firstException),
-        ]));
-        $secondAttempt = $transport->send(new Envelope(new DummyMessage(), [
-            ErrorDetailsStamp::create($firstException),
-            ErrorDetailsStamp::create(new RuntimeException('Attempt 2', 42)),
-        ]));
-        $transport->reject($firstAttempt);
-        $transport->reject($secondAttempt);
+        [$messageBus] = $this->arrangeTwoTransportMessenger(self::mockTime());
+        $expectedFailures = [
+            [RuntimeException::class => 77],
+            [RuntimeException::class => 77],
+            [RuntimeException::class => 77],
+            [RuntimeException::class => 77],
+        ];
+        $messageBus->dispatch(new DummyMessage());
+        self::consumeAsyncMessages($expectedFailures, transportNames: ['async', 'email_delivery']);
 
-        $messageFailures = self::getMessageFailures($transport);
+        $messageBus->dispatch(new DummyMessage());
 
-        self::assertCount(2, $messageFailures);
-        self::assertSame(RuntimeException::class, $messageFailures[0]->getExceptionClass());
-        self::assertSame(42, $messageFailures[0]->getExceptionCode());
-        self::assertSame('Attempt 1', $messageFailures[0]->getExceptionMessage());
-        $flattenException = $messageFailures[0]->getFlattenException();
-        self::assertNotNull($flattenException);
-        self::assertSame($firstException->getFile(), $flattenException->getFile());
-        self::assertSame($firstException->getLine(), $flattenException->getLine());
-        self::assertSame('Attempt 2', $messageFailures[1]->getExceptionMessage());
+        self::consumeAsyncMessages($expectedFailures, transportNames: ['async', 'email_delivery']);
     }
 
     public function testItReportsStackTraceOfUnexpectedException(): void
@@ -574,24 +564,6 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
         $this->expectExceptionMessage('Unexpected exception thrown while handling a message');
 
         self::consumeAsyncMessages();
-    }
-
-    public function testItSkipsTheGivenCountOfRejectedEnvelopes(): void
-    {
-        $transport = new InMemoryTransport();
-        $staleAttempt = $transport->send(new Envelope(new DummyMessage(), [
-            ErrorDetailsStamp::create(new RuntimeException('Stale', 42)),
-        ]));
-        $freshAttempt = $transport->send(new Envelope(new DummyMessage(), [
-            ErrorDetailsStamp::create(new RuntimeException('Fresh', 42)),
-        ]));
-        $transport->reject($staleAttempt);
-        $transport->reject($freshAttempt);
-
-        $messageFailures = self::getMessageFailures($transport, 1);
-
-        self::assertCount(1, $messageFailures);
-        self::assertSame('Fresh', $messageFailures[0]->getExceptionMessage());
     }
 
     public function testItSucceedsWhenExactListMatchesEveryAttempt(): void
