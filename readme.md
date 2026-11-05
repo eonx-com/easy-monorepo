@@ -46,6 +46,12 @@ you can look [there][1].
 
 <br>
 
+### Upgrade
+
+- [Upgrade from 6.x to 7.0](UPGRADE-7.0.md)
+
+<br>
+
 ### Contribute
 
 - Any new feature and/or hotfix MUST be submitted as a PR
