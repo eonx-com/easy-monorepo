@@ -55,6 +55,9 @@ parameters:
           reportUnmatched: false
 
         # ---- EasyAsync ----
+        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
+          path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
+
         # ---- EasyBankFiles ----
         - message: '#Call to an undefined method object\:\:getTransactionCodeDetails\(\)#'
           path: %currentWorkingDirectory%/packages/EasyBankFiles/tests/Unit/src/Parsing/Nai/Parser/NaiParserTest.php
@@ -69,6 +72,9 @@ parameters:
         # ---- EasyEncryption ----
         - message: '#Unreachable statement \- code above always terminates#'
           path: %currentWorkingDirectory%/packages/EasyEncryption/src/Common/Encryptor/Encryptor.php
+
+        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
+          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
 
         # ---- EasyErrorHandler ----
         - message: '#Dead catch \- ReflectionException is never thrown in the try block#'
