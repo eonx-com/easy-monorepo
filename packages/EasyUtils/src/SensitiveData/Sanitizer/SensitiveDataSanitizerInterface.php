@@ -10,7 +10,7 @@ interface SensitiveDataSanitizerInterface
      *
      * @param T $data
      *
-     * @return (T is object ? T|array : (T is array ? array : (T is string ? string : T)))
+     * @return (T is object ? T|array : (T is array ? array : (T is string ? string : (T is int|float ? T|string : T))))
      */
     public function sanitize(mixed $data): mixed;
 }
