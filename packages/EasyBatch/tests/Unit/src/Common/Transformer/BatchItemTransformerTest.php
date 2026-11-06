@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyBatch\Tests\Unit\Common\Transformer;
 
+use EonX\EasyBatch\Common\Exception\BatchObjectInvalidException;
 use EonX\EasyBatch\Common\ValueObject\BatchItem;
 use EonX\EasyBatch\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyEncryption\Common\Encryptor\Encryptor;
@@ -68,6 +69,15 @@ final class BatchItemTransformerTest extends AbstractUnitTestCase
         $batchItem = $transformer->instantiateForClass($class);
 
         self::assertInstanceOf(BatchItem::class, $batchItem);
+    }
+
+    public function testItThrowsExceptionForClassThatIsNotBatchObject(): void
+    {
+        $transformer = $this->getBatchItemTransformer();
+        $this->expectException(BatchObjectInvalidException::class);
+        $this->expectExceptionMessage('Class "stdClass" is not a batch object.');
+
+        $transformer->instantiateForClass(stdClass::class);
     }
 
     private function getEncryptor(): EncryptorInterface

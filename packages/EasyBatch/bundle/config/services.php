@@ -22,6 +22,8 @@ use EonX\EasyBatch\Common\Repository\BatchItemRepositoryInterface;
 use EonX\EasyBatch\Common\Repository\BatchRepositoryInterface;
 use EonX\EasyBatch\Common\Serializer\MessageSerializer;
 use EonX\EasyBatch\Common\Serializer\MessageSerializerInterface;
+use EonX\EasyBatch\Common\Signer\HmacMessageSigner;
+use EonX\EasyBatch\Common\Signer\MessageSignerInterface;
 use EonX\EasyBatch\Common\Strategy\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Common\Strategy\UuidStrategy;
 use EonX\EasyBatch\Common\Transformer\BatchItemTransformer;
@@ -114,7 +116,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$transformer', service(ConfigServiceId::BatchItemTransformer->value));
 
     // Serializer
-    $services->set(MessageSerializerInterface::class, MessageSerializer::class);
+    $services->set(MessageSignerInterface::class, HmacMessageSigner::class)
+        ->arg('$secrets', param(ConfigParam::SigningSecret->value));
+
+    $services->set(MessageSerializerInterface::class, MessageSerializer::class)
+        ->arg('$allowUnsignedMessages', param(ConfigParam::AllowUnsignedMessages->value));
 
     $services->alias(ConfigServiceId::BatchMessageSerializer->value, MessageSerializerInterface::class);
 
