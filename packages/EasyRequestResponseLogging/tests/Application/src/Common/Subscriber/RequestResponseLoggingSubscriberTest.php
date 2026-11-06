@@ -780,6 +780,26 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertSame('411111*REDACTED*1111', $record->context['request_id']);
     }
 
+    public function testOnKernelTerminateSucceedsWithSanitizedRequestIdsHoldingNumericCardNumberInJson(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            server: [
+                'HTTP_X_CORRELATION_ID' => '{"note":5555555555554444}',
+                'HTTP_X_REQUEST_ID' => '{"note":4111111111111111}',
+            ]
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $record = self::getSingleRecord();
+        self::assertSame('{"note":"555555*REDACTED*4444"}', $record->context['correlation_id']);
+        self::assertSame('{"note":"411111*REDACTED*1111"}', $record->context['request_id']);
+    }
+
     public function testOnKernelTerminateSucceedsWithSanitizedRouteParams(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */

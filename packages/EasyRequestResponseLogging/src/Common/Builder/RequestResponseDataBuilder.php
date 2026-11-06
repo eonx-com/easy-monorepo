@@ -312,7 +312,7 @@ final readonly class RequestResponseDataBuilder
     private function sanitizeString(string $value): ?string
     {
         try {
-            return $this->sensitiveDataSanitizer->sanitize($value);
+            return $this->sensitiveDataSanitizer->sanitize($this->sanitizeNumbers($value));
         } catch (Throwable) {
             return null;
         }
