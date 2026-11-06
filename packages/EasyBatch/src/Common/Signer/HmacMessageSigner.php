@@ -27,13 +27,15 @@ final readonly class HmacMessageSigner implements MessageSignerInterface
         $keys = [];
 
         foreach ((array)$secrets as $secret) {
-            if ($secret !== '') {
-                $keys[] = \hash_hmac(self::ALGORITHM, self::KEY_DOMAIN, $secret);
+            if ($secret === '') {
+                throw new InvalidArgumentException('Signing secret must not be empty.');
             }
+
+            $keys[] = \hash_hmac(self::ALGORITHM, self::KEY_DOMAIN, $secret);
         }
 
         if ($keys === []) {
-            throw new InvalidArgumentException('At least one non-empty signing secret must be provided.');
+            throw new InvalidArgumentException('At least one signing secret must be provided.');
         }
 
         $this->keys = $keys;

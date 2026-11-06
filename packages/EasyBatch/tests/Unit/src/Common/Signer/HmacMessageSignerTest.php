@@ -32,12 +32,20 @@ final class HmacMessageSignerTest extends AbstractUnitTestCase
         );
     }
 
-    public function testItThrowsExceptionWithNoUsableSecret(): void
+    public function testItThrowsExceptionWithEmptySecret(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('At least one non-empty signing secret must be provided.');
+        $this->expectExceptionMessage('Signing secret must not be empty.');
 
-        new HmacMessageSigner(['', '']);
+        new HmacMessageSigner(['secret', '']);
+    }
+
+    public function testItThrowsExceptionWithNoSecret(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('At least one signing secret must be provided.');
+
+        new HmacMessageSigner([]);
     }
 
     public function testItVerifiesWithAnySecretInList(): void
