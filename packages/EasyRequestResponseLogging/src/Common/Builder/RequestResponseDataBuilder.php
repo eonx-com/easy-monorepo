@@ -150,6 +150,15 @@ final readonly class RequestResponseDataBuilder
      */
     private function readRequestContent(Request $request): ?string
     {
+        // A body already read by the application is reused, as getContent(true) would copy it into a stream
+        $content = Closure::bind(static fn (Request $request): mixed => $request->content, null, Request::class)(
+            $request
+        );
+
+        if (\is_string($content)) {
+            return $content;
+        }
+
         /** @var resource $resource */
         $resource = $request->getContent(true);
         $content = \stream_get_contents($resource, $this->maxRawBodySize + 1);

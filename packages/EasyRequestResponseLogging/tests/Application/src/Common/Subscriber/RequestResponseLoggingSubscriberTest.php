@@ -226,6 +226,46 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertSame(200, $responseContext['status_code']);
     }
 
+    public function testOnKernelTerminateSucceedsAndDoesNotCopyAlreadyReadBodyIntoStream(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $requestClass = new class() extends Request {
+            private bool $contentReadAsResource = false;
+
+            /**
+             * @return resource|string
+             */
+            public function getContent(bool $asResource = false)
+            {
+                $this->contentReadAsResource = $this->contentReadAsResource || $asResource;
+
+                return parent::getContent($asResource);
+            }
+
+            public function isContentReadAsResource(): bool
+            {
+                return $this->contentReadAsResource;
+            }
+        };
+        $request = $requestClass::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: '{"password":"some-password"}'
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame('{"password":"*REDACTED*"}', $requestContext['body']);
+        self::assertFalse($request->isContentReadAsResource());
+    }
+
     public function testOnKernelTerminateSucceedsAndDoesNotLogDoNotLogPath(): void
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
