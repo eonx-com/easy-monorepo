@@ -9,12 +9,19 @@ use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClient;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClientInterface;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
+use EonX\EasyServerless\Datadog\Helper\RootSpanHelper;
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
+use EonX\EasyServerless\Laravel\Middleware\PhpRuntimeInfoMiddleware;
 use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
+use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
 use Psr\Log\LoggerInterface;
 
 final class EasyServerlessServiceProvider extends ServiceProvider
@@ -35,6 +42,7 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/easy-serverless.php', 'easy-serverless');
 
         $this->registerAppMetric();
+        $this->registerDatadog();
         $this->registerHealth();
 
         if (\class_exists(PaginationInterface::class)) {
@@ -76,6 +84,40 @@ final class EasyServerlessServiceProvider extends ServiceProvider
                 \config('easy-serverless.app_metric.namespace')
             )
         );
+    }
+
+    private function registerDatadog(): void
+    {
+        if (\config('easy-serverless.datadog.enabled', true) === false) {
+            return;
+        }
+
+        // Add PHP runtime information to the Datadog root span of requests, queue jobs and console commands,
+        // a no-op when the ddtrace extension is not loaded
+        $this->app->make('events')
+            ->listen(
+                [JobProcessing::class, CommandStarting::class],
+                static function (): void {
+                    RootSpanHelper::addPhpRuntimeInfo();
+                }
+            );
+
+        // Requests are covered by a global middleware rather than RouteMatched, so unmatched routes (404/405)
+        // and requests short-circuited by other global middleware (e.g. maintenance mode) are enriched too
+        if ($this->app instanceof LumenApplication) {
+            $this->app->middleware([PhpRuntimeInfoMiddleware::class]);
+
+            return;
+        }
+
+        if ($this->app->bound(HttpKernelContract::class)) {
+            $httpKernel = $this->app->make(HttpKernelContract::class);
+
+            if ($httpKernel instanceof HttpKernel) {
+                // Prepend so it runs before maintenance mode and any other global middleware
+                $httpKernel->prependMiddleware(PhpRuntimeInfoMiddleware::class);
+            }
+        }
     }
 
     private function registerHealth(): void

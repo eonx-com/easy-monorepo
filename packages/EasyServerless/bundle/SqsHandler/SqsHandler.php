@@ -104,7 +104,9 @@ final class SqsHandler extends AbstractSqsHandler
             $envelope = $envelope->with(...$stamps);
 
             $event = new WorkerMessageReceivedEvent($envelope, $this->transportName);
-            $this->eventDispatcher?->dispatch($event);
+            // Use the fallback so listeners on the Symfony dispatcher also get the event when
+            // EasyEventDispatcher is not installed
+            $this->dispatchEvent($event);
             $envelope = $event->getEnvelope();
 
             if ($event->shouldHandle() === false) {
