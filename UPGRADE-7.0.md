@@ -218,6 +218,14 @@ Tips:
   stored data first, see [Prepare on 6.x](#easybatch).
 - Compiler pass priorities changed: `AddMessengerMiddlewareToBusesCompilerPass` -10 → -20,
   `MakeMessengerReceiversPublicCompilerPass` -10 → 0.
+- Batch item messages are signed with an HMAC of the `kernel.secret` parameter (or the new `signing_secret` option).
+  No schema change: the signature is stored in the `message` column. Old unsigned messages are still accepted while
+  `allow_unsigned_messages` is `true` (default). Set it to `false` once no unsigned batch item is left to process, see
+  [Message signing](packages/EasyBatch/docs/symfony/install.md#message-signing).
+- `MessageSerializer` requires a `MessageSignerInterface`. If you create it yourself, pass
+  `new HmacMessageSigner(<secret>)`.
+- `AbstractBatchObjectTransformer::instantiateForClass()` throws `BatchObjectInvalidException` when the stored
+  `class` is not an `AbstractBatchObject`.
 
 ### EasyBugsnag
 

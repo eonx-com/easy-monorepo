@@ -26,6 +26,17 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 
 final class KernelStub extends Kernel implements CompilerPassInterface
 {
+    /**
+     * @param string[] $configs
+     */
+    public function __construct(
+        string $environment,
+        bool $debug,
+        private readonly array $configs = [],
+    ) {
+        parent::__construct($environment, $debug);
+    }
+
     public function process(ContainerBuilder $container): void
     {
         $container->setAlias(ContainerInterface::class, 'service_container');
@@ -69,6 +80,16 @@ final class KernelStub extends Kernel implements CompilerPassInterface
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        // No body needed
+        foreach ($this->configs as $config) {
+            $loader->load($config);
+        }
+    }
+
+    protected function getKernelParameters(): array
+    {
+        return [
+            ...parent::getKernelParameters(),
+            'kernel.secret' => 'kernel-secret',
+        ];
     }
 }
