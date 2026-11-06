@@ -48,6 +48,36 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
     }
 
     /**
+     * @see testOnKernelTerminateSucceedsWithNumericCardNumberInJsonStringBody
+     */
+    public static function provideNumericCardNumberInJsonStringBodies(): iterable
+    {
+        yield 'json field' => [
+            'application/json',
+            '{"payload":"{\\"note\\":4111111111111111}"}',
+            '{"payload":"{\\"note\\":\\"411111*REDACTED*1111\\"}"}',
+        ];
+
+        yield 'json field with nested json string' => [
+            'application/json',
+            '{"payload":"{\\"inner\\":\\"{\\\\\\"note\\\\\\":4111111111111111}\\"}"}',
+            '{"payload":"{\\"inner\\":\\"{\\\\\\"note\\\\\\":\\\\\\"411111*REDACTED*1111\\\\\\"}\\"}"}',
+        ];
+
+        yield 'top-level json string' => [
+            'application/json',
+            '"{\\"note\\":4111111111111111}"',
+            '"{\\"note\\":\\"411111*REDACTED*1111\\"}"',
+        ];
+
+        yield 'form field' => [
+            'application/x-www-form-urlencoded',
+            'payload=%7B%22note%22%3A4111111111111111%7D',
+            'payload={"note":"411111*REDACTED*1111"}',
+        ];
+    }
+
+    /**
      * @see testOnKernelTerminateSucceedsWithSanitizedPath
      */
     public static function provideSensitivePaths(): iterable
@@ -81,6 +111,28 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         yield 'unmatched path with card number' => ['/some/4111%201111%201111%201111', '/some/411111*REDACTED*1111'];
 
         yield 'unmatched path with encoded ampersand' => ['/some/token/first-secret%26second-secret', '[omitted]'];
+
+        yield 'unmatched path with encoded question mark' => ['/some/token/first%3Fsecond', '[omitted]'];
+
+        yield 'unmatched path with encoded hash' => ['/some/token/first%23second', '[omitted]'];
+
+        yield 'unmatched path with encoded comma' => ['/some/token=first%2Csecond', '[omitted]'];
+
+        yield 'unmatched path with encoded semicolon' => ['/some/token=first%3Bsecond', '[omitted]'];
+
+        yield 'unmatched path with encoded space' => ['/some/token=first%20second', '[omitted]'];
+
+        yield 'unmatched path with encoded slash' => ['/some/token/first%2Fsecond', '[omitted]'];
+
+        yield 'unmatched path with slash after key value' => [
+            '/some/token/first/second',
+            '/some/token/*REDACTED*/second',
+        ];
+
+        yield 'unmatched path with encoded delimiters and no key' => [
+            '/some/first%2Csecond%3Bthird%26fourth%2Ffifth',
+            '/some/first,second;third&fourth/fifth',
+        ];
     }
 
     /**
@@ -292,6 +344,39 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
         self::assertNull($requestContext['body']);
         self::assertTrue($requestContext['body_omitted']);
         self::assertFalse($requestContext['body_truncated']);
+    }
+
+    public function testOnKernelTerminateSucceedsAndDoesNotReadTooBigBodyWithoutContentLength(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $content = \json_encode([
+            'password' => 'some-password',
+            'description' => \str_repeat('a', 5000),
+        ], \JSON_THROW_ON_ERROR);
+        /** @var resource $resource */
+        $resource = \fopen('php://temp', 'r+b');
+        \fwrite($resource, $content);
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: $resource
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertNull($requestContext['body']);
+        self::assertTrue($requestContext['body_omitted']);
+        self::assertFalse($requestContext['body_truncated']);
+        // Only max_raw_body_size + 1 bytes are read to detect a too big body
+        self::assertSame(4097, \ftell($resource));
+        self::assertSame($content, $request->getContent());
     }
 
     public function testOnKernelTerminateSucceedsAndExcludesOtherTerminateListenersFromDuration(): void
@@ -564,6 +649,60 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
             . '"float_note":"411111*REDACTED*1111","exponent_note":"411111*REDACTED*1111"}',
             $requestContext['body']
         );
+    }
+
+    #[DataProvider('provideNumericCardNumberInJsonStringBodies')]
+    public function testOnKernelTerminateSucceedsWithNumericCardNumberInJsonStringBody(
+        string $contentType,
+        string $content,
+        string $expectedBody,
+    ): void {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response',
+            method: 'POST',
+            server: [
+                'CONTENT_TYPE' => $contentType,
+            ],
+            content: $content
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertSame($expectedBody, $requestContext['body']);
+    }
+
+    public function testOnKernelTerminateSucceedsWithNumericCardNumberInJsonStringQueryAndHeaders(): void
+    {
+        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
+        $kernel = self::bootKernel();
+        $request = Request::create(
+            uri: '/response?payload=%7B%22note%22%3A4111111111111111%7D'
+                . '&escaped=%7B%5C%22note%5C%22%3A4111111111111111%7D&name=John',
+            server: [
+                'HTTP_X_PAYLOAD' => '{"note":4111111111111111}',
+            ]
+        );
+
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+
+        $requestContext = self::getSingleRecord()->context['request'];
+        self::assertIsArray($requestContext);
+        self::assertIsArray($requestContext['headers']);
+        self::assertSame(
+            [
+                'payload' => '{"note":"411111*REDACTED*1111"}',
+                'escaped' => '{"note":"411111*REDACTED*1111"}',
+                'name' => 'John',
+            ],
+            $requestContext['query']
+        );
+        self::assertSame(['{"note":"411111*REDACTED*1111"}'], $requestContext['headers']['x-payload']);
     }
 
     public function testOnKernelTerminateSucceedsWithSanitizedDottedQueryKey(): void

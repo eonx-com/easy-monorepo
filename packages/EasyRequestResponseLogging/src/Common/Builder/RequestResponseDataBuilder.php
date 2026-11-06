@@ -27,6 +27,16 @@ final readonly class RequestResponseDataBuilder
 
     private const OMITTED_VALUE = '[omitted]';
 
+    /**
+     * Replaces the URL value terminators in a probe path, so a masked value spanning one of them is detected
+     */
+    private const PATH_PROBE_CHARACTER = "\x01";
+
+    /**
+     * Characters ending a masked value in UrlStringSanitizer: whitespace & ? # , ; " ' ) ] } < >
+     */
+    private const URL_VALUE_TERMINATORS_PATTERN = '/[\s&?#,;"\')\]}<>]/';
+
     public function __construct(
         private SensitiveDataSanitizerInterface $sensitiveDataSanitizer,
         private RequestIdProviderInterface $requestIdProvider,
@@ -45,7 +55,7 @@ final readonly class RequestResponseDataBuilder
         [$body, $bodyOmitted, $bodyTruncated] = $this->prepareBody(
             $this->logRequestBody,
             $request->headers,
-            static fn (): string => $request->getContent()
+            fn (): ?string => $this->readRequestContent($request)
         );
         $sanitizedRouteParameters = $routeParameters === null ? null : $this->sanitizeEntries($routeParameters);
 
@@ -140,6 +150,18 @@ final readonly class RequestResponseDataBuilder
         return [\mb_strcut($body, 0, $this->maxBodySize, 'UTF-8'), false, true];
     }
 
+    /**
+     * Reads at most max_raw_body_size + 1 bytes, so a body without Content-Length (e.g. chunked) is not fully buffered
+     */
+    private function readRequestContent(Request $request): ?string
+    {
+        /** @var resource $resource */
+        $resource = $request->getContent(true);
+        $content = \stream_get_contents($resource, $this->maxRawBodySize + 1);
+
+        return $content === false ? null : $content;
+    }
+
     private function sanitizeBody(string $body, string $mimeType): string
     {
         if ($mimeType !== self::FORM_CONTENT_TYPE) {
@@ -153,15 +175,13 @@ final readonly class RequestResponseDataBuilder
             // Sanitized decoded: the sanitizer ignores numbers and does not decode a top-level JSON string
             if (\is_array($decodedBody) || \is_string($decodedBody)) {
                 return \json_encode(
-                    $this->sensitiveDataSanitizer->sanitize(
-                        \is_array($decodedBody) ? $this->sanitizeNumbers($decodedBody) : $decodedBody
-                    ),
+                    $this->sensitiveDataSanitizer->sanitize($this->sanitizeNumbers($decodedBody)),
                     \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
                 );
             }
 
             if (\is_int($decodedBody) || \is_float($decodedBody)) {
-                $sanitizedNumber = $this->sanitizeNumbers([$decodedBody])[0];
+                $sanitizedNumber = $this->sanitizeNumbers($decodedBody);
 
                 if ($sanitizedNumber !== $decodedBody) {
                     return \json_encode(
@@ -186,14 +206,16 @@ final readonly class RequestResponseDataBuilder
             }
         }
 
-        return \urldecode(\http_build_query($this->sensitiveDataSanitizer->sanitize($fields)));
+        return \urldecode(\http_build_query($this->sensitiveDataSanitizer->sanitize($this->sanitizeNumbers($fields))));
     }
 
     private function sanitizeEntries(array $entries): array
     {
         foreach ($entries as $key => $value) {
             try {
-                $entries[$key] = $this->sensitiveDataSanitizer->sanitize([$key => $value])[$key];
+                $entries[$key] = $this->sensitiveDataSanitizer->sanitize([
+                    $key => $this->sanitizeNumbers($value),
+                ])[$key];
             } catch (Throwable) {
                 $entries[$key] = null;
             }
@@ -202,31 +224,69 @@ final readonly class RequestResponseDataBuilder
         return $entries;
     }
 
-    private function sanitizeNumbers(array $data): array
+    /**
+     * Masks card numbers stored as JSON numbers, which the sanitizer ignores, also inside strings holding JSON
+     *
+     * @template T
+     *
+     * @param T $value
+     *
+     * @return (T is array ? array : (T is string ? string : T|string))
+     */
+    private function sanitizeNumbers(mixed $value): mixed
     {
-        foreach ($data as $key => $value) {
-            if (\is_array($value)) {
-                $data[$key] = $this->sanitizeNumbers($value);
-
-                continue;
+        if (\is_array($value)) {
+            foreach ($value as $key => $item) {
+                $value[$key] = $this->sanitizeNumbers($item);
             }
 
-            $digits = match (true) {
-                \is_int($value) => (string)$value,
-                \is_float($value) && \is_finite($value) && \floor($value) === $value => \sprintf('%.0f', $value),
-                default => null,
-            };
+            return $value;
+        }
 
-            if ($digits !== null && \strlen(\ltrim($digits, '-')) >= self::CARD_NUMBER_MIN_DIGITS) {
-                $sanitizedValue = $this->sensitiveDataSanitizer->sanitize($digits);
+        if (\is_string($value)) {
+            return $this->sanitizeNumbersInJsonString($value);
+        }
 
-                if ($sanitizedValue !== $digits) {
-                    $data[$key] = $sanitizedValue;
-                }
+        $digits = match (true) {
+            \is_int($value) => (string)$value,
+            \is_float($value) && \is_finite($value) && \floor($value) === $value => \sprintf('%.0f', $value),
+            default => null,
+        };
+
+        if ($digits !== null && \strlen(\ltrim($digits, '-')) >= self::CARD_NUMBER_MIN_DIGITS) {
+            $sanitizedValue = $this->sensitiveDataSanitizer->sanitize($digits);
+
+            if ($sanitizedValue !== $digits) {
+                return $sanitizedValue;
             }
         }
 
-        return $data;
+        return $value;
+    }
+
+    private function sanitizeNumbersInJsonString(string $value): string
+    {
+        if (\strpbrk($value, '{[') === false) {
+            return $value;
+        }
+
+        // Same candidates as the sanitizer, which decodes a JSON string as is or with its slashes stripped
+        foreach ([$value, \stripslashes($value)] as $json) {
+            $decodedValue = \json_decode(json: $json, associative: true, flags: \JSON_BIGINT_AS_STRING);
+
+            if (\is_array($decodedValue)) {
+                $sanitizedValue = $this->sanitizeNumbers($decodedValue);
+
+                return $sanitizedValue === $decodedValue
+                    ? $value
+                    : \json_encode(
+                        $sanitizedValue,
+                        \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+                    );
+            }
+        }
+
+        return $value;
     }
 
     private function sanitizePath(
@@ -237,12 +297,7 @@ final readonly class RequestResponseDataBuilder
         $path = \rawurldecode($request->getPathInfo());
 
         if ($routeParameters === null) {
-            // The sanitizer stops masking at "&", so a decoded ampersand could expose the rest of a secret
-            if (\str_contains($path, '&')) {
-                return self::OMITTED_VALUE;
-            }
-
-            return $this->sanitizeString($path) ?? self::OMITTED_VALUE;
+            return $this->sanitizeUnmatchedPath($request->getPathInfo(), $path);
         }
 
         $replacements = [];
@@ -266,5 +321,34 @@ final readonly class RequestResponseDataBuilder
         } catch (Throwable) {
             return null;
         }
+    }
+
+    /**
+     * The sanitizer stops masking a value at a URL terminator (e.g. "?", ",") or "/", which in a decoded path
+     * may come from the value itself, so the rest of a secret would be exposed. The path is omitted instead
+     */
+    private function sanitizeUnmatchedPath(string $rawPath, string $path): string
+    {
+        $sanitizedPath = $this->sanitizeString($path);
+
+        if ($sanitizedPath === null || $sanitizedPath === $path) {
+            return $sanitizedPath ?? self::OMITTED_VALUE;
+        }
+
+        if (\stripos($rawPath, '%2F') !== false) {
+            return self::OMITTED_VALUE;
+        }
+
+        // A masked value spanning a terminator replaced by the probe character removes it from the result
+        $probePath = (string)\preg_replace(self::URL_VALUE_TERMINATORS_PATTERN, self::PATH_PROBE_CHARACTER, $path);
+        $sanitizedProbePath = $this->sanitizeString($probePath);
+
+        if ($sanitizedProbePath === null
+            || \substr_count($sanitizedProbePath, self::PATH_PROBE_CHARACTER)
+            !== \substr_count($probePath, self::PATH_PROBE_CHARACTER)) {
+            return self::OMITTED_VALUE;
+        }
+
+        return $sanitizedPath;
     }
 }
