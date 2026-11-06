@@ -45,6 +45,9 @@ time it is saved. Roll-out:
 1. Deploy with `allow_unsigned_messages` left at `true`. New items are signed. If several applications create and
    process items of the same batch tables, set the same `signing_secret` in all of them before you deploy: by default
    each application signs with its own `kernel.secret`, and an item with a signature it cannot verify is not processed.
+   6.x cannot read signed messages: during a rolling deploy, 6.x workers that are still running fail on new items
+   until a retry lands on an upgraded worker, and after a rollback to 6.x every signed item fails until 7.x is
+   deployed again.
 2. When no unsigned item is left to process (pending, failed and waiting for a retry, or waiting for approval), set
    `allow_unsigned_messages` to `false`. Only then is the native-unserialize path closed.
 
