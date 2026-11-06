@@ -51,7 +51,8 @@ Only bodies which can be sanitized by key are logged: `application/json`, any `+
 `application/x-www-form-urlencoded`. Other bodies (XML, plain text, multipart, binary, streamed) are logged as `null`.
 A body is sanitized first and then truncated to `max_body_size` bytes (`body_truncated: true`). Bodies bigger than
 `max_raw_body_size` bytes, and bodies which cannot be sanitized, are not logged at all (`body: null`,
-`body_omitted: true`). A body with a `Content-Length` header bigger than `max_raw_body_size` is not even read.
+`body_omitted: true`). A body with a `Content-Length` header bigger than `max_raw_body_size` is not even read, and
+a request body without it (e.g. chunked) is read only up to `max_raw_body_size` bytes.
 A query parameter, header, route parameter or request/correlation ID which cannot be sanitized is logged as `null`
 (as `[omitted]` in the path). Unsanitized data is never logged.
 
@@ -59,7 +60,9 @@ The request path is logged decoded and sanitized using the matched route: its pa
 value, logged as `request.route_params` (with the route name as `request.route`), and every masked parameter value is
 masked in the path too. E.g. with the `/token/{token}` route, `/token/<value>` is logged as `/token/*REDACTED*`.
 Name the route parameters which carry secrets after a key from `keys_to_mask`, or add their names to it. A path
-without a matched route has no known structure, so only the sanitizer itself applies to it.
+without a matched route has no known structure, so only the sanitizer itself applies to it, and it is logged as
+`[omitted]` when it contains a character which could end a masked value and expose its rest: whitespace,
+`& ? # , ; " ' ) ] } < >` (also when percent-encoded) or an encoded `/` (`%2F`).
 
 `duration_ms` is the time between the request start (`REQUEST_TIME_FLOAT` server parameter) and the `kernel.response`
 event, so it includes the kernel boot and all `kernel.request` listeners. The request start depends on the runtime:
