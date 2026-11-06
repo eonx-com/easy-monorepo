@@ -42,7 +42,9 @@ A message with an invalid signature throws `BatchItemMessageSignatureInvalidExce
 accepted. It defaults to `true`, so batch items created before the upgrade keep working. An item is signed again every
 time it is saved. Roll-out:
 
-1. Deploy with `allow_unsigned_messages` left at `true`. New items are signed.
+1. Deploy with `allow_unsigned_messages` left at `true`. New items are signed. If several applications create and
+   process items of the same batch tables, set the same `signing_secret` in all of them before you deploy: by default
+   each application signs with its own `kernel.secret`, and an item with a signature it cannot verify is not processed.
 2. When no unsigned item is left to process (pending, failed and waiting for a retry, or waiting for approval), set
    `allow_unsigned_messages` to `false`. Only then is the native-unserialize path closed.
 

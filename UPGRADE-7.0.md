@@ -221,7 +221,8 @@ Tips:
 - Batch item messages are signed with an HMAC of the `kernel.secret` parameter (or the new `signing_secret` option).
   No schema change: the signature is stored in the `message` column. Old unsigned messages are still accepted while
   `allow_unsigned_messages` is `true` (default). Set it to `false` once no unsigned batch item is left to process, see
-  [Message signing](packages/EasyBatch/docs/symfony/install.md#message-signing).
+  [Message signing](packages/EasyBatch/docs/symfony/install.md#message-signing). If several applications create and
+  process items of the same batch tables, set the same `signing_secret` in all of them before you deploy.
 - `MessageSerializer` requires a `MessageSignerInterface`. If you create it yourself, pass
   `new HmacMessageSigner(<secret>)`.
 - `AbstractBatchObjectTransformer::instantiateForClass()` throws `BatchObjectInvalidException` when the stored
