@@ -12,7 +12,7 @@ final class PaginationForCollectionOpenApiTest extends AbstractApplicationTestCa
      * API Platform documents the minimum of the page parameter since 5.0.6,
      * see https://github.com/api-platform/core/pull/8812
      */
-    private const string PAGE_PARAMETER_MINIMUM = ",\n                            \"minimum\": 1";
+    private const string PAGE_PARAMETER_MINIMUM_PATTERN = '/,\n\s+"minimum": 1$/m';
 
     public function testWithCustomPaginator(): void
     {
@@ -49,7 +49,7 @@ final class PaginationForCollectionOpenApiTest extends AbstractApplicationTestCa
         $installedVersion = (string)InstalledVersions::getVersion('api-platform/openapi');
 
         if (\version_compare($installedVersion, '5.0.6', '<')) {
-            return \str_replace(self::PAGE_PARAMETER_MINIMUM, '', $expected);
+            return (string)\preg_replace(self::PAGE_PARAMETER_MINIMUM_PATTERN, '', $expected);
         }
 
         return $expected;
