@@ -28,11 +28,6 @@ final readonly class RequestResponseDataBuilder
     private const OMITTED_VALUE = '[omitted]';
 
     /**
-     * Replaces the URL value terminators in a probe path, so a masked value spanning one of them is detected
-     */
-    private const PATH_PROBE_CHARACTER = "\x01";
-
-    /**
      * Characters ending a masked value in UrlStringSanitizer: whitespace & ? # , ; " ' ) ] } < >
      */
     private const URL_VALUE_TERMINATORS_PATTERN = '/[\s&?#,;"\')\]}<>]/';
@@ -324,31 +319,16 @@ final readonly class RequestResponseDataBuilder
     }
 
     /**
-     * The sanitizer stops masking a value at a URL terminator (e.g. "?", ",") or "/", which in a decoded path
-     * may come from the value itself, so the rest of a secret would be exposed. The path is omitted instead
+     * The sanitizer stops masking a value at a URL terminator (e.g. "?", ",") or "/", and does not mask a value
+     * starting with one. In a decoded path such a character may come from the value itself, so the rest of a secret
+     * would be exposed. Without a matched route the path structure is unknown, so the path is omitted instead
      */
     private function sanitizeUnmatchedPath(string $rawPath, string $path): string
     {
-        $sanitizedPath = $this->sanitizeString($path);
-
-        if ($sanitizedPath === null || $sanitizedPath === $path) {
-            return $sanitizedPath ?? self::OMITTED_VALUE;
-        }
-
-        if (\stripos($rawPath, '%2F') !== false) {
+        if (\preg_match(self::URL_VALUE_TERMINATORS_PATTERN, $path) === 1 || \stripos($rawPath, '%2F') !== false) {
             return self::OMITTED_VALUE;
         }
 
-        // A masked value spanning a terminator replaced by the probe character removes it from the result
-        $probePath = (string)\preg_replace(self::URL_VALUE_TERMINATORS_PATTERN, self::PATH_PROBE_CHARACTER, $path);
-        $sanitizedProbePath = $this->sanitizeString($probePath);
-
-        if ($sanitizedProbePath === null
-            || \substr_count($sanitizedProbePath, self::PATH_PROBE_CHARACTER)
-            !== \substr_count($probePath, self::PATH_PROBE_CHARACTER)) {
-            return self::OMITTED_VALUE;
-        }
-
-        return $sanitizedPath;
+        return $this->sanitizeString($path) ?? self::OMITTED_VALUE;
     }
 }

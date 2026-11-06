@@ -108,7 +108,9 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
 
         yield 'unmatched path with key=value segment' => ['/some/token=some-token', '/some/token=*REDACTED*'];
 
-        yield 'unmatched path with card number' => ['/some/4111%201111%201111%201111', '/some/411111*REDACTED*1111'];
+        yield 'unmatched path with card number' => ['/some/4111-1111-1111-1111', '/some/411111*REDACTED*1111'];
+
+        yield 'unmatched path with card number with encoded spaces' => ['/some/4111%201111%201111%201111', '[omitted]'];
 
         yield 'unmatched path with encoded ampersand' => ['/some/token/first-secret%26second-secret', '[omitted]'];
 
@@ -129,10 +131,23 @@ final class RequestResponseLoggingSubscriberTest extends AbstractApplicationTest
             '/some/token/*REDACTED*/second',
         ];
 
-        yield 'unmatched path with encoded delimiters and no key' => [
-            '/some/first%2Csecond%3Bthird%26fourth%2Ffifth',
-            '/some/first,second;third&fourth/fifth',
+        yield 'unmatched path with secret starting with encoded ampersand' => [
+            '/some/token/%26second-secret',
+            '[omitted]',
         ];
+
+        yield 'unmatched path with secret starting with encoded slash' => ['/some/token/%2Fsecond-secret', '[omitted]'];
+
+        yield 'unmatched path with key containing encoded space' => [
+            '/some/api%20key=first%26second-secret',
+            '[omitted]',
+        ];
+
+        yield 'unmatched path with bracketed key' => ['/some/%5Btoken%5D=first%2Csecond-secret', '[omitted]'];
+
+        yield 'unmatched path with literal delimiter' => ['/some/token=first,second-secret', '[omitted]'];
+
+        yield 'unmatched path with encoded delimiters and no key' => ['/some/first%2Csecond', '[omitted]'];
     }
 
     /**

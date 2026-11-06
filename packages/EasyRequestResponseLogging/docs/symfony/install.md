@@ -61,7 +61,8 @@ value, logged as `request.route_params` (with the route name as `request.route`)
 masked in the path too. E.g. with the `/token/{token}` route, `/token/<value>` is logged as `/token/*REDACTED*`.
 Name the route parameters which carry secrets after a key from `keys_to_mask`, or add their names to it. A path
 without a matched route has no known structure, so only the sanitizer itself applies to it, and it is logged as
-`[omitted]` when a masked value could end at a decoded delimiter (e.g. `%3F`, `%2C`, `%2F`) and expose its rest.
+`[omitted]` when it contains a character which could end a masked value and expose its rest: whitespace,
+`& ? # , ; " ' ) ] } < >` (also when percent-encoded) or an encoded `/` (`%2F`).
 
 `duration_ms` is the time between the request start (`REQUEST_TIME_FLOAT` server parameter) and the `kernel.response`
 event, so it includes the kernel boot and all `kernel.request` listeners. The request start depends on the runtime:
