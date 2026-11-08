@@ -22,14 +22,13 @@ return static function (DefinitionConfigurator $definition) {
                 )
                 ->acceptAndWrap(['string'])
                 ->performNoDeepMerging()
-                ->scalarPrototype()->cannotBeEmpty()->end()
+                ->stringPrototype()->cannotBeEmpty()->end()
             ->end()
             ->booleanNode('allow_unsigned_messages')
-                ->defaultTrue()
+                ->defaultFalse()
                 ->info(
                     'Accept stored batch item messages without a signature, written before signing existed. '
-                    . 'Set to false once no such batch item is left to process. '
-                    . 'A future major will default this to false.'
+                    . 'Enable it only while such batch items are left to process.'
                 )
             ->end()
         ->end();

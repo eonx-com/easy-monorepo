@@ -219,8 +219,9 @@ Tips:
 - Compiler pass priorities changed: `AddMessengerMiddlewareToBusesCompilerPass` -10 → -20,
   `MakeMessengerReceiversPublicCompilerPass` -10 → 0.
 - Batch item messages are signed with an HMAC of the `kernel.secret` parameter (or the new `signing_secret` option).
-  No schema change: the signature is stored in the `message` column. Old unsigned messages are still accepted while
-  `allow_unsigned_messages` is `true` (default). Set it to `false` once no unsigned batch item is left to process, see
+  No schema change: the signature is stored in the `message` column. Unsigned messages (stored before 7.0) are
+  refused by default. If such batch items are left to process, set `allow_unsigned_messages` to `true` before you
+  deploy and remove it once they are done, see
   [Message signing](packages/EasyBatch/docs/symfony/install.md#message-signing). If several applications create and
   process items of the same batch tables, set the same `signing_secret` in all of them before you deploy. 6.x cannot
   read signed messages: during a rolling deploy, 6.x workers fail on new items until a retry lands on an upgraded

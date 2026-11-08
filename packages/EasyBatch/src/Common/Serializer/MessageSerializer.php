@@ -13,7 +13,7 @@ final readonly class MessageSerializer implements MessageSerializerInterface
 
     public function __construct(
         private MessageSignerInterface $signer,
-        private bool $allowUnsignedMessages = true,
+        private bool $allowUnsignedMessages = false,
     ) {}
 
     public function serialize(object $message): string

@@ -55,9 +55,9 @@ final class MessageSerializerTest extends AbstractUnitTestCase
         self::assertEquals(new UnserializeTrackingMessageStub(), $result);
     }
 
-    public function testItAcceptsUnsignedMessageByDefault(): void
+    public function testItAcceptsUnsignedMessageWhenUnsignedMessagesAreAllowed(): void
     {
-        $sut = new MessageSerializer(new HmacMessageSigner('secret'));
+        $sut = new MessageSerializer(signer: new HmacMessageSigner('secret'), allowUnsignedMessages: true);
 
         $result = $sut->unserialize(\addslashes(\serialize(new UnserializeTrackingMessageStub('legacy'))));
 
@@ -67,7 +67,7 @@ final class MessageSerializerTest extends AbstractUnitTestCase
     #[DataProvider('provideMessageValues')]
     public function testItSerializesAndUnserializesSignedMessage(string $value): void
     {
-        $sut = new MessageSerializer(signer: new HmacMessageSigner('secret'), allowUnsignedMessages: false);
+        $sut = new MessageSerializer(new HmacMessageSigner('secret'));
 
         $serialized = $sut->serialize(new UnserializeTrackingMessageStub($value));
         $result = $sut->unserialize($serialized);
@@ -92,9 +92,9 @@ final class MessageSerializerTest extends AbstractUnitTestCase
         self::assertFalse(UnserializeTrackingMessageStub::isUnserialized());
     }
 
-    public function testItThrowsExceptionForUnsignedMessageWhenUnsignedMessagesAreNotAllowed(): void
+    public function testItThrowsExceptionForUnsignedMessageByDefault(): void
     {
-        $sut = new MessageSerializer(signer: new HmacMessageSigner('secret'), allowUnsignedMessages: false);
+        $sut = new MessageSerializer(new HmacMessageSigner('secret'));
 
         try {
             $sut->unserialize(\addslashes(\serialize(new UnserializeTrackingMessageStub())));

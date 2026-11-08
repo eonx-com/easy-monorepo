@@ -38,20 +38,19 @@ return App::config([
 
 A message with an invalid signature throws `BatchItemMessageSignatureInvalidException`. The worker does not retry it.
 
-`allow_unsigned_messages` controls whether a message without a signature (stored before signing existed) is still
-accepted. It defaults to `true`, so batch items created before the upgrade keep working. An item is signed again every
-time it is saved. Roll-out:
+A message without a signature (stored before signing existed) is refused too, unless `allow_unsigned_messages` is
+`true`. An unsigned item in a batch also stops dispatching or cancelling that batch, as both read every item of the
+batch. An item is signed again every time it is saved. Roll-out:
 
-1. Deploy with `allow_unsigned_messages` left at `true`. New items are signed. If several applications create and
-   process items of the same batch tables, set the same `signing_secret` in all of them before you deploy: by default
-   each application signs with its own `kernel.secret`, and an item with a signature it cannot verify is not processed.
-   6.x cannot read signed messages: during a rolling deploy, 6.x workers that are still running fail on new items
-   until a retry lands on an upgraded worker, and after a rollback to 6.x every signed item fails until 7.x is
-   deployed again.
-2. When no unsigned item is left to process (pending, failed and waiting for a retry, or waiting for approval), set
-   `allow_unsigned_messages` to `false`. Only then is the native-unserialize path closed.
-
-A future major will default `allow_unsigned_messages` to `false`.
+1. If batch items created before the upgrade are left to process (pending, failed and waiting for a retry, or waiting
+   for approval), set `allow_unsigned_messages` to `true` before you deploy. New items are signed. If several
+   applications create and process items of the same batch tables, set the same `signing_secret` in all of them
+   before you deploy: by default each application signs with its own `kernel.secret`, and an item with a signature it
+   cannot verify is not processed. 6.x cannot read signed messages: during a rolling deploy, 6.x workers that are
+   still running fail on new items until a retry lands on an upgraded worker, and after a rollback to 6.x every
+   signed item fails until 7.x is deployed again.
+2. When no unsigned item is left to process, remove `allow_unsigned_messages`. Only then is the native-unserialize
+   path closed.
 
 #### Rotating the signing secret
 

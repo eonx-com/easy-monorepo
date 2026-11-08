@@ -24,9 +24,18 @@ final class EasyBatchBundleMessageSigningTest extends AbstractUnitTestCase
         parent::tearDown();
     }
 
-    public function testItRejectsUnsignedMessageWhenConfigured(): void
+    public function testItAcceptsUnsignedMessageWhenConfigured(): void
     {
         $sut = $this->getMessageSerializer([self::SIGNING_CONFIG]);
+
+        $result = $sut->unserialize(\addslashes(\serialize(new stdClass())));
+
+        self::assertEquals(new stdClass(), $result);
+    }
+
+    public function testItRejectsUnsignedMessageByDefault(): void
+    {
+        $sut = $this->getMessageSerializer();
         $this->expectException(BatchItemMessageSignatureInvalidException::class);
         $this->expectExceptionMessage('Batch item message signature is missing.');
 
@@ -38,8 +47,8 @@ final class EasyBatchBundleMessageSigningTest extends AbstractUnitTestCase
         $sut = $this->getMessageSerializer([self::SIGNING_CONFIG]);
         $messageOfOldSecret = new MessageSerializer(new HmacMessageSigner('old-secret'))
             ->serialize(new stdClass());
+        $verifier = new MessageSerializer(new HmacMessageSigner('new-secret'));
 
-        $verifier = new MessageSerializer(signer: new HmacMessageSigner('new-secret'), allowUnsignedMessages: false);
         $newSecretResult = $verifier->unserialize($sut->serialize(new stdClass()));
         $oldSecretResult = $sut->unserialize($messageOfOldSecret);
 
@@ -47,16 +56,14 @@ final class EasyBatchBundleMessageSigningTest extends AbstractUnitTestCase
         self::assertEquals(new stdClass(), $oldSecretResult);
     }
 
-    public function testItSignsWithKernelSecretAndAcceptsUnsignedMessageByDefault(): void
+    public function testItSignsWithKernelSecretByDefault(): void
     {
         $sut = $this->getMessageSerializer();
+        $verifier = new MessageSerializer(new HmacMessageSigner('kernel-secret'));
 
-        $verifier = new MessageSerializer(signer: new HmacMessageSigner('kernel-secret'), allowUnsignedMessages: false);
-        $signedResult = $verifier->unserialize($sut->serialize(new stdClass()));
-        $unsignedResult = $sut->unserialize(\addslashes(\serialize(new stdClass())));
+        $result = $verifier->unserialize($sut->serialize(new stdClass()));
 
-        self::assertEquals(new stdClass(), $signedResult);
-        self::assertEquals(new stdClass(), $unsignedResult);
+        self::assertEquals(new stdClass(), $result);
     }
 
     /**
