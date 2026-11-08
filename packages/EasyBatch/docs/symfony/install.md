@@ -36,7 +36,10 @@ return App::config([
 ]);
 ```
 
-A message with an invalid signature throws `BatchItemMessageSignatureInvalidException`. The worker does not retry it.
+A message with an invalid signature throws `BatchItemMessageSignatureInvalidException`. The worker does not retry it:
+the message goes to the failure transport, and the item and its batch keep their status (the item is not marked as
+failed). A failed check is usually a config mistake, so fix the config (`signing_secret`, `allow_unsigned_messages`)
+and run `messenger:failed:retry` to process the item.
 
 A message without a signature (stored before signing existed) is refused too, unless `allow_unsigned_messages` is
 `true`. An unsigned item in a batch also stops dispatching or cancelling that batch, as both read every item of the
