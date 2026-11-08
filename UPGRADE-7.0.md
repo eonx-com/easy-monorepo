@@ -221,13 +221,13 @@ Tips:
 - Batch item messages are signed with an HMAC of the `kernel.secret` parameter (or the new `signing_secret` option).
   No schema change: the signature is stored in the `message` column. Unsigned messages (stored before 7.0) are
   refused by default. If such batch items are left to process, set `allow_unsigned_messages` to `true` before you
-  deploy and remove it once they are done, see
-  [Message signing](packages/EasyBatch/docs/symfony/install.md#message-signing). If several applications create and
-  process items of the same batch tables, set the same `signing_secret` in all of them before you deploy. 6.x cannot
-  read signed messages: during a rolling deploy, 6.x workers fail on new items until a retry lands on an upgraded
-  worker, and after a rollback to 6.x every signed item fails until 7.x is deployed again. An item that fails the
-  check is not marked as failed: it keeps its status, its batch stays unfinished, and the message goes to the failure
-  transport. Fix the config and run `messenger:failed:retry`.
+  deploy and remove it once they are done (the roll-out in
+  [Message signing](packages/EasyBatch/docs/symfony/install.md#message-signing) has a query to check it). If several
+  applications create and process items of the same batch tables, set the same `signing_secret` in all of them
+  before you deploy. 6.x cannot read signed messages: during a rolling deploy, 6.x workers fail on new items until a
+  retry lands on an upgraded worker, and after a rollback to 6.x every signed item fails until 7.x is deployed again.
+  An item that fails the check is not marked as failed: it keeps its status, its batch stays unfinished, and the
+  message goes to the failure transport. Fix the config and run `messenger:failed:retry`.
 - `MessageSerializer` requires a `MessageSignerInterface`. If you create it yourself, pass
   `new HmacMessageSigner(<secret>)`.
 - `AbstractBatchObjectTransformer::instantiateForClass()` throws `BatchObjectInvalidException` when the stored

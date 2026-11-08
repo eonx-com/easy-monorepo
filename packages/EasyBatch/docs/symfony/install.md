@@ -52,8 +52,25 @@ batch. An item is signed again every time it is saved. Roll-out:
    cannot verify is not processed. 6.x cannot read signed messages: during a rolling deploy, 6.x workers that are
    still running fail on new items until a retry lands on an upgraded worker, and after a rollback to 6.x every
    signed item fails until 7.x is deployed again.
-2. When no unsigned item is left to process, remove `allow_unsigned_messages`. Only then is the native-unserialize
-   path closed.
+2. When the query below returns no rows, remove `allow_unsigned_messages`. Only then is the native-unserialize path
+   closed. Use your `batch_table` / `batch_item_table` names, and the time of the 7.0 deploy in UTC as `:deployedAt`:
+
+   ```sql
+   SELECT i.id
+   FROM easy_batch_items i
+   INNER JOIN easy_batches b ON b.id = i.batch_id
+   WHERE b.status NOT IN ('succeeded', 'failed', 'cancelled')
+     AND i.message IS NOT NULL
+     AND (
+       (i.encrypted = 0 AND i.message NOT LIKE 'v1:%')
+       OR (i.encrypted = 1 AND i.updated_at < :deployedAt)
+     )
+   ```
+
+   The query checks every item of an unfinished batch, as dispatching and cancelling a batch read all its items. A
+   signed message starts with `v1:`. For an encrypted item the signature is inside the encrypted value, so the query
+   uses `updated_at`: saving an item signs its message again and updates `updated_at`. Finished batches are not
+   checked: if your application dispatches finished batches again, their unsigned items fail too.
 
 #### Rotating the signing secret
 
