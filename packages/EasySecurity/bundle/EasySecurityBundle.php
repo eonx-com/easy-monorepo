@@ -10,8 +10,10 @@ use EonX\EasySecurity\Bundle\CompilerPass\RegisterPermissionExpressionFunctionCo
 use EonX\EasySecurity\Bundle\CompilerPass\RegisterRoleExpressionFunctionCompilerPass;
 use EonX\EasySecurity\Bundle\Controller\EasySecurityLoginController;
 use EonX\EasySecurity\Bundle\Enum\ConfigParam;
+use EonX\EasySecurity\Bundle\Enum\ConfigServiceId;
 use EonX\EasySecurity\Bundle\Enum\ConfigTag;
 use EonX\EasySecurity\Common\Configurator\SecurityContextConfiguratorInterface;
+use EonX\EasySecurity\SymfonySecurity\Resolver\WwwAuthenticateHeaderResolver;
 use EonX\EasySecurity\SymfonySecurity\Voter\PermissionVoter;
 use EonX\EasySecurity\SymfonySecurity\Voter\ProviderVoter;
 use EonX\EasySecurity\SymfonySecurity\Voter\RoleVoter;
@@ -78,6 +80,7 @@ final class EasySecurityBundle extends AbstractBundle
         $this->registerDefaultConfiguratorsConfiguration($config, $container, $builder);
         $this->registerVotersConfiguration($config, $container, $builder);
         $this->registerLoginFormConfiguration($config, $container, $builder);
+        $this->registerWwwAuthenticateHeaderConfiguration($config, $container, $builder);
     }
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -93,6 +96,13 @@ final class EasySecurityBundle extends AbstractBundle
         $bundles = $builder->getParameter('kernel.bundles');
 
         return isset($bundles[$bundleName]);
+    }
+
+    private function isEasyLoggingEnabled(ContainerBuilder $builder): bool
+    {
+        return $this->useSymfonyMonologBundle === false
+            && \interface_exists(LoggerFactoryInterface::class)
+            && $this->isBundleEnabled('EasyLoggingBundle', $builder);
     }
 
     private function registerDefaultConfiguratorsConfiguration(
@@ -131,14 +141,7 @@ final class EasySecurityBundle extends AbstractBundle
         ContainerConfigurator $container,
         ContainerBuilder $builder,
     ): void {
-        if ($this->useSymfonyMonologBundle) {
-            return;
-        }
-
-        if (
-            \interface_exists(LoggerFactoryInterface::class)
-            && $this->isBundleEnabled('EasyLoggingBundle', $builder)
-        ) {
+        if ($this->isEasyLoggingEnabled($builder)) {
             $container->import('config/easy_logging.php');
         }
     }
@@ -191,6 +194,32 @@ final class EasySecurityBundle extends AbstractBundle
                 ]);
 
             $builder->setDefinition($class, $voterDefinition);
+        }
+    }
+
+    private function registerWwwAuthenticateHeaderConfiguration(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder,
+    ): void {
+        if ($config['www_authenticate_header']['enabled'] === false) {
+            return;
+        }
+
+        $container
+            ->parameters()
+            ->set(
+                ConfigParam::WwwAuthenticateHeaderDefaultChallenge->value,
+                $config['www_authenticate_header']['default_challenge']
+            );
+
+        $container->import('config/www_authenticate_header.php');
+
+        if ($this->isEasyLoggingEnabled($builder)) {
+            $container
+                ->services()
+                ->get(WwwAuthenticateHeaderResolver::class)
+                ->arg('$logger', new Reference(ConfigServiceId::Logger->value));
         }
     }
 

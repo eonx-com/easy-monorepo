@@ -1,0 +1,20 @@
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Symfony\Config\EasyBugsnagConfig;
+use Symfony\Config\EasySecurityConfig;
+
+return static function (EasySecurityConfig $easySecurityConfig, EasyBugsnagConfig $easyBugsnagConfig): void {
+    $easySecurityConfig->wwwAuthenticateHeader()
+        ->defaultChallenge('   ');
+
+    $easyBugsnagConfig->apiKey('api-key');
+
+    $easyBugsnagConfig->doctrineDbal()
+        ->enabled(false);
+
+    $easyBugsnagConfig->sensitiveDataSanitizer()
+        ->enabled(false);
+};

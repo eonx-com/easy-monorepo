@@ -15,9 +15,16 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
     private const TABLE_NAME = 'cache_items';
 
     /**
+     * @var list<array{RequestItems: array<string, list<array{PutRequest: array{Item: array<string, array<string, string>>}}>>}>
+     */
+    private array $batchWriteRequests = [];
+
+    /**
      * @var array<string, array<string, array<string, string>>>
      */
     private array $items = [];
+
+    private int $unprocessedBatchWrites = 0;
 
     public function testGetItemSkipsExpiredItem(): void
     {
@@ -42,6 +49,27 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
         self::assertTrue($item->isHit());
         self::assertSame('value', $item->get());
         self::assertTrue($sut->hasItem('key'));
+    }
+
+    public function testSaveSucceedsWhenDynamoDbReturnsUnprocessedItems(): void
+    {
+        $sut = $this->createAdapter();
+        $this->unprocessedBatchWrites = 1;
+
+        $result = $sut->save($sut->getItem('key')->set('value')->expiresAfter(60));
+
+        self::assertTrue($result);
+        self::assertCount(2, $this->batchWriteRequests);
+        self::assertSame($this->batchWriteRequests[0], $this->batchWriteRequests[1]);
+        self::assertSame([self::TABLE_NAME], \array_keys($this->batchWriteRequests[1]['RequestItems']));
+        self::assertSame(
+            'key',
+            $this->batchWriteRequests[1]['RequestItems'][self::TABLE_NAME][0]['PutRequest']['Item']['key_id']['S']
+        );
+        self::assertSame(
+            $this->batchWriteRequests[0]['RequestItems'][self::TABLE_NAME][0]['PutRequest']['Item'],
+            $this->items['key']
+        );
     }
 
     public function testSaveSucceedsWithPositiveLifetime(): void
@@ -98,12 +126,21 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
     }
 
     /**
-     * @return array{}
+     * @return array{UnprocessedItems?: array<string, list<array{PutRequest: array{Item: array<string, array<string, string>>}}>>}
      */
     private function batchWriteItem(string $body): array
     {
-        /** @var array{RequestItems: array{cache_items: list<array{PutRequest: array{Item: array{key_id: array{S: string}}&array<string, array<string, string>>}}>}} $request */
+        /** @var array{RequestItems: array<string, list<array{PutRequest: array{Item: array{key_id: array{S: string}}&array<string, array<string, string>>}}>>} $request */
         $request = \json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
+        $this->batchWriteRequests[] = $request;
+
+        if ($this->unprocessedBatchWrites > 0) {
+            $this->unprocessedBatchWrites--;
+
+            return [
+                'UnprocessedItems' => $request['RequestItems'],
+            ];
+        }
 
         foreach ($request['RequestItems'][self::TABLE_NAME] as $writeRequest) {
             $item = $writeRequest['PutRequest']['Item'];

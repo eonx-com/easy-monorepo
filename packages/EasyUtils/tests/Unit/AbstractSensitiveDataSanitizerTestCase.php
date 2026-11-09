@@ -754,6 +754,34 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'shared_key',
             ],
         ];
+        yield 'Mask default keys' => [
+            'input' => [
+                'cookie' => 'some-value',
+                'name' => 'some-value',
+                'proxy-authorization' => 'some-value',
+                'refresh_token' => 'some-value',
+                'refreshToken' => 'some-value',
+                'secret' => 'some-value',
+                'secret_key' => 'some-value',
+                'secretKey' => 'some-value',
+                'set-cookie' => 'some-value',
+                'x-webhook-signature' => 'some-value',
+            ],
+            'expectedOutput' => [
+                'cookie' => '*REDACTED*',
+                'name' => 'some-value',
+                'proxy-authorization' => '*REDACTED*',
+                'refresh_token' => '*REDACTED*',
+                'refreshToken' => '*REDACTED*',
+                'secret' => '*REDACTED*',
+                'secret_key' => '*REDACTED*',
+                'secretKey' => '*REDACTED*',
+                'set-cookie' => '*REDACTED*',
+                'x-webhook-signature' => '*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
         yield 'Mask legacy spellings of default keys in arrays and JSON' => [
             'input' => [
                 'apikey' => 'secret',
@@ -895,6 +923,48 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
         $sanitizedException = $sanitizer->sanitize($exception);
 
         self::assertSame($expectedMessage, $sanitizedException['message']);
+    }
+
+    public function testSanitizeNumericCardNumbers(): void
+    {
+        $sanitizer = $this->getSanitizer('*REDACTED*');
+
+        $result = $sanitizer->sanitize([
+            'int' => 4111111111111111,
+            'negativeInt' => -4111111111111111,
+            'float' => 4111111111111111.0,
+            'exponentFloat' => 4.111111111111111e15,
+            'nonCardInt' => 1234567890123456,
+            'shortInt' => 100000000000,
+            'decimal' => 1.5,
+            'nested' => [
+                'note' => 4111111111111111,
+            ],
+            'json' => '{"note":4111111111111111}',
+            'jsonInJsonString' => '{"payload":"{\\"note\\":4111111111111111}"}',
+            'jsonInFreeText' => 'note {"card":4111111111111111}',
+        ]);
+
+        self::assertSame(
+            [
+                'int' => '411111*REDACTED*1111',
+                'negativeInt' => '-411111*REDACTED*1111',
+                'float' => '411111*REDACTED*1111',
+                'exponentFloat' => '411111*REDACTED*1111',
+                'nonCardInt' => 1234567890123456,
+                'shortInt' => 100000000000,
+                'decimal' => 1.5,
+                'nested' => [
+                    'note' => '411111*REDACTED*1111',
+                ],
+                'json' => '{"note":"411111*REDACTED*1111"}',
+                'jsonInJsonString' => '{"payload":"{\\"note\\":\\"411111*REDACTED*1111\\"}"}',
+                'jsonInFreeText' => 'note {"card":"411111*REDACTED*1111"}',
+            ],
+            $result
+        );
+        self::assertSame('411111*REDACTED*1111', $sanitizer->sanitize(4111111111111111));
+        self::assertSame(1234567890123456, $sanitizer->sanitize(1234567890123456));
     }
 
     abstract protected function getSanitizer(
