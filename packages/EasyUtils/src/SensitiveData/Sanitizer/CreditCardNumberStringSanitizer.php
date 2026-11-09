@@ -35,13 +35,14 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
         $uuids = [];
-        \preg_match_all(self::UUID_PATTERN, $string, $uuids, \PREG_OFFSET_CAPTURE);
+        $matched = \preg_match_all(self::UUID_PATTERN, $string, $uuids, \PREG_OFFSET_CAPTURE);
 
         $result = '';
         $offset = 0;
 
-        // UUIDs are kept as they are, only the text between them is scanned for card numbers
-        foreach ($uuids[0] as [$uuid, $position]) {
+        // UUIDs are kept as they are, only the text between them is scanned for card numbers. On a PCRE
+        // failure (e.g. a resource limit) no UUID is skipped, and the whole string is scanned
+        foreach ($matched > 0 ? $uuids[0] : [] as [$uuid, $position]) {
             $result .= $this->sanitizeCardNumbers(\substr($string, $offset, $position - $offset), $maskPattern);
             $result .= $uuid;
             $offset = $position + \strlen($uuid);
@@ -53,7 +54,7 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
     private function sanitizeCardNumbers(string $string, string $maskPattern): string
     {
         // Validate and mask each candidate independently, replacing it with its own masked value
-        return (string)\preg_replace_callback(
+        $result = \preg_replace_callback(
             self::CARD_CANDIDATE_PATTERN,
             function (array $matches) use ($maskPattern): string {
                 $candidate = $matches[0];
@@ -70,5 +71,8 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
             },
             $string
         );
+
+        // On a PCRE failure (e.g. a resource limit) the text is kept as it is instead of being lost
+        return $result ?? $string;
     }
 }
