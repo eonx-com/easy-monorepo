@@ -26,6 +26,31 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
 
     private int $unprocessedBatchWrites = 0;
 
+    public function testGetItemSkipsExpiredItem(): void
+    {
+        $sut = $this->createAdapter();
+        $sut->save($sut->getItem('key')->set('value')->expiresAfter(60));
+        $this->items['key']['key_expiration'] = ['N' => (string)(\microtime(true) - 1)];
+
+        $item = $sut->getItem('key');
+
+        self::assertFalse($item->isHit());
+        self::assertFalse($sut->hasItem('key'));
+    }
+
+    public function testGetItemSucceedsWhenItemHasNoExpiration(): void
+    {
+        $sut = $this->createAdapter();
+        $sut->save($sut->getItem('key')->set('value')->expiresAfter(60));
+        unset($this->items['key']['key_expiration']);
+
+        $item = $sut->getItem('key');
+
+        self::assertTrue($item->isHit());
+        self::assertSame('value', $item->get());
+        self::assertTrue($sut->hasItem('key'));
+    }
+
     public function testSaveSucceedsWhenDynamoDbReturnsUnprocessedItems(): void
     {
         $sut = $this->createAdapter();
@@ -45,6 +70,35 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
             $this->batchWriteRequests[0]['RequestItems'][self::TABLE_NAME][0]['PutRequest']['Item'],
             $this->items['key']
         );
+    }
+
+    public function testSaveSucceedsWithPositiveLifetime(): void
+    {
+        $sut = $this->createAdapter();
+        $before = \microtime(true);
+
+        $result = $sut->save($sut->getItem('key')->set('value')->expiresAfter(60));
+
+        self::assertTrue($result);
+        self::assertArrayHasKey('key_expiration', $this->items['key']);
+        self::assertEqualsWithDelta($before + 60, (float)$this->items['key']['key_expiration']['N'], 2.0);
+        self::assertSame('value', $sut->getItem('key')->get());
+        self::assertTrue($sut->hasItem('key'));
+    }
+
+    public function testSaveSucceedsWithZeroLifetime(): void
+    {
+        $sut = $this->createAdapter();
+
+        $result = $sut->save($sut->getItem('key')->set('value'));
+
+        self::assertTrue($result);
+        self::assertArrayHasKey('key', $this->items);
+        self::assertArrayNotHasKey('key_expiration', $this->items['key']);
+        $item = $sut->getItem('key');
+        self::assertTrue($item->isHit());
+        self::assertSame('value', $item->get());
+        self::assertTrue($sut->hasItem('key'));
     }
 
     /**
@@ -111,6 +165,18 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
     }
 
     /**
+     * @return array{Item?: array<string, array<string, string>>}
+     */
+    private function getItem(string $body): array
+    {
+        /** @var array{Key: array{key_id: array{S: string}}} $request */
+        $request = \json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
+        $id = $request['Key']['key_id']['S'];
+
+        return isset($this->items[$id]) ? ['Item' => $this->items[$id]] : [];
+    }
+
+    /**
      * @param array{body: string, normalized_headers: array<string, list<string>>} $options
      */
     private function handleDynamoDbRequest(string $method, string $url, array $options): MockResponse
@@ -120,6 +186,7 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
         $response = match ($target) {
             'DynamoDB_20120810.BatchGetItem' => $this->batchGetItem($options['body']),
             'DynamoDB_20120810.BatchWriteItem' => $this->batchWriteItem($options['body']),
+            'DynamoDB_20120810.GetItem' => $this->getItem($options['body']),
             default => self::fail(\sprintf('Unexpected DynamoDB request "%s".', $target)),
         };
 
