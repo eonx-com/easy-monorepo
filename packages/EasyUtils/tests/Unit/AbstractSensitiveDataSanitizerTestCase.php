@@ -925,6 +925,48 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
         self::assertSame($expectedMessage, $sanitizedException['message']);
     }
 
+    public function testSanitizeNumericCardNumbers(): void
+    {
+        $sanitizer = $this->getSanitizer('*REDACTED*');
+
+        $result = $sanitizer->sanitize([
+            'int' => 4111111111111111,
+            'negativeInt' => -4111111111111111,
+            'float' => 4111111111111111.0,
+            'exponentFloat' => 4.111111111111111e15,
+            'nonCardInt' => 1234567890123456,
+            'shortInt' => 100000000000,
+            'decimal' => 1.5,
+            'nested' => [
+                'note' => 4111111111111111,
+            ],
+            'json' => '{"note":4111111111111111}',
+            'jsonInJsonString' => '{"payload":"{\\"note\\":4111111111111111}"}',
+            'jsonInFreeText' => 'note {"card":4111111111111111}',
+        ]);
+
+        self::assertSame(
+            [
+                'int' => '411111*REDACTED*1111',
+                'negativeInt' => '-411111*REDACTED*1111',
+                'float' => '411111*REDACTED*1111',
+                'exponentFloat' => '411111*REDACTED*1111',
+                'nonCardInt' => 1234567890123456,
+                'shortInt' => 100000000000,
+                'decimal' => 1.5,
+                'nested' => [
+                    'note' => '411111*REDACTED*1111',
+                ],
+                'json' => '{"note":"411111*REDACTED*1111"}',
+                'jsonInJsonString' => '{"payload":"{\\"note\\":\\"411111*REDACTED*1111\\"}"}',
+                'jsonInFreeText' => 'note {"card":"411111*REDACTED*1111"}',
+            ],
+            $result
+        );
+        self::assertSame('411111*REDACTED*1111', $sanitizer->sanitize(4111111111111111));
+        self::assertSame(1234567890123456, $sanitizer->sanitize(1234567890123456));
+    }
+
     abstract protected function getSanitizer(
         string $maskPattern,
         ?array $keysToMask = null,
