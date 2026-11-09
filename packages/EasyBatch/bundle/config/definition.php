@@ -25,10 +25,10 @@ return static function (DefinitionConfigurator $definition) {
                 ->stringPrototype()->cannotBeEmpty()->end()
             ->end()
             ->booleanNode('allow_unsigned_messages')
-                ->defaultFalse()
+                ->isRequired()
                 ->info(
-                    'Accept stored batch item messages without a signature, written before signing existed. '
-                    . 'Enable it only while such batch items are left to process.'
+                    'Accept stored batch item messages without a signature, written before 7.0. '
+                    . 'Set it to true while such batch items are left to process, false otherwise.'
                 )
             ->end()
         ->end();

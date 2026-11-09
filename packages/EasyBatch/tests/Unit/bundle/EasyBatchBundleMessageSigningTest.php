@@ -10,11 +10,15 @@ use EonX\EasyBatch\Common\Signer\HmacMessageSigner;
 use EonX\EasyBatch\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyBatch\Tests\Unit\AbstractUnitTestCase;
 use stdClass;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class EasyBatchBundleMessageSigningTest extends AbstractUnitTestCase
 {
     private const string SIGNING_CONFIG = __DIR__ . '/../../Fixture/config/signing.php';
+
+    private const string UNSIGNED_MESSAGES_REFUSED_CONFIG = __DIR__
+        . '/../../Fixture/config/unsigned_messages_refused.php';
 
     protected function tearDown(): void
     {
@@ -33,13 +37,23 @@ final class EasyBatchBundleMessageSigningTest extends AbstractUnitTestCase
         self::assertEquals(new stdClass(), $result);
     }
 
-    public function testItRejectsUnsignedMessageByDefault(): void
+    public function testItRejectsUnsignedMessageWhenNotAllowed(): void
     {
-        $sut = $this->getMessageSerializer();
+        $sut = $this->getMessageSerializer([self::UNSIGNED_MESSAGES_REFUSED_CONFIG]);
         $this->expectException(BatchItemMessageSignatureInvalidException::class);
         $this->expectExceptionMessage('Batch item message signature is missing.');
 
         $sut->unserialize(\addslashes(\serialize(new stdClass())));
+    }
+
+    public function testItRequiresAllowUnsignedMessagesToBeConfigured(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage(
+            'The child config "allow_unsigned_messages" under "easy_batch" must be configured'
+        );
+
+        $this->getMessageSerializer([]);
     }
 
     public function testItSignsWithConfiguredSecrets(): void
@@ -58,7 +72,7 @@ final class EasyBatchBundleMessageSigningTest extends AbstractUnitTestCase
 
     public function testItSignsWithKernelSecretByDefault(): void
     {
-        $sut = $this->getMessageSerializer();
+        $sut = $this->getMessageSerializer([self::UNSIGNED_MESSAGES_REFUSED_CONFIG]);
         $verifier = new MessageSerializer(new HmacMessageSigner('kernel-secret'));
 
         $result = $verifier->unserialize($sut->serialize(new stdClass()));
@@ -69,7 +83,7 @@ final class EasyBatchBundleMessageSigningTest extends AbstractUnitTestCase
     /**
      * @param string[] $configs
      */
-    private function getMessageSerializer(array $configs = []): MessageSerializerInterface
+    private function getMessageSerializer(array $configs): MessageSerializerInterface
     {
         $kernel = new KernelStub('test', true, $configs);
         $kernel->boot();
