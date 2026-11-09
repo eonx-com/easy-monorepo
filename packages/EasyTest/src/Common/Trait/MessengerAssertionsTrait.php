@@ -7,6 +7,7 @@ use PHPUnit\Framework\Constraint\IsEqual;
 use RuntimeException;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnMessageLimitListener;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
@@ -266,6 +267,13 @@ trait MessengerAssertionsTrait
         /** @var \Symfony\Component\Messenger\EventListener\ResetServicesListener $resetServicesListener */
         $resetServicesListener = self::getContainer()->get('messenger.listener.reset_services');
         $eventDispatcher->addSubscriber($resetServicesListener);
+        $messageFailures = [];
+        $collectMessageFailuresListener = static function (WorkerMessageFailedEvent $event) use (
+            &$messageFailures,
+        ): void {
+            $messageFailures[] = ErrorDetailsStamp::create($event->getThrowable());
+        };
+        $eventDispatcher->addListener(WorkerMessageFailedEvent::class, $collectMessageFailuresListener);
         while (++$tries < 10) {
             $messagesCount = self::countMessagesInTransports($transports);
 
@@ -291,6 +299,7 @@ trait MessengerAssertionsTrait
 
         $eventDispatcher->removeSubscriber($stopWorkerOnTimeLimitListener);
         $eventDispatcher->removeSubscriber($resetServicesListener);
+        $eventDispatcher->removeListener(WorkerMessageFailedEvent::class, $collectMessageFailuresListener);
         if ($messageLimitListener !== null) {
             $eventDispatcher->removeSubscriber($messageLimitListener);
         }
@@ -307,38 +316,33 @@ trait MessengerAssertionsTrait
         // Instead, it stores exception details in ErrorDetailsStamp, and we need to check it manually.
         // We can't throw this exception, because it stored as \Symfony\Component\ErrorHandler\Exception\FlattenException,
         // and we can't get original exception
-        foreach ($transports as $transport) {
-            foreach ($transport->getRejected() as $envelope) {
-                /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $errorDetailsStamp */
-                foreach ($envelope->all(ErrorDetailsStamp::class) as $errorDetailsStamp) {
-                    foreach ($expectedExceptions as $key => $expectedExceptionPairOrClass) {
-                        // If $expectedExceptionPairOrClass is a string = exceptionClass
-                        if ($expectedExceptionPairOrClass === $errorDetailsStamp->getExceptionClass() &&
-                            $errorDetailsStamp->getExceptionCode() === 0
-                        ) {
-                            unset($expectedExceptions[$key]);
+        foreach ($messageFailures as $errorDetailsStamp) {
+            foreach ($expectedExceptions as $key => $expectedExceptionPairOrClass) {
+                // If $expectedExceptionPairOrClass is a string = exceptionClass
+                if ($expectedExceptionPairOrClass === $errorDetailsStamp->getExceptionClass() &&
+                    $errorDetailsStamp->getExceptionCode() === 0
+                ) {
+                    unset($expectedExceptions[$key]);
 
-                            continue 2;
-                        }
-                        // If $expectedExceptionPairOrClass is an array{exceptionClass => exceptionCode}
-                        if (
-                            isset($expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()])
-                            && (
-                                $expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()]
-                                === $errorDetailsStamp->getExceptionCode()
-                            )
-                        ) {
-                            unset($expectedExceptions[$key]);
+                    continue 2;
+                }
+                // If $expectedExceptionPairOrClass is an array{exceptionClass => exceptionCode}
+                if (
+                    isset($expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()])
+                    && (
+                        $expectedExceptionPairOrClass[$errorDetailsStamp->getExceptionClass()]
+                        === $errorDetailsStamp->getExceptionCode()
+                    )
+                ) {
+                    unset($expectedExceptions[$key]);
 
-                            continue 2;
-                        }
-                    }
-
-                    self::printExceptionDetails($errorDetailsStamp);
-
-                    throw new RuntimeException('Exception was thrown during messages processing.');
+                    continue 2;
                 }
             }
+
+            self::printExceptionDetails($errorDetailsStamp);
+
+            throw new RuntimeException('Exception was thrown during messages processing.');
         }
 
         if (\count($expectedExceptions) > 0) {

@@ -6,6 +6,7 @@ namespace EonX\EasyUtils\Tests\Unit;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
+use EonX\EasyUtils\Bundle\EasyUtilsBundle;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use EonX\EasyUtils\Tests\Fixture\SensitiveData\DummyObject;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -662,6 +663,182 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'token',
             ],
         ];
+        yield 'Mask keys regardless of separators, case and "x" prefix' => [
+            'input' => [
+                'api key' => 'secret',
+                'api-key' => 'secret',
+                'api_key' => 'secret',
+                'apikey' => 'secret',
+                'apiKey' => 'secret',
+                'API_KEY' => 'secret',
+                'x api key' => 'secret',
+                'x-api-key' => 'secret',
+                'X-Api-Key' => 'secret',
+                'x_api_key' => 'secret',
+                'xapi_key' => 'secret',
+                'xapikey' => 'secret',
+                'x-auth-token' => 'secret',
+                'headers' => [
+                    'x-access-token' => ['secret'],
+                ],
+                'json' => '{"accessToken":"secret","tokenType":"Bearer"}',
+                'api_key_id' => 'keep',
+                'my_api_key' => 'keep',
+                'token_type' => 'keep',
+                'next_page_token' => 'keep',
+                'x' => 'keep',
+            ],
+            'expectedOutput' => [
+                'api key' => '*REDACTED*',
+                'api-key' => '*REDACTED*',
+                'api_key' => '*REDACTED*',
+                'apikey' => '*REDACTED*',
+                'apiKey' => '*REDACTED*',
+                'API_KEY' => '*REDACTED*',
+                'x api key' => '*REDACTED*',
+                'x-api-key' => '*REDACTED*',
+                'X-Api-Key' => '*REDACTED*',
+                'x_api_key' => '*REDACTED*',
+                'xapi_key' => '*REDACTED*',
+                'xapikey' => '*REDACTED*',
+                'x-auth-token' => '*REDACTED*',
+                'headers' => [
+                    'x-access-token' => '*REDACTED*',
+                ],
+                'json' => '{"accessToken":"*REDACTED*","tokenType":"Bearer"}',
+                'api_key_id' => 'keep',
+                'my_api_key' => 'keep',
+                'token_type' => 'keep',
+                'next_page_token' => 'keep',
+                'x' => 'keep',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'access_token',
+                'api key',
+                'Auth-Token',
+            ],
+        ];
+        yield 'Mask key=value in free text regardless of separators' => [
+            'input' => [
+                'query' => 'https://example.com?api-key=secret1&apiKey=secret2&api_key=secret3&X-Api-Key=secret4',
+                'path' => 'https://example.com/api-key/secret5/keep',
+                'otherKey' => 'apikeys=keep',
+            ],
+            'expectedOutput' => [
+                'query' => 'https://example.com?api-key=*REDACTED*&apiKey=*REDACTED*&api_key=*REDACTED*'
+                    . '&X-Api-Key=*REDACTED*',
+                'path' => 'https://example.com/api-key/*REDACTED*/keep',
+                'otherKey' => 'apikeys=keep',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'api key',
+            ],
+        ];
+        yield 'Mask key=value in free text with repeated, edge separators and "x" prefix' => [
+            'input' => [
+                'repeated' => 'https://example.com/api__key/secret1/keep?api__key=secret2',
+                'edge' => 'https://example.com?_token_=secret3',
+                'prefixed' => 'https://example.com/x-shared-key/secret4/keep?a[x_shared_key]=secret5',
+            ],
+            'expectedOutput' => [
+                'repeated' => 'https://example.com/api__key/*REDACTED*/keep?api__key=*REDACTED*',
+                'edge' => 'https://example.com?_token_=*REDACTED*',
+                'prefixed' => 'https://example.com/x-shared-key/*REDACTED*/keep?a[x_shared_key]=*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'api__key',
+                '_token_',
+                'shared_key',
+            ],
+        ];
+        yield 'Mask default keys' => [
+            'input' => [
+                'cookie' => 'some-value',
+                'name' => 'some-value',
+                'proxy-authorization' => 'some-value',
+                'refresh_token' => 'some-value',
+                'refreshToken' => 'some-value',
+                'secret' => 'some-value',
+                'secret_key' => 'some-value',
+                'secretKey' => 'some-value',
+                'set-cookie' => 'some-value',
+                'x-webhook-signature' => 'some-value',
+            ],
+            'expectedOutput' => [
+                'cookie' => '*REDACTED*',
+                'name' => 'some-value',
+                'proxy-authorization' => '*REDACTED*',
+                'refresh_token' => '*REDACTED*',
+                'refreshToken' => '*REDACTED*',
+                'secret' => '*REDACTED*',
+                'secret_key' => '*REDACTED*',
+                'secretKey' => '*REDACTED*',
+                'set-cookie' => '*REDACTED*',
+                'x-webhook-signature' => '*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
+        yield 'Mask legacy spellings of default keys in arrays and JSON' => [
+            'input' => [
+                'apikey' => 'secret',
+                'php-auth-pw' => 'secret',
+                'php-auth-user' => 'secret',
+                'securitycode' => 'secret',
+                'verificationcode' => 'secret',
+                'x-shared-key' => 'secret',
+                'json' => '{"apikey":"secret","x-shared-key":"secret","securitycode":"secret"}',
+            ],
+            'expectedOutput' => [
+                'apikey' => '*REDACTED*',
+                'php-auth-pw' => '*REDACTED*',
+                'php-auth-user' => '*REDACTED*',
+                'securitycode' => '*REDACTED*',
+                'verificationcode' => '*REDACTED*',
+                'x-shared-key' => '*REDACTED*',
+                'json' => '{"apikey":"*REDACTED*","x-shared-key":"*REDACTED*","securitycode":"*REDACTED*"}',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
+        yield 'Mask legacy spellings of default keys in URL' => [
+            'input' => [
+                'path' => 'https://example.com/x-shared-key/secret1/php-auth-pw/secret2/keep',
+                'query' => 'https://example.com?apikey=secret3&securitycode=secret4&verificationcode=secret5',
+                'array' => 'a[php-auth-user]=secret6&a[x-shared-key]=secret7',
+            ],
+            'expectedOutput' => [
+                'path' => 'https://example.com/x-shared-key/*REDACTED*/php-auth-pw/*REDACTED*/keep',
+                'query' => 'https://example.com?apikey=*REDACTED*&securitycode=*REDACTED*'
+                    . '&verificationcode=*REDACTED*',
+                'array' => 'a[php-auth-user]=*REDACTED*&a[x-shared-key]=*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
+        yield 'Mask separator-only keys exactly' => [
+            'input' => [
+                '_' => 'secret',
+                'json' => '{"_":"secret","-":"keep","__":"keep"}',
+                '-' => 'keep',
+                '__' => 'keep',
+                'x_' => 'keep',
+            ],
+            'expectedOutput' => [
+                '_' => '*REDACTED*',
+                'json' => '{"_":"*REDACTED*","-":"keep","__":"keep"}',
+                '-' => 'keep',
+                '__' => 'keep',
+                'x_' => 'keep',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                '_',
+            ],
+        ];
         yield 'Leave unbalanced or truncated JSON untouched' => [
             'input' => [
                 'manyOpeners' => 'weird {{{{{{{{ end',
@@ -746,6 +923,48 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
         $sanitizedException = $sanitizer->sanitize($exception);
 
         self::assertSame($expectedMessage, $sanitizedException['message']);
+    }
+
+    public function testSanitizeNumericCardNumbers(): void
+    {
+        $sanitizer = $this->getSanitizer('*REDACTED*');
+
+        $result = $sanitizer->sanitize([
+            'int' => 4111111111111111,
+            'negativeInt' => -4111111111111111,
+            'float' => 4111111111111111.0,
+            'exponentFloat' => 4.111111111111111e15,
+            'nonCardInt' => 1234567890123456,
+            'shortInt' => 100000000000,
+            'decimal' => 1.5,
+            'nested' => [
+                'note' => 4111111111111111,
+            ],
+            'json' => '{"note":4111111111111111}',
+            'jsonInJsonString' => '{"payload":"{\\"note\\":4111111111111111}"}',
+            'jsonInFreeText' => 'note {"card":4111111111111111}',
+        ]);
+
+        self::assertSame(
+            [
+                'int' => '411111*REDACTED*1111',
+                'negativeInt' => '-411111*REDACTED*1111',
+                'float' => '411111*REDACTED*1111',
+                'exponentFloat' => '411111*REDACTED*1111',
+                'nonCardInt' => 1234567890123456,
+                'shortInt' => 100000000000,
+                'decimal' => 1.5,
+                'nested' => [
+                    'note' => '411111*REDACTED*1111',
+                ],
+                'json' => '{"note":"411111*REDACTED*1111"}',
+                'jsonInJsonString' => '{"payload":"{\\"note\\":\\"411111*REDACTED*1111\\"}"}',
+                'jsonInFreeText' => 'note {"card":"411111*REDACTED*1111"}',
+            ],
+            $result
+        );
+        self::assertSame('411111*REDACTED*1111', $sanitizer->sanitize(4111111111111111));
+        self::assertSame(1234567890123456, $sanitizer->sanitize(1234567890123456));
     }
 
     abstract protected function getSanitizer(

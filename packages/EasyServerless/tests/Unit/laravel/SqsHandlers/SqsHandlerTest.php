@@ -525,6 +525,54 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         );
     }
 
+    public function testHandleSqsRecordAcknowledgesJobExceedingItsMaxTriesWhenPartialBatchFailureDisabled(): void
+    {
+        $handler = $this->createHandler(partialBatchFailure: false);
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'message-id',
+                    receiveCount: 3,
+                    data: ['exception' => 'boom'],
+                    maxTries: 2
+                ),
+            ]),
+            self::createContext()
+        );
+
+        self::assertNull($result);
+        self::assertSame(0, JobHandlerStub::getFiredCount());
+        self::assertSame(0, $this->jobFailedCount);
+        self::assertSame([], $this->sqsCommands);
+        self::assertTrue($this->logHandler->hasWarningThatContains('partial batch failure is needed to reach the DLQ'));
+    }
+
+    public function testHandleSqsRecordAcknowledgesJobReachingItsMaxTriesWhenPartialBatchFailureDisabled(): void
+    {
+        $handler = $this->createHandler(partialBatchFailure: false);
+
+        $result = $handler->handle(
+            self::createSqsEvent([
+                self::createSqsRecord(
+                    messageId: 'message-id',
+                    receiveCount: 2,
+                    data: ['exception' => 'boom'],
+                    maxTries: 2
+                ),
+            ]),
+            self::createContext()
+        );
+
+        // The job max tries is below appMaxRetries: the next receive would only acknowledge the record
+        self::assertNull($result);
+        self::assertSame(1, JobHandlerStub::getFiredCount());
+        self::assertSame(1, $this->jobFailedCount);
+        self::assertSame([], $this->sqsCommands);
+        self::assertTrue($this->logHandler->hasErrorThatContains('will not be retried'));
+        self::assertTrue($this->logHandler->hasWarningThatContains('partial batch failure is needed to reach the DLQ'));
+    }
+
     public function testHandleSqsRecordRequeuesJobExceedingItsMaxTriesWithPartialBatchFailure(): void
     {
         $handler = $this->createHandler();
@@ -544,31 +592,6 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         self::assertSame(['batchItemFailures' => [['itemIdentifier' => 'message-id']]], $result);
         self::assertSame([1], $this->getVisibilityTimeouts());
         self::assertSame(0, JobHandlerStub::getFiredCount());
-    }
-
-    public function testHandleSqsRecordThrowsForJobExceedingItsMaxTriesWhenPartialBatchFailureDisabled(): void
-    {
-        $handler = $this->createHandler(partialBatchFailure: false);
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('SQS Record "message-id" has reached the job max tries (2)');
-
-        try {
-            $handler->handle(
-                self::createSqsEvent([
-                    self::createSqsRecord(
-                        messageId: 'message-id',
-                        receiveCount: 3,
-                        data: ['exception' => 'boom'],
-                        maxTries: 2
-                    ),
-                ]),
-                self::createContext()
-            );
-        } finally {
-            self::assertSame(0, JobHandlerStub::getFiredCount());
-            self::assertSame(0, $this->jobFailedCount);
-            self::assertSame([], $this->sqsCommands);
-        }
     }
 
     public function testHandleSqsRecordThrowsForReleasedJobWhenPartialBatchFailureDisabled(): void

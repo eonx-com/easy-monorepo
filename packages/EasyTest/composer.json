@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "eonx-com/easy-utils": "^6.27",
+        "eonx-com/easy-utils": "^6.28",
         "nette/utils": "^4.0",
         "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
         "symfony/config": "^7.2",
@@ -19,6 +19,10 @@
     },
     "require-dev": {
         "monolog/monolog": "^3.9",
+        "symfony/clock": "^7.2",
+        "symfony/event-dispatcher": "^7.2",
+        "symfony/framework-bundle": "^7.2",
+        "symfony/messenger": "^7.2",
         "symfony/uid": "^7.2"
     },
     "autoload": {
@@ -30,7 +34,8 @@
     "autoload-dev": {
         "psr-4": {
             "EonX\\EasyTest\\Tests\\": "tests",
-            "EonX\\EasyTest\\Tests\\Unit\\": "tests/Unit/src"
+            "EonX\\EasyTest\\Tests\\Unit\\": "tests/Unit/src",
+            "EonX\\EasyTest\\Tests\\Unit\\Bundle\\": "tests/Unit/bundle"
         }
     },
     "bin": [
@@ -41,6 +46,7 @@
         "doctrine/collections": "To use InvalidDataMaker",
         "monolog/monolog": "To use the Monolog test helpers (LogCollectorProcessor, MonologTrait)",
         "doctrine/orm": "To use ContainerServiceTrait",
+        "eonx-com/easy-error-handler": "To use EasyErrorHandlerAssertionTrait and TraceableErrorHandlerStub",
         "fakerphp/faker": "To use UniqueGroupGenerator",
         "nesbot/carbon": "To use InvalidDataMaker",
         "symfony/clock": "To use MessengerAssertionsTrait",
@@ -58,7 +64,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.27-dev"
+            "dev-master": "6.28-dev"
         }
     }
 }

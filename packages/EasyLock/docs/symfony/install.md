@@ -35,4 +35,7 @@ This package comes with a Messenger Middleware handling lock out of the box. Two
 Remember to update your messenger configuration to add the middleware
 :::
 
+See the "Messenger middleware and busy locks" section of the introduction for what happens when the lock is already
+acquired, the related log record and how to choose the lock TTL.
+
 [1]: https://symfony.com/doc/current/setup/flex.html

@@ -28,7 +28,7 @@ final class Locker implements LockerInterface
     public function createLock(string $resource, ?float $ttl = null): LockInterface
     {
         return $this->getFactory()
-            ->createLock($resource, $ttl ?? 300.0);
+            ->createLock($resource, $ttl ?? LockData::DEFAULT_TTL);
     }
 
     public function processWithLock(LockData $lockData, Closure $func): mixed

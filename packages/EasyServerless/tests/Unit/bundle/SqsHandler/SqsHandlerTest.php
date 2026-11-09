@@ -47,8 +47,8 @@ final class SqsHandlerTest extends AbstractUnitTestCase
         yield 'strategy 3, app 5, attempt 1: retry in 10s' => [1, 3, 5, false, true, 10, false, true];
         yield 'strategy 3, app 5, attempt 2: retry in 80s' => [2, 3, 5, false, true, 80, false, true];
         yield 'strategy 3, app 5, attempt 3: retry in 640s' => [3, 3, 5, false, true, 640, false, true];
-        yield 'strategy 3, app 5, attempt 4: last attempt, requeue' => [4, 3, 5, false, true, 1, true, false];
-        yield 'strategy 3, app 5, attempt 5: not executed, requeue' => [5, 3, 5, false, false, 1, false, null];
+        yield 'strategy 3, app 5, attempt 4: strategy stops, acknowledged' => [4, 3, 5, false, true, null, true, false];
+        yield 'strategy 3, app 5, attempt 5: last attempt, requeue' => [5, 3, 5, false, true, 1, true, false];
         yield 'strategy 3, app 5, attempt 6: not executed, requeue' => [6, 3, 5, false, false, 1, false, null];
 
         // The application allows as many attempts as max_retries + 1
@@ -64,15 +64,15 @@ final class SqsHandlerTest extends AbstractUnitTestCase
 
         // Retry strategy gives up before appMaxRetries
         yield 'strategy 1, app 3, attempt 1: retry in 10s' => [1, 1, 3, false, true, 10, false, true];
-        yield 'strategy 1, app 3, attempt 2: last attempt, requeue' => [2, 1, 3, false, true, 1, true, false];
-        yield 'strategy 1, app 3, attempt 3: not executed, requeue' => [3, 1, 3, false, false, 1, false, null];
+        yield 'strategy 1, app 3, attempt 2: strategy stops, acknowledged' => [2, 1, 3, false, true, null, true, false];
+        yield 'strategy 1, app 3, attempt 3: last attempt, requeue' => [3, 1, 3, false, true, 1, true, false];
         yield 'strategy 1, app 3, attempt 4: not executed, requeue' => [4, 1, 3, false, false, 1, false, null];
-        yield 'strategy 0, app 3, attempt 1: last attempt, requeue' => [1, 0, 3, false, true, 1, true, false];
-        yield 'strategy 0, app 3, attempt 2: not executed, requeue' => [2, 0, 3, false, false, 1, false, null];
+        yield 'strategy 0, app 3, attempt 1: strategy stops, acknowledged' => [1, 0, 3, false, true, null, true, false];
+        yield 'strategy 0, app 3, attempt 2: strategy stops, acknowledged' => [2, 0, 3, false, true, null, true, false];
 
         // No retry strategy for the transport
-        yield 'no strategy, app 3, attempt 1: last attempt, requeue' => [1, null, 3, false, true, 1, true, false];
-        yield 'no strategy, app 3, attempt 2: not executed, requeue' => [2, null, 3, false, false, 1, false, null];
+        yield 'no strategy, app 3, attempt 1: acknowledged' => [1, null, 3, false, true, null, true, false];
+        yield 'no strategy, app 3, attempt 2: executed, acknowledged' => [2, null, 3, false, true, null, true, false];
 
         // Unrecoverable throwable: not retried and not requeued
         yield 'unrecoverable, strategy 3, app 3, attempt 1' => [1, 3, 3, true, true, null, true, false];
@@ -242,29 +242,50 @@ final class SqsHandlerTest extends AbstractUnitTestCase
         }
     }
 
-    public function testHandleMessageNotAllowedByRetryStrategyThrowsWithoutPartialBatchFailure(): void
+    public function testHandleMessageStoppedByRetryStrategyIsAcknowledgedWithoutPartialBatchFailure(): void
     {
         $bus = new MessageBusStub(new RuntimeException('Failure'));
         $failedEvents = [];
+        $logHandler = new TestHandler();
         $requestBodies = [];
         $sut = $this->createSqsHandler(
             bus: $bus,
             maxRetries: 1,
             appMaxRetries: 3,
-            logHandler: new TestHandler(),
+            logHandler: $logHandler,
             requestBodies: $requestBodies,
             failedEvents: $failedEvents,
             partialBatchFailure: false
         );
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('is not allowed another attempt by the retry strategy');
 
-        try {
-            $sut->handle($this->createSqsEvent(3), $this->createContext());
-        } finally {
-            self::assertSame([], $bus->getDispatchedEnvelopes());
-            self::assertSame([], $requestBodies);
-        }
+        $result = $sut->handle($this->createSqsEvent(2), $this->createContext());
+
+        self::assertNull($result);
+        self::assertSame([], $requestBodies);
+        self::assertCount(1, $bus->getDispatchedEnvelopes());
+        self::assertTrue($logHandler->hasErrorThatContains('will not be retried'));
+    }
+
+    public function testHandleRedeliveredMessageIsExecutedWhenRetryStrategyAllowsNoRetry(): void
+    {
+        // The message was received once without being executed, e.g. skipped below the Lambda time threshold
+        $bus = new MessageBusStub();
+        $failedEvents = [];
+        $requestBodies = [];
+        $sut = $this->createSqsHandler(
+            bus: $bus,
+            maxRetries: 0,
+            appMaxRetries: 3,
+            logHandler: new TestHandler(),
+            requestBodies: $requestBodies,
+            failedEvents: $failedEvents
+        );
+
+        $result = $sut->handle($this->createSqsEvent(2), $this->createContext());
+
+        self::assertNull($result);
+        self::assertSame([], $requestBodies);
+        self::assertCount(1, $bus->getDispatchedEnvelopes());
     }
 
     public function testHandleSucceedsWithRedeliveryStampHoldingRetryCount(): void

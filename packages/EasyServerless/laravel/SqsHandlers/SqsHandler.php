@@ -82,14 +82,8 @@ final class SqsHandler extends AbstractSqsHandler
                 )
             );
 
-            $this->requeue(
-                $sqsRecord,
-                \sprintf(
-                    'SQS Record "%s" has reached the job max tries (%d) and is requeued so it can reach the DLQ',
-                    $sqsRecord->getMessageId(),
-                    $job->maxTries()
-                )
-            );
+            // The job will not run again, so the invocation is never failed for it
+            $this->requeue($sqsRecord);
 
             return;
         }
@@ -175,10 +169,7 @@ final class SqsHandler extends AbstractSqsHandler
             return;
         }
 
-        $this->requeue(
-            $sqsRecord,
-            $job->getThrowable() ?? new RuntimeException('Job failed without an exception')
-        );
+        $this->requeue($sqsRecord, $job->getThrowable() ?? new RuntimeException('Job failed without an exception'));
     }
 
     private function calculateJobTimeout(int $remainingInvocationTimeInMs): int
@@ -261,18 +252,29 @@ final class SqsHandler extends AbstractSqsHandler
      *
      * @throws \Throwable
      */
-    private function requeue(SqsRecord $sqsRecord, Throwable|string $reason): void
+    private function requeue(SqsRecord $sqsRecord, ?Throwable $throwable = null): void
     {
-        // As identified during experimenting, this is not ideal as by default Lambda gets a batch of records
-        // and if one fails, all are retried creating side effects of reprocessing successful ones.
-        // It is highly recommended to enable partial batch failure, but still support not having it enabled:
-        // without it, the Lambda invocation must fail, otherwise SQS deletes the message instead of retrying it
-        if ($this->partialBatchFailure === false) {
-            throw \is_string($reason) ? new RuntimeException($reason) : $reason;
+        if ($this->partialBatchFailure) {
+            // Flag it as a failure so subsequent records from the same FIFO message group are skipped too
+            $this->scheduleForRetry($sqsRecord, forFailure: true);
+
+            return;
         }
 
-        // Flag it as a failure so subsequent records from the same FIFO message group are skipped too
-        $this->scheduleForRetry($sqsRecord, forFailure: true);
+        // Without partial batch failure, only a failed invocation keeps the message in the queue, and it makes
+        // SQS give the whole batch back. It is worth it only on the attempt reaching appMaxRetries: with
+        // maxReceiveCount equal to appMaxRetries, SQS then moves the message to the DLQ. Before that attempt,
+        // the next receive would only acknowledge it, so the record is acknowledged now
+        if ($throwable !== null && $sqsRecord->getApproximateReceiveCount() >= $this->appMaxRetries) {
+            throw $throwable;
+        }
+
+        $this->logger?->warning(
+            'SQS Record will not be retried and is acknowledged, partial batch failure is needed to reach the DLQ',
+            [
+                'message_id' => $sqsRecord->getMessageId(),
+            ]
+        );
     }
 
     /**
