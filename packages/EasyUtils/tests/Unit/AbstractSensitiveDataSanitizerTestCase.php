@@ -515,6 +515,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'uuidInUrl' => 'https://eonx.com/jobs/1f1dc398-654c-6538-9652-0579065566b8?x=1',
                 'cardAfterUuid' => '1f1dc398-654c-6538-9652-0579065566b8 4005 5500 0000 0001',
                 'cardBeforeUuid' => '4005550000000001 1f1dc398-654c-6538-9652-0579065566b8',
+                'cardDigitsInsideNonCardNumberKept' => 'card 4005550000000001 ref 94005550000000001',
             ],
             'expectedOutput' => [
                 'withSpace' => '512345*REDACTED*2346',
@@ -566,6 +567,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'uuidInUrl' => 'https://eonx.com/jobs/1f1dc398-654c-6538-9652-0579065566b8?x=1',
                 'cardAfterUuid' => '1f1dc398-654c-6538-9652-0579065566b8 400555*REDACTED*0001',
                 'cardBeforeUuid' => '400555*REDACTED*0001 1f1dc398-654c-6538-9652-0579065566b8',
+                'cardDigitsInsideNonCardNumberKept' => 'card 400555*REDACTED*0001 ref 94005550000000001',
             ],
             'maskPattern' => '*REDACTED*',
         ];
