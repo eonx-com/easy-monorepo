@@ -35,14 +35,14 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
         $uuids = [];
-        $matched = \preg_match_all(self::UUID_PATTERN, $string, $uuids, \PREG_OFFSET_CAPTURE);
+        \preg_match_all(self::UUID_PATTERN, $string, $uuids, \PREG_OFFSET_CAPTURE);
 
         $result = '';
         $offset = 0;
 
         // UUIDs are kept as they are, only the text between them is scanned for card numbers. On a PCRE
-        // failure (e.g. a resource limit) no UUID is skipped, and the whole string is scanned
-        foreach ($matched > 0 ? $uuids[0] : [] as [$uuid, $position]) {
+        // failure only the UUIDs found before it are skipped, and the rest of the string is scanned
+        foreach ($uuids[0] as [$uuid, $position]) {
             $result .= $this->sanitizeCardNumbers(\substr($string, $offset, $position - $offset), $maskPattern);
             $result .= $uuid;
             $offset = $position + \strlen($uuid);
