@@ -8,6 +8,7 @@ use EonX\EasyBatch\Common\Factory\BatchFactoryInterface;
 use EonX\EasyBatch\Common\Factory\BatchItemFactory;
 use EonX\EasyBatch\Common\Factory\BatchItemFactoryInterface;
 use EonX\EasyBatch\Common\Serializer\MessageSerializer;
+use EonX\EasyBatch\Common\Signer\HmacMessageSigner;
 use EonX\EasyBatch\Common\Strategy\BatchObjectIdStrategyInterface;
 use EonX\EasyBatch\Common\Strategy\UuidStrategy;
 use EonX\EasyBatch\Common\Transformer\BatchItemTransformer;
@@ -65,7 +66,7 @@ abstract class AbstractUnitTestCase extends TestCase
     protected function getBatchItemTransformer(): BatchItemTransformer
     {
         return new BatchItemTransformer(
-            new MessageSerializer(),
+            new MessageSerializer(new HmacMessageSigner('secret')),
             BatchItem::class,
             'Y-m-d H:i:s.u'
         );

@@ -63,7 +63,7 @@ abstract class AbstractSymfonyTestCase extends AbstractUnitTestCase
 
         $_SERVER['APP_SECRET'] = 'my-secret';
 
-        $this->kernel = new KernelStub('test', true);
+        $this->kernel = new KernelStub('test', true, [__DIR__ . '/../Fixture/config/unsigned_messages_refused.php']);
         $this->kernel->boot();
 
         return $this->kernel;

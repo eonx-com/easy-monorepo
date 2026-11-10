@@ -42,7 +42,9 @@ final class EasyBatchBundle extends AbstractBundle
             ->set(ConfigParam::BatchItemTable->value, $config['batch_item_table'])
             ->set(ConfigParam::BatchTable->value, $config['batch_table'])
             ->set(ConfigParam::DateTimeFormat->value, $config['date_time_format'])
-            ->set(ConfigParam::LockTtl->value, $config['lock_ttl']);
+            ->set(ConfigParam::LockTtl->value, $config['lock_ttl'])
+            ->set(ConfigParam::AllowUnsignedMessages->value, $config['allow_unsigned_messages'])
+            ->set(ConfigParam::SigningSecret->value, $config['signing_secret'] ?: ['%kernel.secret%']);
 
         $container->import('config/services.php');
     }

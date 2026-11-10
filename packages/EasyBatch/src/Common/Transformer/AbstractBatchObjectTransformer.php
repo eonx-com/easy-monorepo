@@ -7,6 +7,7 @@ use BackedEnum;
 use Carbon\Carbon;
 use DateTimeInterface;
 use EonX\EasyBatch\Common\Enum\BatchObjectStatus;
+use EonX\EasyBatch\Common\Exception\BatchObjectInvalidException;
 use EonX\EasyBatch\Common\ValueObject\AbstractBatchObject;
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use RuntimeException;
@@ -28,13 +29,18 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         private readonly string $dateTimeFormat,
     ) {}
 
+    /**
+     * @throws \EonX\EasyBatch\Common\Exception\BatchObjectInvalidException
+     */
     public function instantiateForClass(?string $class = null): AbstractBatchObject
     {
         $class ??= $this->class;
-        /** @var \EonX\EasyBatch\Common\ValueObject\AbstractBatchObject $classInstance */
-        $classInstance = new $class();
 
-        return $classInstance;
+        if (\is_a($class, AbstractBatchObject::class, true) === false) {
+            throw new BatchObjectInvalidException(\sprintf('Class "%s" is not a batch object.', $class));
+        }
+
+        return new $class();
     }
 
     public function transformToArray(AbstractBatchObject $batchObject): array

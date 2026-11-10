@@ -218,6 +218,21 @@ Tips:
   stored data first, see [Prepare on 6.x](#easybatch).
 - Compiler pass priorities changed: `AddMessengerMiddlewareToBusesCompilerPass` -10 → -20,
   `MakeMessengerReceiversPublicCompilerPass` -10 → 0.
+- Batch item messages are signed with an HMAC of the `kernel.secret` parameter (or the new `signing_secret` option).
+  No schema change: the signature is stored in the `message` column. Unsigned messages (stored before 7.0) are
+  refused unless the new required `allow_unsigned_messages` option is `true`; the container does not build until you
+  set it. If such batch items are left to process, set it to `true` before you deploy and to `false` once they are
+  done (the roll-out in
+  [Message signing](packages/EasyBatch/docs/symfony/install.md#message-signing) has a query to check it). If several
+  applications create and process items of the same batch tables, set the same `signing_secret` in all of them
+  before you deploy. 6.x cannot read signed messages: during a rolling deploy, 6.x workers fail on new items until a
+  retry lands on an upgraded worker, and after a rollback to 6.x every signed item fails until 7.x is deployed again.
+  An item that fails the check is not marked as failed: it keeps its status, its batch stays unfinished, and the
+  message goes to the failure transport. Fix the config and run `messenger:failed:retry`.
+- `MessageSerializer` requires a `MessageSignerInterface`. If you create it yourself, pass
+  `new HmacMessageSigner(<secret>)`.
+- `AbstractBatchObjectTransformer::instantiateForClass()` throws `BatchObjectInvalidException` when the stored
+  `class` is not an `AbstractBatchObject`.
 
 ### EasyBugsnag
 
