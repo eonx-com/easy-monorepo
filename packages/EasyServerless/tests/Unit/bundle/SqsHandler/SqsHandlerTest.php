@@ -149,7 +149,6 @@ final class SqsHandlerTest extends AbstractUnitTestCase
             )
         );
 
-        // The failure is reported by EasyErrorHandler from a listener of ServerlessWorkerMessageFailedEvent
         if ($errorHandler !== null) {
             self::assertSame([], $errorHandler->getReportedThrowables());
         }

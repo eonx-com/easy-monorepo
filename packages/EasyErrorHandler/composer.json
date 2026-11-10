@@ -30,9 +30,6 @@
         "phpunit/phpunit": "^10.5.63|^11.5.50|^12.5.8",
         "symfony/framework-bundle": "^7.2"
     },
-    "conflict": {
-        "eonx-com/easy-serverless": "<6.28"
-    },
     "autoload": {
         "psr-4": {
             "EonX\\EasyErrorHandler\\": "src",

@@ -170,7 +170,6 @@ final class SqsHandler extends AbstractSqsHandler
                 );
             }
 
-            // EasyErrorHandler reports the failure from a listener of this event
             $this->dispatchWorkerMessageFailedEvent($envelope, $throwable, $shouldRetry);
 
             // SQS built-in retry mechanism uses the list of failed messages returned by the Lambda function,
