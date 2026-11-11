@@ -21,15 +21,23 @@ final class SslCertificateHelperTest extends AbstractUnitTestCase
     {
         $keyFilename = __DIR__ . '/../../../../../var/ssl/key.pem';
         $_SERVER[self::KEY_ENV_VAR] = 'private-key';
+        // The usual umask, which makes Filesystem::dumpFile() create 0644 files
+        $umask = \umask(0o022);
 
-        SslCertificateHelper::loadSslCertificates([
-            'settings' => [
-                'ssl_cert_file' => __DIR__ . '/../../../../../var/ssl/cert.pem',
-                'ssl_key_file' => $keyFilename,
-            ],
-            'sock_type' => 1,
-            'ssl_key_env_var_name' => self::KEY_ENV_VAR,
-        ]);
+        try {
+            SslCertificateHelper::loadSslCertificates([
+                'settings' => [
+                    'ssl_cert_file' => __DIR__ . '/../../../../../var/ssl/cert.pem',
+                    'ssl_key_file' => $keyFilename,
+                ],
+                'sock_type' => 1,
+                'ssl_key_env_var_name' => self::KEY_ENV_VAR,
+            ]);
+
+            self::assertSame(0o022, \umask());
+        } finally {
+            \umask($umask);
+        }
 
         self::assertSame('private-key', \file_get_contents($keyFilename));
         self::assertSame(0o600, \fileperms($keyFilename) & 0o777);
