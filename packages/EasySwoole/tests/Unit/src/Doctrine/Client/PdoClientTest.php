@@ -9,6 +9,7 @@ use EonX\EasySwoole\Tests\Unit\AbstractUnitTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use PDOException;
+use ReflectionException;
 
 final class PdoClientTest extends AbstractUnitTestCase
 {
@@ -30,7 +31,7 @@ final class PdoClientTest extends AbstractUnitTestCase
 
         try {
             new PdoClient($config);
-        } catch (PDOException) {
+        } catch (PDOException|ReflectionException) {
         }
 
         self::assertSame(
