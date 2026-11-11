@@ -10,6 +10,8 @@ final readonly class HttpFoundationRequest implements RequestInterface
 {
     private const CONTENT_LENGTH_MAX = 10_240;
 
+    private const FORM_FORMAT = 'form';
+
     private const SESSION_CSRF_KEY_PREFIX = '_csrf/';
 
     private const SESSION_SECURITY_KEY_PREFIX = '_security_';
@@ -39,10 +41,13 @@ final readonly class HttpFoundationRequest implements RequestInterface
             'url' => $this->request->getUri(),
         ];
 
-        // The parsed form fields are the copy the sanitizer can mask by key, so the raw body is not sent with them
         if (\count($this->request->request->all()) > 0) {
             $request['request'] = $this->request->request->all();
+        }
 
+        // The parsed form fields are the copy the sanitizer can mask by key, so a raw form body is never sent,
+        // also when it was not parsed (e.g. a form body of a method PHP does not parse)
+        if (isset($request['request']) || $this->request->getContentTypeFormat() === self::FORM_FORMAT) {
             return [
                 'request' => $request,
             ];

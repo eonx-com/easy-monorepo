@@ -31,6 +31,14 @@ final class HttpFoundationRequestTest extends AbstractUnitTestCase
                 'content' => '{"password":',
             ],
         ];
+        yield 'form body without parsed fields is not sent' => [
+            'request' => self::createRequest('user%5Bpassword%5D=secret', 'application/x-www-form-urlencoded'),
+            'expectedContent' => [],
+        ];
+        yield 'multipart body without parsed fields is not sent' => [
+            'request' => self::createRequest('--b\r\npassword=secret', 'multipart/form-data; boundary=b'),
+            'expectedContent' => [],
+        ];
         yield 'short text body is kept' => [
             'request' => self::createRequest('<password>secret</password>', 'application/xml'),
             'expectedContent' => [
