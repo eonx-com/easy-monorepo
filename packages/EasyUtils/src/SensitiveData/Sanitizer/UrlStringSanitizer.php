@@ -5,11 +5,19 @@ namespace EonX\EasyUtils\SensitiveData\Sanitizer;
 
 final class UrlStringSanitizer extends AbstractStringSanitizer
 {
+    /**
+     * The password of URL user info ("https://user:password@host"), whatever the keys to mask are.
+     * A user name without a password ("tcp://name@host") is kept
+     */
+    private const URL_PASSWORD_PATTERN = '~\\b([a-z][a-z\\d+.-]*://[^\\s:/?#@"\'<>]*:)[^\\s/?#@"\'<>]+@~i';
+
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
         // Braced back-reference (${1}) so a mask pattern that starts with a digit is not merged
         // into a higher-numbered reference (e.g. $1 + "2" => $12)
         $replacement = '${1}' . $this->escapeForReplacement($maskPattern);
+
+        $string = (string)\preg_replace(self::URL_PASSWORD_PATTERN, $replacement . '@', $string);
 
         foreach ($keysToMask as $key) {
             $key = (string)$key;
@@ -23,8 +31,9 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             // Separator runs are optional and interchangeable ("api_key" matches "api-key", "apiKey"),
             // edge ones are kept so the configured spelling itself always matches
             $parts = \preg_split('/[ _-]+/', $key) ?: [$key];
+            // A separator can also be URL-encoded ("api%5Fkey", what http_build_query() gives for "api_key")
             $quotedKey = \implode(
-                '[ _-]*',
+                '(?:[ _-]|%5F|%2D|%20)*',
                 \array_map(static fn (string $part): string => \preg_quote($part, '/'), $parts)
             );
 
@@ -40,8 +49,13 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             // delimiter (& ? # , ; " ' ) ] } < >) but may legitimately contain "/" (e.g. base64
             // tokens). Stopping at the field boundary avoids eating the rest of a log line or
             // neighbouring fields when the value is embedded in free text
+            // Brackets can be URL-encoded too ("user%5Bpassword%5D=...", what http_build_query() gives for arrays)
             $string = (string)\preg_replace(
-                \sprintf('/(%s=|\[%s\]=)([^\s&?#,;"\')\]}<>]+)/i', $quotedKey, $prefixedQuotedKey),
+                \sprintf(
+                    '/(%s=|(?:\[|%%5B)%s(?:\]|%%5D)=)([^\s&?#,;"\')\]}<>]+)/i',
+                    $quotedKey,
+                    $prefixedQuotedKey
+                ),
                 $replacement,
                 $string
             );
@@ -50,6 +64,14 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             $string = (string)\preg_replace(
                 \sprintf('/(\/%s\/)([^&\/?#]+)/i', $prefixedQuotedKey),
                 $replacement,
+                $string
+            );
+
+            // Header line style ("X-Api-Key: value", as in the "headers" option of Symfony HTTP client):
+            // the value is the rest of the line
+            $string = (string)\preg_replace(
+                \sprintf('/^(%s[ \t]*:)[ \t]*[^\r\n]+/im', $prefixedQuotedKey),
+                '${1} ' . $this->escapeForReplacement($maskPattern),
                 $string
             );
         }

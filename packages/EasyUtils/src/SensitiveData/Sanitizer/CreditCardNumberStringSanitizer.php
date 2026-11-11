@@ -8,13 +8,24 @@ use EonX\EasyUtils\CreditCard\Validator\CreditCardNumberValidatorInterface;
 final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
 {
     /**
-     * A card candidate: >= 12 digits where the only characters allowed *between* digits are
+     * A card candidate: a run of digits where the only characters allowed between digits are
      * visual grouping ones (space, dot, dash, backslash). Everything else — comma, newline,
      * tab, letters, symbols, ... — terminates the candidate, so adjacent numbers/cards/values
-     * are not merged into one long run that fails validation as a single card. The pattern
-     * also starts and ends on a digit, so a candidate never carries surrounding separators
+     * are not merged into one long run. The pattern has no nested repetition and the class is
+     * possessive, so a long run cannot exhaust the PCRE (JIT) stack. Trailing separators and
+     * runs shorter than a card are handled in the callback
      */
-    private const CARD_CANDIDATE_PATTERN = '/\d(?:[ .\\\\-]*\d){11,}/';
+    private const CARD_CANDIDATE_PATTERN = '/\d[\d .\\\\-]*+/';
+
+    private const CARD_GROUPS_MAX = 5;
+
+    private const CARD_LENGTH_MAX = 19;
+
+    private const CARD_LENGTH_MIN = 12;
+
+    private const DIGITS = '0123456789';
+
+    private const SEPARATORS = ' .\\-';
 
     /**
      * A UUID in its canonical 8-4-4-4-12 hex form that does not touch other letters or digits.
@@ -51,23 +62,87 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
         return $result . $this->sanitizeCardNumbers(\substr($string, $offset), $maskPattern);
     }
 
+    /**
+     * Keeps the first 6 and the last 4 digits. No regex here, so a PCRE failure cannot drop the text
+     */
+    private function maskCardNumber(string $cardNumber, string $maskPattern): string
+    {
+        $digits = $this->removeSeparators($cardNumber);
+
+        return \substr($digits, 0, 6) . $maskPattern . \substr($digits, -4);
+    }
+
+    private function removeSeparators(string $candidate): string
+    {
+        return \str_replace(\str_split(self::SEPARATORS), '', $candidate);
+    }
+
+    /**
+     * Masks the card numbers inside a candidate that is not a card number as a whole, e.g. a card
+     * followed by another number ("4005 5500 0000 0001 1225") or two cards ("4005550000000001 5313581000123430").
+     * From each digit group, the longest run of whole groups (at most 5 groups, 12-19 digits) that is a valid
+     * card number is masked, everything else is kept as it is. The work per group is bounded, so the scan is linear
+     */
+    private function sanitizeCardNumberGroups(string $candidate, string $maskPattern): string
+    {
+        $length = \strlen($candidate);
+        $position = 0;
+        $result = '';
+
+        while ($position < $length) {
+            $cardEnd = null;
+            $cursor = $position;
+            $digitCount = 0;
+
+            for ($groups = 1; $groups <= self::CARD_GROUPS_MAX && $cursor < $length; $groups++) {
+                $groupLength = \strspn($candidate, self::DIGITS, $cursor);
+                $groupEnd = $cursor + $groupLength;
+                $digitCount += $groupLength;
+
+                if ($digitCount > self::CARD_LENGTH_MAX) {
+                    break;
+                }
+
+                // The validator ignores the separators between the groups
+                if ($digitCount >= self::CARD_LENGTH_MIN && $this->creditCardNumberValidator->isCreditCardNumberValid(
+                    \substr($candidate, $position, $groupEnd - $position)
+                )) {
+                    $cardEnd = $groupEnd;
+                }
+
+                $cursor = $groupEnd + \strspn($candidate, self::SEPARATORS, $groupEnd);
+            }
+
+            $partEnd = $cardEnd ?? $position + \strspn($candidate, self::DIGITS, $position);
+            $result .= $cardEnd === null
+                ? \substr($candidate, $position, $partEnd - $position)
+                : $this->maskCardNumber(\substr($candidate, $position, $partEnd - $position), $maskPattern);
+
+            $position = $partEnd + \strspn($candidate, self::SEPARATORS, $partEnd);
+            $result .= \substr($candidate, $partEnd, $position - $partEnd);
+        }
+
+        return $result;
+    }
+
     private function sanitizeCardNumbers(string $string, string $maskPattern): string
     {
         // Validate and mask each candidate independently, replacing it with its own masked value
         $result = \preg_replace_callback(
             self::CARD_CANDIDATE_PATTERN,
             function (array $matches) use ($maskPattern): string {
-                $candidate = $matches[0];
+                $candidate = \rtrim($matches[0], self::SEPARATORS);
+                $trailingSeparators = \substr($matches[0], \strlen($candidate));
 
-                if ($this->creditCardNumberValidator->isCreditCardNumberValid($candidate) === false) {
-                    return $candidate;
+                if (\strlen($this->removeSeparators($candidate)) < self::CARD_LENGTH_MIN) {
+                    return $matches[0];
                 }
 
-                return (string)\preg_replace(
-                    '/^(\d{6}).+(\d{4})$/',
-                    '${1}' . $this->escapeForReplacement($maskPattern) . '${2}',
-                    (string)\preg_replace('/\D/', '', $candidate)
-                );
+                $sanitized = $this->creditCardNumberValidator->isCreditCardNumberValid($candidate)
+                    ? $this->maskCardNumber($candidate, $maskPattern)
+                    : $this->sanitizeCardNumberGroups($candidate, $maskPattern);
+
+                return $sanitized . $trailingSeparators;
             },
             $string
         );

@@ -516,6 +516,11 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'cardAfterUuid' => '1f1dc398-654c-6538-9652-0579065566b8 4005 5500 0000 0001',
                 'cardBeforeUuid' => '4005550000000001 1f1dc398-654c-6538-9652-0579065566b8',
                 'cardDigitsInsideNonCardNumberKept' => 'card 4005550000000001 ref 94005550000000001',
+                'cardFollowedByNumber' => '4005 5500 0000 0001 1225',
+                'cardAfterNumber' => '1225 4005 5500 0000 0001',
+                'cardFollowedByDashedNumber' => 'PAN 4005550000000001-100',
+                'twoCardsSeparatedBySpace' => '4005550000000001 5313581000123430',
+                'cardsAmongSpaceSeparatedNumbers' => '123 4005550000000001 456 5313 5810 0012 3430 7',
             ],
             'expectedOutput' => [
                 'withSpace' => '512345*REDACTED*2346',
@@ -568,6 +573,11 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'cardAfterUuid' => '1f1dc398-654c-6538-9652-0579065566b8 400555*REDACTED*0001',
                 'cardBeforeUuid' => '400555*REDACTED*0001 1f1dc398-654c-6538-9652-0579065566b8',
                 'cardDigitsInsideNonCardNumberKept' => 'card 400555*REDACTED*0001 ref 94005550000000001',
+                'cardFollowedByNumber' => '400555*REDACTED*0001 1225',
+                'cardAfterNumber' => '1225 400555*REDACTED*0001',
+                'cardFollowedByDashedNumber' => 'PAN 400555*REDACTED*0001-100',
+                'twoCardsSeparatedBySpace' => '400555*REDACTED*0001 531358*REDACTED*3430',
+                'cardsAmongSpaceSeparatedNumbers' => '123 400555*REDACTED*0001 456 531358*REDACTED*3430 7',
             ],
             'maskPattern' => '*REDACTED*',
         ];
@@ -788,6 +798,9 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'secretKey' => 'some-value',
                 'set-cookie' => 'some-value',
                 'x-webhook-signature' => 'some-value',
+                'auth_ntlm' => 'some-value',
+                'passphrase' => 'some-value',
+                'X-Amz-Security-Token' => 'some-value',
             ],
             'expectedOutput' => [
                 'cookie' => '*REDACTED*',
@@ -800,6 +813,9 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'secretKey' => '*REDACTED*',
                 'set-cookie' => '*REDACTED*',
                 'x-webhook-signature' => '*REDACTED*',
+                'auth_ntlm' => '*REDACTED*',
+                'passphrase' => '*REDACTED*',
+                'X-Amz-Security-Token' => '*REDACTED*',
             ],
             'maskPattern' => '*REDACTED*',
             'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
@@ -840,6 +856,68 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
             ],
             'maskPattern' => '*REDACTED*',
             'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
+        yield 'Mask password in URL user info' => [
+            'input' => [
+                'url' => 'https://user:p4ss@example.com/path?x=1',
+                'proxyInText' => 'proxy http://proxy-user:s3cret@10.0.0.1:3128 failed',
+                'dsn' => 'redis://:s3cret@cache:6379/0',
+                'userWithoutPassword' => 'tcp://my-name@yeah',
+                'email' => 'contact a@b.co: done',
+                'mailto' => 'mailto:a@b.co',
+            ],
+            'expectedOutput' => [
+                'url' => 'https://user:*REDACTED*@example.com/path?x=1',
+                'proxyInText' => 'proxy http://proxy-user:*REDACTED*@10.0.0.1:3128 failed',
+                'dsn' => 'redis://:*REDACTED*@cache:6379/0',
+                'userWithoutPassword' => 'tcp://my-name@yeah',
+                'email' => 'contact a@b.co: done',
+                'mailto' => 'mailto:a@b.co',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'token',
+            ],
+        ];
+        yield 'Mask URL-encoded keys' => [
+            'input' => [
+                'encodedBrackets' => 'user%5Bpassword%5D=secret&user%5Bname%5D=keep',
+                'lowercaseEncodedBrackets' => 'user%5bpassword%5d=secret&x=1',
+                'encodedSeparator' => 'https://example.com?api%5Fkey=secret&x=1',
+            ],
+            'expectedOutput' => [
+                'encodedBrackets' => 'user%5Bpassword%5D=*REDACTED*&user%5Bname%5D=keep',
+                'lowercaseEncodedBrackets' => 'user%5bpassword%5d=*REDACTED*&x=1',
+                'encodedSeparator' => 'https://example.com?api%5Fkey=*REDACTED*&x=1',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'api_key',
+                'password',
+            ],
+        ];
+        yield 'Mask header lines' => [
+            'input' => [
+                'apiKeyHeader' => 'X-Api-Key: secret',
+                'cookieHeader' => 'Cookie: a=b; c=d',
+                'noSpace' => 'x-api-key:secret',
+                'otherHeader' => 'Accept: application/json',
+                'multiline' => "Accept: */*\nX-Api-Key: secret\r\nHost: example.com",
+                'notAtLineStart' => 'note api_key: secret',
+            ],
+            'expectedOutput' => [
+                'apiKeyHeader' => 'X-Api-Key: *REDACTED*',
+                'cookieHeader' => 'Cookie: *REDACTED*',
+                'noSpace' => 'x-api-key: *REDACTED*',
+                'otherHeader' => 'Accept: application/json',
+                'multiline' => "Accept: */*\nX-Api-Key: *REDACTED*\r\nHost: example.com",
+                'notAtLineStart' => 'note api_key: secret',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'api_key',
+                'cookie',
+            ],
         ];
         yield 'Mask separator-only keys exactly' => [
             'input' => [
