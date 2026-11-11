@@ -61,6 +61,15 @@ Symfony has the following additional configuration options:
 | `session_tracking.cache_namespace`                              | `easy_bugsnag_sessions` | Namespace used by the default cache implementation provided by the package.                                       |
 | `session_tracking.messenger_message_count_for_sessions.enbaled` | `false`                 | Enable/disable session tracking for messenger messages.                                                           |
 | `worker_info.enabled`                                           | `false`                 | Enable/disable worker information data in Bugsnag. See [Worker information](worker-info.md) for more information. |
+| `sensitive_data_sanitizer.enabled`                              | `true`                  | Mask sensitive data in the report: metadata, breadcrumb metadata, context and exception messages (EasyUtils sanitizer). |
+
+## Request data in reports
+
+For HTTP requests the report contains:
+
+- the request body: a JSON body is decoded; for a form body only the parsed fields are sent; any other body is cut
+  to the first 10 KB (`content_truncated: true`);
+- the session, without the serialized security token (`_security_*`) and CSRF tokens (`_csrf/*`).
 
 ## Example configuration files
 
