@@ -5,7 +5,7 @@ namespace EonX\EasyBugsnag\Tests\Unit\Doctrine\Logger;
 
 use Bugsnag\Breadcrumbs\Breadcrumb;
 use Bugsnag\Client;
-use Doctrine\DBAL\ParameterType;
+use Composer\InstalledVersions;
 use EonX\EasyBugsnag\Tests\Fixture\App\Entity\Author;
 use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
 
@@ -15,6 +15,9 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
     {
         self::bootKernel(['environment' => 'doctrine_dbal']);
         $this->persistAuthor();
+        $expectedTypes = \version_compare((string)InstalledVersions::getVersion('doctrine/dbal'), '4.0.0', '>=')
+            ? '["STRING","STRING","INTEGER"]'
+            : '[2,2,1]';
 
         $breadcrumb = $this->findInsertBreadcrumb();
 
@@ -25,7 +28,7 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
             $breadcrumb->getMetaData()['SQL']
         );
         self::assertSame(
-            \enum_exists(ParameterType::class) ? '["STRING","STRING","INTEGER"]' : '[2,2,1]',
+            $expectedTypes,
             $breadcrumb->getMetaData()['Types']
         );
         self::assertArrayNotHasKey('Values', $breadcrumb->getMetaData());
