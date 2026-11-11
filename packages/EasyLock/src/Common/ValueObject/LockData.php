@@ -5,6 +5,8 @@ namespace EonX\EasyLock\Common\ValueObject;
 
 final class LockData
 {
+    public const float DEFAULT_TTL = 300.0;
+
     private bool $retry;
 
     public function __construct(

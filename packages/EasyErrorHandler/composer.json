@@ -23,6 +23,7 @@
     },
     "require-dev": {
         "eonx-com/easy-bugsnag": "^7.0",
+        "eonx-com/easy-serverless": "^7.0",
         "eonx-com/easy-test": "^7.0",
         "eonx-com/easy-webhook": "^7.0",
         "laravel/framework": "^13.0",
@@ -50,6 +51,7 @@
     "suggest": {
         "eonx-com/easy-api-platform": "To use API Platform integration",
         "eonx-com/easy-bugsnag": "To use EasyBugsnag integration",
+        "eonx-com/easy-serverless": "To report failed messages of the EasyServerless SQS handler",
         "eonx-com/easy-webhook": "To use EasyWebhook integration",
         "symfony/messenger": "To use Symfony Messenger integration"
     },

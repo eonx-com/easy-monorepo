@@ -505,6 +505,17 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'cardInCommaListNoSpaces' => '(131,4005550000000001,20260702,AUD)',
                 'cardAfterSlashSeparatedDigits' => '123/4005550000000001',
                 'cardAfterPlusSeparatedDigits' => '123+4005550000000001',
+                'uuidV4' => 'edf57c2c-5758-4694-9868-24e2430321e7',
+                'uuidV6' => '1f1dc398-654c-6538-9652-0579065566b8',
+                'uuidV6CandidateFromSecondGroup' => '1f1dc3b6-8240-6162-8258-c541362575db',
+                'uuidV7' => '01a1c057-5ed2-7592-8df5-76889961156d',
+                'uuidUppercase' => '1F1DC398-654C-6538-9652-0579065566B8',
+                'uuidInSentence' => 'job 1f1dc398-654c-6538-9652-0579065566b8 failed',
+                'uuidInJson' => '{"id":"1f1dc398-654c-6538-9652-0579065566b8"}',
+                'uuidInUrl' => 'https://eonx.com/jobs/1f1dc398-654c-6538-9652-0579065566b8?x=1',
+                'cardAfterUuid' => '1f1dc398-654c-6538-9652-0579065566b8 4005 5500 0000 0001',
+                'cardBeforeUuid' => '4005550000000001 1f1dc398-654c-6538-9652-0579065566b8',
+                'cardDigitsInsideNonCardNumberKept' => 'card 4005550000000001 ref 94005550000000001',
             ],
             'expectedOutput' => [
                 'withSpace' => '512345*REDACTED*2346',
@@ -546,6 +557,17 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'cardInCommaListNoSpaces' => '(131,400555*REDACTED*0001,20260702,AUD)',
                 'cardAfterSlashSeparatedDigits' => '123/400555*REDACTED*0001',
                 'cardAfterPlusSeparatedDigits' => '123+400555*REDACTED*0001',
+                'uuidV4' => 'edf57c2c-5758-4694-9868-24e2430321e7',
+                'uuidV6' => '1f1dc398-654c-6538-9652-0579065566b8',
+                'uuidV6CandidateFromSecondGroup' => '1f1dc3b6-8240-6162-8258-c541362575db',
+                'uuidV7' => '01a1c057-5ed2-7592-8df5-76889961156d',
+                'uuidUppercase' => '1F1DC398-654C-6538-9652-0579065566B8',
+                'uuidInSentence' => 'job 1f1dc398-654c-6538-9652-0579065566b8 failed',
+                'uuidInJson' => '{"id":"1f1dc398-654c-6538-9652-0579065566b8"}',
+                'uuidInUrl' => 'https://eonx.com/jobs/1f1dc398-654c-6538-9652-0579065566b8?x=1',
+                'cardAfterUuid' => '1f1dc398-654c-6538-9652-0579065566b8 400555*REDACTED*0001',
+                'cardBeforeUuid' => '400555*REDACTED*0001 1f1dc398-654c-6538-9652-0579065566b8',
+                'cardDigitsInsideNonCardNumberKept' => 'card 400555*REDACTED*0001 ref 94005550000000001',
             ],
             'maskPattern' => '*REDACTED*',
         ];
@@ -923,6 +945,48 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
         $sanitizedException = $sanitizer->sanitize($exception);
 
         self::assertSame($expectedMessage, $sanitizedException['message']);
+    }
+
+    public function testSanitizeNumericCardNumbers(): void
+    {
+        $sanitizer = $this->getSanitizer('*REDACTED*');
+
+        $result = $sanitizer->sanitize([
+            'int' => 4111111111111111,
+            'negativeInt' => -4111111111111111,
+            'float' => 4111111111111111.0,
+            'exponentFloat' => 4.111111111111111e15,
+            'nonCardInt' => 1234567890123456,
+            'shortInt' => 100000000000,
+            'decimal' => 1.5,
+            'nested' => [
+                'note' => 4111111111111111,
+            ],
+            'json' => '{"note":4111111111111111}',
+            'jsonInJsonString' => '{"payload":"{\\"note\\":4111111111111111}"}',
+            'jsonInFreeText' => 'note {"card":4111111111111111}',
+        ]);
+
+        self::assertSame(
+            [
+                'int' => '411111*REDACTED*1111',
+                'negativeInt' => '-411111*REDACTED*1111',
+                'float' => '411111*REDACTED*1111',
+                'exponentFloat' => '411111*REDACTED*1111',
+                'nonCardInt' => 1234567890123456,
+                'shortInt' => 100000000000,
+                'decimal' => 1.5,
+                'nested' => [
+                    'note' => '411111*REDACTED*1111',
+                ],
+                'json' => '{"note":"411111*REDACTED*1111"}',
+                'jsonInJsonString' => '{"payload":"{\\"note\\":\\"411111*REDACTED*1111\\"}"}',
+                'jsonInFreeText' => 'note {"card":"411111*REDACTED*1111"}',
+            ],
+            $result
+        );
+        self::assertSame('411111*REDACTED*1111', $sanitizer->sanitize(4111111111111111));
+        self::assertSame(1234567890123456, $sanitizer->sanitize(1234567890123456));
     }
 
     abstract protected function getSanitizer(

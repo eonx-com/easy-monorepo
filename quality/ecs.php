@@ -70,6 +70,7 @@ return ECSConfig::configure()
             'packages/*/tests/Stub/Model/*',
             'packages/*/tests/Fixture/*/ApiResource/*',
             'packages/*/tests/Fixture/*/DataTransferObject/*',
+            'packages/EasyServerless/tests/Fixture/ddtrace/*',
             'packages/EasySwoole/src/Common/ValueObject/SwooleTableColumnDefinition.php',
             'packages/EasyWebhook/laravel/Jobs/SendWebhookJob.php',
         ],
@@ -128,6 +129,7 @@ return ECSConfig::configure()
             'packages/*/tests/Stub/Model/*',
         ],
         Psr4Sniff::class => [
+            'packages/EasyServerless/tests/Fixture/ddtrace/*',
             'quality/tests/*',
         ],
         SingleSpaceAroundConstructFixer::class => null,
