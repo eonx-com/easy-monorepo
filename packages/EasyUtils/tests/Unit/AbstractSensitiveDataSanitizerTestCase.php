@@ -527,8 +527,8 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'cardFollowedByDashedNumber' => 'PAN 4005550000000001-100',
                 'twoCardsSeparatedBySpace' => '4005550000000001 5313581000123430',
                 'cardsAmongSpaceSeparatedNumbers' => '123 4005550000000001 456 5313 5810 0012 3430 7',
-                'cardInTwoDigitGroupsFollowedByNumber' => '40 05 55 00 00 00 00 01 1226',
-                'cardOverlappingAnotherCard' => '400000000009 4005 5500 0000 0001',
+                'cardInTwoDigitGroups' => '40 05 55 00 00 00 00 01',
+                'amexFollowedByNumber' => '3782 822463 10005 12',
                 'cardFollowedByNumberThatMakesAnotherCard' => '4005 5500 0000 0001 1225',
             ],
             'expectedOutput' => [
@@ -587,11 +587,39 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'cardFollowedByDashedNumber' => 'PAN 400555*REDACTED*0001-100',
                 'twoCardsSeparatedBySpace' => '400555*REDACTED*0001 531358*REDACTED*3430',
                 'cardsAmongSpaceSeparatedNumbers' => '123 400555*REDACTED*0001 456 531358*REDACTED*3430 7',
-                'cardInTwoDigitGroupsFollowedByNumber' => '400555*REDACTED*0001 1226',
-                'cardOverlappingAnotherCard' => '400000*REDACTED*0001',
+                'cardInTwoDigitGroups' => '400555*REDACTED*0001',
+                'amexFollowedByNumber' => '378282*REDACTED*0005 12',
                 'cardFollowedByNumberThatMakesAnotherCard' => '400555*REDACTED*1225',
             ],
             'maskPattern' => '*REDACTED*',
+        ];
+        yield 'Keep number lists that are not card numbers' => [
+            'input' => [
+                'ips' => '94.199.243.92 241.190.46.160',
+                'moreIps' => '248.157.37.98 144.187.20.113 110.57.21.121',
+                'sixDigitIds' => '157898 646390 264448 658889',
+                'moreSixDigitIds' => '655082 414563 920656 602041',
+                'amounts' => '15567.67 70061.85 50303.53 58464.67 25250.02',
+                'dates' => '2003-09-06 2005-10-02 2028-03-24 2003-07-28 2008-12-11',
+                'cardInTwoDigitGroupsFollowedByNumber' => '40 05 55 00 00 00 00 01 1226',
+                'fourDigitNumberThenThreeDigitIds' => '4467 000 065 232 432',
+                'fiveDigitNumberThenFourDigitIds' => '41592 1857 6031 10',
+                'threeDigitNumberThenFourDigitIds' => '378 2822 4631 0005 7',
+            ],
+            'expectedOutput' => [
+                'ips' => '94.199.243.92 241.190.46.160',
+                'moreIps' => '248.157.37.98 144.187.20.113 110.57.21.121',
+                'sixDigitIds' => '157898 646390 264448 658889',
+                'moreSixDigitIds' => '655082 414563 920656 602041',
+                'amounts' => '15567.67 70061.85 50303.53 58464.67 25250.02',
+                'dates' => '2003-09-06 2005-10-02 2028-03-24 2003-07-28 2008-12-11',
+                'cardInTwoDigitGroupsFollowedByNumber' => '40 05 55 00 00 00 00 01 1226',
+                'fourDigitNumberThenThreeDigitIds' => '4467 000 065 232 432',
+                'fiveDigitNumberThenFourDigitIds' => '41592 1857 6031 10',
+                'threeDigitNumberThenFourDigitIds' => '378 2822 4631 0005 7',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [],
         ];
         yield 'Mask keys embedded in free-text JSON' => [
             'input' => [

@@ -17,7 +17,7 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
      */
     private const CARD_CANDIDATE_PATTERN = '/\d[\d .\\\\-]*+/';
 
-    private const CARD_GROUPS_MAX = 8;
+    private const CARD_GROUP_LENGTH = 4;
 
     private const CARD_LENGTH_MAX = 19;
 
@@ -63,24 +63,37 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
     }
 
     /**
-     * The end of the longest run of whole digit groups, starting at the given group, that is a valid card number
-     * (12-19 digits), or null. At most 8 groups are checked (a 16-digit card in groups of 2 digits): each extra
-     * group costs validator calls for every group of the candidate, and finer grouping is not used for cards
+     * The end of the longest valid card number (12-19 digits) that starts at the given group, or null.
+     * A group of 12-19 digits is checked on its own. Otherwise only the groupings printed on cards are
+     * tried: groups of 4 digits with a shorter last group (4-4-4-4, 4-4-4-4-3, ...) or 4-6-4 / 4-6-5.
+     * So lists of IPs, amounts, dates or 3- and 6-digit IDs are not joined into a card number, and
+     * the work per group is a few validator calls
      */
     private function findCardNumberEnd(string $candidate, int $position): ?int
     {
-        $length = \strlen($candidate);
+        $groupLength = \strspn($candidate, self::DIGITS, $position);
+
+        if ($groupLength >= self::CARD_LENGTH_MIN) {
+            return $groupLength <= self::CARD_LENGTH_MAX && $this->creditCardNumberValidator->isCreditCardNumberValid(
+                \substr($candidate, $position, $groupLength)
+            ) ? $position + $groupLength : null;
+        }
+
         $cardEnd = null;
         $cursor = $position;
         $digitCount = 0;
+        $groupLengths = [];
 
-        for ($groups = 1; $groups <= self::CARD_GROUPS_MAX && $cursor < $length; $groups++) {
-            $groupEnd = $cursor + \strspn($candidate, self::DIGITS, $cursor);
-            $digitCount += $groupEnd - $cursor;
+        while (true) {
+            $groupLength = \strspn($candidate, self::DIGITS, $cursor);
+            $groupLengths[] = $groupLength;
+            $digitCount += $groupLength;
 
-            if ($digitCount > self::CARD_LENGTH_MAX) {
+            if ($digitCount > self::CARD_LENGTH_MAX || $this->isCardGrouping($groupLengths) === false) {
                 break;
             }
+
+            $groupEnd = $cursor + $groupLength;
 
             // The validator ignores the separators between the groups
             if ($digitCount >= self::CARD_LENGTH_MIN && $this->creditCardNumberValidator->isCreditCardNumberValid(
@@ -90,9 +103,41 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
             }
 
             $cursor = $groupEnd + \strspn($candidate, self::SEPARATORS, $groupEnd);
+
+            if ($cursor === $groupEnd || $cursor >= \strlen($candidate)) {
+                break;
+            }
         }
 
         return $cardEnd;
+    }
+
+    /**
+     * Whether the group lengths are (the start of) a grouping printed on cards: 4-4-4-4 with a last group
+     * of 1-4 digits, or 4-6-4 / 4-6-5 (American Express, Diners Club)
+     *
+     * @param non-empty-list<int> $groupLengths
+     */
+    private function isCardGrouping(array $groupLengths): bool
+    {
+        $count = \count($groupLengths);
+        $lastGroupLength = $groupLengths[$count - 1];
+
+        if ($groupLengths[0] !== self::CARD_GROUP_LENGTH) {
+            return false;
+        }
+
+        if (($groupLengths[1] ?? null) === 6) {
+            return $count === 2 || ($count === 3 && ($lastGroupLength === 4 || $lastGroupLength === 5));
+        }
+
+        foreach (\array_slice($groupLengths, 1, -1) as $groupLength) {
+            if ($groupLength !== self::CARD_GROUP_LENGTH) {
+                return false;
+            }
+        }
+
+        return $lastGroupLength >= 1 && $lastGroupLength <= self::CARD_GROUP_LENGTH;
     }
 
     /**
