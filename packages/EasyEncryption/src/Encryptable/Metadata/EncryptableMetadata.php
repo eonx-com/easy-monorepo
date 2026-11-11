@@ -74,9 +74,22 @@ final class EncryptableMetadata implements EncryptableMetadataInterface
 
                 $declaringClasses[$propertyName] = $reflectionClass->getName();
 
-                if ($encryptableField !== null) {
-                    $encryptedFields[$propertyName] = $encryptableField->getFieldName() ?? $propertyName;
+                if ($encryptableField === null) {
+                    continue;
                 }
+
+                $fieldName = $encryptableField->getFieldName() ?? $propertyName;
+
+                // One key of the encrypted data per property: a second one would overwrite the first value
+                if (\in_array($fieldName, $encryptedFields, true)) {
+                    throw new LogicException(\sprintf(
+                        'The encrypted data field "%s" is used by more than one property in the entity "%s".',
+                        $fieldName,
+                        $entityClass
+                    ));
+                }
+
+                $encryptedFields[$propertyName] = $fieldName;
             }
 
             $reflectionClass = $reflectionClass->getParentClass();
