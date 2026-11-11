@@ -16,7 +16,14 @@ abstract class AbstractSqsHandler extends SqsHandler
 {
     protected const int DEFAULT_RETRY_DELAY_SECONDS = 1;
 
-    protected const int MAX_RETRY_DELAY_SECONDS = 43200; // 12 hours (SQS limit)
+    // SQS limits the visibility timeout to 12 hours (43200 seconds) from when the message was received, not from
+    // when the handler changes it. Keep a margin for the maximum batching window (5 minutes) and the maximum
+    // Lambda duration (15 minutes), so the new visibility timeout is never rejected
+    protected const int MAX_RETRY_DELAY_SECONDS = 42000;
+
+    protected const string RETRY_STOP_REASON_APP_MAX_RETRIES = 'app_max_retries';
+
+    protected const string RETRY_STOP_REASON_UNRECOVERABLE = 'unrecoverable';
 
     protected const int SAFETY_TIMEOUT_MARGIN_MILLISECONDS = 1000; // 1 second
 

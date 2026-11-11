@@ -12,12 +12,6 @@ parameters:
         - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Factory/CoroutineConnectionDbal3Factory.php
         - %currentWorkingDirectory%/packages/EasySwoole/src/Doctrine/Statement/Dbal3Statement.php
     ignoreErrors:
-        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
-          path: %currentWorkingDirectory%/packages/EasyAsync/src/Messenger/Serializer/MessageSerializer.php
-
-        - message: '#Offset .* on array\{body\: string, headers\?\: array<string, string>\} on left side of \?\? always exists and is not nullable#'
-          path: %currentWorkingDirectory%/packages/EasyEncryption/src/Encryptable/Serializer/EncryptableAwareMessengerSerializer.php
-
         - message: '#Call to function property_exists\(\) with EasyCorp\\Bundle\\EasyAdminBundle\\EventListener\\AdminRouterSubscriber and .* will always evaluate to true#'
           path: %currentWorkingDirectory%/packages/EasyServerless/src/EasyAdmin/Subscriber/ResetEasyAdminStateSubscriber.php
 

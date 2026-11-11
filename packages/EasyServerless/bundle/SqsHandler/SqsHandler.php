@@ -7,7 +7,6 @@ use AsyncAws\Sqs\SqsClient;
 use Bref\Context\Context;
 use Bref\Event\Sqs\SqsRecord;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
-use EonX\EasyErrorHandler\Common\Exception\RetryableException;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
@@ -36,6 +35,8 @@ use Throwable;
 
 final class SqsHandler extends AbstractSqsHandler
 {
+    private const string RETRY_STOP_REASON_RETRY_STRATEGY = 'retry_strategy';
+
     private const string SYMFONY_HEADERS_ATTRIBUTE_NAME = 'X-Symfony-Messenger';
 
     public function __construct(
@@ -84,6 +85,9 @@ final class SqsHandler extends AbstractSqsHandler
             return;
         }
 
+        // The number of retries comes only from SQS, a RedeliveryStamp serialized in the message is not relevant
+        $envelope = $envelope->withoutAll(RedeliveryStamp::class);
+
         try {
             $stamps = [
                 new AmazonSqsReceivedStamp($sqsRecord->getMessageId()),
@@ -92,8 +96,10 @@ final class SqsHandler extends AbstractSqsHandler
                 new TransportMessageIdStamp($sqsRecord->getMessageId()),
             ];
 
+            // RedeliveryStamp holds the number of retries already done, while ApproximateReceiveCount
+            // includes the first attempt
             if ($sqsRecord->getApproximateReceiveCount() > 1) {
-                $stamps[] = new RedeliveryStamp($sqsRecord->getApproximateReceiveCount());
+                $stamps[] = new RedeliveryStamp($sqsRecord->getApproximateReceiveCount() - 1);
             }
 
             if ($context->getTraceId() !== '') {
@@ -104,7 +110,7 @@ final class SqsHandler extends AbstractSqsHandler
             $envelope = $envelope->with(...$stamps);
 
             $event = new WorkerMessageReceivedEvent($envelope, $this->transportName);
-            $this->eventDispatcher?->dispatch($event);
+            $this->dispatchEvent($event);
             $envelope = $event->getEnvelope();
 
             if ($event->shouldHandle() === false) {
@@ -123,14 +129,31 @@ final class SqsHandler extends AbstractSqsHandler
         } catch (Throwable $throwable) {
             $retryStrategy = $this->getRetryStrategyForTransport($this->transportName);
             $isThrowableExplicitlyUnrecoverable = $this->isThrowableExplicitlyUnRecoverable($throwable);
-            $shouldRetry = $isThrowableExplicitlyUnrecoverable === false
-                && $retryStrategy && $retryStrategy->isRetryable($envelope, $throwable);
 
-            // As explained in parent::shouldSkipRecord(), in some scenarios we must requeue messages even when
-            // the application will not retry them so they can end up in the DLQ if configured,
-            // except when the application is explicitly preventing retries using an Unrecoverable throwable
-            $shouldRequeue = $isThrowableExplicitlyUnrecoverable === false
-                && $sqsRecord->getApproximateReceiveCount() >= $this->appMaxRetries;
+            $isRetryableByRetryStrategy = $isThrowableExplicitlyUnrecoverable === false
+                && $retryStrategy !== null
+                && $retryStrategy->isRetryable($envelope, $throwable);
+
+            $hasReachedAppMaxRetries = $sqsRecord->getApproximateReceiveCount() >= $this->appMaxRetries;
+
+            // The application allows at most appMaxRetries attempts, the retry strategy can stop retrying earlier.
+            // When both stop retrying at the same attempt, the retry strategy is reported
+            $retryStopReason = match (true) {
+                $isThrowableExplicitlyUnrecoverable => self::RETRY_STOP_REASON_UNRECOVERABLE,
+                $isRetryableByRetryStrategy === false => self::RETRY_STOP_REASON_RETRY_STRATEGY,
+                $hasReachedAppMaxRetries => self::RETRY_STOP_REASON_APP_MAX_RETRIES,
+                default => null,
+            };
+            $shouldRetry = $retryStopReason === null;
+
+            // As explained in parent::shouldSkipRecord(), when the application will not retry a message on its last
+            // attempt we must still requeue it so it can end up in the DLQ if configured, except when the application
+            // is explicitly preventing retries using an Unrecoverable throwable.
+            // When the retry strategy stops earlier, the record is acknowledged: SQS only counts receives, so the next
+            // receive could not tell this message from one that was never executed (e.g. skipped by the handler)
+            $shouldRequeue = $shouldRetry === false
+                && $isThrowableExplicitlyUnrecoverable === false
+                && $hasReachedAppMaxRetries;
 
             if ($shouldRetry === false) {
                 $this->logger?->error(
@@ -139,19 +162,18 @@ final class SqsHandler extends AbstractSqsHandler
                         $isThrowableExplicitlyUnrecoverable ? ' - explicitly marked as unrecoverable' : ''
                     ),
                     [
+                        'app_max_retries' => $this->appMaxRetries,
+                        'attempt' => $sqsRecord->getApproximateReceiveCount(),
                         'message_id' => $sqsRecord->getMessageId(),
+                        'retry_stop_reason' => $retryStopReason,
                     ]
                 );
-            }
-
-            if (\class_exists(RetryableException::class)) {
-                $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));
             }
 
             $this->dispatchWorkerMessageFailedEvent($envelope, $throwable, $shouldRetry);
 
             // SQS built-in retry mechanism uses the list of failed messages returned by the Lambda function,
-            // this is why we mark the record as failed only if we want it to be retried by SQS.
+            // this is why we mark the record as failed only if we want it to be retried or requeued by SQS.
             // Failure reports should be handled by the application itself (e.g. logging, error tracking, etc.)
             if ($shouldRetry || $shouldRequeue) {
                 // As identified during experimenting, this is not ideal as by default Lambda gets a batch of records
@@ -295,7 +317,7 @@ final class SqsHandler extends AbstractSqsHandler
     private function resolveRetryDelay(
         Throwable $throwable,
         Envelope $envelope,
-        RetryStrategyInterface $retryStrategy,
+        ?RetryStrategyInterface $retryStrategy,
     ): int {
         $delayInMilliseconds = null;
 
@@ -318,7 +340,7 @@ final class SqsHandler extends AbstractSqsHandler
             }
         }
 
-        $delayInMilliseconds ??= $retryStrategy->getWaitingTime($envelope, $throwable);
+        $delayInMilliseconds ??= $retryStrategy?->getWaitingTime($envelope, $throwable) ?? 0;
         $delay = (int)\ceil($delayInMilliseconds / 1000);
 
         // Ensure a minimum delay to ensure the Lambda function has time to complete before the message

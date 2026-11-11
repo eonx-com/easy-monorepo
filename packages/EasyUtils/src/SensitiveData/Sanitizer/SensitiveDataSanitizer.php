@@ -10,6 +10,11 @@ use EonX\EasyUtils\SensitiveData\Transformer\ObjectTransformerInterface;
 final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInterface
 {
     /**
+     * Shortest card number, a shorter number is not passed to the string sanitizers
+     */
+    private const int CARD_NUMBER_MIN_DIGITS = 12;
+
+    /**
      * "X-" header prefix, e.g. "x-api-key" matches the "api_key" key
      */
     private const string KEY_PREFIX = 'x';
@@ -117,6 +122,10 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             // secrets inside any JSON object/array embedded in it, then run the value-based
             // string sanitizers over the result
             return $this->sanitizeString($this->sanitizeEmbeddedJson($data));
+        }
+
+        if (\is_int($data) || \is_float($data)) {
+            return $this->sanitizeNumber($data);
         }
 
         return $data;
@@ -247,6 +256,33 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
                 $sanitized,
                 \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
             );
+    }
+
+    /**
+     * A card number stored as a number (e.g. a JSON number) is not seen by the string sanitizers, so its digits are
+     * sanitized as a string. The number is returned unchanged when nothing is masked
+     *
+     * @template TNumber of int|float
+     *
+     * @param TNumber $number
+     *
+     * @return TNumber|string
+     */
+    private function sanitizeNumber(int|float $number): int|float|string
+    {
+        $digits = match (true) {
+            \is_int($number) => (string)$number,
+            \is_finite($number) && \floor($number) === $number => \sprintf('%.0f', $number),
+            default => null,
+        };
+
+        if ($digits === null || \strlen(\ltrim($digits, '-')) < self::CARD_NUMBER_MIN_DIGITS) {
+            return $number;
+        }
+
+        $sanitizedDigits = $this->sanitizeString($digits);
+
+        return $sanitizedDigits === $digits ? $number : $sanitizedDigits;
     }
 
     /**
