@@ -678,17 +678,25 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'dotKey' => 'a.b=secret axb=keep',
                 'slashKey' => 'a/b=secret&c=keep',
                 'plusKey' => 'a+b=secret;d=keep',
+                'plusAfterSeparatorKey' => 'api_+key=secret&keep=1',
+                'plusAfterSeparatorRunKey' => 'api__+key=secret&keep=1',
+                'encodedSeparatorAfterSeparatorKey' => 'api_%5Fkey=secret&keep=1',
             ],
             'expectedOutput' => [
                 'dotKey' => 'a.b=*REDACTED* axb=keep',
                 'slashKey' => 'a/b=*REDACTED*&c=keep',
                 'plusKey' => 'a+b=*REDACTED*;d=keep',
+                'plusAfterSeparatorKey' => 'api_+key=*REDACTED*&keep=1',
+                'plusAfterSeparatorRunKey' => 'api__+key=*REDACTED*&keep=1',
+                'encodedSeparatorAfterSeparatorKey' => 'api_%5Fkey=*REDACTED*&keep=1',
             ],
             'maskPattern' => '*REDACTED*',
             'keysToMask' => [
                 'a.b',
                 'a/b',
                 'a+b',
+                'api_+key',
+                'api_%5Fkey',
             ],
         ];
         yield 'Mask pattern starting with a digit' => [

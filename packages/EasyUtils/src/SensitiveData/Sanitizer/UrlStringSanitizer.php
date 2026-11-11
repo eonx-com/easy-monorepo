@@ -5,6 +5,9 @@ namespace EonX\EasyUtils\SensitiveData\Sanitizer;
 
 final class UrlStringSanitizer extends AbstractStringSanitizer
 {
+    // Plain or URL-encoded key separator
+    private const KEY_SEPARATOR = '(?:[ _+-]++|%5F|%2D|%20)';
+
     /**
      * The password of URL user info ("https://user:password@host"), whatever the keys to mask are.
      * A user name without a password ("tcp://name@host") is kept
@@ -30,11 +33,12 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             // regex metacharacters (and the "/" delimiter) to keep matching literal and safe.
             // Separator runs are optional and interchangeable ("api_key" matches "api-key", "apiKey"),
             // edge ones are kept so the configured spelling itself always matches
-            $parts = \preg_split('/[ _-]+/', $key) ?: [$key];
             // A separator can also be URL-encoded ("api%5Fkey" or "api+key", what http_build_query() gives
-            // for "api_key" and "api key"). Possessive, so a long separator run cannot exhaust the PCRE (JIT) stack
+            // for "api_key" and "api key"). The run is possessive, so a long one cannot exhaust the PCRE (JIT)
+            // stack. The key is split on the same separators, so no key part starts with what the run consumed
+            $parts = \preg_split('/' . self::KEY_SEPARATOR . '+/i', $key) ?: [$key];
             $quotedKey = \implode(
-                '(?:[ _+-]++|%5F|%2D|%20)*+',
+                self::KEY_SEPARATOR . '*+',
                 \array_map(static fn (string $part): string => \preg_quote($part, '/'), $parts)
             );
 
