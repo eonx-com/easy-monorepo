@@ -9,13 +9,21 @@ use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClient;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClientInterface;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
+use EonX\EasyServerless\Datadog\Helper\RootSpanHelper;
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
+use EonX\EasyServerless\Laravel\Middleware\PhpRuntimeInfoMiddleware;
 use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
+use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Kernel as FoundationHttpKernel;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
 use Psr\Log\LoggerInterface;
+use ReflectionProperty;
 
 final class EasyServerlessServiceProvider extends ServiceProvider
 {
@@ -35,6 +43,7 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config/easy-serverless.php', 'easy-serverless');
 
         $this->registerAppMetric();
+        $this->registerDatadog();
         $this->registerHealth();
 
         if (\class_exists(PaginationInterface::class)) {
@@ -76,6 +85,46 @@ final class EasyServerlessServiceProvider extends ServiceProvider
                 \config('easy-serverless.app_metric.namespace')
             )
         );
+    }
+
+    private function registerDatadog(): void
+    {
+        if (\config('easy-serverless.datadog.enabled', true) === false) {
+            return;
+        }
+
+        $this->app->make('events')
+            ->listen(
+                [JobProcessing::class, CommandStarting::class],
+                static function (): void {
+                    RootSpanHelper::addPhpRuntimeInfo();
+                }
+            );
+
+        if ($this->app instanceof LumenApplication) {
+            // Lumen does not dispatch CommandStarting in console, and the CLI root span covers the whole process
+            if ($this->app->runningInConsole()) {
+                RootSpanHelper::addPhpRuntimeInfo();
+            }
+
+            // Run before global middleware that could return early, Lumen has no API to prepend middleware
+            $middlewareProperty = new ReflectionProperty(LumenApplication::class, 'middleware');
+            /** @var array<int, string> $globalMiddleware */
+            $globalMiddleware = $middlewareProperty->getValue($this->app);
+
+            if (\in_array(PhpRuntimeInfoMiddleware::class, $globalMiddleware, true) === false) {
+                $middlewareProperty->setValue($this->app, [PhpRuntimeInfoMiddleware::class, ...$globalMiddleware]);
+            }
+
+            return;
+        }
+
+        // Avoids building the HTTP kernel in console commands and queue workers
+        $this->callAfterResolving(HttpKernel::class, static function (HttpKernel $httpKernel): void {
+            if ($httpKernel instanceof FoundationHttpKernel) {
+                $httpKernel->prependMiddleware(PhpRuntimeInfoMiddleware::class);
+            }
+        });
     }
 
     private function registerHealth(): void

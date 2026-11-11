@@ -110,7 +110,7 @@ final class SqsHandler extends AbstractSqsHandler
             $envelope = $envelope->with(...$stamps);
 
             $event = new WorkerMessageReceivedEvent($envelope, $this->transportName);
-            $this->eventDispatcher?->dispatch($event);
+            $this->dispatchEvent($event);
             $envelope = $event->getEnvelope();
 
             if ($event->shouldHandle() === false) {

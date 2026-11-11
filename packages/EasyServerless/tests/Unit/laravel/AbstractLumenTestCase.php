@@ -10,6 +10,18 @@ abstract class AbstractLumenTestCase extends AbstractUnitTestCase
 {
     private ?Application $app = null;
 
+    protected function tearDown(): void
+    {
+        if ($this->app !== null) {
+            // Lumen application registers its own error and exception handlers on construction
+            \restore_error_handler();
+            \restore_exception_handler();
+            $this->app = null;
+        }
+
+        parent::tearDown();
+    }
+
     /**
      * @param string[] $providers
      */

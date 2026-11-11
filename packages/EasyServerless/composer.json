@@ -40,6 +40,9 @@
             "EonX\\EasyServerless\\Tests\\Unit\\Laravel\\": "tests/Unit/laravel"
         }
     },
+    "suggest": {
+        "ext-ddtrace": "To add PHP runtime information to the Datadog root span"
+    },
     "config": {
         "allow-plugins": {
             "symfony/runtime": true

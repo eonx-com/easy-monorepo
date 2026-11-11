@@ -54,15 +54,6 @@ final class SqsHandlerTest extends AbstractLumenTestCase
         $this->logHandler = new TestHandler();
     }
 
-    protected function tearDown(): void
-    {
-        // Lumen application registers its own error and exception handlers on construction
-        \restore_error_handler();
-        \restore_exception_handler();
-
-        parent::tearDown();
-    }
-
     /**
      * @see testHandleSqsFifoBatchSkipsMessageGroupAfterRequeue
      */
