@@ -100,19 +100,17 @@ final readonly class HttpFoundationRequest implements RequestInterface
     }
 
     /**
-     * A JSON body is decoded, so the sanitizer can mask it by key. Any other body is sanitized only by value
-     * patterns, so it is cut to the first 10 KB
+     * A JSON body is decoded, whatever its content type, so the sanitizer can mask it by key. Any other body is
+     * sanitized only by value patterns, which a cut would break (a JSON fragment loses its end, a card number its
+     * last digits), so a body over 10 KB is not sent at all
      */
     private function getContent(): array
     {
         $content = $this->request->getContent();
+        $decoded = \json_decode($content);
 
-        if (\str_contains((string)($this->request->getContentTypeFormat() ?? ''), 'json')) {
-            $decoded = \json_decode($content);
-
-            if ($decoded !== null) {
-                return ['content' => $decoded];
-            }
+        if (\is_array($decoded) || \is_object($decoded)) {
+            return ['content' => $decoded];
         }
 
         if (\strlen($content) <= self::CONTENT_LENGTH_MAX) {
@@ -120,8 +118,8 @@ final readonly class HttpFoundationRequest implements RequestInterface
         }
 
         return [
-            'content' => \substr($content, 0, self::CONTENT_LENGTH_MAX),
-            'content_truncated' => true,
+            'content_length' => \strlen($content),
+            'content_omitted' => true,
         ];
     }
 }

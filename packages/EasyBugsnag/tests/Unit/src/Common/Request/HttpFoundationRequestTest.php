@@ -45,11 +45,26 @@ final class HttpFoundationRequestTest extends AbstractUnitTestCase
                 'content' => '<password>secret</password>',
             ],
         ];
-        yield 'long text body is cut' => [
-            'request' => self::createRequest(\str_repeat('a', 10_240) . 'b', 'text/plain'),
+        yield 'long json body with a non-json content type is decoded' => [
+            'request' => self::createRequest(
+                '{"password":"secret","padding":"' . \str_repeat('a', 10_240) . '"}',
+                'text/plain'
+            ),
             'expectedContent' => [
-                'content' => \str_repeat('a', 10_240),
-                'content_truncated' => true,
+                'content' => (object)[
+                    'password' => 'secret',
+                    'padding' => \str_repeat('a', 10_240),
+                ],
+            ],
+        ];
+        yield 'long text body is not sent' => [
+            'request' => self::createRequest(
+                \str_repeat('a', 10_230) . ' {"password":"secret","card":"4111 1111 1111 1111"}',
+                'text/plain'
+            ),
+            'expectedContent' => [
+                'content_length' => 10_281,
+                'content_omitted' => true,
             ],
         ];
         yield 'text body of exactly 10 KB is kept' => [
@@ -67,7 +82,8 @@ final class HttpFoundationRequestTest extends AbstractUnitTestCase
 
         $content = \array_intersect_key($metaData['request'], [
             'content' => true,
-            'content_truncated' => true,
+            'content_length' => true,
+            'content_omitted' => true,
         ]);
         self::assertEquals($expectedContent, $content);
         self::assertArrayNotHasKey('request', $metaData['request']);

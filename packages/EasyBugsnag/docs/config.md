@@ -67,8 +67,9 @@ Symfony has the following additional configuration options:
 
 For HTTP requests the report contains:
 
-- the request body: a JSON body is decoded; for a form body only the parsed fields are sent; any other body is cut
-  to the first 10 KB (`content_truncated: true`);
+- the request body: a JSON body is decoded (whatever its content type); a raw form body is never sent, only the
+  parsed fields; any other body is sent up to 10 KB, a longer one is replaced by `content_length` and
+  `content_omitted: true`;
 - the session, without the serialized security token (`_security_*`) and CSRF tokens (`_csrf/*`).
 
 ## Example configuration files
