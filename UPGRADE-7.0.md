@@ -106,6 +106,11 @@ Tips:
   UPDATE easy_batch_items SET class = REPLACE(class, 'EonX\\EasyBatch\\Objects\\', 'EonX\\EasyBatch\\Common\\ValueObject\\');
   ```
 
+### EasyBugsnag
+
+- [ ] Symfony: if you need SQL query breadcrumbs, set `'doctrine_dbal' => true` in `easy_bugsnag`. In 7.0 they are
+  disabled by default.
+
 ### EasyServerless
 
 - [ ] Symfony: use `EonX\EasyServerless\Bundle\SqsHandler\SqsHandler` as the Lambda SQS handler. Stop using
@@ -240,6 +245,13 @@ Tips:
   driver exception (and the exceptions below it) is replaced by `SQLSTATE[<state>] <class>`. To keep the full message,
   remove or decorate this service.
 - `WorkerMessageReceivedListener` sanitizes the message and stamps dump with `SensitiveDataSanitizerInterface`.
+- `doctrine_dbal` (SQL query breadcrumbs) is disabled by default. To keep the breadcrumbs, set
+  `'doctrine_dbal' => true` in `easy_bugsnag`.
+- SQL query breadcrumbs no longer contain the query parameter values. To add them, set
+  `'doctrine_dbal' => ['log_query_values' => true]`. The values are sent as is: the sensitive data sanitizer cannot
+  mask positional parameters.
+- `QueryBreadcrumb::getQueryTypes()` (DBAL 4) returns the `ParameterType` case names (`string[]`) instead of
+  `ParameterType` cases.
 
 ### EasyDoctrine
 

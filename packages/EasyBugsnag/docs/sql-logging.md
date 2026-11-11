@@ -56,3 +56,31 @@ return App::config([
 ```
 
 You are now all set up to start logging SQL queries into your Bugsnag reports.
+
+## Query parameter values
+
+By default, the breadcrumbs do not contain the values of the query parameters. To add them, set the
+`doctrine_dbal.log_query_values` configuration to `true`:
+
+```php
+# config/packages/easy_bugsnag.php
+
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+return App::config([
+    'easy_bugsnag' => [
+        'api_key' => env('BUGSNAG_API_KEY'),
+        'doctrine_dbal' => [
+            'log_query_values' => true,
+        ],
+    ],
+]);
+
+```
+
+**Warning:** the values are sent to Bugsnag as is. Doctrine ORM uses positional parameters, which have no names, so
+the sensitive data sanitizer cannot mask secrets or personal data in them. Values written into the SQL text are sent
+as is in any case.

@@ -117,6 +117,10 @@ final class EasyBugsnagBundle extends AbstractBundle
             return;
         }
 
+        $container
+            ->parameters()
+            ->set(ConfigParam::DoctrineDbalLogQueryValues->value, $config['doctrine_dbal']['log_query_values']);
+
         $container->import('config/doctrine_dbal.php');
 
         foreach ($config['doctrine_dbal']['connections'] as $connection) {

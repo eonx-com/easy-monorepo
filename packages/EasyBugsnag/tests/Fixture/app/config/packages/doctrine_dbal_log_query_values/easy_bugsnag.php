@@ -1,0 +1,12 @@
+<?php
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+return App::config([
+    'easy_bugsnag' => [
+        'doctrine_dbal' => [
+            'log_query_values' => true,
+        ],
+    ],
+]);

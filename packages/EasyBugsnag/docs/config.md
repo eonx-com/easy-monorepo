@@ -55,8 +55,9 @@ Symfony has the following additional configuration options:
 |-----------------------------------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------|
 | `runtime`                                                       | `symfony`               | Set the Symfony runtime.                                                                                          |
 | `runtime_version`                                               | `Kernel::VERSION`       | Set the Symfony runtime version.                                                                                  |
-| `doctrine_dbal.enabled`                                         | `true`                  | Enable SQL query logging (see [SQL query logging](sql-logging.md)).                                               |
+| `doctrine_dbal.enabled`                                         | `false`                 | Enable SQL query logging (see [SQL query logging](sql-logging.md)).                                               |
 | `doctrine_dbal.connections`                                     | `['default']`           | Connections to log SQL queries for.                                                                               |
+| `doctrine_dbal.log_query_values`                                | `false`                 | Add query parameter values to the SQL query breadcrumbs.                                                          |
 | `session_tracking.cache_directory`                              | `%kernel.cache_dir%`    | Directory used by the default cache implementation provided by the package.                                       |
 | `session_tracking.cache_namespace`                              | `easy_bugsnag_sessions` | Namespace used by the default cache implementation provided by the package.                                       |
 | `session_tracking.messenger_message_count_for_sessions.enbaled` | `false`                 | Enable/disable session tracking for messenger messages.                                                           |
