@@ -8,8 +8,12 @@ use EonX\EasySwoole\Common\Enum\RequestAttribute;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class HttpFoundationAccessLogFormatter implements HttpFoundationAccessLogFormatterInterface
+final readonly class HttpFoundationAccessLogFormatter implements HttpFoundationAccessLogFormatterInterface
 {
+    public function __construct(
+        private bool $logQueryString = false,
+    ) {}
+
     public function formatAccessLog(Request $request, Response $response): string
     {
         $accessLog = \sprintf(
@@ -17,7 +21,7 @@ final class HttpFoundationAccessLogFormatter implements HttpFoundationAccessLogF
             $request->getClientIp(),
             $request->getMethod(),
             $request->getPathInfo(),
-            $request->getQueryString() ? '?' . $request->getQueryString() : null,
+            $this->logQueryString && $request->getQueryString() ? '?' . $request->getQueryString() : null,
             $request->getProtocolVersion(),
             $response->getStatusCode(),
             $request->headers->get('user-agent', '<no_user_agent>'),

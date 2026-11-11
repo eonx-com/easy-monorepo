@@ -27,6 +27,11 @@ return static function (DefinitionConfigurator $definition) {
                         ->end()
                         ->stringPrototype()->end()
                     ->end()
+                    ->booleanNode('log_query_string')
+                        ->defaultFalse()
+                        ->info('Add the query string to access log lines. '
+                            . 'Query strings can hold tokens and personal data')
+                    ->end()
                     ->stringNode('timezone')->defaultValue('UTC')->end()
                 ->end()
             ->end()

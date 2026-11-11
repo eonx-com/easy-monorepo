@@ -113,7 +113,13 @@ final readonly class EasySwooleRunner implements RunnerInterface
                     }
 
                     if ($responded === false) {
-                        ErrorResponseHelper::sendErrorResponse($throwable, $response);
+                        $debug = $app instanceof KernelInterface && $app->isDebug();
+
+                        if ($debug === false) {
+                            OutputHelper::writeln(ErrorResponseHelper::getContent($throwable, true));
+                        }
+
+                        ErrorResponseHelper::sendErrorResponse($throwable, $response, $debug);
                     }
                 }
             }

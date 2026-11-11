@@ -10,19 +10,16 @@ use Throwable;
 
 final class ErrorResponseHelper
 {
-    public static function sendErrorResponse(Throwable $throwable, Response $response): void
-    {
-        $response->status(
-            HttpStatusCode::InternalServerError->value,
-            HttpStatusCode::InternalServerError->description() ?? 'Internal Server Error'
-        );
+    private const string INTERNAL_SERVER_ERROR = 'Internal Server Error';
 
-        $response->header('Content-Type', 'application/json');
-        $response->end(self::getContent($throwable));
-    }
-
-    private static function getContent(Throwable $throwable): string
+    public static function getContent(Throwable $throwable, bool $debug = false): string
     {
+        if ($debug === false) {
+            return (string)\json_encode([
+                'error' => HttpStatusCode::InternalServerError->description() ?? self::INTERNAL_SERVER_ERROR,
+            ]);
+        }
+
         $details = ['error' => $throwable->getMessage()];
 
         if (\class_exists(ErrorDetailsHelper::class)) {
@@ -30,5 +27,16 @@ final class ErrorResponseHelper
         }
 
         return (string)\json_encode($details);
+    }
+
+    public static function sendErrorResponse(Throwable $throwable, Response $response, bool $debug = false): void
+    {
+        $response->status(
+            HttpStatusCode::InternalServerError->value,
+            HttpStatusCode::InternalServerError->description() ?? self::INTERNAL_SERVER_ERROR
+        );
+
+        $response->header('Content-Type', 'application/json');
+        $response->end(self::getContent($throwable, $debug));
     }
 }

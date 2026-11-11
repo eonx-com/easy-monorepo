@@ -16,6 +16,8 @@ final class SslCertificateHelper
 
     private const string DEFAULT_FILENAME_KEY = '/var/www/var/tmp/key.pem';
 
+    private const int KEY_FILE_MODE = 0o600;
+
     public static function loadSslCertificates(array $options): array
     {
         $filesystem = new Filesystem();
@@ -25,7 +27,7 @@ final class SslCertificateHelper
         $keyFilename = $options['settings']['ssl_key_file'] ?? self::DEFAULT_FILENAME_KEY;
 
         $savedCert = self::saveEnvVarValueToFile($certEnvVarName, $filesystem, $certFilename);
-        $savedKey = self::saveEnvVarValueToFile($keyEnvVarName, $filesystem, $keyFilename);
+        $savedKey = self::saveEnvVarValueToFile($keyEnvVarName, $filesystem, $keyFilename, self::KEY_FILE_MODE);
 
         if ($savedCert) {
             $options['settings']['ssl_cert_file'] = $certFilename;
@@ -44,8 +46,12 @@ final class SslCertificateHelper
         return $options;
     }
 
-    private static function saveEnvVarValueToFile(string $envVarName, Filesystem $filesystem, string $filename): bool
-    {
+    private static function saveEnvVarValueToFile(
+        string $envVarName,
+        Filesystem $filesystem,
+        string $filename,
+        ?int $mode = null,
+    ): bool {
         if ($filesystem->exists($filename)) {
             return true;
         }
@@ -54,6 +60,10 @@ final class SslCertificateHelper
 
         if (\is_string($envVarValue) && $envVarValue !== '') {
             $filesystem->dumpFile($filename, $envVarValue);
+
+            if ($mode !== null) {
+                $filesystem->chmod($filename, $mode);
+            }
 
             return true;
         }
