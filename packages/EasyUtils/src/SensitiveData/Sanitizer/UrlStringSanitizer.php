@@ -9,7 +9,7 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
      * The password of URL user info ("https://user:password@host"), whatever the keys to mask are.
      * A user name without a password ("tcp://name@host") is kept
      */
-    private const URL_PASSWORD_PATTERN = '~\\b([a-z][a-z\\d+.-]*://[^\\s:/?#@"\'<>]*:)[^\\s/?#@"\'<>]+@~i';
+    private const URL_PASSWORD_PATTERN = '~\\b([a-z][a-z\\d+.-]*://[^\\s:/?#@"<>]*:)[^\\s/?#@"<>]+@~i';
 
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
@@ -31,9 +31,10 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             // Separator runs are optional and interchangeable ("api_key" matches "api-key", "apiKey"),
             // edge ones are kept so the configured spelling itself always matches
             $parts = \preg_split('/[ _-]+/', $key) ?: [$key];
-            // A separator can also be URL-encoded ("api%5Fkey", what http_build_query() gives for "api_key")
+            // A separator can also be URL-encoded ("api%5Fkey" or "api+key", what http_build_query() gives
+            // for "api_key" and "api key")
             $quotedKey = \implode(
-                '(?:[ _-]|%5F|%2D|%20)*',
+                '(?:[ _+-]|%5F|%2D|%20)*',
                 \array_map(static fn (string $part): string => \preg_quote($part, '/'), $parts)
             );
 

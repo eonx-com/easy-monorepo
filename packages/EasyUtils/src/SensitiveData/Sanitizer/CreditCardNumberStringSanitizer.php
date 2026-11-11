@@ -17,7 +17,7 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
      */
     private const CARD_CANDIDATE_PATTERN = '/\d[\d .\\\\-]*+/';
 
-    private const CARD_GROUPS_MAX = 5;
+    private const CARD_GROUPS_MAX = 8;
 
     private const CARD_LENGTH_MAX = 19;
 
@@ -63,6 +63,39 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
     }
 
     /**
+     * The end of the longest run of whole digit groups, starting at the given group, that is a valid card number
+     * (12-19 digits), or null. At most 8 groups are checked (a 16-digit card in groups of 2 digits): each extra
+     * group costs validator calls for every group of the candidate, and finer grouping is not used for cards
+     */
+    private function findCardNumberEnd(string $candidate, int $position): ?int
+    {
+        $length = \strlen($candidate);
+        $cardEnd = null;
+        $cursor = $position;
+        $digitCount = 0;
+
+        for ($groups = 1; $groups <= self::CARD_GROUPS_MAX && $cursor < $length; $groups++) {
+            $groupEnd = $cursor + \strspn($candidate, self::DIGITS, $cursor);
+            $digitCount += $groupEnd - $cursor;
+
+            if ($digitCount > self::CARD_LENGTH_MAX) {
+                break;
+            }
+
+            // The validator ignores the separators between the groups
+            if ($digitCount >= self::CARD_LENGTH_MIN && $this->creditCardNumberValidator->isCreditCardNumberValid(
+                \substr($candidate, $position, $groupEnd - $position)
+            )) {
+                $cardEnd = $groupEnd;
+            }
+
+            $cursor = $groupEnd + \strspn($candidate, self::SEPARATORS, $groupEnd);
+        }
+
+        return $cardEnd;
+    }
+
+    /**
      * Keeps the first 6 and the last 4 digits. No regex here, so a PCRE failure cannot drop the text
      */
     private function maskCardNumber(string $cardNumber, string $maskPattern): string
@@ -80,49 +113,41 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
     /**
      * Masks the card numbers inside a candidate that is not a card number as a whole, e.g. a card
      * followed by another number ("4005 5500 0000 0001 1225") or two cards ("4005550000000001 5313581000123430").
-     * From each digit group, the longest run of whole groups (at most 5 groups, 12-19 digits) that is a valid
-     * card number is masked, everything else is kept as it is. The work per group is bounded, so the scan is linear
+     * Every digit group starts a search for the longest valid card number of whole groups. Overlapping card
+     * numbers are masked as one, so the kept first 6 and last 4 digits of one card never reveal another one.
+     * Everything else is kept as it is. The work per group is bounded, so the scan is linear
      */
     private function sanitizeCardNumberGroups(string $candidate, string $maskPattern): string
     {
         $length = \strlen($candidate);
+        /** @var list<array{int, int}> $cards */
+        $cards = [];
         $position = 0;
-        $result = '';
 
         while ($position < $length) {
-            $cardEnd = null;
-            $cursor = $position;
-            $digitCount = 0;
+            $cardEnd = $this->findCardNumberEnd($candidate, $position);
+            $last = \array_key_last($cards);
 
-            for ($groups = 1; $groups <= self::CARD_GROUPS_MAX && $cursor < $length; $groups++) {
-                $groupLength = \strspn($candidate, self::DIGITS, $cursor);
-                $groupEnd = $cursor + $groupLength;
-                $digitCount += $groupLength;
-
-                if ($digitCount > self::CARD_LENGTH_MAX) {
-                    break;
-                }
-
-                // The validator ignores the separators between the groups
-                if ($digitCount >= self::CARD_LENGTH_MIN && $this->creditCardNumberValidator->isCreditCardNumberValid(
-                    \substr($candidate, $position, $groupEnd - $position)
-                )) {
-                    $cardEnd = $groupEnd;
-                }
-
-                $cursor = $groupEnd + \strspn($candidate, self::SEPARATORS, $groupEnd);
+            if ($cardEnd !== null && $last !== null && $position < $cards[$last][1]) {
+                $cards[$last][1] = \max($cards[$last][1], $cardEnd);
+            } elseif ($cardEnd !== null) {
+                $cards[] = [$position, $cardEnd];
             }
 
-            $partEnd = $cardEnd ?? $position + \strspn($candidate, self::DIGITS, $position);
-            $result .= $cardEnd === null
-                ? \substr($candidate, $position, $partEnd - $position)
-                : $this->maskCardNumber(\substr($candidate, $position, $partEnd - $position), $maskPattern);
-
-            $position = $partEnd + \strspn($candidate, self::SEPARATORS, $partEnd);
-            $result .= \substr($candidate, $partEnd, $position - $partEnd);
+            $groupEnd = $position + \strspn($candidate, self::DIGITS, $position);
+            $position = $groupEnd + \strspn($candidate, self::SEPARATORS, $groupEnd);
         }
 
-        return $result;
+        $result = '';
+        $offset = 0;
+
+        foreach ($cards as [$cardStart, $cardEnd]) {
+            $result .= \substr($candidate, $offset, $cardStart - $offset)
+                . $this->maskCardNumber(\substr($candidate, $cardStart, $cardEnd - $cardStart), $maskPattern);
+            $offset = $cardEnd;
+        }
+
+        return $result . \substr($candidate, $offset);
     }
 
     private function sanitizeCardNumbers(string $string, string $maskPattern): string
