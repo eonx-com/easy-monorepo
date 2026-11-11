@@ -135,7 +135,7 @@ final class RootSpanHelper
      */
     private static function getOpcacheStatus(): array|false
     {
-        // The opcache_get_status() function raises a warning when opcache.restrict_api is set and the script is outside of it
+        // The opcache_get_status() function raises a warning outside of the opcache.restrict_api path
         if (\function_exists('opcache_get_status') === false || (string)\ini_get('opcache.restrict_api') !== '') {
             return false;
         }

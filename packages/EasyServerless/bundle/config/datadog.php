@@ -11,6 +11,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    // Registered via #[AsEventListener], a no-op when the ddtrace extension is not loaded
+    // Registered via #[AsEventListener]
     $services->set(PhpRuntimeInfoListener::class);
 };

@@ -22,7 +22,6 @@ parameters:
         - %currentWorkingDirectory%/packages
         - %currentWorkingDirectory%/tests
 
-    # Do not exclude packages/EasyServerless/tests/Fixture/ddtrace: it declares the ddtrace extension symbols for PHPStan
     excludePaths:
         - %currentWorkingDirectory%/packages/*/config/definition.php
         - %currentWorkingDirectory%/packages/*/tests/*/config/*

@@ -8,8 +8,8 @@ use EonX\EasyServerless\Datadog\Helper\RootSpanHelper;
 use Illuminate\Http\Request;
 
 /**
- * Global middleware so every request is covered, including unmatched routes (404/405) and requests
- * short-circuited by other global middleware such as maintenance mode, which never dispatch RouteMatched.
+ * Registered as the first global middleware, so unmatched routes and requests short-circuited by other global
+ * middleware (e.g. maintenance mode) are covered too.
  */
 final class PhpRuntimeInfoMiddleware
 {

@@ -99,7 +99,6 @@ final class EasyServerlessServiceProviderTest extends AbstractLumenTestCase
 
         self::assertSame(ShortCircuitMiddlewareStub::RESPONSE_CONTENT, $response->getContent());
         self::assertSame(\PHP_VERSION, root_span()?->meta['php.version'] ?? null);
-        // Lumen keeps its global middleware in a protected property
         self::assertSame(
             [PhpRuntimeInfoMiddleware::class, ShortCircuitMiddlewareStub::class],
             (new ReflectionProperty($app, 'middleware'))->getValue($app)
