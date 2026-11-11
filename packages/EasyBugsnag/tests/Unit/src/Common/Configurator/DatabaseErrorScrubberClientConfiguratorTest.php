@@ -44,6 +44,30 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         self::assertStringNotContainsString('john@example.com', (string)$previous->getMessage());
     }
 
+    public function testItReducesMessagesRestoredAndCopiedByOtherConfigurators(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $message = "SQLSTATE[23505]: Unique violation: 7 ERROR: duplicate key value\n"
+            . 'DETAIL:  Key (email)=(john@example.com) already exists.';
+
+        $client->notifyException(new UniqueConstraintViolationException(
+            self::driverException($message, '23505', new PDOException($message)),
+            null
+        ));
+
+        $reportData = $this->getFirstReport($client)
+            ->toArray();
+        $dbalMessage = 'SQLSTATE[23505] ' . UniqueConstraintViolationException::class;
+        self::assertSame($dbalMessage, $reportData['exceptions'][0]['message']);
+        self::assertSame('SQLSTATE[23505] ' . PDOException::class, $reportData['exceptions'][2]['message']);
+        self::assertSame($dbalMessage, $reportData['metaData']['error']['message']);
+        self::assertStringStartsWith('SQLSTATE[23505] ', $reportData['metaData']['error']['previous_2']['message']);
+        $messages = \array_column($reportData['exceptions'], 'message');
+        self::assertStringNotContainsString('john@example.com', (string)\json_encode($messages));
+        self::assertStringNotContainsString('john@example.com', (string)\json_encode($reportData['metaData']));
+    }
+
     public function testItReducesNativeExceptionBelowDriverException(): void
     {
         $client = self::getService(Client::class);
