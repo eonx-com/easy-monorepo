@@ -250,6 +250,8 @@ Tips:
 - SQL query breadcrumbs no longer contain the query parameter values. To add them, set
   `'doctrine_dbal' => ['log_query_values' => true]`. The values are sent as is: the sensitive data sanitizer cannot
   mask positional parameters.
+- `QueryBreadcrumb::getQueryTypes()` (DBAL 4) returns the `ParameterType` case names (`string[]`) instead of
+  `ParameterType` cases.
 
 ### EasyDoctrine
 
