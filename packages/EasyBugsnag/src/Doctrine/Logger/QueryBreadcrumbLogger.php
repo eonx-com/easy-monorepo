@@ -11,6 +11,7 @@ final readonly class QueryBreadcrumbLogger
 {
     public function __construct(
         private Client $client,
+        private bool $logQueryValues = false,
     ) {}
 
     public function log(QueryBreadcrumb $queryBreadcrumb): void
@@ -22,8 +23,11 @@ final readonly class QueryBreadcrumbLogger
             'SQL' => $queryBreadcrumb->getQuerySql(),
             'Time (ms)' => \number_format($queryBreadcrumb->getQueryDuration() * 1000, 2),
             'Types' => \json_encode($queryBreadcrumb->getQueryTypes()),
-            'Values' => \json_encode($queryBreadcrumb->getQueryValues()),
         ];
+
+        if ($this->logQueryValues) {
+            $metadata['Values'] = \json_encode($queryBreadcrumb->getQueryValues());
+        }
 
         $this->client->leaveBreadcrumb($name, Breadcrumb::PROCESS_TYPE, $metadata);
     }

@@ -50,12 +50,17 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             // Doctrine DBAL
             ->arrayNode('doctrine_dbal')
-                ->canBeDisabled()
+                ->canBeEnabled()
                 ->children()
                     ->arrayNode('connections')
                         ->beforeNormalization()->castToArray()->end()
                         ->defaultValue(['default'])
                         ->stringPrototype()->end()
+                    ->end()
+                    ->booleanNode('log_query_values')
+                        ->defaultFalse()
+                        ->info('Add query parameter values to breadcrumbs. Values are sent as is: positional '
+                            . 'parameters have no names, so the sensitive data sanitizer cannot mask them')
                     ->end()
                 ->end()
             ->end()
