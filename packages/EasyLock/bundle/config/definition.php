@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyLock\Common\Enum\LogLevel;
+use Psr\Log\LogLevel;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 return static function (DefinitionConfigurator $definition) {
@@ -16,8 +16,8 @@ return static function (DefinitionConfigurator $definition) {
                         ->children()
                             ->enumNode('lock_not_acquired_log_level')
                                 ->info('Log level used when a message is not handled because its lock is not acquired')
-                                ->enumFqcn(LogLevel::class)
-                                ->defaultValue(LogLevel::Warning)
+                                ->values(\array_values(new \ReflectionClass(LogLevel::class)->getConstants()))
+                                ->defaultValue(LogLevel::WARNING)
                             ->end()
                         ->end()
                     ->end()

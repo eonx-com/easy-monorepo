@@ -311,9 +311,6 @@ Tips:
 - `Locker::__construct()` takes only `LockFactory $lockFactory`. The `$store` and `$logger` arguments are removed. If
   you create `Locker` yourself, create the `LockFactory` with the store and call `setLogger()` on it.
 - `ReorderMessengerMiddlewareCompilerPass` priority changed from -9 to -10.
-- `ProcessWithLockMiddleware::__construct()` takes `EonX\EasyLock\Common\Enum\LogLevel $lockNotAcquiredLogLevel`
-  instead of a string. If you create the middleware yourself, pass an enum case, e.g. `LogLevel::Warning`. The
-  `messenger.middleware.lock_not_acquired_log_level` option still accepts PSR-3 level strings.
 
 ### EasyLogging
 

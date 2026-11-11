@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace EonX\EasyLock\Tests\Unit\Bundle;
 
 use EonX\EasyLock\Bundle\Enum\ConfigServiceId;
-use EonX\EasyLock\Common\Enum\LogLevel;
 use EonX\EasyLock\Common\Locker\Locker;
 use EonX\EasyLock\Common\Locker\LockerInterface;
 use EonX\EasyLock\Messenger\Middleware\ProcessWithLockMiddleware;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Psr\Log\LogLevel;
 use ReflectionProperty;
 use Symfony\Component\Lock\LockFactory;
 
@@ -19,16 +19,11 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
      */
     public static function provideMessengerMiddlewareLockNotAcquiredLogLevelData(): iterable
     {
-        yield 'default config' => [null, LogLevel::Warning];
+        yield 'default config' => [null, LogLevel::WARNING];
 
-        yield 'custom log level as enum case' => [
+        yield 'custom log level' => [
             [__DIR__ . '/../../Fixture/config/lock_not_acquired_log_level_error.php'],
-            LogLevel::Error,
-        ];
-
-        yield 'custom log level as PSR-3 string' => [
-            [__DIR__ . '/../../Fixture/config/lock_not_acquired_log_level_psr_info.php'],
-            LogLevel::Info,
+            LogLevel::ERROR,
         ];
     }
 
@@ -62,7 +57,7 @@ final class EasyLockBundleTest extends AbstractSymfonyTestCase
      * @param string[]|null $configs
      */
     #[DataProvider('provideMessengerMiddlewareLockNotAcquiredLogLevelData')]
-    public function testMessengerMiddlewareLockNotAcquiredLogLevel(?array $configs, LogLevel $expectedLogLevel): void
+    public function testMessengerMiddlewareLockNotAcquiredLogLevel(?array $configs, string $expectedLogLevel): void
     {
         $middleware = $this->getKernel($configs)
             ->getContainer()

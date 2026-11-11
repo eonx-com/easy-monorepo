@@ -95,19 +95,19 @@ transport delivers the same message two times. If different messages use the sam
 removed message is lost.
 
 The log level is `warning` by default because many applications ignore records below `warning` for channels other than
-their own. You can change it with a case of `EonX\EasyLock\Common\Enum\LogLevel` or a PSR-3 level string (`info`):
+their own. You can change it:
 
 ```php
 // config/packages/easy_lock.php
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyLock\Common\Enum\LogLevel;
+use Psr\Log\LogLevel;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('easy_lock', [
         'messenger' => [
             'middleware' => [
-                'lock_not_acquired_log_level' => LogLevel::Info,
+                'lock_not_acquired_log_level' => LogLevel::INFO,
             ],
         ],
     ]);
