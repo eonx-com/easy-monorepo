@@ -17,3 +17,6 @@ parameters:
 
         - message: '#Call to function method_exists\(\) with Doctrine\\ORM\\Configuration and .* will always evaluate to true#'
           path: %currentWorkingDirectory%/packages/EasyPagination/tests/Unit/src/Paginator/AbstractDoctrineOrmPaginatorTestCase.php
+
+        - message: '#Call to function is_callable\(\) with callable\(\)\: mixed will always evaluate to true#'
+          path: %currentWorkingDirectory%/packages/EasyServerless/tests/Unit/src/Datadog/Listener/PhpRuntimeInfoListenerTest.php

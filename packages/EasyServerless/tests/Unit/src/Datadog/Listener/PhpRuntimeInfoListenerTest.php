@@ -81,7 +81,9 @@ final class PhpRuntimeInfoListenerTest extends AbstractUnitTestCase
 
         foreach (self::EVENT_NAMES as $eventName) {
             foreach ($eventDispatcher->getListeners($eventName) as $listener) {
-                if (\is_array($listener) && $listener[0] instanceof PhpRuntimeInfoListener) {
+                if (\is_callable($listener)
+                    && \is_array($listener)
+                    && $listener[0] instanceof PhpRuntimeInfoListener) {
                     $registeredListeners[$eventName] = [
                         $listener[1],
                         $eventDispatcher->getListenerPriority($eventName, $listener),
