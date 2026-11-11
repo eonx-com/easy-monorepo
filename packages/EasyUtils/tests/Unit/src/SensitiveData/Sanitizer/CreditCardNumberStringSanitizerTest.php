@@ -6,9 +6,26 @@ namespace EonX\EasyUtils\Tests\Unit\SensitiveData\Sanitizer;
 use EonX\EasyUtils\CreditCard\Validator\CreditCardNumberValidator;
 use EonX\EasyUtils\SensitiveData\Sanitizer\CreditCardNumberStringSanitizer;
 use EonX\EasyUtils\Tests\Unit\AbstractUnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 final class CreditCardNumberStringSanitizerTest extends AbstractUnitTestCase
 {
+    /**
+     * @see testSanitizeStringMasksCardAfterLongDigitRun
+     */
+    public static function provideLongDigitRuns(): iterable
+    {
+        yield 'digits' => [\str_repeat('1', 65536) . ' '];
+        yield 'space-separated digits' => [\str_repeat('1 ', 65536)];
+        yield 'space-separated IP addresses' => [\str_repeat('10.0.0.1 ', 8192)];
+    }
+
+    /**
+     * Patterns compiled earlier in the process keep their JIT code and can still match under these limits,
+     * so the test runs in its own process where no pattern of the sanitizer is compiled yet
+     */
+    #[RunInSeparateProcess]
     public function testSanitizeStringKeepsStringWhenPcreFails(): void
     {
         $sanitizer = new CreditCardNumberStringSanitizer(new CreditCardNumberValidator());
@@ -27,5 +44,15 @@ final class CreditCardNumberStringSanitizerTest extends AbstractUnitTestCase
         }
 
         self::assertSame($string, $result);
+    }
+
+    #[DataProvider('provideLongDigitRuns')]
+    public function testSanitizeStringMasksCardAfterLongDigitRun(string $digitRun): void
+    {
+        $sanitizer = new CreditCardNumberStringSanitizer(new CreditCardNumberValidator());
+
+        $result = $sanitizer->sanitizeString($digitRun . '4005550000000001 tail', '*REDACTED*', []);
+
+        self::assertSame($digitRun . '400555*REDACTED*0001 tail', $result);
     }
 }
