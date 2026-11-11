@@ -30,10 +30,11 @@ final class AccessLogListenerTest extends AbstractUnitTestCase
 
         $listener($this->createTerminateEvent('/forgot-password-confirm?token=abc'));
 
+        $records = $handler->getRecords();
+
         self::assertSame(
             '127.0.0.1 - "GET /forgot-password-confirm?token=*REDACTED* HTTP/1.1" 200 "Symfony"',
-            $handler->getRecords()[0]
-->message
+            $records[0]->message
         );
     }
 
@@ -48,10 +49,11 @@ final class AccessLogListenerTest extends AbstractUnitTestCase
 
         $listener($this->createTerminateEvent('/forgot-password-confirm?token=abc'));
 
+        $records = $handler->getRecords();
+
         self::assertSame(
             '127.0.0.1 - "GET /forgot-password-confirm?token=abc HTTP/1.1" 200 "Symfony"',
-            $handler->getRecords()[0]
-->message
+            $records[0]->message
         );
     }
 

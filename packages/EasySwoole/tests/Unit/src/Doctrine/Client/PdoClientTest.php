@@ -34,6 +34,8 @@ final class PdoClientTest extends AbstractUnitTestCase
         } catch (PDOException|ReflectionException) {
         }
 
+        $records = $handler->getRecords();
+
         self::assertSame(
             [
                 'params' => [
@@ -43,8 +45,7 @@ final class PdoClientTest extends AbstractUnitTestCase
                     'port' => 1,
                 ],
             ],
-            $handler->getRecords()[0]
-->context
+            $records[0]->context
         );
     }
 }
