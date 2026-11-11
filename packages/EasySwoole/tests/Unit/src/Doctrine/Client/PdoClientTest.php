@@ -35,7 +35,6 @@ final class PdoClientTest extends AbstractUnitTestCase
         }
 
         $records = $handler->getRecords();
-
         self::assertSame(
             [
                 'params' => [
