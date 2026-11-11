@@ -958,6 +958,9 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'otherHeader' => 'Accept: application/json',
                 'multiline' => "Accept: */*\nX-Api-Key: secret\r\nHost: example.com",
                 'notAtLineStart' => 'note api_key: secret',
+                'singleWordKey' => 'Number: 42 items',
+                'singleWordKeyWithXPrefix' => 'X-Token: secret',
+                'underscoreName' => 'api_key: not a header',
             ],
             'expectedOutput' => [
                 'apiKeyHeader' => 'X-Api-Key: *REDACTED*',
@@ -966,11 +969,16 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'otherHeader' => 'Accept: application/json',
                 'multiline' => "Accept: */*\nX-Api-Key: *REDACTED*\r\nHost: example.com",
                 'notAtLineStart' => 'note api_key: secret',
+                'singleWordKey' => 'Number: 42 items',
+                'singleWordKeyWithXPrefix' => 'X-Token: *REDACTED*',
+                'underscoreName' => 'api_key: not a header',
             ],
             'maskPattern' => '*REDACTED*',
             'keysToMask' => [
                 'api_key',
                 'cookie',
+                'number',
+                'token',
             ],
         ];
         yield 'Mask separator-only keys exactly' => [

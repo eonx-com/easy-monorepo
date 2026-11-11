@@ -8,6 +8,8 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
     // Plain or URL-encoded key separator
     private const KEY_SEPARATOR = '(?:[ _+-]++|%5F|%2D|%20)';
 
+    private const SINGLE_WORD_HEADER_KEYS = ['cookie'];
+
     /**
      * The password of URL user info ("https://user:password@host"), whatever the keys to mask are.
      * A user name without a password ("tcp://name@host") is kept
@@ -75,14 +77,40 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
 
             // Header line style ("X-Api-Key: value", as in the "headers" option of Symfony HTTP client):
             // the value is the rest of the line
-            $string = $this->replace(
-                \sprintf('/^(%s[ \t]*:)[ \t]*[^\r\n]+/im', $prefixedQuotedKey),
-                '${1} ' . $this->escapeForReplacement($maskPattern),
-                $string
-            );
+            $headerNamePattern = $this->getHeaderNamePattern($key, $parts);
+
+            if ($headerNamePattern !== null) {
+                $string = $this->replace(
+                    \sprintf('/^(%s[ \t]*:)[ \t]*[^\r\n]+/im', $headerNamePattern),
+                    '${1} ' . $this->escapeForReplacement($maskPattern),
+                    $string
+                );
+            }
         }
 
         return $string;
+    }
+
+    /**
+     * The header name a key can have in a header line, or null. Header names join words with "-", so
+     * "api_key" matches "Api-Key" and "X-Api-Key". A single-word key matches only with the "X-" prefix
+     * ("X-Token"), so plain text lines like "Number: 42" or "Token: expired" are kept. Cookie is the only
+     * standard single-word header that carries secrets (Authorization has its own sanitizer)
+     *
+     * @param array<string> $parts
+     */
+    private function getHeaderNamePattern(string $key, array $parts): ?string
+    {
+        $parts = \array_values(\array_filter($parts, static fn (string $part): bool => $part !== ''));
+
+        if ($parts === []) {
+            return null;
+        }
+
+        $headerName = \implode('-', \array_map(static fn (string $part): string => \preg_quote($part, '/'), $parts));
+        $isHeaderLike = \count($parts) > 1 || \in_array(\strtolower($key), self::SINGLE_WORD_HEADER_KEYS, true);
+
+        return ($isHeaderLike ? '(?:x-)?' : 'x-') . $headerName;
     }
 
     /**
