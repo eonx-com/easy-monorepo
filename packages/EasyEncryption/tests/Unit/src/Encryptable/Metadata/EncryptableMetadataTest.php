@@ -5,11 +5,39 @@ namespace EonX\EasyEncryption\Tests\Unit\Encryptable\Metadata;
 
 use EonX\EasyEncryption\Encryptable\Enum\HashNormalization;
 use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadata;
+use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableChildEntityStub;
+use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableDuplicateFieldEntityStub;
 use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableEntityStub;
+use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableProxyEntityStub;
 use EonX\EasyEncryption\Tests\Unit\AbstractUnitTestCase;
+use LogicException;
 
 final class EncryptableMetadataTest extends AbstractUnitTestCase
 {
+    public function testGetEncryptableFieldNamesSucceedsWithPrivateFieldsOfParentClass(): void
+    {
+        $metadata = new EncryptableMetadata();
+
+        self::assertSame(['email' => 'email'], $metadata->getEncryptableFieldNames(EncryptableProxyEntityStub::class));
+        self::assertSame(
+            [
+                'email' => 'email',
+                'secretCode' => 'secret_code',
+            ],
+            $metadata->getEncryptableFieldNames(EncryptableChildEntityStub::class)
+        );
+    }
+
+    public function testGetEncryptableFieldNamesThrowsOnSamePrivateFieldInParentAndChild(): void
+    {
+        $metadata = new EncryptableMetadata();
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('secretCode');
+
+        $metadata->getEncryptableFieldNames(EncryptableDuplicateFieldEntityStub::class);
+    }
+
     public function testGetHashNormalizationsForFieldSucceedsForComposedOverride(): void
     {
         $metadata = new EncryptableMetadata();
@@ -26,6 +54,15 @@ final class EncryptableMetadataTest extends AbstractUnitTestCase
         $result = $metadata->getHashNormalizationsForField(EncryptableEntityStub::class, 'caseSensitiveCode');
 
         self::assertSame([], $result);
+    }
+
+    public function testGetHashNormalizationsForFieldSucceedsForPrivateFieldOfParentClass(): void
+    {
+        $metadata = new EncryptableMetadata();
+
+        $result = $metadata->getHashNormalizationsForField(EncryptableProxyEntityStub::class, 'email');
+
+        self::assertSame([HashNormalization::Lowercase], $result);
     }
 
     public function testGetHashNormalizationsForFieldSucceedsForUnknownProperty(): void
