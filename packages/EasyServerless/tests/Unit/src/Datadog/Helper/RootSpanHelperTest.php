@@ -5,9 +5,31 @@ namespace EonX\EasyServerless\Tests\Unit\Datadog\Helper;
 
 use EonX\EasyServerless\Datadog\Helper\RootSpanHelper;
 use EonX\EasyServerless\Tests\Unit\AbstractUnitTestCase;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+
+use function DDTrace\root_span;
 
 final class RootSpanHelperTest extends AbstractUnitTestCase
 {
+    #[RunInSeparateProcess]
+    public function testAddPhpRuntimeInfoAddsTagsAndMetricsToRootSpan(): void
+    {
+        if (\extension_loaded('ddtrace')) {
+            self::markTestSkipped('The ddtrace extension is loaded');
+        }
+
+        require_once __DIR__ . '/../../../../Fixture/ddtrace/ddtrace.php';
+        $rootSpan = root_span();
+        self::assertNotNull($rootSpan);
+        $rootSpan->meta['existing.tag'] = 'value';
+        $rootSpan->metrics['existing.metric'] = 1;
+
+        RootSpanHelper::addPhpRuntimeInfo();
+
+        self::assertSame(['existing.tag' => 'value', ...RootSpanHelper::getPhpRuntimeInfo()], $rootSpan->meta);
+        self::assertSame(['existing.metric' => 1, 'php.version_id' => \PHP_VERSION_ID], $rootSpan->metrics);
+    }
+
     public function testAddPhpRuntimeInfoIsNoOpWithoutDdTrace(): void
     {
         if (\extension_loaded('ddtrace')) {

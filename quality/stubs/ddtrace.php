@@ -10,14 +10,6 @@ namespace DDTrace;
 
 class SpanData
 {
-    public string $name;
-
-    public string $resource;
-
-    public string $service;
-
-    public string $type;
-
     /**
      * @var array<string, string>
      */
@@ -30,11 +22,6 @@ class SpanData
 }
 
 function root_span(): ?SpanData
-{
-    return null;
-}
-
-function active_span(): ?SpanData
 {
     return null;
 }

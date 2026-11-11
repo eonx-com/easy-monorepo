@@ -23,6 +23,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
 use Psr\Log\LoggerInterface;
+use ReflectionProperty;
 
 final class EasyServerlessServiceProvider extends ServiceProvider
 {
@@ -105,19 +106,28 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         // Requests are covered by a global middleware rather than RouteMatched, so unmatched routes (404/405)
         // and requests short-circuited by other global middleware (e.g. maintenance mode) are enriched too
         if ($this->app instanceof LumenApplication) {
-            $this->app->middleware([PhpRuntimeInfoMiddleware::class]);
+            // Lumen only appends global middleware and the provider is usually registered after the application
+            // middleware, so put it first to run before any middleware that could return early. Lumen has no API
+            // to prepend, its global middleware is kept in a protected property
+            $middlewareProperty = new ReflectionProperty(LumenApplication::class, 'middleware');
+            /** @var array<int, string> $globalMiddleware */
+            $globalMiddleware = $middlewareProperty->getValue($this->app);
+
+            if (\in_array(PhpRuntimeInfoMiddleware::class, $globalMiddleware, true) === false) {
+                $middlewareProperty->setValue($this->app, [PhpRuntimeInfoMiddleware::class, ...$globalMiddleware]);
+            }
 
             return;
         }
 
-        if ($this->app->bound(HttpKernelContract::class)) {
-            $httpKernel = $this->app->make(HttpKernelContract::class);
-
+        // The HTTP kernel is already resolved when providers are registered during an HTTP request,
+        // waiting for its resolution avoids building it in console commands and queue workers
+        $this->callAfterResolving(HttpKernelContract::class, static function (HttpKernelContract $httpKernel): void {
             if ($httpKernel instanceof HttpKernel) {
                 // Prepend so it runs before maintenance mode and any other global middleware
                 $httpKernel->prependMiddleware(PhpRuntimeInfoMiddleware::class);
             }
-        }
+        });
     }
 
     private function registerHealth(): void
