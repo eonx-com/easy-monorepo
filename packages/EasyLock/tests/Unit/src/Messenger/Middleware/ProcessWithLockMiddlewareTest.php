@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Tests\Unit\Messenger\Middleware;
 
+use EonX\EasyLock\Common\Enum\LogLevel;
 use EonX\EasyLock\Common\Exception\ShouldRetryException;
 use EonX\EasyLock\Common\Locker\Locker;
 use EonX\EasyLock\Common\ValueObject\LockData;
@@ -14,7 +15,6 @@ use EonX\EasyLock\Tests\Stub\Message\WithLockDataMessageStub;
 use EonX\EasyLock\Tests\Stub\Middleware\HandlerMiddlewareStub;
 use EonX\EasyLock\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Psr\Log\LogLevel;
 use stdClass;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\InMemoryStore;
@@ -104,7 +104,7 @@ final class ProcessWithLockMiddlewareTest extends AbstractUnitTestCase
             [new ConsumedByWorkerStamp(), new ReceivedStamp('async'), new TransportMessageIdStamp('message-id')]
         );
 
-        $result = $this->createMiddleware(LogLevel::ERROR)
+        $result = $this->createMiddleware(LogLevel::Error)
             ->handle($envelope, new StackMiddleware($this->handler));
 
         self::assertSame(0, $this->handler->getHandleCallCount());
@@ -115,7 +115,7 @@ final class ProcessWithLockMiddlewareTest extends AbstractUnitTestCase
         self::assertSame(600.0, $stamp->getTtl());
         $records = $this->logger->getRecords();
         self::assertCount(1, $records);
-        self::assertSame(LogLevel::ERROR, $records[0]['level']);
+        self::assertSame(LogLevel::Error->value, $records[0]['level']);
         self::assertSame([
             'class' => WithLockDataMessageStub::class,
             'message_id' => 'message-id',
@@ -140,7 +140,7 @@ final class ProcessWithLockMiddlewareTest extends AbstractUnitTestCase
         self::assertInstanceOf(LockNotAcquiredStamp::class, $result->last(LockNotAcquiredStamp::class));
         $records = $this->logger->getRecords();
         self::assertCount(1, $records);
-        self::assertSame(LogLevel::WARNING, $records[0]['level']);
+        self::assertSame(LogLevel::Warning->value, $records[0]['level']);
         self::assertSame([
             'class' => stdClass::class,
             'message_id' => null,
@@ -188,7 +188,7 @@ final class ProcessWithLockMiddlewareTest extends AbstractUnitTestCase
         }
     }
 
-    private function createMiddleware(?string $logLevel = null): ProcessWithLockMiddleware
+    private function createMiddleware(?LogLevel $logLevel = null): ProcessWithLockMiddleware
     {
         $middleware = $logLevel === null
             ? new ProcessWithLockMiddleware($this->logger)

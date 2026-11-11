@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace EonX\EasyLock\Messenger\Middleware;
 
+use EonX\EasyLock\Common\Enum\LogLevel;
 use EonX\EasyLock\Common\Locker\ProcessWithLockTrait;
 use EonX\EasyLock\Common\ValueObject\LockData;
 use EonX\EasyLock\Common\ValueObject\WithLockDataInterface;
 use EonX\EasyLock\Messenger\Stamp\LockNotAcquiredStamp;
 use EonX\EasyLock\Messenger\Stamp\WithLockDataStamp;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
@@ -24,7 +24,7 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
 
     public function __construct(
         private readonly LoggerInterface $logger = new NullLogger(),
-        private readonly string $lockNotAcquiredLogLevel = LogLevel::WARNING,
+        private readonly LogLevel $lockNotAcquiredLogLevel = LogLevel::Warning,
     ) {}
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
@@ -72,7 +72,7 @@ final class ProcessWithLockMiddleware implements MiddlewareInterface
     private function logLockNotAcquired(Envelope $envelope, string $resource, float $ttl): void
     {
         $this->logger->log(
-            $this->lockNotAcquiredLogLevel,
+            $this->lockNotAcquiredLogLevel->value,
             'Message {class} was not handled because the lock "{resource}" is already acquired.'
             . ' The message is removed from the transport.',
             [
