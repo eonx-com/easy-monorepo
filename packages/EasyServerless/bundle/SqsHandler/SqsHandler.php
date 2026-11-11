@@ -7,7 +7,6 @@ use AsyncAws\Sqs\SqsClient;
 use Bref\Context\Context;
 use Bref\Event\Sqs\SqsRecord;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
-use EonX\EasyErrorHandler\Common\Exception\RetryableException;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
@@ -169,10 +168,6 @@ final class SqsHandler extends AbstractSqsHandler
                         'retry_stop_reason' => $retryStopReason,
                     ]
                 );
-            }
-
-            if (\class_exists(RetryableException::class)) {
-                $this->errorHandler?->report(RetryableException::fromThrowable($throwable, $shouldRetry));
             }
 
             $this->dispatchWorkerMessageFailedEvent($envelope, $throwable, $shouldRetry);

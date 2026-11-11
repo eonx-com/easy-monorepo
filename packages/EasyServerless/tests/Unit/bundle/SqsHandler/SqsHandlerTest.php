@@ -7,7 +7,6 @@ use AsyncAws\Core\Credentials\Credentials;
 use AsyncAws\Sqs\SqsClient;
 use Bref\Context\Context;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
-use EonX\EasyErrorHandler\Common\Exception\RetryableException;
 use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Tests\Stub\ErrorHandler\ErrorHandler\ErrorHandlerStub;
@@ -30,7 +29,6 @@ use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Retry\RetryStrategyInterface;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
-use Throwable;
 
 final class SqsHandlerTest extends AbstractUnitTestCase
 {
@@ -152,14 +150,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
         );
 
         if ($errorHandler !== null) {
-            self::assertSame(
-                $expectedWillRetry === null ? [] : [$expectedWillRetry],
-                \array_map(
-                    static fn (Throwable $reported): bool => $reported instanceof RetryableException
-                        && $reported->willRetry(),
-                    $errorHandler->getReportedThrowables()
-                )
-            );
+            self::assertSame([], $errorHandler->getReportedThrowables());
         }
     }
 
