@@ -115,7 +115,8 @@ final readonly class EasySwooleRunner implements RunnerInterface
                     if ($responded === false) {
                         $debug = $app instanceof KernelInterface && $app->isDebug();
 
-                        if ($debug === false) {
+                        // Without an error handler nothing has reported the error, so keep its details in the output
+                        if ($debug === false && $errorHandler === null) {
                             OutputHelper::writeln(ErrorResponseHelper::getContent($throwable, true));
                         }
 

@@ -429,7 +429,8 @@ Laravel:
   When the EasyUtils sensitive data sanitizer is enabled, access log lines are sanitized.
 - The "Making new Coroutine PDO Client" debug log contains only `driver`, `host`, `port` and `dbname`.
 - `ErrorResponseHelper::sendErrorResponse()` returns `{"error":"Internal Server Error"}` unless `$debug` is `true`.
-  `EasySwooleRunner` passes the kernel debug flag and, when it is off, writes the error details to the output.
+  `EasySwooleRunner` passes the kernel debug flag. When it is off and EasyErrorHandler is not available, the runner
+  writes the error details to the output.
 - The TLS private key file written from the `PRIVATE_KEY_PEM` env var gets mode `0600`.
 
 ### EasyTest
