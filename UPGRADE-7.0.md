@@ -291,6 +291,10 @@ Tips:
   - `EncryptableInterface::encrypt()` without `EncryptableTrait`: the hash callable is now
     `callable(string $entityClass, string $property, string $value)`.
   - `EncryptableMetadataInterface` has a new method `getHashNormalizationsForField()`.
+- Private `#[EncryptableField]` properties of a parent class (for example on an entity that has a subclass or a
+  Doctrine lazy proxy) are now encrypted and hashed. In 6.x they were skipped and stored in plain text: run your
+  re-encryption command for such entities. A private encryptable property that a child class redeclares with the
+  same name now throws a `LogicException`.
 
 ### EasyErrorHandler
 

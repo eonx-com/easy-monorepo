@@ -28,14 +28,15 @@ trait EncryptableTrait
         $metadata = new EncryptableMetadata();
 
         foreach ($metadata->getEncryptableFieldNames(static::class) as $entityPropertyName => $fieldName) {
-            if (
-                \property_exists($this, $entityPropertyName) === false
-                || \array_key_exists($fieldName, $decryptedData) === false
-            ) {
+            // Through reflection: a private property of a parent class is not reachable from the trait scope
+            // when the trait is used in a child class
+            $reflectionProperty = EncryptableMetadata::getProperty(static::class, $entityPropertyName);
+
+            if ($reflectionProperty === null || \array_key_exists($fieldName, $decryptedData) === false) {
                 continue;
             }
 
-            $this->{$entityPropertyName} = $decryptedData[$fieldName];
+            $reflectionProperty->setValue($this, $decryptedData[$fieldName]);
         }
     }
 
@@ -49,25 +50,27 @@ trait EncryptableTrait
         $rawData = [];
 
         foreach ($metadata->getEncryptableFieldNames(static::class) as $entityPropertyName => $fieldName) {
-            if ($this->{$entityPropertyName} !== null && \is_string($this->{$entityPropertyName}) === false) {
+            // Through reflection: a private property of a parent class is not reachable from the trait scope
+            // when the trait is used in a child class
+            /** @var \ReflectionProperty $reflectionProperty */
+            $reflectionProperty = EncryptableMetadata::getProperty(static::class, $entityPropertyName);
+            $value = $reflectionProperty->getValue($this);
+
+            if ($value !== null && \is_string($value) === false) {
                 throw new UnexpectedValueException(
                     \sprintf(
                         'The value of the property "%s" in the entity "%s" must be a string or null, but it is "%s".',
                         $entityPropertyName,
                         static::class,
-                        \get_debug_type($this->{$entityPropertyName})
+                        \get_debug_type($value)
                     )
                 );
             }
 
-            $rawData[$fieldName] = $this->{$entityPropertyName};
+            $rawData[$fieldName] = $value;
 
-            if ($this->{$entityPropertyName} !== null) {
-                $this->{$entityPropertyName} = $hashCalculator(
-                    static::class,
-                    $entityPropertyName,
-                    $this->{$entityPropertyName}
-                );
+            if ($value !== null) {
+                $reflectionProperty->setValue($this, $hashCalculator(static::class, $entityPropertyName, $value));
             }
         }
 
