@@ -5,6 +5,7 @@ namespace EonX\EasyBugsnag\Tests\Unit\Doctrine\Logger;
 
 use Bugsnag\Breadcrumbs\Breadcrumb;
 use Bugsnag\Client;
+use Doctrine\DBAL\ParameterType;
 use EonX\EasyBugsnag\Tests\Fixture\App\Entity\Author;
 use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
 
@@ -22,6 +23,10 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
         self::assertSame(
             'INSERT INTO author (id, name, position) VALUES (?, ?, ?)',
             $breadcrumb->getMetaData()['SQL']
+        );
+        self::assertSame(
+            \enum_exists(ParameterType::class) ? '["STRING","STRING","INTEGER"]' : '[2,2,1]',
+            $breadcrumb->getMetaData()['Types']
         );
         self::assertArrayNotHasKey('Values', $breadcrumb->getMetaData());
     }

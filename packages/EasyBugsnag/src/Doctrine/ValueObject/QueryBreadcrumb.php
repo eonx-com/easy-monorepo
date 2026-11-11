@@ -15,7 +15,7 @@ if (\enum_exists(ParameterType::class)) {
         private float $queryStartTime;
 
         /**
-         * @var array<\Doctrine\DBAL\ParameterType>
+         * @var array<string>
          */
         private array $queryTypes = [];
 
@@ -66,7 +66,7 @@ if (\enum_exists(ParameterType::class)) {
         }
 
         /**
-         * @return array<\Doctrine\DBAL\ParameterType>
+         * @return array<string>
          */
         public function getQueryTypes(): array
         {
@@ -85,7 +85,7 @@ if (\enum_exists(ParameterType::class)) {
 
             $this->queryParameters[$index] = $parameter;
             $this->queryValues[$index] = $value;
-            $this->queryTypes[$index] = $type;
+            $this->queryTypes[$index] = $type->name;
         }
     }
 } else {

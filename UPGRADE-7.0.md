@@ -106,6 +106,11 @@ Tips:
   UPDATE easy_batch_items SET class = REPLACE(class, 'EonX\\EasyBatch\\Objects\\', 'EonX\\EasyBatch\\Common\\ValueObject\\');
   ```
 
+### EasyBugsnag
+
+- [ ] Symfony: if you need SQL query breadcrumbs, set `'doctrine_dbal' => true` in `easy_bugsnag`. In 7.0 they are
+  disabled by default.
+
 ### EasyServerless
 
 - [ ] Symfony: use `EonX\EasyServerless\Bundle\SqsHandler\SqsHandler` as the Lambda SQS handler. Stop using
