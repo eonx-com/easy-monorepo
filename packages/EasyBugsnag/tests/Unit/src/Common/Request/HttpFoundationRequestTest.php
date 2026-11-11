@@ -120,11 +120,12 @@ final class HttpFoundationRequestTest extends AbstractUnitTestCase
         ], $metaData['request']['request']);
     }
 
-    public function testGetSessionSkipsSecurityAndCsrfTokens(): void
+    public function testGetSessionSkipsSecurityTokensCsrfTokensAndPasswordHashes(): void
     {
         $session = new Session(new MockArraySessionStorage());
         $session->set('_security_main', 'O:74:"Symfony\Component\Security\Core\Authentication\Token\..."');
         $session->set('_csrf/authenticate', 'csrf-token');
+        $session->set('password_hash_web', 'password-hash-hmac');
         $session->set('_locale', 'en');
         $session->set('cart_id', 'abc');
         $request = Request::create('/');

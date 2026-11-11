@@ -12,9 +12,12 @@ final readonly class HttpFoundationRequest implements RequestInterface
 
     private const FORM_FORMAT = 'form';
 
-    private const SESSION_CSRF_KEY_PREFIX = '_csrf/';
-
-    private const SESSION_SECURITY_KEY_PREFIX = '_security_';
+    /**
+     * Symfony: serialized security token with the user object (`_security_<firewall>`), CSRF token values (`_csrf/`).
+     * Laravel: password hash, or its HMAC, of the logged-in user (`password_hash_<guard>`); its CSRF token (`_token`)
+     * is masked by key
+     */
+    private const SESSION_KEY_PREFIXES_TO_SKIP = ['_csrf/', '_security_', 'password_hash_'];
 
     public function __construct(
         private Request $request,
@@ -68,12 +71,19 @@ final readonly class HttpFoundationRequest implements RequestInterface
             return [];
         }
 
-        // The serialized security token (with the user object) and CSRF token values are not useful for debugging
+        // Credentials and tokens in the session are not useful for debugging
         return \array_filter(
             $this->request->getSession()
                 ->all(),
-            static fn (int|string $key): bool => \str_starts_with((string)$key, self::SESSION_CSRF_KEY_PREFIX) === false
-                && \str_starts_with((string)$key, self::SESSION_SECURITY_KEY_PREFIX) === false,
+            static function (int|string $key): bool {
+                foreach (self::SESSION_KEY_PREFIXES_TO_SKIP as $prefix) {
+                    if (\str_starts_with((string)$key, $prefix)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
             \ARRAY_FILTER_USE_KEY
         );
     }
