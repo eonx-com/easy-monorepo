@@ -17,8 +17,8 @@ use EonX\EasyServerless\Laravel\Middleware\PhpRuntimeInfoMiddleware;
 use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
-use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Contracts\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Kernel as FoundationHttpKernel;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
@@ -106,6 +106,12 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         // Requests are covered by a global middleware rather than RouteMatched, so unmatched routes (404/405)
         // and requests short-circuited by other global middleware (e.g. maintenance mode) are enriched too
         if ($this->app instanceof LumenApplication) {
+            // Lumen dispatches CommandStarting only when not running in console, so console commands never get it.
+            // The CLI root span covers the whole process, enrich it right away
+            if ($this->app->runningInConsole()) {
+                RootSpanHelper::addPhpRuntimeInfo();
+            }
+
             // Lumen only appends global middleware and the provider is usually registered after the application
             // middleware, so put it first to run before any middleware that could return early. Lumen has no API
             // to prepend, its global middleware is kept in a protected property
@@ -122,8 +128,8 @@ final class EasyServerlessServiceProvider extends ServiceProvider
 
         // The HTTP kernel is already resolved when providers are registered during an HTTP request,
         // waiting for its resolution avoids building it in console commands and queue workers
-        $this->callAfterResolving(HttpKernelContract::class, static function (HttpKernelContract $httpKernel): void {
-            if ($httpKernel instanceof HttpKernel) {
+        $this->callAfterResolving(HttpKernel::class, static function (HttpKernel $httpKernel): void {
+            if ($httpKernel instanceof FoundationHttpKernel) {
                 // Prepend so it runs before maintenance mode and any other global middleware
                 $httpKernel->prependMiddleware(PhpRuntimeInfoMiddleware::class);
             }

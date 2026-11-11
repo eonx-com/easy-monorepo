@@ -37,13 +37,22 @@ final class RootSpanHelper
      */
     public static function getPhpRuntimeInfo(): array
     {
-        $opcacheEnabled = self::isOpcacheEnabled();
+        $opcacheStatus = self::getOpcacheStatus();
+        $opcacheEnabled = self::isOpcacheEnabled(
+            $opcacheStatus,
+            \extension_loaded('Zend OPcache'),
+            \ini_get('opcache.enable'),
+            \ini_get('opcache.enable_cli'),
+            \PHP_SAPI
+        );
+        $jitEnabled = $opcacheEnabled
+            && self::isJitEnabled($opcacheStatus, \ini_get('opcache.jit'), \ini_get('opcache.jit_buffer_size'));
 
         $runtimeInfo = [
             'php.max_execution_time' => (string)\ini_get('max_execution_time'),
             'php.memory_limit' => (string)\ini_get('memory_limit'),
             'php.opcache.enabled' => $opcacheEnabled ? 'true' : 'false',
-            'php.opcache.jit.enabled' => $opcacheEnabled && self::isJitEnabled() ? 'true' : 'false',
+            'php.opcache.jit.enabled' => $jitEnabled ? 'true' : 'false',
             'php.os' => \PHP_OS_FAMILY,
             'php.sapi' => \PHP_SAPI,
             'php.version' => \PHP_VERSION,
@@ -66,6 +75,74 @@ final class RootSpanHelper
         ];
     }
 
+    /**
+     * Uses the runtime status from opcache_get_status() when available, as JIT can be turned off at startup
+     * (e.g. by an incompatible extension), and falls back to the ini values otherwise.
+     *
+     * @param array{jit?: array{on?: bool}}|false $opcacheStatus
+     */
+    public static function isJitEnabled(
+        array|false $opcacheStatus,
+        string|false $jit,
+        string|false $jitBufferSize,
+    ): bool {
+        if ($opcacheStatus !== false) {
+            return ($opcacheStatus['jit']['on'] ?? false) === true;
+        }
+
+        if (\in_array(\strtolower(\trim((string)$jit)), self::JIT_DISABLED_VALUES, true)) {
+            return false;
+        }
+
+        return (int)$jitBufferSize > 0;
+    }
+
+    /**
+     * Uses the runtime status from opcache_get_status() when available, as OPcache can fail to start,
+     * and falls back to the ini values otherwise.
+     *
+     * @param array{opcache_enabled?: bool}|false $opcacheStatus
+     */
+    public static function isOpcacheEnabled(
+        array|false $opcacheStatus,
+        bool $extensionLoaded,
+        string|false $enable,
+        string|false $enableCli,
+        string $sapi,
+    ): bool {
+        if ($opcacheStatus !== false) {
+            return ($opcacheStatus['opcache_enabled'] ?? false) === true;
+        }
+
+        if ($extensionLoaded === false) {
+            return false;
+        }
+
+        // The opcache.enable ini is the master switch, opcache.enable_cli does not override it when disabled
+        if (\filter_var($enable, \FILTER_VALIDATE_BOOL) === false) {
+            return false;
+        }
+
+        if ($sapi === 'cli') {
+            return \filter_var($enableCli, \FILTER_VALIDATE_BOOL);
+        }
+
+        return true;
+    }
+
+    /**
+     * @return array{opcache_enabled?: bool, jit?: array{on?: bool}}|false
+     */
+    private static function getOpcacheStatus(): array|false
+    {
+        // The opcache_get_status() function raises a warning when opcache.restrict_api is set and the script is outside of it
+        if (\function_exists('opcache_get_status') === false || (string)\ini_get('opcache.restrict_api') !== '') {
+            return false;
+        }
+
+        return \opcache_get_status(false);
+    }
+
     private static function getRootSpan(): ?SpanData
     {
         // The function only exists when the ddtrace extension is loaded,
@@ -75,34 +152,5 @@ final class RootSpanHelper
         }
 
         return root_span();
-    }
-
-    private static function isJitEnabled(): bool
-    {
-        $jit = \strtolower(\trim((string)\ini_get('opcache.jit')));
-
-        if (\in_array($jit, self::JIT_DISABLED_VALUES, true)) {
-            return false;
-        }
-
-        return (int)\ini_get('opcache.jit_buffer_size') > 0;
-    }
-
-    private static function isOpcacheEnabled(): bool
-    {
-        if (\extension_loaded('Zend OPcache') === false) {
-            return false;
-        }
-
-        // The opcache.enable ini is the master switch, opcache.enable_cli does not override it when disabled
-        if (\filter_var(\ini_get('opcache.enable'), \FILTER_VALIDATE_BOOL) === false) {
-            return false;
-        }
-
-        if (\PHP_SAPI === 'cli') {
-            return \filter_var(\ini_get('opcache.enable_cli'), \FILTER_VALIDATE_BOOL);
-        }
-
-        return true;
     }
 }

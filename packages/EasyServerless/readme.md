@@ -129,9 +129,13 @@ its last attempt) and `unrecoverable` (`$tries = 1`).
 When the [ddtrace extension][4] is loaded, PHP runtime information (version, SAPI, OS, memory limit, OPcache/JIT
 status, extra version if set) is added as `php.*` tags on the root span of incoming requests, messages/jobs and
 console commands, and `PHP_VERSION_ID` is added as the `php.version_id` metric.
-Nothing happens when the extension is not loaded or no trace is active. Disable it with `datadog.enabled: false`.
-In Laravel, requests are covered by a global middleware so unmatched routes and maintenance-mode responses are
-enriched as well.
+Nothing happens when the extension is not loaded or no trace is active. Console commands and workers only have a root
+span when `DD_TRACE_CLI_ENABLED=true` is set. OPcache/JIT status comes from `opcache_get_status()`, or from the ini
+settings when `opcache.restrict_api` is set.
+
+Disable it with `datadog.enabled: false` in the Symfony bundle config, or `easy-serverless.datadog.enabled` set to
+`false` in Laravel/Lumen. In Laravel and Lumen, requests are covered by a global middleware registered first, so
+unmatched routes and requests short-circuited by other global middleware (e.g. maintenance mode) are enriched as well.
 
 [1]: https://getcomposer.org/
 [2]: https://packagist.org/packages/bref/bref

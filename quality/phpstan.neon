@@ -15,9 +15,6 @@ parameters:
     bootstrapFiles:
         - %currentWorkingDirectory%/vendor/autoload.php
 
-    scanFiles:
-        - %currentWorkingDirectory%/quality/stubs/ddtrace.php
-
     paths:
         - %currentWorkingDirectory%/bin
         - %currentWorkingDirectory%/config
@@ -25,6 +22,7 @@ parameters:
         - %currentWorkingDirectory%/packages
         - %currentWorkingDirectory%/tests
 
+    # Do not exclude packages/EasyServerless/tests/Fixture/ddtrace: it declares the ddtrace extension symbols for PHPStan
     excludePaths:
         - %currentWorkingDirectory%/packages/*/config/definition.php
         - %currentWorkingDirectory%/packages/*/tests/*/config/*

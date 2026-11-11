@@ -4,6 +4,7 @@ declare(strict_types=1);
 /**
  * Runtime stand-in of the ddtrace extension symbols used by RootSpanHelper.
  * Only require it in tests running in a separate process, as functions cannot be undeclared.
+ * PHPStan also discovers these symbols here, as the extension is not loaded during the analysis.
  */
 
 namespace DDTrace;
