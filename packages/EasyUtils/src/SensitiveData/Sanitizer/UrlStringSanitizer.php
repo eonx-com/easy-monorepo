@@ -17,7 +17,7 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
         // into a higher-numbered reference (e.g. $1 + "2" => $12)
         $replacement = '${1}' . $this->escapeForReplacement($maskPattern);
 
-        $string = (string)\preg_replace(self::URL_PASSWORD_PATTERN, $replacement . '@', $string);
+        $string = $this->replace(self::URL_PASSWORD_PATTERN, $replacement . '@', $string);
 
         foreach ($keysToMask as $key) {
             $key = (string)$key;
@@ -32,9 +32,9 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             // edge ones are kept so the configured spelling itself always matches
             $parts = \preg_split('/[ _-]+/', $key) ?: [$key];
             // A separator can also be URL-encoded ("api%5Fkey" or "api+key", what http_build_query() gives
-            // for "api_key" and "api key")
+            // for "api_key" and "api key"). Possessive, so a long separator run cannot exhaust the PCRE (JIT) stack
             $quotedKey = \implode(
-                '(?:[ _+-]|%5F|%2D|%20)*',
+                '(?:[ _+-]++|%5F|%2D|%20)*+',
                 \array_map(static fn (string $part): string => \preg_quote($part, '/'), $parts)
             );
 
@@ -51,7 +51,7 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             // tokens). Stopping at the field boundary avoids eating the rest of a log line or
             // neighbouring fields when the value is embedded in free text
             // Brackets can be URL-encoded too ("user%5Bpassword%5D=...", what http_build_query() gives for arrays)
-            $string = (string)\preg_replace(
+            $string = $this->replace(
                 \sprintf(
                     '/(%s=|(?:\[|%%5B)%s(?:\]|%%5D)=)([^\s&?#,;"\')\]}<>]+)/i',
                     $quotedKey,
@@ -63,7 +63,7 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
 
             // Path style (/key/...): the value is a single path segment, so "/" terminates it. Whitespace and
             // quotes end the URL, so the rest of a log line (e.g. ' HTTP/1.1" 200') is kept
-            $string = (string)\preg_replace(
+            $string = $this->replace(
                 \sprintf('/(\/%s\/)([^\s&\/?#"\'<>]+)/i', $prefixedQuotedKey),
                 $replacement,
                 $string
@@ -71,7 +71,7 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
 
             // Header line style ("X-Api-Key: value", as in the "headers" option of Symfony HTTP client):
             // the value is the rest of the line
-            $string = (string)\preg_replace(
+            $string = $this->replace(
                 \sprintf('/^(%s[ \t]*:)[ \t]*[^\r\n]+/im', $prefixedQuotedKey),
                 '${1} ' . $this->escapeForReplacement($maskPattern),
                 $string
@@ -79,5 +79,13 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
         }
 
         return $string;
+    }
+
+    /**
+     * On a PCRE failure (e.g. a resource limit) the string is kept as it is instead of being lost
+     */
+    private function replace(string $pattern, string $replacement, string $string): string
+    {
+        return \preg_replace($pattern, $replacement, $string) ?? $string;
     }
 }
