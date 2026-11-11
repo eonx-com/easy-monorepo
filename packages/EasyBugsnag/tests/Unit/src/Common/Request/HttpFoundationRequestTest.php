@@ -57,6 +57,19 @@ final class HttpFoundationRequestTest extends AbstractUnitTestCase
                 ],
             ],
         ];
+        yield 'json string body is decoded' => [
+            'request' => self::createRequest('"\\u0070assword=top-secret"', 'application/json'),
+            'expectedContent' => [
+                'content' => 'password=top-secret',
+            ],
+        ];
+        yield 'long json string body is not sent' => [
+            'request' => self::createRequest('"' . \str_repeat('a', 10_241) . '"', 'application/json'),
+            'expectedContent' => [
+                'content_length' => 10_241,
+                'content_omitted' => true,
+            ],
+        ];
         yield 'long text body is not sent' => [
             'request' => self::createRequest(
                 \str_repeat('a', 10_230) . ' {"password":"secret","card":"4111 1111 1111 1111"}',

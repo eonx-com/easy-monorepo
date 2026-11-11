@@ -100,9 +100,9 @@ final readonly class HttpFoundationRequest implements RequestInterface
     }
 
     /**
-     * A JSON body is decoded, whatever its content type, so the sanitizer can mask it by key. Any other body is
-     * sanitized only by value patterns, which a cut would break (a JSON fragment loses its end, a card number its
-     * last digits), so a body over 10 KB is not sent at all
+     * A JSON object or array body is decoded, whatever its content type, so the sanitizer can mask it by key.
+     * Any other body is sanitized only by value patterns, which a cut would break (a JSON fragment loses its end,
+     * a card number its last digits), so a body over 10 KB is not sent at all
      */
     private function getContent(): array
     {
@@ -111,6 +111,12 @@ final readonly class HttpFoundationRequest implements RequestInterface
 
         if (\is_array($decoded) || \is_object($decoded)) {
             return ['content' => $decoded];
+        }
+
+        // A JSON string body is text too: decoded, so escapes like "\u0070assword" do not hide a key from the
+        // value patterns, and then limited like any other text
+        if (\is_string($decoded)) {
+            $content = $decoded;
         }
 
         if (\strlen($content) <= self::CONTENT_LENGTH_MAX) {
