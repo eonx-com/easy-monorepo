@@ -144,6 +144,9 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                     'https://eonx.com/cb?token=ab/cd+ef==&next=1',
                 'mask token array style with slash' => 'https://eonx.com/cb?[token]=a/b/c&x=1',
                 'mask token in path keeps following segment' => 'https://eonx.com/token/a1b2c3/details',
+                'mask token in path at end of url in text' => 'see /token/a1b2c3 for details',
+                'mask token in path in access log line' => '127.0.0.1 - "GET /token/a1b2c3 HTTP/1.1" 200 "Symfony"',
+                'mask token in quoted url path' => "url 'https://eonx.com/token/a1b2c3' ok",
                 'mask token whose value is a url' =>
                     'https://app.example/cb?token=https://cb.example/a/b&next=1',
                 'mask token with slash before fragment' => 'https://app.example/cb?token=a/b#frag',
@@ -158,6 +161,9 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                     'https://eonx.com/cb?token=*REDACTED*&next=1',
                 'mask token array style with slash' => 'https://eonx.com/cb?[token]=*REDACTED*&x=1',
                 'mask token in path keeps following segment' => 'https://eonx.com/token/*REDACTED*/details',
+                'mask token in path at end of url in text' => 'see /token/*REDACTED* for details',
+                'mask token in path in access log line' => '127.0.0.1 - "GET /token/*REDACTED* HTTP/1.1" 200 "Symfony"',
+                'mask token in quoted url path' => "url 'https://eonx.com/token/*REDACTED*' ok",
                 'mask token whose value is a url' => 'https://app.example/cb?token=*REDACTED*&next=1',
                 'mask token with slash before fragment' => 'https://app.example/cb?token=*REDACTED*#frag',
                 'mask repeated token keys with slashes' =>

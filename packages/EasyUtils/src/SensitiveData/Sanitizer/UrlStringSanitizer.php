@@ -60,9 +60,10 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
                 $string
             );
 
-            // Path style (/key/...): the value is a single path segment, so "/" terminates it
+            // Path style (/key/...): the value is a single path segment, so "/" terminates it. Whitespace and
+            // quotes end the URL, so the rest of a log line (e.g. ' HTTP/1.1" 200') is kept
             $string = (string)\preg_replace(
-                \sprintf('/(\/%s\/)([^&\/?#]+)/i', $prefixedQuotedKey),
+                \sprintf('/(\/%s\/)([^\s&\/?#"\'<>]+)/i', $prefixedQuotedKey),
                 $replacement,
                 $string
             );
