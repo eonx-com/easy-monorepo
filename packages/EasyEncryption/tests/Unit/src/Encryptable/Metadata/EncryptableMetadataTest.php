@@ -9,6 +9,7 @@ use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableChildEntityStub;
 use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableDuplicateFieldEntityStub;
 use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableEntityStub;
 use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableProxyEntityStub;
+use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableRedeclaredFieldEntityStub;
 use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableSameFieldNameEntityStub;
 use EonX\EasyEncryption\Tests\Unit\AbstractUnitTestCase;
 use LogicException;
@@ -27,6 +28,15 @@ final class EncryptableMetadataTest extends AbstractUnitTestCase
             ],
             $metadata->getEncryptableFieldNames(EncryptableChildEntityStub::class)
         );
+    }
+
+    public function testGetEncryptableFieldNamesSucceedsWithProtectedFieldRedeclaredInChildClass(): void
+    {
+        $metadata = new EncryptableMetadata();
+
+        $result = $metadata->getEncryptableFieldNames(EncryptableRedeclaredFieldEntityStub::class);
+
+        self::assertSame(['code' => 'child_code'], $result);
     }
 
     public function testGetEncryptableFieldNamesThrowsOnSameEncryptedDataFieldInParentAndChild(): void
