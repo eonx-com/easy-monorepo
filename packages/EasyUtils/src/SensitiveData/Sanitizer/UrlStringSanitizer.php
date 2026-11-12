@@ -5,11 +5,22 @@ namespace EonX\EasyUtils\SensitiveData\Sanitizer;
 
 final class UrlStringSanitizer extends AbstractStringSanitizer
 {
+    // Plain or URL-encoded key separator
+    private const KEY_SEPARATOR = '(?:[ _+-]++|%5F|%2D|%20)';
+
+    /**
+     * The password of URL user info ("https://user:password@host"), whatever the keys to mask are.
+     * A user name without a password ("tcp://name@host") is kept
+     */
+    private const URL_PASSWORD_PATTERN = '~\\b([a-z][a-z\\d+.-]*://[^\\s:/?#@"<>]*:)[^\\s/?#@"<>]+@~i';
+
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
         // Braced back-reference (${1}) so a mask pattern that starts with a digit is not merged
         // into a higher-numbered reference (e.g. $1 + "2" => $12)
         $replacement = '${1}' . $this->escapeForReplacement($maskPattern);
+
+        $string = $this->replace(self::URL_PASSWORD_PATTERN, $replacement . '@', $string);
 
         foreach ($keysToMask as $key) {
             $key = (string)$key;
@@ -22,9 +33,12 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             // regex metacharacters (and the "/" delimiter) to keep matching literal and safe.
             // Separator runs are optional and interchangeable ("api_key" matches "api-key", "apiKey"),
             // edge ones are kept so the configured spelling itself always matches
-            $parts = \preg_split('/[ _-]+/', $key) ?: [$key];
+            // A separator can also be URL-encoded ("api%5Fkey" or "api+key", what http_build_query() gives
+            // for "api_key" and "api key"). The run is possessive, so a long one cannot exhaust the PCRE (JIT)
+            // stack. The key is split on the same separators, so no key part starts with what the run consumed
+            $parts = \preg_split('/' . self::KEY_SEPARATOR . '+/i', $key) ?: [$key];
             $quotedKey = \implode(
-                '[ _-]*',
+                self::KEY_SEPARATOR . '*+',
                 \array_map(static fn (string $part): string => \preg_quote($part, '/'), $parts)
             );
 
@@ -40,20 +54,42 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             // delimiter (& ? # , ; " ' ) ] } < >) but may legitimately contain "/" (e.g. base64
             // tokens). Stopping at the field boundary avoids eating the rest of a log line or
             // neighbouring fields when the value is embedded in free text
-            $string = (string)\preg_replace(
-                \sprintf('/(%s=|\[%s\]=)([^\s&?#,;"\')\]}<>]+)/i', $quotedKey, $prefixedQuotedKey),
+            // Brackets can be URL-encoded too ("user%5Bpassword%5D=...", what http_build_query() gives for arrays)
+            $string = $this->replace(
+                \sprintf(
+                    '/(%s=|(?:\[|%%5B)%s(?:\]|%%5D)=)([^\s&?#,;"\')\]}<>]+)/i',
+                    $quotedKey,
+                    $prefixedQuotedKey
+                ),
                 $replacement,
                 $string
             );
 
-            // Path style (/key/...): the value is a single path segment, so "/" terminates it
-            $string = (string)\preg_replace(
-                \sprintf('/(\/%s\/)([^&\/?#]+)/i', $prefixedQuotedKey),
+            // Path style (/key/...): the value is a single path segment, so "/" terminates it. Whitespace and
+            // quotes end the URL, so the rest of a log line (e.g. ' HTTP/1.1" 200') is kept
+            $string = $this->replace(
+                \sprintf('/(\/%s\/)([^\s&\/?#"\'<>]+)/i', $prefixedQuotedKey),
                 $replacement,
+                $string
+            );
+
+            // Header line style ("X-Api-Key: value", as in the "headers" option of Symfony HTTP client):
+            // the value is the rest of the line
+            $string = $this->replace(
+                \sprintf('/^(%s[ \t]*:)[ \t]*[^\r\n]+/im', $prefixedQuotedKey),
+                '${1} ' . $this->escapeForReplacement($maskPattern),
                 $string
             );
         }
 
         return $string;
+    }
+
+    /**
+     * On a PCRE failure (e.g. a resource limit) the string is kept as it is instead of being lost
+     */
+    private function replace(string $pattern, string $replacement, string $string): string
+    {
+        return \preg_replace($pattern, $replacement, $string) ?? $string;
     }
 }
