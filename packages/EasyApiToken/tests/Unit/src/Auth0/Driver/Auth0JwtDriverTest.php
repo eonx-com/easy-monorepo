@@ -55,6 +55,14 @@ final class Auth0JwtDriverTest extends AbstractUnitTestCase
         ];
     }
 
+    public function testConstructorThrowsWithoutAuthorizedIssuers(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Auth0 requires at least one authorized issuer');
+
+        $this->createDriver([]);
+    }
+
     #[DataProvider('provideAuthorizedIssuers')]
     public function testDecodeSucceedsWithAuthorizedIssuer(array $authorizedIss, string $issuer): void
     {
@@ -74,14 +82,6 @@ final class Auth0JwtDriverTest extends AbstractUnitTestCase
         $this->expectExceptionMessage(\sprintf('Issuer "%s" is not authorized', $issuer));
 
         $sut->decode($this->createToken($issuer));
-    }
-
-    public function testItThrowsWithoutAuthorizedIssuers(): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Auth0 requires at least one authorized issuer');
-
-        $this->createDriver([]);
     }
 
     /**
