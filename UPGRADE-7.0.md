@@ -213,9 +213,11 @@ Tips:
   - `$leeway` → `$jwtLeeway`
   - `$defaultJwkAlgo` → `$defaultJwtAlgorithm`
 - `Auth0JwtDriver` accepts only the issuers listed in `$authorizedIss`, and every listed issuer is accepted (before,
-  only the first one was, plus the tenant domain `https://{domain}/`). If your tokens are issued by the tenant domain
-  as well as by a custom domain (e.g. M2M tokens requested from `https://<tenant>.auth0.com/`), list both. An empty
-  `$authorizedIss` now throws an `InvalidConfigurationException`.
+  only the first one was, plus the tenant domain `https://{domain}/`). The token signature is still checked with the
+  keys of `$domain` (its JWKS, or `$privateKey` for HS256), so list only issuers of the same tenant: the tenant domain
+  and its custom domains. If your tokens are issued by the tenant domain as well as by a custom domain (e.g. M2M
+  tokens requested from `https://<tenant>.auth0.com/`), list both. An empty `$authorizedIss` now throws an
+  `InvalidConfigurationException`.
 
 ### EasyAsync
 
