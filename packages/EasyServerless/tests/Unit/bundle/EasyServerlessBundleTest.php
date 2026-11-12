@@ -14,6 +14,7 @@ use EonX\EasyServerless\Messenger\Listener\ResetServicesListener;
 use EonX\EasyServerless\Monolog\Processor\PhpSourceProcessor;
 use EonX\EasyServerless\Tests\Unit\AbstractSymfonyTestCase;
 use Monolog\Logger;
+use Psr\Log\NullLogger;
 use ReflectionProperty;
 
 final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
@@ -32,6 +33,22 @@ final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
         self::assertSame(
             $appMetricLogger,
             (new ReflectionProperty(AppMetricClient::class, 'logger'))->getValue($appMetricClient)
+        );
+    }
+
+    public function testAppMetricClientUsesLoggerOverriddenByApplication(): void
+    {
+        $container = $this->getKernel(
+            configs: [__DIR__ . '/../../Fixture/config/app_metric_logger_overridden.php']
+        )->getContainer();
+
+        $appMetricLogger = $container->get(ConfigServiceId::AppMetricLogger->value);
+
+        self::assertInstanceOf(NullLogger::class, $appMetricLogger);
+        self::assertSame(
+            $appMetricLogger,
+            (new ReflectionProperty(AppMetricClient::class, 'logger'))
+                ->getValue($container->get(AppMetricClientInterface::class))
         );
     }
 

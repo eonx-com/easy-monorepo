@@ -17,20 +17,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    // Dedicated logger so app metrics cannot be dropped by the application logging configuration,
-    // it requires Monolog so fallback to the application logger when not installed
-    $logger = service(LoggerInterface::class)->ignoreOnInvalid();
-
+    // Dedicated logger so app metrics cannot be dropped by the application logging configuration.
+    // It requires Monolog, see AppMetricLoggerFallbackCompilerPass for when it is not installed
     if (\class_exists(Logger::class)) {
         $services
             ->set(ConfigServiceId::AppMetricLogger->value, LoggerInterface::class)
             ->factory([inline_service(AppMetricLoggerFactory::class), 'create']);
-
-        $logger = service(ConfigServiceId::AppMetricLogger->value);
     }
 
     $services
         ->set(AppMetricClientInterface::class, AppMetricClient::class)
-        ->arg('$logger', $logger)
+        ->arg('$logger', service(ConfigServiceId::AppMetricLogger->value)->ignoreOnInvalid())
         ->arg('$namespace', param(ConfigParam::AppMetricNamespace->value));
 };
