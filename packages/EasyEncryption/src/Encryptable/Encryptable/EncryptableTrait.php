@@ -52,8 +52,12 @@ trait EncryptableTrait
         foreach ($metadata->getEncryptableFieldNames(static::class) as $entityPropertyName => $fieldName) {
             // Through reflection: a private property of a parent class is not reachable from the trait scope
             // when the trait is used in a child class
-            /** @var \ReflectionProperty $reflectionProperty */
             $reflectionProperty = EncryptableMetadata::getProperty(static::class, $entityPropertyName);
+
+            if ($reflectionProperty === null) {
+                continue;
+            }
+
             $value = $reflectionProperty->getValue($this);
 
             if ($value !== null && \is_string($value) === false) {
