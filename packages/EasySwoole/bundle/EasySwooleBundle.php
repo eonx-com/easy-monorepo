@@ -28,6 +28,7 @@ final class EasySwooleBundle extends AbstractBundle
 {
     private const array ACCESS_LOG_CONFIG = [
         'do_not_log_paths' => ConfigParam::AccessLogDoNotLogPaths,
+        'log_query_string' => ConfigParam::AccessLogLogQueryString,
         'timezone' => ConfigParam::AccessLogTimezone,
     ];
 

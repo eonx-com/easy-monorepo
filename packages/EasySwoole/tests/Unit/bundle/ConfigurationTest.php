@@ -15,6 +15,7 @@ final class ConfigurationTest extends AbstractSymfonyTestCase
         'access_log' => [
             'enabled' => true,
             'do_not_log_paths' => [],
+            'log_query_string' => false,
             'timezone' => 'UTC',
         ],
         'doctrine' => [

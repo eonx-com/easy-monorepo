@@ -7,6 +7,8 @@ enum ConfigParam: string
 {
     case AccessLogDoNotLogPaths = 'easy_swoole.access_log_do_not_log_paths';
 
+    case AccessLogLogQueryString = 'easy_swoole.access_log_log_query_string';
+
     case AccessLogTimezone = 'easy_swoole.access_log_timezone';
 
     case DoctrineCoroutinePdoDefaultHeartbeat = 'easy_swoole.doctrine.coroutine_pdo.default_heartbeat';
