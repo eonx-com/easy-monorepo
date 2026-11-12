@@ -39,21 +39,22 @@ final class StringEncryptorTest extends AbstractSymfonyTestCase
      */
     public static function provideMultibyteText(): iterable
     {
-        yield 'a 2-byte character' => [
-            'text' => 'José, café, naïve',
+        $texts = [
+            'a 2-byte character' => 'José, café, naïve',
+            'a 3-byte character' => 'It’s the “best” offer',
+            'a 4-byte character' => 'Hello 👋🏻 there 🙂',
+            'a serialized string' => \serialize(['body' => '<p>It’s José’s café</p>']),
         ];
 
-        yield 'a 3-byte character' => [
-            'text' => 'It’s the “best” offer',
-        ];
-
-        yield 'a 4-byte character' => [
-            'text' => 'Hello 👋🏻 there 🙂',
-        ];
-
-        yield 'a serialized string' => [
-            'text' => \serialize(['body' => '<p>It’s José’s café</p>']),
-        ];
+        foreach ($texts as $name => $text) {
+            // Chunks are cut by bytes, so every size from 1 to 7 cuts some multibyte character
+            for ($maxChunkSize = 1; $maxChunkSize <= 7; $maxChunkSize++) {
+                yield \sprintf('%s, max chunk size %d', $name, $maxChunkSize) => [
+                    'text' => $text,
+                    'maxChunkSize' => $maxChunkSize,
+                ];
+            }
+        }
     }
 
     /**
@@ -90,20 +91,16 @@ final class StringEncryptorTest extends AbstractSymfonyTestCase
     }
 
     #[DataProvider('provideMultibyteText')]
-    public function testItSucceedsWithMultibyteCharacterCutBetweenChunks(string $text): void
+    public function testItSucceedsWithMultibyteCharacterCutBetweenChunks(string $text, int $maxChunkSize): void
     {
         $container = $this->getKernel()
             ->getContainer();
         $encryptor = $container->get(EncryptorInterface::class);
+        $sut = new StringEncryptor($encryptor, 'app', $maxChunkSize);
 
-        // Chunks are cut by bytes, so every size from 1 to 7 cuts some multibyte character
-        for ($maxChunkSize = 1; $maxChunkSize <= 7; $maxChunkSize++) {
-            $sut = new StringEncryptor($encryptor, 'app', $maxChunkSize);
+        $decryptedText = $sut->decrypt($sut->encrypt($text)->value);
 
-            $decryptedText = $sut->decrypt($sut->encrypt($text)->value);
-
-            self::assertSame($text, $decryptedText, \sprintf('Max chunk size %d', $maxChunkSize));
-        }
+        self::assertSame($text, $decryptedText);
     }
 
     #[DataProvider('provideShortText')]
