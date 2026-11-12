@@ -28,7 +28,8 @@ final class EasyPaginationBundle extends AbstractBundle
             ->set(ConfigParam::PageAttribute->value, $config['pagination']['page_attribute'])
             ->set(ConfigParam::PageDefault->value, $config['pagination']['page_default'])
             ->set(ConfigParam::PerPageAttribute->value, $config['pagination']['per_page_attribute'])
-            ->set(ConfigParam::PerPageDefault->value, $config['pagination']['per_page_default']);
+            ->set(ConfigParam::PerPageDefault->value, $config['pagination']['per_page_default'])
+            ->set(ConfigParam::PerPageMax->value, $config['pagination']['per_page_max']);
 
         $container->import('config/services.php');
 

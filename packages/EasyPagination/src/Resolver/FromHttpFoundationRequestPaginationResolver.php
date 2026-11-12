@@ -20,18 +20,32 @@ final readonly class FromHttpFoundationRequestPaginationResolver
     public function __invoke(): PaginationInterface
     {
         $query = $this->request->query;
+        $config = $this->paginationConfigProvider;
+
+        $page = (int)$query->get($config->getPageAttribute(), $config->getPageDefault());
+        $perPage = (int)$query->get($config->getPerPageAttribute(), $config->getPerPageDefault());
+
+        // A page or page size below 1 is a client error (an SQL error, a division by zero or no limit at all),
+        // so the default is used instead
+        if ($page < 1) {
+            $page = $config->getPageDefault();
+        }
+
+        if ($perPage < 1) {
+            $perPage = $config->getPerPageDefault();
+        }
+
+        $perPageMax = $config->getPerPageMax();
+
+        if ($perPageMax !== null && $perPage > $perPageMax) {
+            $perPage = $perPageMax;
+        }
 
         return Pagination::create(
-            (int)$query->get(
-                $this->paginationConfigProvider->getPageAttribute(),
-                $this->paginationConfigProvider->getPageDefault()
-            ),
-            (int)$query->get(
-                $this->paginationConfigProvider->getPerPageAttribute(),
-                $this->paginationConfigProvider->getPerPageDefault()
-            ),
-            $this->paginationConfigProvider->getPageAttribute(),
-            $this->paginationConfigProvider->getPerPageAttribute(),
+            $page,
+            $perPage,
+            $config->getPageAttribute(),
+            $config->getPerPageAttribute(),
             $this->request->getUri()
         );
     }

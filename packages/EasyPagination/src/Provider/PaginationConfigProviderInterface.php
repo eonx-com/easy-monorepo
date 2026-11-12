@@ -12,4 +12,9 @@ interface PaginationConfigProviderInterface
     public function getPerPageAttribute(): string;
 
     public function getPerPageDefault(): int;
+
+    /**
+     * The largest page size a client can request, or null for no limit
+     */
+    public function getPerPageMax(): ?int;
 }

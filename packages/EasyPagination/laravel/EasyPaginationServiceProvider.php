@@ -72,11 +72,13 @@ final class EasyPaginationServiceProvider extends ServiceProvider
         $this->app->singleton(
             PaginationProviderInterface::class,
             static function (): PaginationProviderInterface {
+                $perPageMax = \config('easy-pagination.pagination.per_page_max');
                 $paginationConfigProvider = new PaginationConfigProvider(
                     \config('easy-pagination.pagination.page_attribute'),
                     (int)\config('easy-pagination.pagination.page_default'),
                     \config('easy-pagination.pagination.per_page_attribute'),
-                    (int)\config('easy-pagination.pagination.per_page_default')
+                    (int)\config('easy-pagination.pagination.per_page_default'),
+                    $perPageMax === null || $perPageMax === '' ? null : (int)$perPageMax
                 );
 
                 return new PaginationProvider($paginationConfigProvider);

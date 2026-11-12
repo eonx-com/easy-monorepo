@@ -12,4 +12,6 @@ enum ConfigParam: string
     case PerPageAttribute = 'easy_pagination.per_page_attribute';
 
     case PerPageDefault = 'easy_pagination.per_page_default';
+
+    case PerPageMax = 'easy_pagination.per_page_max';
 }

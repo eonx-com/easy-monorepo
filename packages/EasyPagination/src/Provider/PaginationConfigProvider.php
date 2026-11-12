@@ -10,6 +10,7 @@ final readonly class PaginationConfigProvider implements PaginationConfigProvide
         private int $pageDefault,
         private string $perPageAttribute,
         private int $perPageDefault,
+        private ?int $perPageMax = null,
     ) {
     }
 
@@ -31,5 +32,10 @@ final readonly class PaginationConfigProvider implements PaginationConfigProvide
     public function getPerPageDefault(): int
     {
         return $this->perPageDefault;
+    }
+
+    public function getPerPageMax(): ?int
+    {
+        return $this->perPageMax;
     }
 }
