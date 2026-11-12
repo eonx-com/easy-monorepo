@@ -17,6 +17,15 @@ final readonly class AppMetricLoggerFactory
     private const DEFAULT_STREAM = 'php://stderr';
 
     /**
+     * The dedicated logger relies on Monolog 3 APIs (Level, LogRecord), Monolog being optional and not constrained
+     * to a version, it cannot be used with older versions.
+     */
+    public static function isSupported(): bool
+    {
+        return \class_exists(Logger::class) && \enum_exists(Level::class);
+    }
+
+    /**
      * App metrics are generated from logs, so they must not depend on the application logging configuration
      * (handlers, levels, channels, sampling, etc.) which could drop them. This logger is self-contained and always
      * writes every record as JSON to the given stream.

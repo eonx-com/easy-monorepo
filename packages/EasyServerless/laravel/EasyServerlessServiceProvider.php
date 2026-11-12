@@ -24,7 +24,6 @@ use Illuminate\Foundation\Http\Kernel as FoundationHttpKernel;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use ReflectionProperty;
 
@@ -82,10 +81,10 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         }
 
         // Dedicated logger so app metrics cannot be dropped by the application logging configuration,
-        // it requires Monolog so fallback to the application logger when not installed
+        // it requires Monolog 3 so fallback to the application logger when not installed
         $this->app->singleton(
             ConfigServiceId::AppMetricLogger->value,
-            static fn (Container $app): LoggerInterface => \class_exists(Logger::class)
+            static fn (Container $app): LoggerInterface => AppMetricLoggerFactory::isSupported()
                 ? (new AppMetricLoggerFactory())->create()
                 : $app->make(LoggerInterface::class)
         );

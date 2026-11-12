@@ -8,7 +8,6 @@ use EonX\EasyServerless\AppMetric\Client\AppMetricClientInterface;
 use EonX\EasyServerless\AppMetric\Factory\AppMetricLoggerFactory;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
 use EonX\EasyServerless\Bundle\Enum\ConfigServiceId;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -18,8 +17,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure();
 
     // Dedicated logger so app metrics cannot be dropped by the application logging configuration.
-    // It requires Monolog, see AppMetricLoggerFallbackCompilerPass for when it is not installed
-    if (\class_exists(Logger::class)) {
+    // It requires Monolog 3, see AppMetricLoggerFallbackCompilerPass for when it is not installed
+    if (AppMetricLoggerFactory::isSupported()) {
         $services
             ->set(ConfigServiceId::AppMetricLogger->value, LoggerInterface::class)
             ->factory([inline_service(AppMetricLoggerFactory::class), 'create']);

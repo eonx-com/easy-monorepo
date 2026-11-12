@@ -55,4 +55,9 @@ final class AppMetricLoggerFactoryTest extends AbstractUnitTestCase
         ], $record['context']);
         self::assertSame('php', $record['extra']['source']);
     }
+
+    public function testIsSupportedWithMonolog3(): void
+    {
+        self::assertTrue(AppMetricLoggerFactory::isSupported());
+    }
 }

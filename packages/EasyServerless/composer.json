@@ -42,7 +42,7 @@
     },
     "suggest": {
         "ext-ddtrace": "To add PHP runtime information to the Datadog root span",
-        "monolog/monolog": "To send app metrics through a dedicated logger, independent of the application logging configuration"
+        "monolog/monolog": "^3.0 to send app metrics through a dedicated logger, independent of the application logging configuration"
     },
     "config": {
         "allow-plugins": {
