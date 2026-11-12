@@ -8,6 +8,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 final readonly class HttpFoundationRequest implements RequestInterface
 {
+    private const CONTENT_LENGTH_MAX = 10_240;
+
+    private const FORM_FORMAT = 'form';
+
+    /**
+     * Symfony: serialized security token with the user object (`_security_<firewall>`), CSRF token values (`_csrf/`).
+     * Laravel: password hash, or its HMAC, of the logged-in user (`password_hash_<guard>`); its CSRF token (`_token`)
+     * is masked by key
+     */
+    private const SESSION_KEY_PREFIXES_TO_SKIP = ['_csrf/', '_security_', 'password_hash_'];
+
     public function __construct(
         private Request $request,
     ) {
@@ -25,16 +36,8 @@ final readonly class HttpFoundationRequest implements RequestInterface
 
     public function getMetaData(): array
     {
-        /** @var string $content */
-        $content = $this->request->getContent();
-
-        if (\str_contains((string)($this->request->getContentTypeFormat() ?? ''), 'json')) {
-            $content = \json_decode($content) ?? $content;
-        }
-
         $request = [
             'client_ip' => $this->request->getClientIp(),
-            'content' => $content,
             'headers' => $this->formatHeaders($this->request),
             'method' => $this->request->getMethod(),
             'query' => $this->request->query->all(),
@@ -45,8 +48,16 @@ final readonly class HttpFoundationRequest implements RequestInterface
             $request['request'] = $this->request->request->all();
         }
 
+        // The parsed form fields are the copy the sanitizer can mask by key, so a raw form body is never sent,
+        // also when it was not parsed (e.g. a form body of a method PHP does not parse)
+        if (isset($request['request']) || $this->request->getContentTypeFormat() === self::FORM_FORMAT) {
+            return [
+                'request' => $request,
+            ];
+        }
+
         return [
-            'request' => $request,
+            'request' => [...$request, ...$this->getContent()],
         ];
     }
 
@@ -60,8 +71,21 @@ final readonly class HttpFoundationRequest implements RequestInterface
             return [];
         }
 
-        return $this->request->getSession()
-            ->all();
+        // Credentials and tokens in the session are not useful for debugging
+        return \array_filter(
+            $this->request->getSession()
+                ->all(),
+            static function (int|string $key): bool {
+                foreach (self::SESSION_KEY_PREFIXES_TO_SKIP as $prefix) {
+                    if (\str_starts_with((string)$key, $prefix)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            \ARRAY_FILTER_USE_KEY
+        );
     }
 
     public function getUserId(): ?string
@@ -83,5 +107,35 @@ final readonly class HttpFoundationRequest implements RequestInterface
 
             return \reset($header);
         }, $request->headers->all());
+    }
+
+    /**
+     * A JSON object or array body is decoded, whatever its content type, so the sanitizer can mask it by key.
+     * Any other body is sanitized only by value patterns, which a cut would break (a JSON fragment loses its end,
+     * a card number its last digits), so a body over 10 KB is not sent at all
+     */
+    private function getContent(): array
+    {
+        $content = $this->request->getContent();
+        $decoded = \json_decode($content);
+
+        if (\is_array($decoded) || \is_object($decoded)) {
+            return ['content' => $decoded];
+        }
+
+        // A JSON string body is text too: decoded, so escapes like "\u0070assword" do not hide a key from the
+        // value patterns, and then limited like any other text
+        if (\is_string($decoded)) {
+            $content = $decoded;
+        }
+
+        if (\strlen($content) <= self::CONTENT_LENGTH_MAX) {
+            return ['content' => $content];
+        }
+
+        return [
+            'content_length' => \strlen($content),
+            'content_omitted' => true,
+        ];
     }
 }
