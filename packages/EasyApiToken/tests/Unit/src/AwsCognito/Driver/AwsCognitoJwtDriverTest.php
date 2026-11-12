@@ -22,6 +22,20 @@ final class AwsCognitoJwtDriverTest extends AbstractUnitTestCase
         parent::tearDown();
     }
 
+    public function testDecodeRestoresGlobalLeewayAfterFailure(): void
+    {
+        $userPoolConfig = new UserPoolConfig('app', 'region', 'user-pool-id');
+        $jwkProvider = new AwsCognitoJwkProviderStub([self::KEY_ID => $this->getPublicKey()]);
+        $sut = new AwsCognitoJwtDriver($userPoolConfig, $jwkProvider, 60);
+
+        try {
+            $sut->decode($this->createExpiredToken($userPoolConfig));
+            self::fail('The token expired 120 seconds ago is decoded with a leeway of 60 seconds');
+        } catch (ExpiredException) {
+            self::assertSame(0, JWT::$leeway);
+        }
+    }
+
     public function testDecodeSucceedsWithLeewayWithoutChangingOtherDrivers(): void
     {
         $userPoolConfig = new UserPoolConfig('app', 'region', 'user-pool-id');
@@ -37,6 +51,19 @@ final class AwsCognitoJwtDriverTest extends AbstractUnitTestCase
         $this->expectException(ExpiredException::class);
         $driverWithoutLeeway = new AwsCognitoJwtDriver($userPoolConfig, $jwkProvider);
         $driverWithoutLeeway->decode($token);
+    }
+
+    public function testDecodeSucceedsWithoutLeewayUsingGlobalLeeway(): void
+    {
+        JWT::$leeway = 300;
+        $userPoolConfig = new UserPoolConfig('app', 'region', 'user-pool-id');
+        $jwkProvider = new AwsCognitoJwkProviderStub([self::KEY_ID => $this->getPublicKey()]);
+        $sut = new AwsCognitoJwtDriver($userPoolConfig, $jwkProvider);
+
+        $result = $sut->decode($this->createExpiredToken($userPoolConfig));
+
+        self::assertSame('subject', $result->sub ?? null);
+        self::assertSame(300, JWT::$leeway);
     }
 
     public function testEncodeNotSupported(): void
