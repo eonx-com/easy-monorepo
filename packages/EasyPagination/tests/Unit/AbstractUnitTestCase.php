@@ -31,12 +31,14 @@ abstract class AbstractUnitTestCase extends TestCase
         ?int $pageDefault = null,
         ?string $perPageAttr = null,
         ?int $perPageDefault = null,
+        ?int $perPageMax = null,
     ): PaginationConfigProvider {
         return new PaginationConfigProvider(
             $pageAttr ?? 'page',
             $pageDefault ?? 1,
             $perPageAttr ?? 'perPage',
-            $perPageDefault ?? 15
+            $perPageDefault ?? 15,
+            $perPageMax
         );
     }
 

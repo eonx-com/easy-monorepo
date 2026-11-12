@@ -39,7 +39,9 @@ final class EasyPaginationServiceProvider extends ServiceProvider
      */
     private function registerDefaultResolver(): void
     {
-        if (\config('easy-pagination.user_default_resolver', true) === false) {
+        // "user_default_resolver" is a misspelled key read before, still honoured for apps that set it
+        if (\config('easy-pagination.use_default_resolver', true) === false
+            || \config('easy-pagination.user_default_resolver', true) === false) {
             return;
         }
 
@@ -72,11 +74,13 @@ final class EasyPaginationServiceProvider extends ServiceProvider
         $this->app->singleton(
             PaginationProviderInterface::class,
             static function (): PaginationProviderInterface {
+                $perPageMax = \config('easy-pagination.pagination.per_page_max');
                 $paginationConfigProvider = new PaginationConfigProvider(
                     \config('easy-pagination.pagination.page_attribute'),
                     (int)\config('easy-pagination.pagination.page_default'),
                     \config('easy-pagination.pagination.per_page_attribute'),
-                    (int)\config('easy-pagination.pagination.per_page_default')
+                    (int)\config('easy-pagination.pagination.per_page_default'),
+                    $perPageMax === null || $perPageMax === '' ? null : (int)$perPageMax
                 );
 
                 return new PaginationProvider($paginationConfigProvider);

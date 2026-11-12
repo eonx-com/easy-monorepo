@@ -35,6 +35,16 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
             2,
             30,
         ];
+
+        yield 'Page_PerPage_Max_50' => [
+            __DIR__ . '/../../Fixture/config/page_perPage_1_15_max_50.php',
+            self::createRequest([
+                'page' => 2,
+                'perPage' => 500,
+            ]),
+            2,
+            50,
+        ];
     }
 
     #[DataProvider('providePaginationResolverData')]
