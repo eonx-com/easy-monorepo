@@ -22,7 +22,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$pageAttribute', param(ConfigParam::PageAttribute->value))
         ->arg('$pageDefault', param(ConfigParam::PageDefault->value))
         ->arg('$perPageAttribute', param(ConfigParam::PerPageAttribute->value))
-        ->arg('$perPageDefault', param(ConfigParam::PerPageDefault->value));
+        ->arg('$perPageDefault', param(ConfigParam::PerPageDefault->value))
+        ->arg('$perPageMax', param(ConfigParam::PerPageMax->value));
 
     $services->set(DefaultPaginationResolver::class);
 

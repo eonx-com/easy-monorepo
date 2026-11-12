@@ -30,3 +30,20 @@ $data = $resolver->resolve($request); // Then resolve the data for the given req
 $data->getStart(); // 2
 $data->getSize(); // 30
 ```
+
+# Invalid and large values
+
+A `page` or `perPage` below 1 (or not a number) is replaced with the configured default.
+
+The page size a client can request is not limited by default. To limit it, set `per_page_max`; a larger `perPage` is
+reduced to it:
+
+```php
+// config/packages/easy_pagination.php
+return static function (EasyPaginationConfig $easyPaginationConfig): void {
+    $easyPaginationConfig->pagination()
+        ->perPageMax(100);
+};
+```
+
+In Laravel, set the `PAGINATION_PER_PAGE_MAX` env variable (or `pagination.per_page_max` in `config/easy-pagination.php`).

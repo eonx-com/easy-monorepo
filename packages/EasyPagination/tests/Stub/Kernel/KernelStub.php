@@ -38,6 +38,14 @@ final class KernelStub extends Kernel implements CompilerPassInterface
         self::$request = $request;
     }
 
+    /**
+     * The container is cached, so every config needs its own cache
+     */
+    public function getCacheDir(): string
+    {
+        return parent::getCacheDir() . '/' . \md5((string)$this->config);
+    }
+
     public function process(ContainerBuilder $container): void
     {
         $requestStackDef = new Definition(RequestStack::class);

@@ -301,6 +301,20 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalPaginatorTestC
     }
 
     /**
+     * @see testPaginatorBindsPrimaryKeysOfJoinedQuery
+     */
+    public static function provideStringPrimaryKeys(): iterable
+    {
+        yield 'a key with SQL in it' => [
+            'ownKey' => '0) OR (1=1',
+        ];
+
+        yield 'a UUID key' => [
+            'ownKey' => '0f8fad5b-d9cb-469f-a165-70867728950e',
+        ];
+    }
+
+    /**
      * @throws \Doctrine\DBAL\Exception
      */
     #[DataProvider('providePaginatorData')]
@@ -316,5 +330,34 @@ final class DoctrineDbalPaginatorTest extends AbstractDoctrineDbalPaginatorTestC
 
         $setup($connection, $paginator);
         $assert($paginator);
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    #[DataProvider('provideStringPrimaryKeys')]
+    public function testPaginatorBindsPrimaryKeysOfJoinedQuery(string $ownKey): void
+    {
+        $connection = $this->getDoctrineDbalConnection();
+        $connection->executeStatement('CREATE TABLE owners (id VARCHAR(255) PRIMARY KEY)');
+        $connection->executeStatement('CREATE TABLE documents (id VARCHAR(255) PRIMARY KEY, owner_id VARCHAR(255))');
+        $connection->insert('owners', ['id' => 'alice']);
+        $connection->insert('owners', ['id' => 'mallory']);
+        $connection->insert('documents', ['id' => 'alice-document', 'owner_id' => 'alice']);
+        $connection->insert('documents', ['id' => $ownKey, 'owner_id' => 'mallory']);
+        $paginator = new DoctrineDbalPaginator(Pagination::create(1, 15), $connection, 'documents', 'd');
+        $paginator->hasJoinsInQuery();
+        $paginator->setCommonCriteria(static function (QueryBuilder $queryBuilder): void {
+            $queryBuilder->join('d', 'owners', 'o', 'o.id = d.owner_id');
+        });
+        $paginator->setFilterCriteria(static function (QueryBuilder $queryBuilder): void {
+            $queryBuilder
+                ->where('o.id = :owner')
+                ->setParameter('owner', 'mallory');
+        });
+
+        $result = $paginator->getItems();
+
+        self::assertSame([$ownKey], \array_column($result, 'id'));
     }
 }

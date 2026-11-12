@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyPagination\Paginator;
 
 use BackedEnum;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
@@ -129,18 +130,26 @@ trait DoctrineCommonPaginatorTrait
         $select = \sprintf('%s.%s', $this->fromAlias ?? $this->from, $primaryKeyIndex);
         $fetchPrimaryKeysQueryBuilder->select($select);
 
-        $primaryKeysMap = static fn (array $row): string => (string)$row[$primaryKeyIndex];
-
-        /** @var string[] $primaryKeys */
-        $primaryKeys = \array_map($primaryKeysMap, $this->fetchResults($fetchPrimaryKeysQueryBuilder));
+        /** @var array<int|string> $primaryKeys */
+        $primaryKeys = \array_column($this->fetchResults($fetchPrimaryKeysQueryBuilder), $primaryKeyIndex);
 
         // If no primary keys, no items for current pagination
         if (\count($primaryKeys) === 0) {
             return [];
         }
 
-        // Filter records on their primary keys
-        $queryBuilder->andWhere($queryBuilder->expr()->in($select, $primaryKeys));
+        // Filter records on their primary keys. DBAL puts the values of in() into the SQL as they are, so the keys
+        // are bound: a stored key could otherwise inject SQL, and a non-numeric key (e.g. UUID) breaks the query
+        if ($queryBuilder instanceof DbalQueryBuilder) {
+            $isIntegerKeys = \array_filter($primaryKeys, \is_int(...)) === $primaryKeys;
+            $primaryKeysParameter = $queryBuilder->createNamedParameter(
+                $isIntegerKeys ? $primaryKeys : \array_map(\strval(...), $primaryKeys),
+                $isIntegerKeys ? ArrayParameterType::INTEGER : ArrayParameterType::STRING
+            );
+            $queryBuilder->andWhere($queryBuilder->expr()->in($select, $primaryKeysParameter));
+        } else {
+            $queryBuilder->andWhere($queryBuilder->expr()->in($select, \array_map(\strval(...), $primaryKeys)));
+        }
 
         return $this->fetchResults($queryBuilder);
     }
