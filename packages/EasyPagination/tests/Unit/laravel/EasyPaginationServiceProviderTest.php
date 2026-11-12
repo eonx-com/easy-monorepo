@@ -3,13 +3,43 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Laravel;
 
+use EonX\EasyPagination\Laravel\EasyPaginationServiceProvider;
+use EonX\EasyPagination\Laravel\Middleware\PaginationFromRequestMiddleware;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\DefaultPaginationResolver;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
+use Laravel\Lumen\Application;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 final class EasyPaginationServiceProviderTest extends AbstractLaravelTestCase
 {
+    /**
+     * @see testItRegistersDefaultResolver
+     */
+    public static function provideDefaultResolverConfig(): iterable
+    {
+        yield 'not set' => [
+            'config' => [],
+            'expectedRegistered' => true,
+        ];
+
+        yield 'use_default_resolver true' => [
+            'config' => ['easy-pagination.use_default_resolver' => true],
+            'expectedRegistered' => true,
+        ];
+
+        yield 'use_default_resolver false' => [
+            'config' => ['easy-pagination.use_default_resolver' => false],
+            'expectedRegistered' => false,
+        ];
+
+        yield 'misspelled user_default_resolver false' => [
+            'config' => ['easy-pagination.user_default_resolver' => false],
+            'expectedRegistered' => false,
+        ];
+    }
+
     public function testItHasDefaultConfig(): void
     {
         $app = $this->getApplication();
@@ -45,6 +75,18 @@ final class EasyPaginationServiceProviderTest extends AbstractLaravelTestCase
 
         self::assertSame(50, $paginationProvider->getPaginationConfigProvider()->getPerPageMax());
         self::assertSame(50, $pagination->getPerPage());
+    }
+
+    #[DataProvider('provideDefaultResolverConfig')]
+    public function testItRegistersDefaultResolver(array $config, bool $expectedRegistered): void
+    {
+        $app = new Application(__DIR__);
+        $app->make('config')
+            ->set($config);
+
+        $app->register(EasyPaginationServiceProvider::class);
+
+        self::assertSame($expectedRegistered, $app->bound(PaginationFromRequestMiddleware::class));
     }
 
     public function testSanity(): void

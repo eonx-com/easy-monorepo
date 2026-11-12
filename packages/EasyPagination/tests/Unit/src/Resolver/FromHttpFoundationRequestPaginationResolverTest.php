@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Resolver;
 
+use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -110,5 +111,39 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
 
         self::assertSame($expectedPage, $data->getPage());
         self::assertSame($expectedPerPage, $data->getPerPage());
+    }
+
+    public function testItSucceedsWithConfigProviderWithoutPerPageMax(): void
+    {
+        $config = new class() implements PaginationConfigProviderInterface {
+            public function getPageAttribute(): string
+            {
+                return 'page';
+            }
+
+            public function getPageDefault(): int
+            {
+                return 1;
+            }
+
+            public function getPerPageAttribute(): string
+            {
+                return 'perPage';
+            }
+
+            public function getPerPageDefault(): int
+            {
+                return 15;
+            }
+        };
+        $resolver = new FromHttpFoundationRequestPaginationResolver($config, $this->createServerRequest([
+            'page' => 2,
+            'perPage' => 500,
+        ]));
+
+        $data = $resolver();
+
+        self::assertSame(2, $data->getPage());
+        self::assertSame(500, $data->getPerPage());
     }
 }
