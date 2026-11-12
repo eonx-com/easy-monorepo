@@ -28,14 +28,15 @@ final class AwsCognitoJwtDriverTest extends AbstractUnitTestCase
         $jwkProvider = new AwsCognitoJwkProviderStub([self::KEY_ID => $this->getPublicKey()]);
         $token = $this->createExpiredToken($userPoolConfig);
 
-        $result = new AwsCognitoJwtDriver($userPoolConfig, $jwkProvider, 300)
-->decode($token);
+        $sut = new AwsCognitoJwtDriver($userPoolConfig, $jwkProvider, 300);
+
+        $result = $sut->decode($token);
 
         self::assertSame('subject', $result->sub ?? null);
         self::assertSame(0, JWT::$leeway);
         $this->expectException(ExpiredException::class);
-        new AwsCognitoJwtDriver($userPoolConfig, $jwkProvider)
-->decode($token);
+        $driverWithoutLeeway = new AwsCognitoJwtDriver($userPoolConfig, $jwkProvider);
+        $driverWithoutLeeway->decode($token);
     }
 
     public function testEncodeNotSupported(): void
