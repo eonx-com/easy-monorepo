@@ -22,18 +22,8 @@ final readonly class FromHttpFoundationRequestPaginationResolver
         $query = $this->request->query;
         $config = $this->paginationConfigProvider;
 
-        $page = (int)$query->get($config->getPageAttribute(), $config->getPageDefault());
-        $perPage = (int)$query->get($config->getPerPageAttribute(), $config->getPerPageDefault());
-
-        // A page or page size below 1 is a client error (an SQL error, a division by zero or no limit at all),
-        // so the default is used instead
-        if ($page < 1) {
-            $page = $config->getPageDefault();
-        }
-
-        if ($perPage < 1) {
-            $perPage = $config->getPerPageDefault();
-        }
+        $page = $this->getPositiveInt($config->getPageAttribute(), $config->getPageDefault());
+        $perPage = $this->getPositiveInt($config->getPerPageAttribute(), $config->getPerPageDefault());
 
         // @todo Call it directly in 7.0, when the interface declares it
         $perPageMax = \method_exists($config, 'getPerPageMax') ? $config->getPerPageMax() : null;
@@ -49,5 +39,20 @@ final readonly class FromHttpFoundationRequestPaginationResolver
             $config->getPerPageAttribute(),
             $this->request->getUri()
         );
+    }
+
+    /**
+     * A value that is not an integer of at least 1 is a client error (an SQL error, a division by zero or no limit at
+     * all), so the default is used instead. FILTER_VALIDATE_INT, unlike (int), rejects values like "30abc" or "1.5"
+     */
+    private function getPositiveInt(string $attribute, int $default): int
+    {
+        $value = \filter_var(
+            $this->request->query->get($attribute, $default),
+            \FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 1]]
+        );
+
+        return \is_int($value) ? $value : $default;
     }
 }
