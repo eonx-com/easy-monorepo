@@ -34,19 +34,20 @@ final readonly class StringEncryptor implements StringEncryptorInterface
 
     public function decrypt(string $text): string
     {
-        if (\str_starts_with($text, self::CHUNKED_TEXT_PREFIX) === false) {
-            return $this->doDecrypt($text);
+        $textChunks = [$text];
+
+        if (\str_starts_with($text, self::CHUNKED_TEXT_PREFIX)) {
+            $text = \str_replace(self::CHUNKED_TEXT_PREFIX, '', $text);
+            $textChunks = \explode(self::TEXT_CHUNKS_SEPARATOR, $text);
         }
 
-        $text = \str_replace(self::CHUNKED_TEXT_PREFIX, '', $text);
-        $textChunks = \explode(self::TEXT_CHUNKS_SEPARATOR, $text);
         $decryptedTextChunks = [];
 
         foreach ($textChunks as $textChunk) {
-            $decryptedTextChunks[] = $this->doDecrypt($textChunk);
+            $decryptedTextChunks[] = (string)$this->encryptor->decrypt($textChunk);
         }
 
-        return \implode('', $decryptedTextChunks);
+        return \mb_convert_encoding(\implode('', $decryptedTextChunks), self::DEFAULT_ENCODING);
     }
 
     public function encrypt(string $text): EncryptedString
@@ -67,11 +68,6 @@ final readonly class StringEncryptor implements StringEncryptorInterface
             $this->encryptionKeyName,
             self::CHUNKED_TEXT_PREFIX . \implode(self::TEXT_CHUNKS_SEPARATOR, $encryptedTextChunks)
         );
-    }
-
-    private function doDecrypt(string $text): string
-    {
-        return \mb_convert_encoding((string)$this->encryptor->decrypt($text), self::DEFAULT_ENCODING);
     }
 
     private function doEncrypt(string $text): string
