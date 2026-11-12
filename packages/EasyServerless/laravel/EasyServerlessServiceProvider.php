@@ -8,6 +8,8 @@ use EonX\EasyPagination\Pagination\StatelessPagination;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClient;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClientInterface;
+use EonX\EasyServerless\AppMetric\Factory\AppMetricLoggerFactory;
+use EonX\EasyServerless\Bundle\Enum\ConfigServiceId;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
 use EonX\EasyServerless\Datadog\Helper\RootSpanHelper;
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
@@ -22,6 +24,7 @@ use Illuminate\Foundation\Http\Kernel as FoundationHttpKernel;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use ReflectionProperty;
 
@@ -78,10 +81,19 @@ final class EasyServerlessServiceProvider extends ServiceProvider
             return;
         }
 
+        // Dedicated logger so app metrics cannot be dropped by the application logging configuration,
+        // it requires Monolog so fallback to the application logger when not installed
+        $this->app->singleton(
+            ConfigServiceId::AppMetricLogger->value,
+            static fn (Container $app): LoggerInterface => \class_exists(Logger::class)
+                ? (new AppMetricLoggerFactory())->create()
+                : $app->make(LoggerInterface::class)
+        );
+
         $this->app->singleton(
             AppMetricClientInterface::class,
             static fn (Container $app): AppMetricClientInterface => new AppMetricClient(
-                $app->make(LoggerInterface::class),
+                $app->make(ConfigServiceId::AppMetricLogger->value),
                 \config('easy-serverless.app_metric.namespace')
             )
         );
