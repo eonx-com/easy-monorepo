@@ -50,6 +50,27 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
             'expectedPerPage' => 15,
         ];
 
+        yield 'per page with a numeric prefix' => [
+            'query' => ['page' => '2abc', 'perPage' => '30abc'],
+            'perPageMax' => null,
+            'expectedPage' => 1,
+            'expectedPerPage' => 15,
+        ];
+
+        yield 'decimal per page' => [
+            'query' => ['page' => 2, 'perPage' => '1.5'],
+            'perPageMax' => null,
+            'expectedPage' => 2,
+            'expectedPerPage' => 15,
+        ];
+
+        yield 'numeric strings' => [
+            'query' => ['page' => '3', 'perPage' => '30'],
+            'perPageMax' => null,
+            'expectedPage' => 3,
+            'expectedPerPage' => 30,
+        ];
+
         yield 'per page above the max' => [
             'query' => ['page' => 2, 'perPage' => 2_147_483_647],
             'perPageMax' => 100,
