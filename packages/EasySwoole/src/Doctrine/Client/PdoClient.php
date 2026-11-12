@@ -22,6 +22,8 @@ final class PdoClient extends BasePDOClient
         'pdo_pgsql' => PgSQLDriver::class,
     ];
 
+    private const array LOGGED_PARAMS = ['dbname', 'driver', 'host', 'port'];
+
     private ?float $lastUsedTime = null;
 
     public function __call(string $name, array $arguments): mixed
@@ -66,7 +68,9 @@ final class PdoClient extends BasePDOClient
             throw new RuntimeException(\sprintf('Driver "%s" not supported', $params['driver']));
         }
 
-        $config->getLogger()?->debug('Making new Coroutine PDO Client', ['params' => $params]);
+        $config->getLogger()?->debug('Making new Coroutine PDO Client', [
+            'params' => \array_intersect_key($params, \array_flip(self::LOGGED_PARAMS)),
+        ]);
 
         $pdoDsnFactory = new ReflectionMethod($driverClass, 'constructPdoDsn');
         /** @var string $pdoDsn */

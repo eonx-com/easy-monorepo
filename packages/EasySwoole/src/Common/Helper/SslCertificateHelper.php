@@ -16,6 +16,12 @@ final class SslCertificateHelper
 
     private const string DEFAULT_FILENAME_KEY = '/var/www/var/tmp/key.pem';
 
+    /**
+     * Filesystem::dumpFile() writes to a private temporary file, sets its mode to 0666 & ~umask and renames it
+     * into place, so with this umask the key file is never readable by others, not even for a moment
+     */
+    private const int PRIVATE_FILE_UMASK = 0o077;
+
     public static function loadSslCertificates(array $options): array
     {
         $filesystem = new Filesystem();
@@ -25,7 +31,7 @@ final class SslCertificateHelper
         $keyFilename = $options['settings']['ssl_key_file'] ?? self::DEFAULT_FILENAME_KEY;
 
         $savedCert = self::saveEnvVarValueToFile($certEnvVarName, $filesystem, $certFilename);
-        $savedKey = self::saveEnvVarValueToFile($keyEnvVarName, $filesystem, $keyFilename);
+        $savedKey = self::saveEnvVarValueToFile($keyEnvVarName, $filesystem, $keyFilename, true);
 
         if ($savedCert) {
             $options['settings']['ssl_cert_file'] = $certFilename;
@@ -44,8 +50,12 @@ final class SslCertificateHelper
         return $options;
     }
 
-    private static function saveEnvVarValueToFile(string $envVarName, Filesystem $filesystem, string $filename): bool
-    {
+    private static function saveEnvVarValueToFile(
+        string $envVarName,
+        Filesystem $filesystem,
+        string $filename,
+        bool $private = false,
+    ): bool {
         if ($filesystem->exists($filename)) {
             return true;
         }
@@ -53,7 +63,16 @@ final class SslCertificateHelper
         $envVarValue = $_SERVER[$envVarName] ?? $_ENV[$envVarName] ?? null;
 
         if (\is_string($envVarValue) && $envVarValue !== '') {
-            $filesystem->dumpFile($filename, $envVarValue);
+            // Runs once on startup, before the server forks workers, so the process-wide umask is safe to change
+            $umask = $private ? \umask(self::PRIVATE_FILE_UMASK) : null;
+
+            try {
+                $filesystem->dumpFile($filename, $envVarValue);
+            } finally {
+                if ($umask !== null) {
+                    \umask($umask);
+                }
+            }
 
             return true;
         }

@@ -442,6 +442,13 @@ Laravel:
 - Listener priorities changed: `ApplicationStateCheckListener` -10001 → -10020, `StaticPhpFileListener` 30000 → 30010.
 - DBAL 4: `DbalConnection`, `DbalDriver`, `DbalStatement` and `CoroutineConnectionFactory` are the DBAL 4 classes. On
   DBAL 3 they are aliases of the `Dbal3*` classes. This only matters if you extend them.
+- Access log lines no longer contain the query string. To add it, set `'access_log' => ['log_query_string' => true]`.
+  When the EasyUtils sensitive data sanitizer is enabled, access log lines are sanitized.
+- The "Making new Coroutine PDO Client" debug log contains only `driver`, `host`, `port` and `dbname`.
+- `ErrorResponseHelper::sendErrorResponse()` returns `{"error":"Internal Server Error"}` unless `$debug` is `true`.
+  `EasySwooleRunner` passes the kernel debug flag. When it is off and EasyErrorHandler is not available, the runner
+  writes the error details to the output.
+- The TLS private key file written from the `PRIVATE_KEY_PEM` env var gets mode `0600`.
 
 ### EasyTest
 

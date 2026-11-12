@@ -9,6 +9,7 @@ use EonX\EasySwoole\Common\Listener\AccessLogListener;
 use EonX\EasySwoole\Logging\Factory\MonologLoggerFactory;
 use EonX\EasySwoole\Logging\Formatter\HttpFoundationAccessLogFormatter;
 use EonX\EasySwoole\Logging\Formatter\HttpFoundationAccessLogFormatterInterface;
+use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
@@ -19,7 +20,9 @@ return static function (ContainerConfigurator $container): void {
         ->autowire();
 
     // Formatter
-    $services->set(HttpFoundationAccessLogFormatterInterface::class, HttpFoundationAccessLogFormatter::class);
+    $services
+        ->set(HttpFoundationAccessLogFormatterInterface::class, HttpFoundationAccessLogFormatter::class)
+        ->arg('$logQueryString', param(ConfigParam::AccessLogLogQueryString->value));
 
     // Logger
     $loggerServiceId = LoggerInterface::class;
@@ -41,5 +44,6 @@ return static function (ContainerConfigurator $container): void {
         ->set(AccessLogListener::class)
         ->arg('$logger', service($loggerServiceId))
         ->arg('$doNotLogPaths', param(ConfigParam::AccessLogDoNotLogPaths->value))
+        ->arg('$sensitiveDataSanitizer', service(SensitiveDataSanitizerInterface::class)->nullOnInvalid())
         ->tag('kernel.event_listener');
 };
