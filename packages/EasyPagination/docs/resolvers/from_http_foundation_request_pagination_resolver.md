@@ -47,3 +47,7 @@ return static function (EasyPaginationConfig $easyPaginationConfig): void {
 ```
 
 In Laravel, set the `PAGINATION_PER_PAGE_MAX` env variable (or `pagination.per_page_max` in `config/easy-pagination.php`).
+
+Setting it is recommended. Doctrine DBAL paginators with joins bind the primary keys of the page, one placeholder per
+key, and databases limit the number of placeholders in a prepared statement (65535 for PostgreSQL and native MySQL
+prepares, 32766 for SQLite 3.32+, 999 for older SQLite). A larger page fails on such a query.
