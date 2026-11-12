@@ -4,14 +4,54 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Tests\Unit\Bundle;
 
 use Bref\Symfony\Messenger\BrefMessengerBundle;
+use EonX\EasyServerless\AppMetric\Client\AppMetricClient;
+use EonX\EasyServerless\AppMetric\Client\AppMetricClientInterface;
+use EonX\EasyServerless\AppMetric\Factory\AppMetricLoggerFactory;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
+use EonX\EasyServerless\Bundle\Enum\ConfigServiceId;
 use EonX\EasyServerless\Datadog\Listener\PhpRuntimeInfoListener;
 use EonX\EasyServerless\Messenger\Listener\ResetServicesListener;
 use EonX\EasyServerless\Monolog\Processor\PhpSourceProcessor;
 use EonX\EasyServerless\Tests\Unit\AbstractSymfonyTestCase;
+use Monolog\Logger;
+use Psr\Log\NullLogger;
+use ReflectionProperty;
 
 final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
 {
+    public function testAppMetricClientUsesDedicatedLoggerInsteadOfApplicationLogger(): void
+    {
+        $container = $this->getKernel()
+            ->getContainer();
+
+        $appMetricLogger = $container->get(ConfigServiceId::AppMetricLogger->value);
+        $appMetricClient = $container->get(AppMetricClientInterface::class);
+
+        self::assertInstanceOf(Logger::class, $appMetricLogger);
+        self::assertSame(AppMetricLoggerFactory::LOGGER_NAME, $appMetricLogger->getName());
+        self::assertNotSame($container->get('logger'), $appMetricLogger);
+        self::assertSame(
+            $appMetricLogger,
+            (new ReflectionProperty(AppMetricClient::class, 'logger'))->getValue($appMetricClient)
+        );
+    }
+
+    public function testAppMetricClientUsesLoggerOverriddenByApplication(): void
+    {
+        $container = $this->getKernel(
+            configs: [__DIR__ . '/../../Fixture/config/app_metric_logger_overridden.php']
+        )->getContainer();
+
+        $appMetricLogger = $container->get(ConfigServiceId::AppMetricLogger->value);
+
+        self::assertInstanceOf(NullLogger::class, $appMetricLogger);
+        self::assertSame(
+            $appMetricLogger,
+            (new ReflectionProperty(AppMetricClient::class, 'logger'))
+                ->getValue($container->get(AppMetricClientInterface::class))
+        );
+    }
+
     public function testDisableDatadogSucceeds(): void
     {
         $container = $this->getKernel(
