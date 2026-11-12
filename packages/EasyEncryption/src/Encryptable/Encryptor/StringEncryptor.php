@@ -34,20 +34,19 @@ final readonly class StringEncryptor implements StringEncryptorInterface
 
     public function decrypt(string $text): string
     {
-        if (\str_starts_with($text, self::CHUNKED_TEXT_PREFIX) === false) {
-            return \mb_convert_encoding((string)$this->encryptor->decrypt($text), self::DEFAULT_ENCODING);
+        $textChunks = [$text];
+
+        if (\str_starts_with($text, self::CHUNKED_TEXT_PREFIX)) {
+            $text = \str_replace(self::CHUNKED_TEXT_PREFIX, '', $text);
+            $textChunks = \explode(self::TEXT_CHUNKS_SEPARATOR, $text);
         }
 
-        $text = \str_replace(self::CHUNKED_TEXT_PREFIX, '', $text);
-        $textChunks = \explode(self::TEXT_CHUNKS_SEPARATOR, $text);
         $decryptedTextChunks = [];
 
         foreach ($textChunks as $textChunk) {
             $decryptedTextChunks[] = (string)$this->encryptor->decrypt($textChunk);
         }
 
-        // Chunks are cut by bytes, so a multibyte character can be split between two of them:
-        // the encoding is converted only after the chunks are joined
         return \mb_convert_encoding(\implode('', $decryptedTextChunks), self::DEFAULT_ENCODING);
     }
 
