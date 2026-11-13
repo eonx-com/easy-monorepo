@@ -33,17 +33,22 @@ final readonly class AwsCognitoJwtDriver implements JwtDriverInterface
      */
     public function decode(string $token): object
     {
-        if ($this->jwtLeeway !== null) {
-            JWT::$leeway = $this->jwtLeeway;
-        }
-
         $jwks = $this->jwkProvider->getJwks($this->userPoolConfig);
 
         foreach ($jwks as $keyId => $key) {
             $jwks[$keyId] = new Key($key, $this->defaultJwtAlgorithm);
         }
 
-        $decodedToken = JWT::decode($token, $jwks);
+        // JWT::$leeway is static: restore it, so the leeway does not apply to other drivers in the same process
+        $previousLeeway = JWT::$leeway;
+        JWT::$leeway = $this->jwtLeeway ?? $previousLeeway;
+
+        try {
+            $decodedToken = JWT::decode($token, $jwks);
+        } finally {
+            JWT::$leeway = $previousLeeway;
+        }
+
         $tokenType = $decodedToken->token_use ?? null;
 
         // Validate audience

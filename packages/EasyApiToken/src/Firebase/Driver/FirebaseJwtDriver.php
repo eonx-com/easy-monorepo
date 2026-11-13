@@ -26,11 +26,15 @@ final readonly class FirebaseJwtDriver implements JwtDriverInterface
          *
          * Source: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef.
          */
-        if ($this->leeway !== null) {
-            JWT::$leeway = $this->leeway;
-        }
+        // JWT::$leeway is static: restore it, so the leeway does not apply to other drivers in the same process
+        $previousLeeway = JWT::$leeway;
+        JWT::$leeway = $this->leeway ?? $previousLeeway;
 
-        return JWT::decode($token, new Key($this->publicKey, $this->algo));
+        try {
+            return JWT::decode($token, new Key($this->publicKey, $this->algo));
+        } finally {
+            JWT::$leeway = $previousLeeway;
+        }
     }
 
     public function encode(array|object $input): string

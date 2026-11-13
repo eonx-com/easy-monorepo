@@ -35,7 +35,7 @@ final readonly class Auth0JwtDriver implements JwtDriverInterface
      */
     public function __construct(
         private array $validAudiences,
-        array $authorizedIss,
+        private array $authorizedIss,
         private string $domain,
         private ?string $privateKey = null,
         ?string $audienceForEncode = null,
@@ -43,6 +43,10 @@ final readonly class Auth0JwtDriver implements JwtDriverInterface
         private ?CacheItemPoolInterface $cache = null,
         private ?int $cacheTtl = null,
     ) {
+        if ($authorizedIss === []) {
+            throw new InvalidConfigurationException('Auth0 requires at least one authorized issuer');
+        }
+
         $this->allowedAlgorithms = $allowedAlgorithms ?? self::DEFAULT_ALLOWED_ALGORITHMS;
         $this->audienceForEncode = $audienceForEncode ?? (string)\reset($validAudiences);
         $this->issuerForEncode = (string)\reset($authorizedIss);
@@ -80,8 +84,19 @@ final readonly class Auth0JwtDriver implements JwtDriverInterface
                     $this->cache
                 );
 
+                // The SDK accepts the tenant domain issuer ("https://{domain}/") when the token issuer does not
+                // match the given one, so only the authorized issuers are passed to it
+                $issuer = $verifier->getIssuer();
+
+                if (\in_array($issuer, $this->authorizedIss, true) === false) {
+                    throw new InvalidEasyApiTokenFromRequestException(\sprintf(
+                        'Issuer "%s" is not authorized',
+                        $issuer
+                    ));
+                }
+
                 return $verifier
-                    ->validate($this->issuerForEncode, $this->validAudiences)
+                    ->validate($issuer, $this->validAudiences)
                     ->toArray();
             } catch (Throwable $throwable) {
                 $exceptions[] = $throwable->getMessage();
