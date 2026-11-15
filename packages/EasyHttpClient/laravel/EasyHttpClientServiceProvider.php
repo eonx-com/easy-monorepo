@@ -36,7 +36,7 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
         $this->registerHttpClient();
         $this->registerEasyWebhookIntegration();
 
-        if (\config('easy-http-client.bugsnag.enabled', true) && \class_exists(Client::class)) {
+        if (\config('easy-http-client.easy_bugsnag.enabled', true) && \class_exists(Client::class)) {
             $this->app->make('events')
                 ->listen(HttpRequestSentEvent::class, HttpRequestSentBreadcrumbListener::class);
         }
