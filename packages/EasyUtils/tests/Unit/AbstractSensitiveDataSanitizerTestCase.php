@@ -868,6 +868,68 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
             'maskPattern' => '*REDACTED*',
             'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
         ];
+        yield 'Mask temporary credentials default keys in arrays, JSON and URL' => [
+            'input' => [
+                'access_key_id' => 'some-value',
+                'AccessKeyId' => 'some-value',
+                'secret_access_key' => 'some-value',
+                'SecretAccessKey' => 'some-value',
+                'session_token' => 'some-value',
+                'SessionToken' => 'some-value',
+                'json' => '{"AccessKeyId":"some-id","SecretAccessKey":"some-value","SessionToken":"some-token",'
+                    . '"keep":"value"}',
+                'query' => 'https://example.com?AccessKeyId=some-id&SecretAccessKey=some-value'
+                    . '&SessionToken=some-token&keep=value',
+            ],
+            'expectedOutput' => [
+                'access_key_id' => '*REDACTED*',
+                'AccessKeyId' => '*REDACTED*',
+                'secret_access_key' => '*REDACTED*',
+                'SecretAccessKey' => '*REDACTED*',
+                'session_token' => '*REDACTED*',
+                'SessionToken' => '*REDACTED*',
+                'json' => '{"AccessKeyId":"*REDACTED*","SecretAccessKey":"*REDACTED*","SessionToken":"*REDACTED*",'
+                    . '"keep":"value"}',
+                'query' => 'https://example.com?AccessKeyId=*REDACTED*&SecretAccessKey=*REDACTED*'
+                    . '&SessionToken=*REDACTED*&keep=value',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
+        yield 'Mask server variable spellings of default header keys' => [
+            'input' => [
+                'HTTP_ACCEPT' => 'some-value',
+                'HTTP_AUTHORIZATION' => 'some-value',
+                'HTTP_COOKIE' => 'some-value',
+                'HTTP_HOST' => 'some-value',
+                'HTTP_PROXY_AUTHORIZATION' => 'some-value',
+                'HTTP_USER_AGENT' => 'some-value',
+                'HTTP_X_AMZ_SECURITY_TOKEN' => 'some-value',
+                'HTTP_X_API_KEY' => 'some-value',
+                'HTTP_X_AUTH_TOKEN' => 'some-value',
+                'HTTP_X_SHARED_KEY' => 'some-value',
+                'HTTP_X_WEBHOOK_SIGNATURE' => 'some-value',
+                'PHP_AUTH_DIGEST' => 'some-value',
+                'REDIRECT_HTTP_AUTHORIZATION' => 'some-value',
+            ],
+            'expectedOutput' => [
+                'HTTP_ACCEPT' => 'some-value',
+                'HTTP_AUTHORIZATION' => '*REDACTED*',
+                'HTTP_COOKIE' => '*REDACTED*',
+                'HTTP_HOST' => 'some-value',
+                'HTTP_PROXY_AUTHORIZATION' => '*REDACTED*',
+                'HTTP_USER_AGENT' => 'some-value',
+                'HTTP_X_AMZ_SECURITY_TOKEN' => '*REDACTED*',
+                'HTTP_X_API_KEY' => '*REDACTED*',
+                'HTTP_X_AUTH_TOKEN' => '*REDACTED*',
+                'HTTP_X_SHARED_KEY' => '*REDACTED*',
+                'HTTP_X_WEBHOOK_SIGNATURE' => '*REDACTED*',
+                'PHP_AUTH_DIGEST' => '*REDACTED*',
+                'REDIRECT_HTTP_AUTHORIZATION' => '*REDACTED*',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
         yield 'Mask legacy spellings of default keys in arrays and JSON' => [
             'input' => [
                 'apikey' => 'secret',
