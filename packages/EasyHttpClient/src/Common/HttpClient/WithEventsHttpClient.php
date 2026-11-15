@@ -95,7 +95,14 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
 
     private function getPassThruClosure(RequestData $requestData, Config $config): Closure
     {
-        return function (ChunkInterface $chunk, AsyncContext $asyncContext) use ($requestData, $config): iterable {
+        $shouldCollectContent = $config->isEventsEnabled()
+            && ($requestData->getOptions()['buffer'] ?? true) !== false;
+
+        return function (ChunkInterface $chunk, AsyncContext $asyncContext) use (
+            $requestData,
+            $config,
+            $shouldCollectContent,
+        ): iterable {
             // Get chunk content here, so we can handle transport/timeout exceptions
             try {
                 $chunkContent = $chunk->getContent();
@@ -105,7 +112,7 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
                 throw $throwable;
             }
 
-            if ($chunkContent !== '') {
+            if ($shouldCollectContent && $chunkContent !== '') {
                 /** @var resource|string|null $content */
                 $content = $asyncContext->getInfo('temp_content');
                 $asyncContext->setInfo(
