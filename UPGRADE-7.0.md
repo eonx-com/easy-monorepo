@@ -323,9 +323,11 @@ Tips:
 ### EasyHttpClient
 
 - The `easy_http_client.logger` service is removed. The bundle uses `monolog.logger.easy_http_client`.
-- `HttpRequestSentEvent` has an empty response content for a request sent with the `buffer` option set to `false`.
-  The client no longer keeps a copy of a response body that the application reads as a stream. The status code and
-  the headers are still in the event. To get the content in the event, send the request without `'buffer' => false`.
+- `HttpRequestSentEvent` has an empty response content for a request sent with the `buffer` option set to `false`,
+  to a stream resource or to a closure (also a closure that returns `true`). The client no longer keeps a copy of a
+  response body when the application chose where the body goes. The status code and the headers are still in the
+  event. A listener can tell such a request from a response with an empty body by the `buffer` option in the request
+  data. To get the content in the event, send the request without the `buffer` option or with `'buffer' => true`.
 
 ### EasyLock
 

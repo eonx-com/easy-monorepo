@@ -95,8 +95,9 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
 
     private function getPassThruClosure(RequestData $requestData, Config $config): Closure
     {
+        // With "buffer" set to false, to a stream or to a closure, the application chose where the body goes
         $shouldCollectContent = $config->isEventsEnabled()
-            && ($requestData->getOptions()['buffer'] ?? true) !== false;
+            && ($requestData->getOptions()['buffer'] ?? true) === true;
 
         return function (ChunkInterface $chunk, AsyncContext $asyncContext) use (
             $requestData,
