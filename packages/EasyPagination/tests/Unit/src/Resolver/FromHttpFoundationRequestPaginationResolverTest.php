@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Resolver;
 
+use EonX\EasyPagination\Provider\PaginationConfigProvider;
 use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
@@ -142,6 +143,16 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
         ];
     }
 
+    /**
+     * @see testItResolvesPageWithNotPositivePerPageDefault
+     */
+    public static function provideNotPositivePerPageDefaults(): iterable
+    {
+        yield 'per page default 0' => [0];
+
+        yield 'negative per page default' => [-1];
+    }
+
     public function testCustomConfigResolveSuccessfully(): void
     {
         $config = $this->createConfig(pageAttr: 'page', perPageAttr: 'perPage');
@@ -181,6 +192,20 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
 
         self::assertSame($expectedPage, $data->getPage());
         self::assertSame($expectedPerPage, $data->getPerPage());
+    }
+
+    #[DataProvider('provideNotPositivePerPageDefaults')]
+    public function testItResolvesPageWithNotPositivePerPageDefault(int $perPageDefault): void
+    {
+        $config = new PaginationConfigProvider('page', 1, 'perPage', $perPageDefault);
+        $resolver = new FromHttpFoundationRequestPaginationResolver($config, $this->createServerRequest([
+            'page' => 2,
+        ]));
+
+        $data = $resolver();
+
+        self::assertSame(2, $data->getPage());
+        self::assertSame($perPageDefault, $data->getPerPage());
     }
 
     public function testItSucceedsWithConfigProviderWithoutPerPageMax(): void
