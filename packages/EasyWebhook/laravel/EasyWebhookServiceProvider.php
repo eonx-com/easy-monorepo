@@ -16,6 +16,7 @@ use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
 use EonX\EasyWebhook\Common\Dispatcher\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Common\Dispatcher\NullAsyncDispatcher;
 use EonX\EasyWebhook\Common\Enum\MiddlewarePriority;
+use EonX\EasyWebhook\Common\Exception\InvalidWebhookSecretException;
 use EonX\EasyWebhook\Common\Factory\HttpClientFactory;
 use EonX\EasyWebhook\Common\Factory\HttpClientFactoryInterface;
 use EonX\EasyWebhook\Common\Formatter\JsonWebhookBodyFormatter;
@@ -56,6 +57,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class EasyWebhookServiceProvider extends ServiceProvider
 {
+    public const string DEFAULT_SIGNATURE_SECRET = 'easy-webhook-secret';
+
     public function boot(): void
     {
         $this->publishes([
@@ -160,7 +163,8 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                 Container $app,
             ): SendWebhookMiddleware => new SendWebhookMiddleware(
                 $app->make(ConfigServiceId::HttpClient->value),
-                MiddlewarePriority::CoreAfter->value + 4
+                MiddlewarePriority::CoreAfter->value + 4,
+                (bool)\config('easy-webhook.ssrf_protection.enabled', true)
             ),
         ];
 
@@ -279,6 +283,14 @@ final class EasyWebhookServiceProvider extends ServiceProvider
     {
         if (\config('easy-webhook.signature.enabled', false) === false) {
             return;
+        }
+
+        if (\config('easy-webhook.signature.secret') === self::DEFAULT_SIGNATURE_SECRET) {
+            throw new InvalidWebhookSecretException(\sprintf(
+                'The webhook signature is enabled with the default secret "%s", which is public. '
+                . 'Set your own value in the "easy-webhook.signature.secret" config.',
+                self::DEFAULT_SIGNATURE_SECRET
+            ));
         }
 
         $this->app->singleton(

@@ -29,8 +29,8 @@ The common configuration options for Laravel and Symfony are as follows:
 | `method`                 | `POST`                | Method to use when sending webhook HTTP requests                                                       |
 | `signature.enabled`      | `false`               | Whether the SignatureHeaderMiddleware is enabled to send a Signature header with webhook HTTP requests |
 | `signature.header`       | `X-Webhook-Signature` | Name of the Signature header                                                                           |
-| `signature.signer`       | `Rs256Signer:class`   | Class to use for signing the webhook HTTP request body                                                 |
-| `signature.secret`       | N/A                   | Secret to use when signing the webhook HTTP request body                                               |
+| `signature.signer`       | `Rs256WebhookSigner::class` | Class to use for signing the webhook HTTP request body                                                 |
+| `signature.secret`       | N/A                   | Secret to use when signing the webhook HTTP request body. Set your own value when the signature is enabled |
 | `ssrf_protection.enabled`        | `true`        | Whether outgoing webhook requests are blocked from reaching private/reserved IP ranges (SSRF protection) |
 | `ssrf_protection.extra_blocked_ranges` | `[]`    | Additional CIDR ranges to reject **on top of** the standard private + reserved defaults (incl. link-local `169.254.0.0/16`) |
 | `ssrf_protection.allowed_ranges` | `[]`          | CIDR ranges to unblock by **removing a matching entry** from the default block list (e.g. `127.0.0.0/8` for IPv4 localhost). Must match a default verbatim and not be covered by another default (e.g. `::1/128` is inside `::/96`), else rejected at startup |
@@ -53,6 +53,18 @@ Symfony has the following additional configuration options:
 |-----------------|-------------------------|--------------------------------------------------------------|
 | `async.enabled` | `true`                  | Whether to send webhook HTTP requests asynchronously.        |
 | `async.bus`     | `messenger.bus.default` | Bus to use for asynchronously sending webhook HTTP requests. |
+
+## Signature secret
+
+Set `signature.secret` to a value of your own and keep it out of the code, for example in an environment variable. A
+webhook can also carry its own secret (`secret()`), which is used instead.
+
+The Laravel config file ships with the default `easy-webhook-secret`. A value that is shipped with a package is known to
+everyone, so a signature made with it proves nothing to the receiver. When the signature is enabled and the secret is
+still this default, the application fails at startup with an `InvalidWebhookSecretException`.
+
+With the signature enabled, a webhook that has a body and no secret at all is not sent: it fails with an
+`InvalidWebhookSecretException`.
 
 ## Request limits (DoS protection)
 
@@ -163,6 +175,28 @@ and a single `stream()` call can then only take responses of one kind.
 > private or reserved IP are now rejected out of the box (surfaced as a failed webhook, not a
 > crash). Set `ssrf_protection.enabled` to `false` to restore the previous behaviour.
 
+## HTTP client options of a webhook
+
+A webhook can carry its own HTTP client options (`WebhookInterface::httpClientOptions()`). They are stored with the
+webhook, so the package rejects the options that write a file, call code or change where the request connects:
+
+| Option                                                                                                 | Rejected                             |
+|--------------------------------------------------------------------------------------------------------|--------------------------------------|
+| `extra.curl`                                                                                           | always                               |
+| `on_progress` as a string or as an array without an object (`'App\Foo::bar'`, `['App\Foo', 'bar']`)    | always                               |
+| `bindto`, `proxy`, `resolve`                                                                           | while `ssrf_protection` is enabled   |
+
+A webhook with such an option is not sent: it fails with a `WebhookHttpClientOptionNotAllowedException` (a failed
+webhook, not a crash). It is not retried, because its options stay the same.
+
+Empty values of `extra.curl`, `bindto` and `resolve` are accepted. For `proxy`, only `null` is accepted: the HTTP client
+uses every other value, an empty string too. An `on_progress` given as a closure or as `[$object, 'method']` is
+accepted, but such a value cannot be stored with the webhook, so it works only for a webhook that is sent in the same
+process. For a webhook that is stored and sent later (asynchronously), set `on_progress` on the HTTP client itself.
+
+To use one of the other options, set it on the HTTP client itself: decorate the `easy_webhooks.http_client` service or
+provide your own `HttpClientFactoryInterface`.
+
 ## Example configuration files
 
 ### Symfony
@@ -175,7 +209,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use EonX\EasyWebhook\Signers\Rs256Signer;
+use EonX\EasyWebhook\Common\Signer\Rs256WebhookSigner;
 
 return App::config([
     'easy_webhook' => [
@@ -192,7 +226,7 @@ return App::config([
         ],
         'signature' => [
             'header' => 'My-Signature-Header',
-            'signer' => Rs256Signer::class,
+            'signer' => Rs256WebhookSigner::class,
             'secret' => env('APP_SECRET'),
         ],
     ],
@@ -207,6 +241,8 @@ In Laravel, the `easy-webhook.php` configuration file could look like the follow
 ``` php
 <?php
 declare(strict_types=1);
+
+use EonX\EasyWebhook\Common\Signer\Rs256WebhookSigner;
 
 return [
     'event' => [
@@ -225,9 +261,9 @@ return [
 
     'signature' => [
         'enabled' => true,
-        'signer' => Rs256Signer::class,
+        'signer' => Rs256WebhookSigner::class,
         'header' => 'My-Signature-Header',
-        'secret' => 'my-secret',
+        'secret' => env('EASY_WEBHOOK_SIGNATURE_SECRET'),
     ],
 
     'use_default_middleware' => true,

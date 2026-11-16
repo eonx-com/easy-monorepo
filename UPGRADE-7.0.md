@@ -126,6 +126,11 @@ Tips:
 
 - [ ] Enable `'request_limits' => ['enabled' => true]` in `easy_webhook` (Laravel: the same in
   `config/easy-webhook.php`) and test it. In 7.0 it is enabled by default.
+- [ ] Remove `extra.curl` and an `on_progress` given as a string from the HTTP client options of webhooks
+  (`httpClientOptions()`). With `ssrf_protection` enabled, also remove `bindto`, `proxy` and `resolve`. In 7.0 a webhook
+  with such an option is not sent.
+- [ ] Laravel: when the signature is enabled, set your own `signature.secret` in `config/easy-webhook.php`. In 7.0 the
+  default value `easy-webhook-secret` is rejected.
 
 ### EasyTest
 
@@ -534,3 +539,14 @@ Laravel:
       ],
   ]);
   ```
+- A webhook is not sent when its HTTP client options (`httpClientOptions()`) contain `extra.curl`, an `on_progress`
+  given as a string or as an array without an object, or, while `ssrf_protection` is enabled, `bindto`, `proxy` or
+  `resolve`. It fails with a `WebhookHttpClientOptionNotAllowedException`. For `proxy`, every value except `null` is
+  rejected. Set these options on the HTTP client itself (decorate the `easy_webhooks.http_client` service). An
+  `on_progress` closure still works for a webhook that is sent in the same process, but it cannot be stored, so for an
+  asynchronous webhook set it on the HTTP client too. When you create `SendWebhookMiddleware` yourself with
+  `ssrf_protection` disabled, pass `false` as its new third argument.
+- Laravel: when the signature is enabled and `signature.secret` is still the default `easy-webhook-secret`, the
+  application fails at startup with an `InvalidWebhookSecretException`. A value shipped with the package is known to
+  everyone, so a signature made with it proves nothing. Set your own secret; receivers that verify the signature with
+  the default value need the new one.

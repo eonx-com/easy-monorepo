@@ -80,5 +80,6 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(SendWebhookMiddleware::class)
         ->arg('$httpClient', service(ConfigServiceId::HttpClient->value))
-        ->arg('$priority', MiddlewarePriority::CoreAfter->value + 4);
+        ->arg('$priority', MiddlewarePriority::CoreAfter->value + 4)
+        ->arg('$ssrfProtectionEnabled', param(ConfigParam::SsrfProtectionEnabled->value));
 };

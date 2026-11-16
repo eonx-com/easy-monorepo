@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Laravel\Jobs;
 
 use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
+use EonX\EasyWebhook\Common\Exception\WebhookHttpClientOptionNotAllowedException;
+use EonX\EasyWebhook\Common\Exception\WebhookResponseTooLargeException;
 use EonX\EasyWebhook\Common\Store\StoreInterface;
 use EonX\EasyWebhook\Common\Strategy\WebhookRetryStrategyInterface;
 use Illuminate\Bus\Queueable;
@@ -38,7 +40,13 @@ final class SendWebhookJob implements ShouldQueue
         // Once here, webhooks are already configured and should be sent synchronously
         $result = $client->sendWebhook($webhook->sendNow(true));
 
-        if ($result->isSuccessful() === false && $retryStrategy->isRetryable($result->getWebhook())) {
+        // An oversized-response abort is not retryable: retrying only re-downloads the same body.
+        // A rejected HTTP client option is not retryable either: the options of the webhook stay the same
+        if ($result->isSuccessful() === false
+            && WebhookResponseTooLargeException::isInChain($result->getThrowable()) === false
+            && ($result->getThrowable() instanceof WebhookHttpClientOptionNotAllowedException) === false
+            && $retryStrategy->isRetryable($result->getWebhook())
+        ) {
             $this->release($retryStrategy->getWaitingTime($result->getWebhook()) / 1000);
         }
     }
