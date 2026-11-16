@@ -21,7 +21,6 @@ final readonly class FromHttpFoundationRequestPaginationResolver
     {
         $config = $this->paginationConfigProvider;
 
-        $page = $this->getPositiveInt($config->getPageAttribute(), $config->getPageDefault());
         $perPage = $this->getPositiveInt($config->getPerPageAttribute(), $config->getPerPageDefault());
 
         // @todo Call it directly in 7.0, when the interface declares it
@@ -30,6 +29,10 @@ final readonly class FromHttpFoundationRequestPaginationResolver
         if ($perPageMax !== null && $perPage > $perPageMax) {
             $perPage = $perPageMax;
         }
+
+        // The offset of the page and the number of the next page must both fit in an integer
+        $pageMax = \intdiv(\PHP_INT_MAX - 1, $perPage);
+        $page = $this->getPositiveInt($config->getPageAttribute(), $config->getPageDefault(), $pageMax);
 
         return Pagination::create(
             $page,
@@ -41,15 +44,16 @@ final readonly class FromHttpFoundationRequestPaginationResolver
     }
 
     /**
-     * A value that is not an integer of at least 1 is a client error (an SQL error, a division by zero or no limit at
-     * all), so the default is used instead. FILTER_VALIDATE_INT, unlike (int), rejects values like "30abc" or "1.5"
+     * A value that is not an integer from 1 to the given maximum is a client error (an SQL error, a division by zero,
+     * an integer overflow or no limit at all), so the default is used instead. FILTER_VALIDATE_INT, unlike (int),
+     * rejects values like "30abc" or "1.5"
      */
-    private function getPositiveInt(string $attribute, int $default): int
+    private function getPositiveInt(string $attribute, int $default, int $max = \PHP_INT_MAX): int
     {
         $value = \filter_var(
             $this->request->query->get($attribute, $default),
             \FILTER_VALIDATE_INT,
-            ['options' => ['min_range' => 1]]
+            ['options' => ['max_range' => $max, 'min_range' => 1]]
         );
 
         return \is_int($value) ? $value : $default;

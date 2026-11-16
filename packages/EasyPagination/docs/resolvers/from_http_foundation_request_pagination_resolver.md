@@ -36,6 +36,9 @@ $data->getSize(); // 30
 A `page` or `perPage` that is not an integer of at least 1 (e.g. `0`, `-1`, `abc`, `30abc` or `1.5`) is replaced with the
 configured default.
 
+The same applies to a `page` that is too large for the resolved page size: the offset of the page
+(`(page - 1) * perPage`) and the number of the next page must both fit in an integer.
+
 The page size a client can request is not limited by default. To limit it, set `per_page_max`; a larger `perPage` is
 reduced to it:
 

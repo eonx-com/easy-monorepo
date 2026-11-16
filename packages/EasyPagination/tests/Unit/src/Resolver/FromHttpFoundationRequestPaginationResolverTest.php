@@ -91,6 +91,55 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
             'expectedPage' => 2,
             'expectedPerPage' => 2_147_483_647,
         ];
+
+        yield 'page with an offset above the integer range' => [
+            'query' => ['page' => \PHP_INT_MAX, 'perPage' => 15],
+            'perPageMax' => null,
+            'expectedPage' => 1,
+            'expectedPerPage' => 15,
+        ];
+
+        yield 'largest page for the per page' => [
+            'query' => ['page' => \intdiv(\PHP_INT_MAX - 1, 15), 'perPage' => 15],
+            'perPageMax' => null,
+            'expectedPage' => \intdiv(\PHP_INT_MAX - 1, 15),
+            'expectedPerPage' => 15,
+        ];
+
+        yield 'page above the largest page for the per page' => [
+            'query' => ['page' => \intdiv(\PHP_INT_MAX - 1, 15) + 1, 'perPage' => 15],
+            'perPageMax' => null,
+            'expectedPage' => 1,
+            'expectedPerPage' => 15,
+        ];
+
+        yield 'page with a next page above the integer range' => [
+            'query' => ['page' => \PHP_INT_MAX, 'perPage' => 1],
+            'perPageMax' => null,
+            'expectedPage' => 1,
+            'expectedPerPage' => 1,
+        ];
+
+        yield 'largest page for the per page reduced to the max' => [
+            'query' => ['page' => \intdiv(\PHP_INT_MAX - 1, 100), 'perPage' => 2_147_483_647],
+            'perPageMax' => 100,
+            'expectedPage' => \intdiv(\PHP_INT_MAX - 1, 100),
+            'expectedPerPage' => 100,
+        ];
+
+        yield 'page above the integer range' => [
+            'query' => ['page' => '9223372036854775808', 'perPage' => 15],
+            'perPageMax' => null,
+            'expectedPage' => 1,
+            'expectedPerPage' => 15,
+        ];
+
+        yield 'page 1 with the largest per page' => [
+            'query' => ['page' => 1, 'perPage' => \PHP_INT_MAX],
+            'perPageMax' => null,
+            'expectedPage' => 1,
+            'expectedPerPage' => \PHP_INT_MAX,
+        ];
     }
 
     public function testCustomConfigResolveSuccessfully(): void
