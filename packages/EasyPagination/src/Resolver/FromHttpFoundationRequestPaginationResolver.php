@@ -30,10 +30,11 @@ final readonly class FromHttpFoundationRequestPaginationResolver
             $perPage = $perPageMax;
         }
 
-        // The offset of the page and the number of the next page must both fit in an integer. A configured default is
-        // used as is, so the page size can still be below 1 here
-        $pageMax = \intdiv(\PHP_INT_MAX - 1, \max($perPage, 1));
-        $page = $this->getPositiveInt($config->getPageAttribute(), $config->getPageDefault(), $pageMax);
+        // The offset of the page, (page - 1) * perPage, and the number of the next page must both fit in an integer.
+        // A configured default is used as is, so the page size can still be below 1 here
+        $pageMax = \min(\intdiv(\PHP_INT_MAX, \max($perPage, 1)), \PHP_INT_MAX - 2) + 1;
+        $pageDefault = \min($config->getPageDefault(), $pageMax);
+        $page = $this->getPositiveInt($config->getPageAttribute(), $pageDefault, $pageMax);
 
         return Pagination::create(
             $page,

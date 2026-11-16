@@ -101,14 +101,14 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
         ];
 
         yield 'largest page for the per page' => [
-            'query' => ['page' => \intdiv(\PHP_INT_MAX - 1, 15), 'perPage' => 15],
+            'query' => ['page' => \intdiv(\PHP_INT_MAX, 15) + 1, 'perPage' => 15],
             'perPageMax' => null,
-            'expectedPage' => \intdiv(\PHP_INT_MAX - 1, 15),
+            'expectedPage' => \intdiv(\PHP_INT_MAX, 15) + 1,
             'expectedPerPage' => 15,
         ];
 
         yield 'page above the largest page for the per page' => [
-            'query' => ['page' => \intdiv(\PHP_INT_MAX - 1, 15) + 1, 'perPage' => 15],
+            'query' => ['page' => \intdiv(\PHP_INT_MAX, 15) + 2, 'perPage' => 15],
             'perPageMax' => null,
             'expectedPage' => 1,
             'expectedPerPage' => 15,
@@ -122,9 +122,9 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
         ];
 
         yield 'largest page for the per page reduced to the max' => [
-            'query' => ['page' => \intdiv(\PHP_INT_MAX - 1, 100), 'perPage' => 2_147_483_647],
+            'query' => ['page' => \intdiv(\PHP_INT_MAX, 100) + 1, 'perPage' => 2_147_483_647],
             'perPageMax' => 100,
-            'expectedPage' => \intdiv(\PHP_INT_MAX - 1, 100),
+            'expectedPage' => \intdiv(\PHP_INT_MAX, 100) + 1,
             'expectedPerPage' => 100,
         ];
 
@@ -141,6 +141,27 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
             'expectedPage' => 1,
             'expectedPerPage' => \PHP_INT_MAX,
         ];
+
+        yield 'page 2 with the largest per page' => [
+            'query' => ['page' => 2, 'perPage' => \PHP_INT_MAX],
+            'perPageMax' => null,
+            'expectedPage' => 2,
+            'expectedPerPage' => \PHP_INT_MAX,
+        ];
+
+        yield 'page 3 with the largest per page' => [
+            'query' => ['page' => 3, 'perPage' => \PHP_INT_MAX],
+            'perPageMax' => null,
+            'expectedPage' => 1,
+            'expectedPerPage' => \PHP_INT_MAX,
+        ];
+
+        yield 'largest page for the per page 1' => [
+            'query' => ['page' => \PHP_INT_MAX - 1, 'perPage' => 1],
+            'perPageMax' => null,
+            'expectedPage' => \PHP_INT_MAX - 1,
+            'expectedPerPage' => 1,
+        ];
     }
 
     /**
@@ -151,6 +172,27 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
         yield 'per page default 0' => [0];
 
         yield 'negative per page default' => [-1];
+    }
+
+    /**
+     * @see testItLimitsPageDefaultToLargestPage
+     */
+    public static function providePageDefaultsAboveLargestPage(): iterable
+    {
+        yield 'valid page is kept' => [
+            'query' => ['page' => 1, 'perPage' => \PHP_INT_MAX],
+            'expectedPage' => 1,
+        ];
+
+        yield 'page not set' => [
+            'query' => ['perPage' => \PHP_INT_MAX],
+            'expectedPage' => 2,
+        ];
+
+        yield 'invalid page' => [
+            'query' => ['page' => 'abc', 'perPage' => \PHP_INT_MAX],
+            'expectedPage' => 2,
+        ];
     }
 
     public function testCustomConfigResolveSuccessfully(): void
@@ -176,6 +218,18 @@ final class FromHttpFoundationRequestPaginationResolverTest extends AbstractUnit
 
         self::assertEquals($config->getPageDefault(), $data->getPage());
         self::assertEquals($config->getPerPageDefault(), $data->getPerPage());
+    }
+
+    #[DataProvider('providePageDefaultsAboveLargestPage')]
+    public function testItLimitsPageDefaultToLargestPage(array $query, int $expectedPage): void
+    {
+        $config = $this->createConfig(pageDefault: 3);
+        $resolver = new FromHttpFoundationRequestPaginationResolver($config, $this->createServerRequest($query));
+
+        $data = $resolver();
+
+        self::assertSame($expectedPage, $data->getPage());
+        self::assertSame(\PHP_INT_MAX, $data->getPerPage());
     }
 
     #[DataProvider('provideInvalidValues')]
