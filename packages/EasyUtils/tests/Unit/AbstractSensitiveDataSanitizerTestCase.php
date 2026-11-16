@@ -1073,17 +1073,45 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'lowercaseEncodedBrackets' => 'user%5bpassword%5d=secret&x=1',
                 'encodedSeparator' => 'https://example.com?api%5Fkey=secret&x=1',
                 'formEncodedSpace' => 'api+key=secret&x=1',
+                'encodedPrefixSeparators' => 'a%5BHTTP%5FX%5Fapi%5Fkey%5D=secret&x=1',
+                'encodedRepeatedPrefix' => 'a%5BREDIRECT%5FREDIRECT%2DHTTP%5Fpassword%5D=secret&x=1',
+                'formEncodedPrefixSpace' => 'a[http+x+api+key]=secret&x=1',
+                'encodedPrefixInPath' => 'https://example.com/x%2Dapi%2Dkey/secret/keep',
+                'encodedPrefixOfOtherKey' => 'a%5BHTTP%5FHOST%5D=keep&x=1',
             ],
             'expectedOutput' => [
                 'encodedBrackets' => 'user%5Bpassword%5D=*REDACTED*&user%5Bname%5D=keep',
                 'lowercaseEncodedBrackets' => 'user%5bpassword%5d=*REDACTED*&x=1',
                 'encodedSeparator' => 'https://example.com?api%5Fkey=*REDACTED*&x=1',
                 'formEncodedSpace' => 'api+key=*REDACTED*&x=1',
+                'encodedPrefixSeparators' => 'a%5BHTTP%5FX%5Fapi%5Fkey%5D=*REDACTED*&x=1',
+                'encodedRepeatedPrefix' => 'a%5BREDIRECT%5FREDIRECT%2DHTTP%5Fpassword%5D=*REDACTED*&x=1',
+                'formEncodedPrefixSpace' => 'a[http+x+api+key]=*REDACTED*&x=1',
+                'encodedPrefixInPath' => 'https://example.com/x%2Dapi%2Dkey/*REDACTED*/keep',
+                'encodedPrefixOfOtherKey' => 'a%5BHTTP%5FHOST%5D=keep&x=1',
             ],
             'maskPattern' => '*REDACTED*',
             'keysToMask' => [
                 'api_key',
                 'password',
+            ],
+        ];
+        yield 'Mask keys in a string with a long run of prefixes' => [
+            'input' => [
+                'tenPrefixes' => 'a[' . \str_repeat('REDIRECT_', 10) . 'HTTP_TOKEN]=secret&x=1',
+                'longRun' => 'a[' . \str_repeat('redirect_', 50000) . 'other]=keep&token=secret',
+                'longEncodedRun' => 'a%5B' . \str_repeat('redirect%5F', 50000) . 'other%5D=keep&token=secret',
+                'longRunAfterHeaderLine' => "Token: secret\n" . \str_repeat('REDIRECT_', 50000) . ': keep',
+            ],
+            'expectedOutput' => [
+                'tenPrefixes' => 'a[' . \str_repeat('REDIRECT_', 10) . 'HTTP_TOKEN]=*REDACTED*&x=1',
+                'longRun' => 'a[' . \str_repeat('redirect_', 50000) . 'other]=keep&token=*REDACTED*',
+                'longEncodedRun' => 'a%5B' . \str_repeat('redirect%5F', 50000) . 'other%5D=keep&token=*REDACTED*',
+                'longRunAfterHeaderLine' => "Token: *REDACTED*\n" . \str_repeat('REDIRECT_', 50000) . ': keep',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => [
+                'token',
             ],
         ];
         yield 'Mask header lines' => [
