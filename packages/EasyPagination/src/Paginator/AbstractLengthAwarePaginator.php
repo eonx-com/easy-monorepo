@@ -25,7 +25,10 @@ abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements
             return $this->totalPages;
         }
 
-        return $this->totalPages = \max((int)\ceil($this->getTotalItems() / $this->getItemsPerPage()), 1);
+        // A pagination created in code is not checked, so a page size below 1 must not divide by zero
+        $itemsPerPage = \max($this->getItemsPerPage(), 1);
+
+        return $this->totalPages = \max((int)\ceil($this->getTotalItems() / $itemsPerPage), 1);
     }
 
     public function hasNextPage(): bool

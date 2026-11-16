@@ -11,6 +11,18 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 {
     private ?Application $app = null;
 
+    protected function tearDown(): void
+    {
+        if ($this->app !== null) {
+            // Lumen application registers its own error and exception handlers on construction
+            \restore_error_handler();
+            \restore_exception_handler();
+            $this->app = null;
+        }
+
+        parent::tearDown();
+    }
+
     /**
      * @param class-string $concrete
      * @param class-string $abstract
@@ -20,13 +32,19 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
         self::assertInstanceOf($concrete, $this->getApplication()->get($abstract));
     }
 
-    protected function getApplication(?bool $pretendInConsole = null): Application
+    protected function getApplication(?bool $pretendInConsole = null, ?array $config = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
         }
 
         $this->app = $this->createApplication($pretendInConsole);
+
+        if ($config !== null) {
+            $this->app->make('config')
+                ->set($config);
+        }
+
         $this->app->register(EasyPaginationServiceProvider::class);
 
         return $this->app;
