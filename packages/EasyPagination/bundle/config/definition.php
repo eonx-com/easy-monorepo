@@ -16,7 +16,7 @@ return static function (DefinitionConfigurator $definition) {
                     ->integerNode('per_page_max')
                         ->defaultNull()
                         ->min(1)
-                        ->info('The largest page size a client can request, null for no limit')
+                        ->info('The largest page size a client can request, leave unset for no limit')
                     ->end()
                 ->end()
             ->end()
