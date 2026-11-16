@@ -44,6 +44,9 @@ reduced to it:
 
 ```php
 // config/packages/easy_pagination.php
+
+use Symfony\Config\EasyPaginationConfig;
+
 return static function (EasyPaginationConfig $easyPaginationConfig): void {
     $easyPaginationConfig->pagination()
         ->perPageMax(100);
