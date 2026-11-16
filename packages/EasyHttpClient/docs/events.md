@@ -68,10 +68,10 @@ The listeners record the request options and the response body as they are. This
 personal data that the application sends to the remote API or receives from it. The package does not mask anything
 itself:
 
-- Log records are masked when the sensitive data sanitizer of EasyLogging is enabled. It is disabled by default
+- Log records are masked when the sensitive data sanitizer of EasyLogging is enabled
   (`easy_logging.sensitive_data_sanitizer.enabled` in Symfony, `easy-logging.sensitive_data_sanitizer.enabled` in
   Laravel/Lumen).
-- Breadcrumbs are masked when the sensitive data sanitizer of EasyBugsnag is enabled. It is enabled by default
+- Breadcrumbs are masked when the sensitive data sanitizer of EasyBugsnag is enabled
   (`easy_bugsnag.sensitive_data_sanitizer.enabled` in Symfony, `easy-bugsnag.sensitive_data_sanitizer.enabled` in
   Laravel/Lumen).
 
