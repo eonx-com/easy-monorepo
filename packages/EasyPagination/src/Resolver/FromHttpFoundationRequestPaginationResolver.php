@@ -19,7 +19,6 @@ final readonly class FromHttpFoundationRequestPaginationResolver
 
     public function __invoke(): PaginationInterface
     {
-        $query = $this->request->query;
         $config = $this->paginationConfigProvider;
 
         $page = $this->getPositiveInt($config->getPageAttribute(), $config->getPageDefault());
