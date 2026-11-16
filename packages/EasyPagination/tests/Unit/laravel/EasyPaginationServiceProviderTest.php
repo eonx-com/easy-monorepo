@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Laravel;
 
-use EonX\EasyPagination\Laravel\EasyPaginationServiceProvider;
 use EonX\EasyPagination\Laravel\Middleware\PaginationFromRequestMiddleware;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\DefaultPaginationResolver;
 use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
-use Laravel\Lumen\Application;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -80,11 +78,7 @@ final class EasyPaginationServiceProviderTest extends AbstractLaravelTestCase
     #[DataProvider('provideDefaultResolverConfig')]
     public function testItRegistersDefaultResolver(array $config, bool $expectedRegistered): void
     {
-        $app = new Application(__DIR__);
-        $app->make('config')
-            ->set($config);
-
-        $app->register(EasyPaginationServiceProvider::class);
+        $app = $this->getApplication(config: $config);
 
         self::assertSame($expectedRegistered, $app->bound(PaginationFromRequestMiddleware::class));
     }
