@@ -85,7 +85,7 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
             'options' => [
                 'extra' => [
                     'curl' => [
-                        \CURLOPT_COOKIEJAR => '/tmp/cookies.txt',
+                        10082 => '/tmp/cookies.txt', // Value of the CURLOPT_COOKIEJAR constant
                     ],
                 ],
             ],
@@ -97,7 +97,7 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
             'options' => [
                 'extra' => [
                     'curl' => [
-                        \CURLOPT_COOKIEJAR => '/tmp/cookies.txt',
+                        10082 => '/tmp/cookies.txt', // Value of the CURLOPT_COOKIEJAR constant
                     ],
                 ],
             ],
