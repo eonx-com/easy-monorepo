@@ -47,8 +47,9 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
                 $quotedKey = \preg_quote($key, '/');
             }
 
-            // Optional "x" prefix for "[key]=" and "/key/"; plain "key=" has no left boundary and already matches it
-            $prefixedQuotedKey = '(?:x[ _-]*)?' . $quotedKey;
+            // Optional "redirect_", "http_" and "x" prefixes for "[key]=" and "/key/"; plain "key=" has no left
+            // boundary and already matches them
+            $prefixedQuotedKey = '(?:redirect[ _-]*+)*(?:http[ _-]*+)?(?:x[ _-]*+)?' . $quotedKey;
 
             // Query/array style (key=..., [key]=...): the value ends at whitespace or a structural
             // delimiter (& ? # , ; " ' ) ] } < >) but may legitimately contain "/" (e.g. base64
