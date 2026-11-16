@@ -68,14 +68,16 @@ The listeners record the request options and the response body as they are. This
 personal data that the application sends to the remote API or receives from it. The package does not mask anything
 itself:
 
-- Log records are masked when the sensitive data sanitizer of EasyLogging is enabled
-  (`easy_logging.sensitive_data_sanitizer`).
-- Breadcrumbs are masked when the sensitive data sanitizer of EasyBugsnag is enabled
-  (`easy_bugsnag.sensitive_data_sanitizer`).
+- Log records are masked when the sensitive data sanitizer of EasyLogging is enabled. It is disabled by default
+  (`easy_logging.sensitive_data_sanitizer.enabled` in Symfony, `easy-logging.sensitive_data_sanitizer.enabled` in
+  Laravel/Lumen).
+- Breadcrumbs are masked when the sensitive data sanitizer of EasyBugsnag is enabled. It is enabled by default
+  (`easy_bugsnag.sensitive_data_sanitizer.enabled` in Symfony, `easy-bugsnag.sensitive_data_sanitizer.enabled` in
+  Laravel/Lumen).
 
-Both sanitizers mask a value by the name of its key: the default keys of EasyUtils plus the keys in
-`easy_utils.sensitive_data_sanitizer.keys_to_mask`. A key matches only as a whole, for example `name` does not cover
-`accountName`. So:
+Both sanitizers mask a value by the name of its key: the default keys of EasyUtils plus the configured keys
+(`easy_utils.sensitive_data_sanitizer.keys_to_mask` in Symfony, `easy-utils.sensitive_data.keys_to_mask` in
+Laravel/Lumen). A key matches only as a whole, for example `name` does not cover `accountName`. So:
 
 - Add the names of the sensitive fields of each remote API to `keys_to_mask`. Check the list again when the API adds
   a field.
