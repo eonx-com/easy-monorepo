@@ -97,7 +97,7 @@ trait DoctrineCommonPaginatorTrait
 
         if ($select !== null) {
             $select = \is_array($select) ? $select : [$select];
-            $queryBuilder->select(...$select);
+            $queryBuilder->select(...\array_values($select));
         }
 
         // Common and GetItems criteria are applied regardless of fetching method
