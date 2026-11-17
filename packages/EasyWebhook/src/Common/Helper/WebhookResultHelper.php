@@ -5,6 +5,8 @@ namespace EonX\EasyWebhook\Common\Helper;
 
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Exception\WebhookHttpClientOptionNotAllowedException;
+use EonX\EasyWebhook\Common\Exception\WebhookResponseTooLargeException;
 
 final class WebhookResultHelper
 {
@@ -42,5 +44,17 @@ final class WebhookResultHelper
         }
 
         return $data;
+    }
+
+    /**
+     * A failure that a retry cannot change, whatever the attempts left: the options of the webhook stay the same,
+     * and an oversized response would only be downloaded again. Time-limit aborts remain retryable
+     */
+    public static function isNotRetryable(WebhookResultInterface $result): bool
+    {
+        $throwable = $result->getThrowable();
+
+        return $throwable instanceof WebhookHttpClientOptionNotAllowedException
+            || WebhookResponseTooLargeException::isInChain($throwable);
     }
 }

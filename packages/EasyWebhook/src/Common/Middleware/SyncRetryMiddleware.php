@@ -5,8 +5,7 @@ namespace EonX\EasyWebhook\Common\Middleware;
 
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
-use EonX\EasyWebhook\Common\Exception\WebhookHttpClientOptionNotAllowedException;
-use EonX\EasyWebhook\Common\Exception\WebhookResponseTooLargeException;
+use EonX\EasyWebhook\Common\Helper\WebhookResultHelper;
 use EonX\EasyWebhook\Common\Stack\StackInterface;
 use EonX\EasyWebhook\Common\Store\ResultStoreInterface;
 use EonX\EasyWebhook\Common\Strategy\WebhookRetryStrategyInterface;
@@ -54,11 +53,7 @@ final class SyncRetryMiddleware extends AbstractMiddleware
             $safety++;
 
             $shouldLoop = $result->isSuccessful() === false
-                // An oversized-response abort is not retryable: retrying only re-downloads the
-                // same body. Time-limit aborts (timeout / max_duration) remain retryable
-                && WebhookResponseTooLargeException::isInChain($result->getThrowable()) === false
-                // A rejected HTTP client option is not retryable: the options of the webhook stay the same
-                && ($result->getThrowable() instanceof WebhookHttpClientOptionNotAllowedException) === false
+                && WebhookResultHelper::isNotRetryable($result) === false
                 && $this->retryStrategy->isRetryable($webhook)
                 && $safety < $webhook->getMaxAttempt();
 

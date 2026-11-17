@@ -94,7 +94,8 @@ Retry behaviour differs by limit type, and neither is a crash:
 - A **time**-limit abort (`timeout` / `max_duration`) is a failed webhook that **is retried** by the
   configured retry strategy — the target may simply have been slow.
 - A **size**-limit abort (`max_response_bytes`) is a failed webhook that is **not retried** —
-  retrying would only re-download the same oversized body.
+  retrying would only re-download the same oversized body. Its status is `failed` at once, also when it has
+  attempts left.
 
 > Note: these limits are enabled by default from 7.0 (they were opt-in in 6.x) — a webhook whose
 > target stalls, runs past the duration cap, or returns an oversized body is now aborted out of the
@@ -187,7 +188,8 @@ webhook, so the package rejects the options that write a file, call code or chan
 | `bindto`, `proxy`, `resolve`                                                                           | while `ssrf_protection` is enabled   |
 
 A webhook with such an option is not sent: it fails with a `WebhookHttpClientOptionNotAllowedException` (a failed
-webhook, not a crash). It is not retried, because its options stay the same.
+webhook, not a crash). It is not retried, because its options stay the same: its status is `failed` at once, also when
+it has attempts left.
 
 Empty values of `extra.curl`, `bindto` and `resolve` are accepted. For `proxy`, only `null` is accepted: the HTTP client
 uses every other value, an empty string too. An `on_progress` given as a closure or as `[$object, 'method']` is

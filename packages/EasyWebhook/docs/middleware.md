@@ -159,7 +159,8 @@ The current attempt is incremented.
 The status can be set to one of:
 
 - `success`: The webhook was successfully sent.
-- `failed`: The webhook sending failed and the webhook has reached the maximum number of attempts allowed
+- `failed`: The webhook sending failed and the webhook has reached the maximum number of attempts allowed, or the
+  failure cannot be retried (a rejected HTTP client option, a response over the size limit)
 - `failed_pending_retry`: The webhook sending failed but the webhook has not reached the maximum number of attempts
   allowed
 

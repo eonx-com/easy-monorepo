@@ -546,6 +546,9 @@ Laravel:
   `on_progress` closure still works for a webhook that is sent in the same process, but it cannot be stored, so for an
   asynchronous webhook set it on the HTTP client too. When you create `SendWebhookMiddleware` yourself with
   `ssrf_protection` disabled, pass `false` as its new third argument.
+- A webhook whose failure cannot be retried gets the `failed` status and a `FinalFailedWebhookEvent` at once, also when
+  it has attempts left: a webhook with a rejected HTTP client option, and a webhook whose response is over
+  `request_limits.max_response_bytes`. Before, such a webhook stayed in `failed_pending_retry`.
 - Laravel: when the signature is enabled and `signature.secret` is still the default `easy-webhook-secret`, the
   application fails at startup with an `InvalidWebhookSecretException`. A value shipped with the package is known to
   everyone, so a signature made with it proves nothing. Set your own secret; receivers that verify the signature with
