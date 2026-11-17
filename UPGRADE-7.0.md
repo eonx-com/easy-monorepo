@@ -129,8 +129,8 @@ Tips:
 - [ ] Remove `extra.curl` and an `on_progress` given as a string from the HTTP client options of webhooks
   (`httpClientOptions()`). With `ssrf_protection` enabled, also remove `bindto`, `proxy` and `resolve`. In 7.0 a webhook
   with such an option is not sent.
-- [ ] Laravel: when the signature is enabled, set your own `signature.secret` in `config/easy-webhook.php`. In 7.0 the
-  default value `easy-webhook-secret` is rejected.
+- [ ] Laravel: when the signature is enabled, set your own `signature.secret` in `config/easy-webhook.php`, or `null`
+  when every webhook has its own secret (`secret()`). In 7.0 the default value `easy-webhook-secret` is rejected.
 
 ### EasyTest
 
@@ -552,4 +552,5 @@ Laravel:
 - Laravel: when the signature is enabled and `signature.secret` is still the default `easy-webhook-secret`, the
   application fails at startup with an `InvalidWebhookSecretException`. A value shipped with the package is known to
   everyone, so a signature made with it proves nothing. Set your own secret; receivers that verify the signature with
-  the default value need the new one.
+  the default value need the new one. When every webhook has its own secret (`secret()`), set `signature.secret` to
+  `null`.

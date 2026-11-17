@@ -61,7 +61,9 @@ webhook can also carry its own secret (`secret()`), which is used instead.
 
 The Laravel config file ships with the default `easy-webhook-secret`. A value that is shipped with a package is known to
 everyone, so a signature made with it proves nothing to the receiver. When the signature is enabled and the secret is
-still this default, the application fails at startup with an `InvalidWebhookSecretException`.
+still this default, the application fails at startup with an `InvalidWebhookSecretException`. This is also true when
+every webhook has its own secret. In that case set `signature.secret` to `null`: a webhook that misses its own secret
+then fails instead of being signed with a public value.
 
 With the signature enabled, a webhook that has a body and no secret at all is not sent: it fails with an
 `InvalidWebhookSecretException`.

@@ -288,7 +288,8 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         if (\config('easy-webhook.signature.secret') === self::DEFAULT_SIGNATURE_SECRET) {
             throw new InvalidWebhookSecretException(\sprintf(
                 'The webhook signature is enabled with the default secret "%s", which is public. '
-                . 'Set your own value in the "easy-webhook.signature.secret" config.',
+                . 'Set your own value in the "easy-webhook.signature.secret" config, '
+                . 'or null when every webhook has its own secret.',
                 self::DEFAULT_SIGNATURE_SECRET
             ));
         }

@@ -48,12 +48,26 @@ final class EasyWebhookServiceProviderTest extends AbstractLaravelTestCase
     public function testDefaultSignatureSecretIsRejectedWhenSignatureIsEnabled(): void
     {
         $this->expectException(InvalidWebhookSecretException::class);
-        $this->expectExceptionMessage('Set your own value in the "easy-webhook.signature.secret" config.');
+        $this->expectExceptionMessage(
+            'Set your own value in the "easy-webhook.signature.secret" config, '
+            . 'or null when every webhook has its own secret.'
+        );
 
         $this->getApplication(null, [
             'easy-webhook.signature.enabled' => true,
             'easy-webhook.signature.secret' => EasyWebhookServiceProvider::DEFAULT_SIGNATURE_SECRET,
         ]);
+    }
+
+    public function testNullSignatureSecretIsAcceptedWhenSignatureIsEnabled(): void
+    {
+        $app = $this->getApplication(null, [
+            'easy-webhook.signature.enabled' => true,
+            'easy-webhook.signature.secret' => null,
+        ]);
+
+        self::assertNull(\config('easy-webhook.signature.secret'));
+        self::assertInstanceOf(WebhookClientInterface::class, $app->make(WebhookClientInterface::class));
     }
 
     public function testOwnSignatureSecretIsAcceptedWhenSignatureIsEnabled(): void
