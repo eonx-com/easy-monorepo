@@ -78,9 +78,12 @@ final class SendWebhookMiddleware extends AbstractMiddleware
             $notAllowedOptions[] = 'extra.curl';
         }
 
-        if (\is_string($onProgress)
-            || (\is_array($onProgress) && $onProgress !== [] && \array_filter($onProgress, \is_object(...)) === [])
-        ) {
+        // Only a callable with an object can be trusted: it cannot come from the stored options. A stored closure
+        // comes back as an empty array, which the HTTP client would refuse on every attempt
+        $isObjectCallable = \is_object($onProgress)
+            || (\is_array($onProgress) && \array_filter($onProgress, \is_object(...)) !== []);
+
+        if ($onProgress !== null && $isObjectCallable === false) {
             $notAllowedOptions[] = 'on_progress';
         }
 

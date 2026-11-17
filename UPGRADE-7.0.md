@@ -126,9 +126,9 @@ Tips:
 
 - [ ] Enable `'request_limits' => ['enabled' => true]` in `easy_webhook` (Laravel: the same in
   `config/easy-webhook.php`) and test it. In 7.0 it is enabled by default.
-- [ ] Remove `extra.curl` and an `on_progress` given as a string from the HTTP client options of webhooks
-  (`httpClientOptions()`). With `ssrf_protection` enabled, also remove `bindto`, `proxy` and `resolve`. In 7.0 a webhook
-  with such an option is not sent.
+- [ ] Remove `extra.curl` and an `on_progress` that is not a closure or an object from the HTTP client options of
+  webhooks (`httpClientOptions()`). With `ssrf_protection` enabled, also remove `bindto`, `proxy` and `resolve`. In 7.0
+  a webhook with such an option is not sent.
 - [ ] Laravel: when the signature is enabled, set your own `signature.secret` in `config/easy-webhook.php`, or `null`
   when every webhook has its own secret (`secret()`). In 7.0 the default value `easy-webhook-secret` is rejected.
 
@@ -540,12 +540,12 @@ Laravel:
   ]);
   ```
 - A webhook is not sent when its HTTP client options (`httpClientOptions()`) contain `extra.curl`, an `on_progress`
-  given as a string or as an array without an object, or, while `ssrf_protection` is enabled, `bindto`, `proxy` or
-  `resolve`. It fails with a `WebhookHttpClientOptionNotAllowedException`. For `proxy`, every value except `null` is
-  rejected. Set these options on the HTTP client itself (decorate the `easy_webhooks.http_client` service). An
-  `on_progress` closure still works for a webhook that is sent in the same process, but it cannot be stored, so for an
-  asynchronous webhook set it on the HTTP client too. When you create `SendWebhookMiddleware` yourself with
-  `ssrf_protection` disabled, pass `false` as its new third argument.
+  that is not a closure, an invokable object or `[$object, 'method']`, or, while `ssrf_protection` is enabled, `bindto`,
+  `proxy` or `resolve`. It fails with a `WebhookHttpClientOptionNotAllowedException`. For `proxy`, every value except
+  `null` is rejected. Set these options on the HTTP client itself (decorate the `easy_webhooks.http_client` service). An
+  `on_progress` closure still works for a webhook that is sent in the same process, but it cannot be stored (it comes
+  back as an empty array, which is rejected), so for an asynchronous webhook set it on the HTTP client too. When you
+  create `SendWebhookMiddleware` yourself with `ssrf_protection` disabled, pass `false` as its new third argument.
 - A webhook whose failure cannot be retried gets the `failed` status and a `FinalFailedWebhookEvent` at once, also when
   it has attempts left: a webhook with a rejected HTTP client option, and a webhook whose response is over
   `request_limits.max_response_bytes`. Before, such a webhook stayed in `failed_pending_retry`.

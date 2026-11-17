@@ -186,7 +186,7 @@ webhook, so the package rejects the options that write a file, call code or chan
 | Option                                                                                                 | Rejected                             |
 |--------------------------------------------------------------------------------------------------------|--------------------------------------|
 | `extra.curl`                                                                                           | always                               |
-| `on_progress` as a string or as an array without an object (`'App\Foo::bar'`, `['App\Foo', 'bar']`)    | always                               |
+| `on_progress` as anything except a closure, an invokable object or `[$object, 'method']`               | always                               |
 | `bindto`, `proxy`, `resolve`                                                                           | while `ssrf_protection` is enabled   |
 
 A webhook with such an option is not sent: it fails with a `WebhookHttpClientOptionNotAllowedException` (a failed
@@ -194,9 +194,11 @@ webhook, not a crash). It is not retried, because its options stay the same: its
 it has attempts left.
 
 Empty values of `extra.curl`, `bindto` and `resolve` are accepted. For `proxy`, only `null` is accepted: the HTTP client
-uses every other value, an empty string too. An `on_progress` given as a closure or as `[$object, 'method']` is
-accepted, but such a value cannot be stored with the webhook, so it works only for a webhook that is sent in the same
-process. For a webhook that is stored and sent later (asynchronously), set `on_progress` on the HTTP client itself.
+uses every other value, an empty string too. For `on_progress`, a string (`'App\Foo::bar'`), an array without an object
+(`['App\Foo', 'bar']`, `[]`) and every other value that is not `null` are rejected. An `on_progress` given as a closure
+or as `[$object, 'method']` is accepted, but such a value cannot be stored with the webhook: after it is stored, a
+closure is an empty array, so the webhook is rejected. It works only for a webhook that is sent in the same process.
+For a webhook that is stored and sent later (asynchronously), set `on_progress` on the HTTP client itself.
 
 To use one of the other options, set it on the HTTP client itself: decorate the `easy_webhooks.http_client` service or
 provide your own `HttpClientFactoryInterface`.

@@ -64,6 +64,15 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
             'ssrfProtectionEnabled' => true,
         ];
 
+        yield 'on_progress as an invokable object' => [
+            'options' => [
+                'on_progress' => new class {
+                    public function __invoke(): void {}
+                },
+            ],
+            'ssrfProtectionEnabled' => true,
+        ];
+
         yield 'connection options with SSRF protection disabled' => [
             'options' => [
                 'bindto' => '127.0.0.1',
@@ -134,6 +143,30 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
                 'on_progress' => ['App\\SomeClass', 'someMethod'],
             ],
             'ssrfProtectionEnabled' => false,
+            'expectedOption' => 'on_progress',
+        ];
+
+        yield 'on_progress as an empty array (a closure after it is stored)' => [
+            'options' => [
+                'on_progress' => [],
+            ],
+            'ssrfProtectionEnabled' => true,
+            'expectedOption' => 'on_progress',
+        ];
+
+        yield 'on_progress as false' => [
+            'options' => [
+                'on_progress' => false,
+            ],
+            'ssrfProtectionEnabled' => true,
+            'expectedOption' => 'on_progress',
+        ];
+
+        yield 'on_progress as an integer' => [
+            'options' => [
+                'on_progress' => 0,
+            ],
+            'ssrfProtectionEnabled' => true,
             'expectedOption' => 'on_progress',
         ];
 
