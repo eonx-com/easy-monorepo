@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyHttpClient\Tests\Application\Common\HttpClient;
 
 use DateTimeInterface;
+use EonX\EasyHttpClient\Common\Enum\HttpOption;
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Common\ValueObject\ResponseData;
 use EonX\EasyHttpClient\Tests\Application\AbstractApplicationTestCase;
@@ -12,7 +13,9 @@ use EonX\EasyTest\HttpClient\Factory\TestResponseFactory;
 use EonX\EasyTest\HttpClient\Response\SimpleTestResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpClient\Exception\TransportException;
+use Symfony\Component\HttpClient\ScopingHttpClient;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
 final class WithEventsHttpClientTest extends AbstractApplicationTestCase
@@ -88,6 +91,19 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         self::assertInstanceOf(DateTimeInterface::class, $event->getThrowableThrownAt());
     }
 
+    public function testRequestWithEventsDisabledDoesNotDispatchAnyEvent(): void
+    {
+        TestResponseFactory::addResponse(new SimpleTestResponse('https://eonx.com/'));
+        $sut = self::getContainer()->get(SomeClient::class);
+
+        $sut->makeRequest([HttpOption::EventsEnabled->value => false])
+            ->getContent();
+
+        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
+        self::assertCount(0, $eventDispatcher->getDispatchedEvents());
+    }
+
     #[DataProvider('provideErrorStatusCodes')]
     public function testResponseWithErrorStatusCodeStillDispatchesEvent(int $statusCode): void
     {
@@ -107,5 +123,21 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         self::assertInstanceOf(ResponseData::class, $event->getResponseData());
         self::assertSame($statusCode, $event->getResponseData()->getStatusCode());
         self::assertNull($event->getThrowable());
+    }
+
+    public function testScopingHttpClientWithEventsDisabledDoesNotDispatchAnyEvent(): void
+    {
+        TestResponseFactory::addResponse(new SimpleTestResponse('https://eonx.com/'));
+        $httpClient = self::getContainer()->get(HttpClientInterface::class);
+        $sut = ScopingHttpClient::forBaseUri($httpClient, 'https://eonx.com/', [
+            HttpOption::EventsEnabled->value => false,
+        ]);
+
+        $sut->request('GET', 'https://eonx.com/')
+            ->getContent();
+
+        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
+        self::assertCount(0, $eventDispatcher->getDispatchedEvents());
     }
 }
