@@ -34,6 +34,13 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
             'ssrfProtectionEnabled' => true,
         ];
 
+        yield 'no_proxy as null' => [
+            'options' => [
+                'no_proxy' => null,
+            ],
+            'ssrfProtectionEnabled' => true,
+        ];
+
         yield 'options that describe the request' => [
             'options' => [
                 'auth_basic' => ['user', 'password'],
@@ -51,9 +58,6 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
                 'max_connect_duration' => 1.0,
                 'max_duration' => 5.0,
                 'max_redirects' => 0,
-                'peer_fingerprint' => [
-                    'sha256' => 'fingerprint',
-                ],
                 'query' => [
                     'key' => 'value',
                 ],
@@ -332,6 +336,26 @@ final class SendWebhookMiddlewareTest extends AbstractMiddlewareTestCase
             ],
             'ssrfProtectionEnabled' => true,
             'expectedOption' => 'crypto_method',
+        ];
+
+        yield 'peer_fingerprint as sha256' => [
+            'options' => [
+                'peer_fingerprint' => [
+                    'sha256' => 'fingerprint',
+                ],
+            ],
+            'ssrfProtectionEnabled' => true,
+            'expectedOption' => 'peer_fingerprint',
+        ];
+
+        yield 'peer_fingerprint as pin-sha256' => [
+            'options' => [
+                'peer_fingerprint' => [
+                    'pin-sha256' => ['fingerprint'],
+                ],
+            ],
+            'ssrfProtectionEnabled' => false,
+            'expectedOption' => 'peer_fingerprint',
         ];
 
         yield 'base_uri' => [

@@ -30,7 +30,7 @@ final class EasyWebhookServiceProviderTest extends AbstractLaravelTestCase
             [
                 'easy-webhook.ssrf_protection.enabled' => false,
             ],
-            null,
+            'null',
             1,
         ];
     }
@@ -89,12 +89,12 @@ final class EasyWebhookServiceProviderTest extends AbstractLaravelTestCase
     }
 
     /**
-     * @param class-string<\Throwable>|null $expectedThrowable
+     * @param class-string<\Throwable>|'null' $expectedThrowable
      */
     #[DataProvider('provideSendWebhookMiddlewareData')]
     public function testSendWebhookMiddlewareFollowsSsrfProtectionConfig(
         ?array $config,
-        ?string $expectedThrowable,
+        string $expectedThrowable,
         int $expectedRequestsCount,
     ): void {
         $app = $this->getApplication(null, $config);
@@ -109,7 +109,7 @@ final class EasyWebhookServiceProviderTest extends AbstractLaravelTestCase
 
         $result = $middleware->process($webhook, new Stack([$middleware]));
 
-        self::assertSame($expectedThrowable, $result->getThrowable() === null ? null : $result->getThrowable()::class);
+        self::assertSame($expectedThrowable, \get_debug_type($result->getThrowable()));
         self::assertSame($expectedRequestsCount, $httpClient->getRequestsCount());
     }
 

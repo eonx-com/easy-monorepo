@@ -101,7 +101,7 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
                 __DIR__ . '/../../Fixture/config/ssrf_protection_disabled.php',
                 __DIR__ . '/../../Fixture/config/mock_http_client.php',
             ],
-            null,
+            'null',
             1,
         ];
     }
@@ -133,12 +133,12 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 
     /**
      * @param string[] $configs
-     * @param class-string<\Throwable>|null $expectedThrowable
+     * @param class-string<\Throwable>|'null' $expectedThrowable
      */
     #[DataProvider('provideSendWebhookMiddlewareData')]
     public function testSendWebhookMiddlewareFollowsSsrfProtectionConfig(
         array $configs,
-        ?string $expectedThrowable,
+        string $expectedThrowable,
         int $expectedRequestsCount,
     ): void {
         $container = $this->getKernel($configs)
@@ -154,7 +154,7 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 
         $result = $middleware->process($webhook, new Stack([$middleware]));
 
-        self::assertSame($expectedThrowable, $result->getThrowable() === null ? null : $result->getThrowable()::class);
+        self::assertSame($expectedThrowable, \get_debug_type($result->getThrowable()));
         self::assertSame($expectedRequestsCount, $httpClient->getRequestsCount());
     }
 

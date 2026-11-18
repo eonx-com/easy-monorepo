@@ -189,15 +189,16 @@ also one that a later Symfony version adds, is rejected:
 |----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
 | `auth_basic`, `auth_bearer`, `body`, `headers`, `json`, `query`, `user_data`                 | always                                                                  |
 | `buffer`, `http_version`, `max_connect_duration`, `max_duration`, `max_redirects`, `timeout` | always                                                                  |
-| `capture_peer_cert_chain`, `peer_fingerprint`                                                | always                                                                  |
+| `capture_peer_cert_chain`                                                                    | always                                                                  |
 | `verify_host`, `verify_peer`                                                                 | only `true`                                                             |
 | `extra`                                                                                      | only the keys `no_cache`, `trace_content`, `use_persistent_connections` |
 | `on_progress`                                                                                | only a closure, an invokable object or `[$object, 'method']`            |
 | `no_proxy`, `proxy`, `resolve`                                                               | only while `ssrf_protection` is disabled                                |
 | `bindto`                                                                                     | only an empty value                                                     |
 
-So, for example, `cafile`, `capath`, `local_cert`, `local_pk`, `passphrase`, `ciphers`, `crypto_method`, `base_uri`
-and `extra.curl` are rejected, whatever their value.
+So, for example, `cafile`, `capath`, `local_cert`, `local_pk`, `passphrase`, `ciphers`, `crypto_method`,
+`peer_fingerprint` (with `NativeHttpClient` it also allows a self-signed certificate), `base_uri` and `extra.curl` are
+rejected, whatever their value.
 
 A webhook with an option that is not accepted is not sent: it fails with a `WebhookHttpClientOptionNotAllowedException`
 (a failed webhook, not a crash). It is not retried, because its options stay the same: its status is `failed` at once,

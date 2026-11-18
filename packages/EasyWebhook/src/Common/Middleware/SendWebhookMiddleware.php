@@ -31,7 +31,6 @@ final class SendWebhookMiddleware extends AbstractMiddleware
         'max_connect_duration',
         'max_duration',
         'max_redirects',
-        'peer_fingerprint',
         'query',
         'timeout',
         'user_data',
