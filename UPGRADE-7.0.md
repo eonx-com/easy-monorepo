@@ -126,9 +126,10 @@ Tips:
 
 - [ ] Enable `'request_limits' => ['enabled' => true]` in `easy_webhook` (Laravel: the same in
   `config/easy-webhook.php`) and test it. In 7.0 it is enabled by default.
-- [ ] Remove `extra.curl` and an `on_progress` that is not a closure or an object from the HTTP client options of
-  webhooks (`httpClientOptions()`). With `ssrf_protection` enabled, also remove `bindto`, `proxy` and `resolve`. In 7.0
-  a webhook with such an option is not sent.
+- [ ] Check the HTTP client options of webhooks (`httpClientOptions()`) against the list in
+  `packages/EasyWebhook/docs/config.md` («HTTP client options of a webhook») and move every other option to the HTTP
+  client itself (for example `extra.curl`, `verify_peer: false`, `cafile`, `local_cert`). In 7.0 a webhook with such an
+  option is not sent.
 - [ ] Laravel: when the signature is enabled, set your own `signature.secret` in `config/easy-webhook.php`, or `null`
   when every webhook has its own secret (`secret()`). In 7.0 the default value `easy-webhook-secret` is rejected.
 
@@ -539,13 +540,20 @@ Laravel:
       ],
   ]);
   ```
-- A webhook is not sent when its HTTP client options (`httpClientOptions()`) contain `extra.curl`, an `on_progress`
-  that is not a closure, an invokable object or `[$object, 'method']`, or, while `ssrf_protection` is enabled, `bindto`,
-  `proxy` or `resolve`. It fails with a `WebhookHttpClientOptionNotAllowedException`. For `proxy`, every value except
-  `null` is rejected. Set these options on the HTTP client itself (decorate the `easy_webhooks.http_client` service). An
-  `on_progress` closure still works for a webhook that is sent in the same process, but it cannot be stored (it comes
-  back as an empty array, which is rejected), so for an asynchronous webhook set it on the HTTP client too. When you
-  create `SendWebhookMiddleware` yourself with `ssrf_protection` disabled, pass `false` as its new third argument.
+- The HTTP client options of a webhook (`httpClientOptions()`) are checked against an allow-list: the options that only
+  describe the request (`headers`, `query`, `body`, `json`, auth, time limits and a few more, see
+  `packages/EasyWebhook/docs/config.md`). `verify_peer` and `verify_host` are accepted only as `true`, `extra` only
+  with the keys `no_cache`, `trace_content` and `use_persistent_connections`, `on_progress` only as a closure, an
+  invokable object or `[$object, 'method']`, `no_proxy`, `proxy` and `resolve` only while `ssrf_protection` is
+  disabled (for `proxy`, every value except `null` counts; for `no_proxy`, every value except `null` and an empty
+  string), and `bindto` only empty, also with the protection disabled (a file path is a Unix socket for the HTTP
+  client). A webhook with any other option, for example `extra.curl`,
+  `verify_peer: false`, `cafile`, `local_cert` or an option a later Symfony version adds, is not sent: it fails with a
+  `WebhookHttpClientOptionNotAllowedException`. Set these options on the HTTP client itself (decorate the
+  `easy_webhooks.http_client` service). An `on_progress` closure still works for a webhook that is sent in the same
+  process, but it cannot be stored (it comes back as an empty array, which is rejected), so for an asynchronous webhook
+  set it on the HTTP client too. When you create `SendWebhookMiddleware` yourself with `ssrf_protection` disabled, pass
+  `false` as its new third argument.
 - A webhook whose failure cannot be retried gets the `failed` status and a `FinalFailedWebhookEvent` at once, also when
   it has attempts left: a webhook with a rejected HTTP client option, and a webhook whose response is over
   `request_limits.max_response_bytes`. Before, such a webhook stayed in `failed_pending_retry`.

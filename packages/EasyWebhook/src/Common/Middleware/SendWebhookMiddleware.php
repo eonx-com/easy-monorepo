@@ -17,7 +17,29 @@ use Throwable;
 
 final class SendWebhookMiddleware extends AbstractMiddleware
 {
-    private const array CONNECTION_OPTIONS = ['bindto', 'proxy', 'resolve'];
+    private const array ALLOWED_EXTRA_OPTIONS = ['no_cache', 'trace_content', 'use_persistent_connections'];
+
+    private const array ALLOWED_OPTIONS = [
+        'auth_basic',
+        'auth_bearer',
+        'body',
+        'buffer',
+        'capture_peer_cert_chain',
+        'headers',
+        'http_version',
+        'json',
+        'max_connect_duration',
+        'max_duration',
+        'max_redirects',
+        'peer_fingerprint',
+        'query',
+        'timeout',
+        'user_data',
+    ];
+
+    private const array CONNECTION_OPTIONS = ['no_proxy', 'proxy', 'resolve'];
+
+    private const array TLS_VERIFY_OPTIONS = ['verify_host', 'verify_peer'];
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
@@ -64,45 +86,95 @@ final class SendWebhookMiddleware extends AbstractMiddleware
         return new WebhookResult($webhook, $response, $throwable);
     }
 
-    /**
-     * The options are stored with the webhook, so they are data. These ones are instructions: they write a file,
-     * call code or change where the request connects
-     */
     private function assertOptionsAllowed(array $options): void
     {
         $notAllowedOptions = [];
-        $extra = $options['extra'] ?? null;
-        $onProgress = $options['on_progress'] ?? null;
 
-        if (\is_array($extra) && (bool)($extra['curl'] ?? false)) {
-            $notAllowedOptions[] = 'extra.curl';
-        }
+        foreach ($options as $name => $value) {
+            $name = (string)$name;
 
-        // Only a callable with an object can be trusted: it cannot come from the stored options. A stored closure
-        // comes back as an empty array, which the HTTP client would refuse on every attempt
-        $isObjectCallable = \is_object($onProgress)
-            || (\is_array($onProgress) && \array_filter($onProgress, \is_object(...)) !== []);
+            if ($name === 'extra') {
+                $notAllowedOptions = [...$notAllowedOptions, ...$this->findNotAllowedExtraOptions($value)];
 
-        if ($onProgress !== null && $isObjectCallable === false) {
-            $notAllowedOptions[] = 'on_progress';
-        }
+                continue;
+            }
 
-        if ($this->ssrfProtectionEnabled) {
-            foreach (self::CONNECTION_OPTIONS as $option) {
-                $value = $options[$option] ?? null;
-
-                // The HTTP client uses any proxy that is not null ("0" and "" too), the other options when not empty
-                if ($option === 'proxy' ? $value !== null : (bool)$value) {
-                    $notAllowedOptions[] = $option;
-                }
+            if ($this->isOptionAllowed($name, $value) === false) {
+                $notAllowedOptions[] = $name;
             }
         }
 
+        // All of them at once: the webhook fails for good, so the author has to fix every option in one go
         if ($notAllowedOptions !== []) {
             throw new WebhookHttpClientOptionNotAllowedException(\sprintf(
-                'The "%s" HTTP client option is not allowed for a webhook.',
-                $notAllowedOptions[0]
+                'HTTP client options not allowed for a webhook: "%s".',
+                \implode('", "', $notAllowedOptions)
             ));
         }
+    }
+
+    /**
+     * @return string[]
+     */
+    private function findNotAllowedExtraOptions(mixed $extra): array
+    {
+        if (\is_array($extra) === false) {
+            return ['extra'];
+        }
+
+        $notAllowedOptions = [];
+
+        foreach (\array_keys($extra) as $name) {
+            if (\in_array($name, self::ALLOWED_EXTRA_OPTIONS, true) === false) {
+                $notAllowedOptions[] = 'extra.' . $name;
+            }
+        }
+
+        return $notAllowedOptions;
+    }
+
+    private function isOnProgressAllowed(mixed $onProgress): bool
+    {
+        // Only a callable with an object can be trusted: it cannot come from the stored options. A stored closure
+        // comes back as an empty array, which the HTTP client would refuse on every attempt
+        return $onProgress === null
+            || \is_object($onProgress)
+            || (\is_array($onProgress) && \array_filter($onProgress, \is_object(...)) !== []);
+    }
+
+    private function isOptionAllowed(string $name, mixed $value): bool
+    {
+        if (\in_array($name, self::ALLOWED_OPTIONS, true)) {
+            return true;
+        }
+
+        // Any other value (false, null, 0) turns the check off in the HTTP client
+        if (\in_array($name, self::TLS_VERIFY_OPTIONS, true)) {
+            return $value === true;
+        }
+
+        if ($name === 'on_progress') {
+            return $this->isOnProgressAllowed($value);
+        }
+
+        // An existing file path is a Unix socket for the HTTP client, which no webhook URL can reach, so it is
+        // rejected also with the SSRF protection disabled. The local interface belongs on the HTTP client itself
+        if ($name === 'bindto') {
+            return (bool)$value === false;
+        }
+
+        if (\in_array($name, self::CONNECTION_OPTIONS, true)) {
+            // The HTTP client uses any proxy that is not null ("0" and "" too). A no_proxy replaces the NO_PROXY
+            // environment variable, so it can skip an egress proxy; an empty one only removes the exceptions
+            $isEmpty = match ($name) {
+                'no_proxy' => $value === null || $value === '',
+                'proxy' => $value === null,
+                default => (bool)$value === false,
+            };
+
+            return $this->ssrfProtectionEnabled === false || $isEmpty;
+        }
+
+        return false;
     }
 }

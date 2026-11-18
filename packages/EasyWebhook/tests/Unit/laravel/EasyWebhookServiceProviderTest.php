@@ -8,12 +8,12 @@ use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Exception\InvalidWebhookSecretException;
 use EonX\EasyWebhook\Common\Exception\WebhookHttpClientOptionNotAllowedException;
-use EonX\EasyWebhook\Common\Exception\WebhookRequestFailedException;
 use EonX\EasyWebhook\Common\HttpClient\AllowedHostsHttpClient;
 use EonX\EasyWebhook\Common\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Common\Stack\Stack;
 use EonX\EasyWebhook\Laravel\EasyWebhookServiceProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -24,13 +24,14 @@ final class EasyWebhookServiceProviderTest extends AbstractLaravelTestCase
      */
     public static function provideSendWebhookMiddlewareData(): iterable
     {
-        yield 'SSRF protection enabled by default' => [null, WebhookHttpClientOptionNotAllowedException::class];
+        yield 'SSRF protection enabled by default' => [null, WebhookHttpClientOptionNotAllowedException::class, 0];
 
         yield 'SSRF protection disabled' => [
             [
                 'easy-webhook.ssrf_protection.enabled' => false,
             ],
-            WebhookRequestFailedException::class,
+            null,
+            1,
         ];
     }
 
@@ -88,25 +89,28 @@ final class EasyWebhookServiceProviderTest extends AbstractLaravelTestCase
     }
 
     /**
-     * @param class-string<\Throwable> $expectedThrowable
+     * @param class-string<\Throwable>|null $expectedThrowable
      */
     #[DataProvider('provideSendWebhookMiddlewareData')]
     public function testSendWebhookMiddlewareFollowsSsrfProtectionConfig(
         ?array $config,
-        string $expectedThrowable,
+        ?string $expectedThrowable,
+        int $expectedRequestsCount,
     ): void {
-        $middleware = $this->getApplication(null, $config)
-            ->make(SendWebhookMiddleware::class);
-        // Nothing listens on this port, so a request that is not rejected fails to connect
+        $app = $this->getApplication(null, $config);
+        $httpClient = new MockHttpClient();
+        $app->instance(ConfigServiceId::HttpClient->value, $httpClient);
+        $middleware = $app->make(SendWebhookMiddleware::class);
         $webhook = Webhook::fromArray([
-            'url' => 'http://127.0.0.1:1',
+            'url' => 'https://eonx.com',
         ])->httpClientOptions([
-            'proxy' => 'http://127.0.0.1:1',
+            'proxy' => 'http://proxy.eonx.com',
         ]);
 
         $result = $middleware->process($webhook, new Stack([$middleware]));
 
-        self::assertInstanceOf($expectedThrowable, $result->getThrowable());
+        self::assertSame($expectedThrowable, $result->getThrowable() === null ? null : $result->getThrowable()::class);
+        self::assertSame($expectedRequestsCount, $httpClient->getRequestsCount());
     }
 
     public function testSsrfAllowedHostsAreWiredIntoHttpClient(): void

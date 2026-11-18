@@ -31,7 +31,13 @@ final class RetrySendWebhookMiddlewareTest extends AbstractUnitTestCase
 
         yield 'HTTP client option not allowed' => [new WebhookHttpClientOptionNotAllowedException('not allowed'), 0];
 
-        yield 'response too large' => [new WebhookResponseTooLargeException('too large'), 0];
+        yield 'response too large' => [
+            new WebhookRequestFailedException(
+                message: 'failed',
+                previous: new WebhookResponseTooLargeException('too large')
+            ),
+            0,
+        ];
     }
 
     #[DataProvider('provideFailedResultData')]

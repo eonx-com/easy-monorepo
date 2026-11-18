@@ -181,24 +181,37 @@ and a single `stream()` call can then only take responses of one kind.
 ## HTTP client options of a webhook
 
 A webhook can carry its own HTTP client options (`WebhookInterface::httpClientOptions()`). They are stored with the
-webhook, so the package rejects the options that write a file, call code or change where the request connects:
+webhook, so they are data, and some options are instructions: they write a file, call code, change where the request
+connects or turn off the certificate checks. The package accepts only the options in this list; every other option,
+also one that a later Symfony version adds, is rejected:
 
-| Option                                                                                                 | Rejected                             |
-|--------------------------------------------------------------------------------------------------------|--------------------------------------|
-| `extra.curl`                                                                                           | always                               |
-| `on_progress` as anything except a closure, an invokable object or `[$object, 'method']`               | always                               |
-| `bindto`, `proxy`, `resolve`                                                                           | while `ssrf_protection` is enabled   |
+| Option                                                                                       | Accepted                                                                |
+|----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| `auth_basic`, `auth_bearer`, `body`, `headers`, `json`, `query`, `user_data`                 | always                                                                  |
+| `buffer`, `http_version`, `max_connect_duration`, `max_duration`, `max_redirects`, `timeout` | always                                                                  |
+| `capture_peer_cert_chain`, `peer_fingerprint`                                                | always                                                                  |
+| `verify_host`, `verify_peer`                                                                 | only `true`                                                             |
+| `extra`                                                                                      | only the keys `no_cache`, `trace_content`, `use_persistent_connections` |
+| `on_progress`                                                                                | only a closure, an invokable object or `[$object, 'method']`            |
+| `no_proxy`, `proxy`, `resolve`                                                               | only while `ssrf_protection` is disabled                                |
+| `bindto`                                                                                     | only an empty value                                                     |
 
-A webhook with such an option is not sent: it fails with a `WebhookHttpClientOptionNotAllowedException` (a failed
-webhook, not a crash). It is not retried, because its options stay the same: its status is `failed` at once, also when
-it has attempts left.
+So, for example, `cafile`, `capath`, `local_cert`, `local_pk`, `passphrase`, `ciphers`, `crypto_method`, `base_uri`
+and `extra.curl` are rejected, whatever their value.
 
-Empty values of `extra.curl`, `bindto` and `resolve` are accepted. For `proxy`, only `null` is accepted: the HTTP client
-uses every other value, an empty string too. For `on_progress`, a string (`'App\Foo::bar'`), an array without an object
-(`['App\Foo', 'bar']`, `[]`) and every other value that is not `null` are rejected. An `on_progress` given as a closure
-or as `[$object, 'method']` is accepted, but such a value cannot be stored with the webhook: after it is stored, a
-closure is an empty array, so the webhook is rejected. It works only for a webhook that is sent in the same process.
-For a webhook that is stored and sent later (asynchronously), set `on_progress` on the HTTP client itself.
+A webhook with an option that is not accepted is not sent: it fails with a `WebhookHttpClientOptionNotAllowedException`
+(a failed webhook, not a crash). It is not retried, because its options stay the same: its status is `failed` at once,
+also when it has attempts left.
+
+`bindto` is rejected also while `ssrf_protection` is disabled: the HTTP client takes an existing file path as a Unix
+socket, which no webhook URL can reach. While `ssrf_protection` is enabled, an empty `resolve` is accepted. For `proxy`,
+only `null` is accepted: the HTTP client uses every other value, an empty string too. For `no_proxy`, only `null` and an
+empty string are accepted: the option replaces the `NO_PROXY` environment variable, and a value like `*` skips the proxy
+of the environment. For `on_progress`, a string (`'App\Foo::bar'`), an array without an object (`['App\Foo', 'bar']`,
+`[]`) and every other value that is not `null` are rejected. An `on_progress` given as a closure or as `[$object,
+'method']` is accepted, but such a value cannot be stored with the webhook: after it is stored, a closure is an empty
+array, so the webhook is rejected. It works only for a webhook that is sent in the same process. For a webhook that is
+stored and sent later (asynchronously), set `on_progress` on the HTTP client itself.
 
 To use one of the other options, set it on the HTTP client itself: decorate the `easy_webhooks.http_client` service or
 provide your own `HttpClientFactoryInterface`.

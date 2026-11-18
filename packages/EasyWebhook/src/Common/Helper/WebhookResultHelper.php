@@ -46,11 +46,6 @@ final class WebhookResultHelper
         return $data;
     }
 
-    /**
-     * Whether a retry can change the result. Not for a rejected HTTP client option (the options of the webhook stay
-     * the same) and not for an oversized response (it would only be downloaded again). Time-limit aborts are retryable.
-     * The attempts left are not checked here
-     */
     public static function isRetryable(WebhookResultInterface $result): bool
     {
         $throwable = $result->getThrowable();

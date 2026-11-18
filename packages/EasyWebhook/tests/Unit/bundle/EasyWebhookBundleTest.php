@@ -7,7 +7,6 @@ use EonX\EasyWebhook\Bundle\Enum\ConfigParam;
 use EonX\EasyWebhook\Bundle\Enum\ConfigServiceId;
 use EonX\EasyWebhook\Common\Entity\Webhook;
 use EonX\EasyWebhook\Common\Exception\WebhookHttpClientOptionNotAllowedException;
-use EonX\EasyWebhook\Common\Exception\WebhookRequestFailedException;
 use EonX\EasyWebhook\Common\HttpClient\AllowedHostsHttpClient;
 use EonX\EasyWebhook\Common\Middleware\BodyFormatterMiddleware;
 use EonX\EasyWebhook\Common\Middleware\MethodMiddleware;
@@ -91,11 +90,19 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
      */
     public static function provideSendWebhookMiddlewareData(): iterable
     {
-        yield 'SSRF protection enabled by default' => [[], WebhookHttpClientOptionNotAllowedException::class];
+        yield 'SSRF protection enabled by default' => [
+            [__DIR__ . '/../../Fixture/config/mock_http_client.php'],
+            WebhookHttpClientOptionNotAllowedException::class,
+            0,
+        ];
 
         yield 'SSRF protection disabled' => [
-            [__DIR__ . '/../../Fixture/config/ssrf_protection_disabled.php'],
-            WebhookRequestFailedException::class,
+            [
+                __DIR__ . '/../../Fixture/config/ssrf_protection_disabled.php',
+                __DIR__ . '/../../Fixture/config/mock_http_client.php',
+            ],
+            null,
+            1,
         ];
     }
 
@@ -126,26 +133,29 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
 
     /**
      * @param string[] $configs
-     * @param class-string<\Throwable> $expectedThrowable
+     * @param class-string<\Throwable>|null $expectedThrowable
      */
     #[DataProvider('provideSendWebhookMiddlewareData')]
     public function testSendWebhookMiddlewareFollowsSsrfProtectionConfig(
         array $configs,
-        string $expectedThrowable,
+        ?string $expectedThrowable,
+        int $expectedRequestsCount,
     ): void {
-        $middleware = $this->getKernel($configs)
-            ->getContainer()
-            ->get(SendWebhookMiddleware::class);
-        // Nothing listens on this port, so a request that is not rejected fails to connect
+        $container = $this->getKernel($configs)
+            ->getContainer();
+        /** @var \Symfony\Component\HttpClient\MockHttpClient $httpClient */
+        $httpClient = $container->get(ConfigServiceId::HttpClient->value);
+        $middleware = $container->get(SendWebhookMiddleware::class);
         $webhook = Webhook::fromArray([
-            'url' => 'http://127.0.0.1:1',
+            'url' => 'https://eonx.com',
         ])->httpClientOptions([
-            'proxy' => 'http://127.0.0.1:1',
+            'proxy' => 'http://proxy.eonx.com',
         ]);
 
         $result = $middleware->process($webhook, new Stack([$middleware]));
 
-        self::assertInstanceOf($expectedThrowable, $result->getThrowable());
+        self::assertSame($expectedThrowable, $result->getThrowable() === null ? null : $result->getThrowable()::class);
+        self::assertSame($expectedRequestsCount, $httpClient->getRequestsCount());
     }
 
     #[DataProvider('provideSsrfAllowedHostsFromEnvData')]
