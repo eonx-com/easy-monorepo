@@ -34,7 +34,7 @@ final class StatusAndAttemptMiddleware extends AbstractMiddleware
                 break;
             case false:
                 // No retry layer sends a not retryable result again, so its failure is final
-                $isFinal = WebhookResultHelper::isNotRetryable($webhookResult)
+                $isFinal = WebhookResultHelper::isRetryable($webhookResult) === false
                     || $webhook->getCurrentAttempt() >= $webhook->getMaxAttempt();
 
                 $webhook->status(

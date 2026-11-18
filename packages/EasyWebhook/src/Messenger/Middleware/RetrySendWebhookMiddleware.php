@@ -47,7 +47,7 @@ final readonly class RetrySendWebhookMiddleware implements MiddlewareInterface
 
         // Retry if result not successful and webhook is retryable
         if ($result->isSuccessful() === false
-            && WebhookResultHelper::isNotRetryable($result) === false
+            && WebhookResultHelper::isRetryable($result)
             && $this->retryStrategy->isRetryable($result->getWebhook())) {
             $delay = $this->retryStrategy->getWaitingTime($result->getWebhook());
 

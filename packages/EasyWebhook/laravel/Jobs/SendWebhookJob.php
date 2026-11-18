@@ -40,7 +40,7 @@ final class SendWebhookJob implements ShouldQueue
         $result = $client->sendWebhook($webhook->sendNow(true));
 
         if ($result->isSuccessful() === false
-            && WebhookResultHelper::isNotRetryable($result) === false
+            && WebhookResultHelper::isRetryable($result)
             && $retryStrategy->isRetryable($result->getWebhook())
         ) {
             $this->release($retryStrategy->getWaitingTime($result->getWebhook()) / 1000);

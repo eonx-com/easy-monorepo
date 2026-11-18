@@ -53,7 +53,7 @@ final class SyncRetryMiddleware extends AbstractMiddleware
             $safety++;
 
             $shouldLoop = $result->isSuccessful() === false
-                && WebhookResultHelper::isNotRetryable($result) === false
+                && WebhookResultHelper::isRetryable($result)
                 && $this->retryStrategy->isRetryable($webhook)
                 && $safety < $webhook->getMaxAttempt();
 

@@ -47,14 +47,15 @@ final class WebhookResultHelper
     }
 
     /**
-     * A failure that a retry cannot change, whatever the attempts left: the options of the webhook stay the same,
-     * and an oversized response would only be downloaded again. Time-limit aborts remain retryable
+     * Whether a retry can change the result. Not for a rejected HTTP client option (the options of the webhook stay
+     * the same) and not for an oversized response (it would only be downloaded again). Time-limit aborts are retryable.
+     * The attempts left are not checked here
      */
-    public static function isNotRetryable(WebhookResultInterface $result): bool
+    public static function isRetryable(WebhookResultInterface $result): bool
     {
         $throwable = $result->getThrowable();
 
-        return $throwable instanceof WebhookHttpClientOptionNotAllowedException
-            || WebhookResponseTooLargeException::isInChain($throwable);
+        return ($throwable instanceof WebhookHttpClientOptionNotAllowedException) === false
+            && WebhookResponseTooLargeException::isInChain($throwable) === false;
     }
 }
