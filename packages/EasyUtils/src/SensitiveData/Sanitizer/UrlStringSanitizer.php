@@ -5,6 +5,15 @@ namespace EonX\EasyUtils\SensitiveData\Sanitizer;
 
 final class UrlStringSanitizer extends AbstractStringSanitizer
 {
+    /**
+     * Optional "redirect_", "http_" and "x" prefixes of a key, with the same separators as inside the key.
+     * "redirect_" can repeat (Apache adds one per internal redirect and allows 10 by default). The limit is needed:
+     * an unlimited run exhausts the PCRE (JIT) stack, and then the string is not sanitized at all
+     */
+    private const KEY_PREFIXES = '(?:redirect' . self::KEY_SEPARATOR . '*+){0,10}'
+        . '(?:http' . self::KEY_SEPARATOR . '*+)?'
+        . '(?:x' . self::KEY_SEPARATOR . '*+)?';
+
     // Plain or URL-encoded key separator
     private const KEY_SEPARATOR = '(?:[ _+-]++|%5F|%2D|%20)';
 
@@ -47,8 +56,8 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
                 $quotedKey = \preg_quote($key, '/');
             }
 
-            // Optional "x" prefix for "[key]=" and "/key/"; plain "key=" has no left boundary and already matches it
-            $prefixedQuotedKey = '(?:x[ _-]*)?' . $quotedKey;
+            // Optional prefixes for "[key]=" and "/key/"; plain "key=" has no left boundary and already matches them
+            $prefixedQuotedKey = self::KEY_PREFIXES . $quotedKey;
 
             // Query/array style (key=..., [key]=...): the value ends at whitespace or a structural
             // delimiter (& ? # , ; " ' ) ] } < >) but may legitimately contain "/" (e.g. base64
