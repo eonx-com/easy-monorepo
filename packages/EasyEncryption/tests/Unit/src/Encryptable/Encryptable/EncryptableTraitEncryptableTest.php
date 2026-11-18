@@ -8,7 +8,9 @@ use EonX\EasyEncryption\Encryptable\Hasher\EncryptableFieldHasher;
 use EonX\EasyEncryption\Encryptable\Metadata\EncryptableMetadata;
 use EonX\EasyEncryption\Encryptable\Normalizer\HashNormalizer;
 use EonX\EasyEncryption\Encryptable\ValueObject\EncryptedString;
+use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableChildEntityStub;
 use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableEntityStub;
+use EonX\EasyEncryption\Tests\Stub\Entity\EncryptableProxyEntityStub;
 use EonX\EasyEncryption\Tests\Unit\AbstractUnitTestCase;
 
 final class EncryptableTraitEncryptableTest extends AbstractUnitTestCase
@@ -45,6 +47,50 @@ final class EncryptableTraitEncryptableTest extends AbstractUnitTestCase
         $rawData = \json_decode($entity->getEncryptedData(), true);
         self::assertSame('John.Doe@Example.com', $rawData['email']);
         self::assertSame($calculator->calculate('john.doe@example.com'), $entity->getEmail());
+    }
+
+    public function testEncryptSucceedsWithPrivateFieldOfParentClassAndTraitInChild(): void
+    {
+        $calculator = new HmacSha512HashCalculator('secret');
+        $fieldHasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormalizer(), []);
+        $entity = new EncryptableChildEntityStub(email: 'jane@example.com', secretCode: 'Code-123');
+
+        $entity->encrypt(...$this->closures($fieldHasher));
+
+        /** @var array<string, string|null> $rawData */
+        $rawData = \json_decode($entity->getEncryptedData(), true);
+        self::assertSame(
+            [
+                'email' => 'jane@example.com',
+                'secret_code' => 'Code-123',
+            ],
+            $rawData
+        );
+        self::assertSame($calculator->calculate('Code-123'), $entity->getSecretCode());
+        self::assertSame($calculator->calculate('jane@example.com'), $entity->getEmail());
+
+        $entity->decrypt(static fn(string $value): string => $value);
+
+        self::assertSame('Code-123', $entity->getSecretCode());
+        self::assertSame('jane@example.com', $entity->getEmail());
+    }
+
+    public function testEncryptSucceedsWithPrivateFieldOfParentClassOnProxyLikeSubclass(): void
+    {
+        $calculator = new HmacSha512HashCalculator('secret');
+        $fieldHasher = new EncryptableFieldHasher($calculator, new EncryptableMetadata(), new HashNormalizer(), []);
+        $entity = new EncryptableProxyEntityStub(email: 'Jane@Example.com');
+
+        $entity->encrypt(...$this->closures($fieldHasher));
+
+        /** @var array<string, string|null> $rawData */
+        $rawData = \json_decode($entity->getEncryptedData(), true);
+        self::assertSame(['email' => 'Jane@Example.com'], $rawData);
+        self::assertSame($calculator->calculate('jane@example.com'), $entity->getEmail());
+
+        $entity->decrypt(static fn(string $value): string => $value);
+
+        self::assertSame('Jane@Example.com', $entity->getEmail());
     }
 
     public function testEncryptSucceedsWithSameHashAsReadPathUsingFieldOverride(): void
