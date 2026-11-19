@@ -73,7 +73,7 @@ final class RandomStringConfig
 
     public function exclude(Alphabet $alphabet): self
     {
-        $this->excludes->attach($alphabet);
+        $this->excludes->offsetSet($alphabet);
 
         return $this;
     }
@@ -152,8 +152,8 @@ final class RandomStringConfig
 
     public function include(Alphabet $alphabet): self
     {
-        $this->includes->attach($alphabet);
-        $this->excludes->detach($alphabet);
+        $this->includes->offsetSet($alphabet);
+        $this->excludes->offsetUnset($alphabet);
 
         return $this;
     }

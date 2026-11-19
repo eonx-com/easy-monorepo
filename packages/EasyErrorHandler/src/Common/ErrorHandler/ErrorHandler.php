@@ -104,7 +104,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
 
     public function report(Throwable $throwable): void
     {
-        if ($this->skipReportedExceptions && $this->handledExceptions->contains($throwable)) {
+        if ($this->skipReportedExceptions && $this->handledExceptions->offsetExists($throwable)) {
             return;
         }
 
@@ -149,7 +149,7 @@ final class ErrorHandler implements ErrorHandlerInterface, FormatAwareInterface
             $reporter->report($throwable);
         }
 
-        $this->handledExceptions->attach($throwable);
+        $this->handledExceptions->offsetSet($throwable);
     }
 
     public function supportsFormat(Request $request): bool
