@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Messenger\Middleware;
 
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
-use EonX\EasyWebhook\Common\Exception\WebhookResponseTooLargeException;
+use EonX\EasyWebhook\Common\Helper\WebhookResultHelper;
 use EonX\EasyWebhook\Common\Strategy\WebhookRetryStrategyInterface;
 use EonX\EasyWebhook\Messenger\Message\SendWebhookMessage;
 use Psr\Container\ContainerInterface;
@@ -45,10 +45,9 @@ final readonly class RetrySendWebhookMiddleware implements MiddlewareInterface
             return $envelope;
         }
 
-        // Retry if result not successful and webhook is retryable. An oversized-response abort is
-        // not retryable (retrying only re-downloads the same body); time-limit aborts still are
+        // Retry if result not successful and webhook is retryable
         if ($result->isSuccessful() === false
-            && WebhookResponseTooLargeException::isInChain($result->getThrowable()) === false
+            && WebhookResultHelper::isRetryable($result)
             && $this->retryStrategy->isRetryable($result->getWebhook())) {
             $delay = $this->retryStrategy->getWaitingTime($result->getWebhook());
 

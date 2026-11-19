@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyWebhook\Laravel\Jobs;
 
 use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
+use EonX\EasyWebhook\Common\Helper\WebhookResultHelper;
 use EonX\EasyWebhook\Common\Store\StoreInterface;
 use EonX\EasyWebhook\Common\Strategy\WebhookRetryStrategyInterface;
 use Illuminate\Bus\Queueable;
@@ -38,7 +39,10 @@ final class SendWebhookJob implements ShouldQueue
         // Once here, webhooks are already configured and should be sent synchronously
         $result = $client->sendWebhook($webhook->sendNow(true));
 
-        if ($result->isSuccessful() === false && $retryStrategy->isRetryable($result->getWebhook())) {
+        if ($result->isSuccessful() === false
+            && WebhookResultHelper::isRetryable($result)
+            && $retryStrategy->isRetryable($result->getWebhook())
+        ) {
             $this->release($retryStrategy->getWaitingTime($result->getWebhook()) / 1000);
         }
     }

@@ -5,10 +5,14 @@ namespace EonX\EasyWebhook\Tests\Unit\Bundle;
 
 use EonX\EasyWebhook\Bundle\Enum\ConfigParam;
 use EonX\EasyWebhook\Bundle\Enum\ConfigServiceId;
+use EonX\EasyWebhook\Common\Entity\Webhook;
+use EonX\EasyWebhook\Common\Exception\WebhookHttpClientOptionNotAllowedException;
 use EonX\EasyWebhook\Common\HttpClient\AllowedHostsHttpClient;
 use EonX\EasyWebhook\Common\Middleware\BodyFormatterMiddleware;
 use EonX\EasyWebhook\Common\Middleware\MethodMiddleware;
+use EonX\EasyWebhook\Common\Middleware\SendWebhookMiddleware;
 use EonX\EasyWebhook\Common\Signer\Rs256WebhookSigner;
+use EonX\EasyWebhook\Common\Stack\Stack;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -82,6 +86,27 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
     }
 
     /**
+     * @see testSendWebhookMiddlewareFollowsSsrfProtectionConfig
+     */
+    public static function provideSendWebhookMiddlewareData(): iterable
+    {
+        yield 'SSRF protection enabled by default' => [
+            [__DIR__ . '/../../Fixture/config/mock_http_client.php'],
+            WebhookHttpClientOptionNotAllowedException::class,
+            0,
+        ];
+
+        yield 'SSRF protection disabled' => [
+            [
+                __DIR__ . '/../../Fixture/config/ssrf_protection_disabled.php',
+                __DIR__ . '/../../Fixture/config/mock_http_client.php',
+            ],
+            'null',
+            1,
+        ];
+    }
+
+    /**
      * @see testSsrfAllowedHostsFromEnv
      */
     public static function provideSsrfAllowedHostsFromEnvData(): iterable
@@ -104,6 +129,33 @@ final class EasyWebhookBundleTest extends AbstractSymfonyTestCase
     public function testConfigAndDependenciesSanity(array $configs, callable $tests): void
     {
         $tests($this->getKernel($configs)->getContainer());
+    }
+
+    /**
+     * @param string[] $configs
+     * @param class-string<\Throwable>|'null' $expectedThrowable
+     */
+    #[DataProvider('provideSendWebhookMiddlewareData')]
+    public function testSendWebhookMiddlewareFollowsSsrfProtectionConfig(
+        array $configs,
+        string $expectedThrowable,
+        int $expectedRequestsCount,
+    ): void {
+        $container = $this->getKernel($configs)
+            ->getContainer();
+        /** @var \Symfony\Component\HttpClient\MockHttpClient $httpClient */
+        $httpClient = $container->get(ConfigServiceId::HttpClient->value);
+        $middleware = $container->get(SendWebhookMiddleware::class);
+        $webhook = Webhook::fromArray([
+            'url' => 'https://eonx.com',
+        ])->httpClientOptions([
+            'proxy' => 'http://proxy.eonx.com',
+        ]);
+
+        $result = $middleware->process($webhook, new Stack([$middleware]));
+
+        self::assertSame($expectedThrowable, \get_debug_type($result->getThrowable()));
+        self::assertSame($expectedRequestsCount, $httpClient->getRequestsCount());
     }
 
     #[DataProvider('provideSsrfAllowedHostsFromEnvData')]

@@ -136,9 +136,10 @@ This middleware sends the webhook HTTP request and returns the result in a [Webh
 
 This middleware sets the **Signature header** of the webhook HTTP request.
 
-By default, this package uses the `EonX\EasyWebhook\Signers\Rs256Signer` signer. The header will contain a SHA-256 HMAC
-(Hash-based Message Authentication Code) constructed by hashing the webhook's request body with either the webhook's
-`$secret` property (if it exists) or the secret defined in the package configuration (see [Configuration](config.md)).
+By default, this package uses the `EonX\EasyWebhook\Common\Signer\Rs256WebhookSigner` signer. The header will contain a
+SHA-256 HMAC (Hash-based Message Authentication Code) constructed by hashing the webhook's request body with either the
+webhook's `$secret` property (if it exists) or the secret defined in the package configuration (see
+[Configuration](config.md)).
 
 You can use your own signer by setting the `EonX\EasyWebhook\Common\Signer\WebhookSignerInterface` service to your own
 implementation.
@@ -158,7 +159,8 @@ The current attempt is incremented.
 The status can be set to one of:
 
 - `success`: The webhook was successfully sent.
-- `failed`: The webhook sending failed and the webhook has reached the maximum number of attempts allowed
+- `failed`: The webhook sending failed and the webhook has reached the maximum number of attempts allowed, or the
+  failure cannot be retried (a rejected HTTP client option, a response over the size limit)
 - `failed_pending_retry`: The webhook sending failed but the webhook has not reached the maximum number of attempts
   allowed
 
