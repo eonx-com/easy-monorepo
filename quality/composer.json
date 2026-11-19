@@ -12,6 +12,14 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "policy": {
+            "cooldown": {
+                "period": "1 day",
+                "ignore": [
+                    "eonx-com/*"
+                ]
+            }
         }
     },
     "autoload": {

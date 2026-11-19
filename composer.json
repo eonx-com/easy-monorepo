@@ -401,6 +401,12 @@
                     "PKSA-ft77-7h5f-p3r6": "symfony/yaml: fix requires Symfony upgrade, blocked by team lead",
                     "PKSA-b14r-zh1d-vdrc": "symfony/yaml: fix requires Symfony upgrade, blocked by team lead"
                 }
+            },
+            "cooldown": {
+                "period": "1 day",
+                "ignore": [
+                    "eonx-com/*"
+                ]
             }
         }
     },
