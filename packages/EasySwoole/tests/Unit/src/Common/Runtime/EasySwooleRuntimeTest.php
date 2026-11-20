@@ -59,7 +59,10 @@ final class EasySwooleRuntimeTest extends AbstractUnitTestCase
     public function testGetRunnerDoesNotOverrideRuntimeModeSetInEnv(): void
     {
         $_ENV[self::APP_RUNTIME_MODE] = 'custom=1';
-        $runtime = $this->createRuntime();
+        $runtime = new EasySwooleRuntime([
+            'disable_dotenv' => true,
+            'error_handler' => false,
+        ]);
 
         $runtime->getRunner(new KernelStub());
 
@@ -70,7 +73,10 @@ final class EasySwooleRuntimeTest extends AbstractUnitTestCase
     public function testGetRunnerDoesNotOverrideRuntimeModeSetInServer(): void
     {
         $_SERVER[self::APP_RUNTIME_MODE] = 'custom=1';
-        $runtime = $this->createRuntime();
+        $runtime = new EasySwooleRuntime([
+            'disable_dotenv' => true,
+            'error_handler' => false,
+        ]);
 
         $runtime->getRunner(new KernelStub());
 
@@ -81,7 +87,10 @@ final class EasySwooleRuntimeTest extends AbstractUnitTestCase
     public function testGetRunnerDoesNotOverrideRuntimeModeSetViaPutenv(): void
     {
         \putenv('APP_RUNTIME_MODE=custom=1');
-        $runtime = $this->createRuntime();
+        $runtime = new EasySwooleRuntime([
+            'disable_dotenv' => true,
+            'error_handler' => false,
+        ]);
 
         $runtime->getRunner(new KernelStub());
 
@@ -92,7 +101,10 @@ final class EasySwooleRuntimeTest extends AbstractUnitTestCase
 
     public function testGetRunnerDoesNotSetRuntimeModeForConsoleApplication(): void
     {
-        $runtime = $this->createRuntime();
+        $runtime = new EasySwooleRuntime([
+            'disable_dotenv' => true,
+            'error_handler' => false,
+        ]);
 
         $runtime->getRunner(new Application());
 
@@ -104,8 +116,10 @@ final class EasySwooleRuntimeTest extends AbstractUnitTestCase
     public function testGetRunnerMakesHtmlErrorsUseHtmlRendererAfterCacheWarmup(): void
     {
         $kernel = new FrameworkKernelStub($this->varDir);
-        $runtime = $this->createRuntime([
+        $runtime = new EasySwooleRuntime([
             'app_cache_warmup_enabled' => true,
+            'disable_dotenv' => true,
+            'error_handler' => false,
         ]);
 
         $runtime->getRunner($kernel);
@@ -121,7 +135,7 @@ final class EasySwooleRuntimeTest extends AbstractUnitTestCase
     public function testGetRunnerSetsHttpRuntimeModeBeforeEnvVarsLoadedCallback(): void
     {
         $runtimeModeInCallback = null;
-        $runtime = $this->createRuntime([
+        $runtime = new EasySwooleRuntime([
             'callbacks' => [
                 SwooleRunnerEvent::EnvVarsLoaded->value => static function (array $server) use (
                     &$runtimeModeInCallback,
@@ -129,6 +143,8 @@ final class EasySwooleRuntimeTest extends AbstractUnitTestCase
                     $runtimeModeInCallback = $server[self::APP_RUNTIME_MODE] ?? null;
                 },
             ],
+            'disable_dotenv' => true,
+            'error_handler' => false,
         ]);
 
         $runtime->getRunner(new KernelStub());
@@ -143,19 +159,14 @@ final class EasySwooleRuntimeTest extends AbstractUnitTestCase
     {
         $_ENV[self::APP_RUNTIME_MODE] = '';
         $_SERVER[self::APP_RUNTIME_MODE] = '';
-        $runtime = $this->createRuntime();
+        $runtime = new EasySwooleRuntime([
+            'disable_dotenv' => true,
+            'error_handler' => false,
+        ]);
 
         $runtime->getRunner(new KernelStub());
 
         self::assertSame('web=1&worker=1', $_ENV[self::APP_RUNTIME_MODE]);
         self::assertSame('web=1&worker=1', $_SERVER[self::APP_RUNTIME_MODE]);
-    }
-
-    private function createRuntime(?array $options = null): EasySwooleRuntime
-    {
-        return new EasySwooleRuntime(\array_merge([
-            'disable_dotenv' => true,
-            'error_handler' => false,
-        ], $options ?? []));
     }
 }
