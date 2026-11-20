@@ -41,7 +41,10 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
                         }
 
                         if ($sqlState !== null) {
-                            $reducedMessage = \sprintf('SQLSTATE[%s] %s', $sqlState, \get_debug_type($error));
+                            // The short class name has no backslashes, so the reduced message can replace a copy of
+                            // the message inside a JSON string in the metadata and the JSON stays valid
+                            $className = (string)\strrchr('\\' . \get_debug_type($error), '\\');
+                            $reducedMessage = \sprintf('SQLSTATE[%s] %s', $sqlState, \substr($className, 1));
                             $current->setMessage($reducedMessage);
 
                             if ($error instanceof Throwable) {

@@ -248,7 +248,7 @@ Tips:
 ### EasyBugsnag
 
 - New `DatabaseErrorScrubberClientConfigurator` (Symfony only, always on). In reports, the message of each Doctrine
-  driver exception (and the exceptions below it) is replaced by `SQLSTATE[<state>] <class>`, also where other
+  driver exception (and the exceptions below it) is replaced by `SQLSTATE[<state>] <short class name>`, also where other
   configurators copied it into the metadata (e.g. `error.message` from EasyErrorHandler). It runs after the other
   configurators (priority `PHP_INT_MAX - 1`), before the sensitive data sanitizer. To keep the full message, remove or
   decorate this service.

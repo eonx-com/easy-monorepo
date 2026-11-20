@@ -14,6 +14,40 @@ use Throwable;
 
 final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTestCase
 {
+    public function testItKeepsJsonInMetadataDecodableForSensitiveDataSanitizer(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(
+            self::driverException("1062 Duplicate entry 'john@example.com' for key 'users.email_unique'", '23000'),
+            null
+        );
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'payload' => \json_encode([
+                    'api_key' => 'some-api-key',
+                    'error' => $throwable->getMessage(),
+                    'note' => 'a "quoted" word',
+                ]),
+            ],
+        ]);
+
+        $client->notify($report);
+
+        $payload = $this->getFirstReport($client)
+            ->toArray()['metaData']['context']['payload'];
+        self::assertIsString($payload);
+        self::assertSame(
+            [
+                'api_key' => '*REDACTED*',
+                'error' => 'SQLSTATE[23000] UniqueConstraintViolationException',
+                'note' => 'a "quoted" word',
+            ],
+            \json_decode($payload, true)
+        );
+    }
+
     public function testItLeavesNonDatabaseExceptionUntouched(): void
     {
         $client = self::getService(Client::class);
@@ -58,9 +92,9 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
 
         $reportData = $this->getFirstReport($client)
             ->toArray();
-        $dbalMessage = 'SQLSTATE[23505] ' . UniqueConstraintViolationException::class;
+        $dbalMessage = 'SQLSTATE[23505] UniqueConstraintViolationException';
         self::assertSame($dbalMessage, $reportData['exceptions'][0]['message']);
-        self::assertSame('SQLSTATE[23505] ' . PDOException::class, $reportData['exceptions'][2]['message']);
+        self::assertSame('SQLSTATE[23505] PDOException', $reportData['exceptions'][2]['message']);
         self::assertSame($dbalMessage, $reportData['metaData']['error']['message']);
         self::assertStringStartsWith('SQLSTATE[23505] ', $reportData['metaData']['error']['previous_2']['message']);
         $messages = \array_column($reportData['exceptions'], 'message');
@@ -86,7 +120,7 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         /** @var \Bugsnag\Report|null $nativeReport */
         $nativeReport = self::getPrivatePropertyValue($driverReport, 'previous');
         self::assertInstanceOf(Report::class, $nativeReport);
-        self::assertSame('SQLSTATE[23505] ' . PDOException::class, $nativeReport->getMessage());
+        self::assertSame('SQLSTATE[23505] PDOException', $nativeReport->getMessage());
     }
 
     public function testItReducesRawDriverException(): void
@@ -117,7 +151,7 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         ));
 
         $report = $this->getFirstReport($client);
-        self::assertSame('SQLSTATE[23505] ' . UniqueConstraintViolationException::class, $report->getMessage());
+        self::assertSame('SQLSTATE[23505] UniqueConstraintViolationException', $report->getMessage());
         self::assertStringNotContainsString('john@example.com', (string)$report->getMessage());
     }
 
