@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
+use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Throwable;
@@ -54,7 +55,7 @@ final class WorkerMessageReceivedListener
                     'Message' => $this->dump($envelope->getMessage()),
                     'Received At' => $this->receivedAt->format('Y-m-d H:i:s.u'),
                     'Receiver Name' => $this->event->getReceiverName(),
-                    'Stamps' => $this->dump($envelope->all()),
+                    'Stamps' => $this->dump(self::reduceErrorDetailsStamps($envelope->all())),
                 ],
             ]);
         };
@@ -99,6 +100,26 @@ final class WorkerMessageReceivedListener
         }
 
         return $expanded;
+    }
+
+    /**
+     * The message and the flattened exception of a failed attempt can hold data (e.g. a DB error with the duplicate
+     * value) that the sanitizer cannot recognize. That failure was reported to Bugsnag on its own when it happened
+     *
+     * @param array<string, \Symfony\Component\Messenger\Stamp\StampInterface[]> $stamps
+     */
+    private static function reduceErrorDetailsStamps(array $stamps): array
+    {
+        foreach ($stamps[ErrorDetailsStamp::class] ?? [] as $index => $stamp) {
+            /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $stamp */
+            $stamps[ErrorDetailsStamp::class][$index] = [
+                '@class' => ErrorDetailsStamp::class,
+                'exceptionClass' => $stamp->getExceptionClass(),
+                'exceptionCode' => $stamp->getExceptionCode(),
+            ];
+        }
+
+        return $stamps;
     }
 
     private function dump(mixed $var): string
