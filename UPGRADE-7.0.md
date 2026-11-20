@@ -257,6 +257,8 @@ Tips:
   driver exception (and the exceptions below it) is replaced by `SQLSTATE[<state>] <class>`. To keep the full message,
   remove or decorate this service.
 - `WorkerMessageReceivedListener` sanitizes the message and stamps dump with `SensitiveDataSanitizerInterface`.
+- The `Stamps` dump of `WorkerMessageReceivedListener` keeps only the exception class and code of `ErrorDetailsStamp`,
+  not the exception message and the flattened exception of the failed attempt.
 - `doctrine_dbal` (SQL query breadcrumbs) is disabled by default. To keep the breadcrumbs, set
   `'doctrine_dbal' => true` in `easy_bugsnag`.
 - SQL query breadcrumbs no longer contain the query parameter values. To add them, set

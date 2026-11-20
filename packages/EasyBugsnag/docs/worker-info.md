@@ -12,4 +12,5 @@ Set the `worker_info.enabled` configuration to `true` to enable this feature (se
 information).
 
 The following worker information is added as metadata in Bugsnag reports: `Message`, `Receiver Name`, `Received At` and
-`Stamps`.
+`Stamps`. For an `ErrorDetailsStamp`, only the exception class and code of the failed attempt are added, because its
+exception message can hold data that cannot be masked. That failure is a separate Bugsnag report.
