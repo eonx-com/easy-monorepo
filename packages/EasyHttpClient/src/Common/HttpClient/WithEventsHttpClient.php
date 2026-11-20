@@ -123,8 +123,14 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
                 return;
             }
 
-            // The consumer gave up after a timeout chunk, and the response is destructed
-            if ($isTimedOut && $chunk->isLast() && $asyncContext->getInfo('canceled') === true) {
+            // The consumer gave up after a timeout chunk, and the response is destructed. An explicit cancellation also
+            // sets an error, and it does not dispatch any event
+            if (
+                $isTimedOut
+                && $chunk->isLast()
+                && $asyncContext->getInfo('canceled') === true
+                && $asyncContext->getInfo('error') === null
+            ) {
                 /** @var string $url */
                 $url = $asyncContext->getInfo('url');
                 $this->dispatchEvent(

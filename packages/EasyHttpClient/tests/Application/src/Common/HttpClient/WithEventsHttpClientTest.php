@@ -18,8 +18,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpClient\Exception\TimeoutException;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\MockHttpClient;
-use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Component\HttpClient\Response\StreamWrapper;
 use Symfony\Component\HttpClient\ScopingHttpClient;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -36,6 +36,27 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         yield 'client error 404' => [404];
 
         yield 'server error 502' => [502];
+    }
+
+    public function testCancelledResponseAfterTimeoutChunkDoesNotDispatchAnyEvent(): void
+    {
+        $sut = new WithEventsHttpClient(
+            self::getContainer()->get(EasyEventDispatcherInterface::class),
+            new TimeoutChunkHttpClientStub(new MockResponse('some-content'))
+        );
+        $response = $sut->request('GET', 'https://eonx.com/');
+        $response->getStatusCode();
+
+        foreach ($sut->stream($response, 0) as $chunk) {
+            if ($chunk->isTimeout()) {
+                break;
+            }
+        }
+        $response->cancel();
+
+        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
+        self::assertCount(0, $eventDispatcher->getDispatchedEvents());
     }
 
     public function testCancelledResponseDoesNotDispatchAnyEvent(): void
@@ -78,28 +99,6 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         self::assertNull($event->getResponseData());
         self::assertInstanceOf(TimeoutException::class, $event->getThrowable());
         self::assertSame('Idle timeout reached for "https://eonx.com/".', $event->getThrowable()->getMessage());
-    }
-
-    public function testPsr18ClientReadsBodyAfterTimeoutChunks(): void
-    {
-        $sut = new Psr18Client(new WithEventsHttpClient(
-            self::getContainer()->get(EasyEventDispatcherInterface::class),
-            new TimeoutChunkHttpClientStub(new MockResponse('some-content'))
-        ));
-
-        $response = $sut->sendRequest($sut->createRequest('GET', 'https://eonx.com/'));
-
-        self::assertSame('some-content', (string)$response->getBody());
-        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
-        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
-        self::assertCount(1, $eventDispatcher->getDispatchedEvents());
-
-        /** @var \EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent $event */
-        $event = $eventDispatcher->getDispatchedEvents()[0];
-
-        self::assertInstanceOf(ResponseData::class, $event->getResponseData());
-        self::assertSame('some-content', $event->getResponseData()->getContent());
-        self::assertNull($event->getThrowable());
     }
 
     public function testRequestReturnsResponse(): void
@@ -198,5 +197,29 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
         self::assertCount(0, $eventDispatcher->getDispatchedEvents());
+    }
+
+    public function testStreamReadsBodyAfterTimeoutChunks(): void
+    {
+        $sut = new WithEventsHttpClient(
+            self::getContainer()->get(EasyEventDispatcherInterface::class),
+            new TimeoutChunkHttpClientStub(new MockResponse('some-content'))
+        );
+        $response = $sut->request('GET', 'https://eonx.com/');
+
+        // Psr18Client reads the response body through this stream
+        $content = \stream_get_contents(StreamWrapper::createResource($response, $sut));
+
+        self::assertSame('some-content', $content);
+        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
+        self::assertCount(1, $eventDispatcher->getDispatchedEvents());
+
+        /** @var \EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent $event */
+        $event = $eventDispatcher->getDispatchedEvents()[0];
+
+        self::assertInstanceOf(ResponseData::class, $event->getResponseData());
+        self::assertSame('some-content', $event->getResponseData()->getContent());
+        self::assertNull($event->getThrowable());
     }
 }
