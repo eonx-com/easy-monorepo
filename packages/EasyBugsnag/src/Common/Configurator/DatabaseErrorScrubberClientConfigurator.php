@@ -31,6 +31,7 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
             $reduceChain = Closure::bind(
                 static function (Report $report): array {
                     $reducedMessages = [];
+                    $reportsAbove = [];
                     $sqlState = null;
 
                     for ($current = $report; $current instanceof Report; $current = $current->previous ?? null) {
@@ -40,35 +41,60 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
                             $sqlState = $error->getSQLState() ?? 'unknown';
                         }
 
-                        if ($sqlState !== null) {
-                            // The short class name has no backslashes, so the reduced message can replace a copy of
-                            // the message inside a JSON string in the metadata and the JSON stays valid
-                            $className = (string)\strrchr('\\' . \get_debug_type($error), '\\');
-                            $reducedMessage = \sprintf('SQLSTATE[%s] %s', $sqlState, \substr($className, 1));
-                            $current->setMessage($reducedMessage);
+                        if ($sqlState === null) {
+                            $reportsAbove[] = $current;
 
-                            if ($error instanceof Throwable) {
-                                $reducedMessages[] = [$error->getMessage(), $reducedMessage, $sqlState];
-                            }
+                            continue;
+                        }
+
+                        // The short class name has no backslashes, so the reduced message can replace a copy of the
+                        // message inside a JSON string in the metadata and the JSON stays valid
+                        $className = (string)\strrchr('\\' . \get_debug_type($error), '\\');
+                        $reducedMessage = \sprintf('SQLSTATE[%s] %s', $sqlState, \substr($className, 1));
+                        $current->setMessage($reducedMessage);
+
+                        if ($error instanceof Throwable) {
+                            $reducedMessages[] = [$error->getMessage(), $reducedMessage, $sqlState];
                         }
                     }
 
-                    return $reducedMessages;
+                    return [$reducedMessages, $reportsAbove];
                 },
                 null,
                 Report::class
             );
 
-            self::reduceMetaData($report, $reduceChain($report));
+            [$reducedMessages, $reportsAbove] = $reduceChain($report);
+            [$search, $replace] = self::resolveReplacements($reducedMessages);
+
+            if ($search === []) {
+                return;
+            }
+
+            // The application can put a DB message into its own message, e.g. "Checkout failed: <message>"
+            foreach ($reportsAbove as $reportAbove) {
+                $reportAbove->setMessage(\str_replace($search, $replace, (string)$reportAbove->getMessage()));
+            }
+
+            // Other configurators copy the messages into the metadata (e.g. "error.message", "error.previous_1.message")
+            $metaData = $report->getMetaData();
+
+            \array_walk_recursive($metaData, static function (mixed &$value) use ($search, $replace): void {
+                if (\is_string($value)) {
+                    $value = \str_replace($search, $replace, $value);
+                }
+            });
+
+            $report->setMetaData($metaData, false);
         });
     }
 
     /**
-     * Other configurators copy the messages into the metadata (e.g. "error.message", "error.previous_1.message")
-     *
      * @param list<array{string, string, string}> $reducedMessages Original message, its reduced form and SQLSTATE
+     *
+     * @return array{list<string>, array<int, string>}
      */
-    private static function reduceMetaData(Report $report, array $reducedMessages): void
+    private static function resolveReplacements(array $reducedMessages): array
     {
         $search = [];
         $replace = [];
@@ -96,18 +122,6 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
             }
         }
 
-        if ($search === []) {
-            return;
-        }
-
-        $metaData = $report->getMetaData();
-
-        \array_walk_recursive($metaData, static function (mixed &$value) use ($search, $replace): void {
-            if (\is_string($value)) {
-                $value = \str_replace($search, $replace, $value);
-            }
-        });
-
-        $report->setMetaData($metaData, false);
+        return [$search, $replace];
     }
 }

@@ -58,6 +58,26 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         self::assertSame('Something failed for john@example.com', $report->getMessage());
     }
 
+    public function testItReducesDbMessagesEmbeddedInMessagesAboveDriverException(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $dbalException = new UniqueConstraintViolationException(
+            self::driverException("1062 Duplicate entry 'john@example.com' for key 'users.email_unique'", '23000'),
+            null
+        );
+
+        $client->notifyException(
+            new RuntimeException('Checkout failed: ' . $dbalException->getMessage(), 0, $dbalException)
+        );
+
+        $reportData = $this->getFirstReport($client)
+            ->toArray();
+        $message = 'Checkout failed: SQLSTATE[23000] UniqueConstraintViolationException';
+        self::assertSame($message, $reportData['exceptions'][0]['message']);
+        self::assertSame($message, $reportData['metaData']['error']['message']);
+    }
+
     public function testItReducesDbalExceptionInThePreviousChain(): void
     {
         $client = self::getService(Client::class);
