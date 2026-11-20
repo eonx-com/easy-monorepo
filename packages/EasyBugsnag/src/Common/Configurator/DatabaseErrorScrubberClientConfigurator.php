@@ -48,7 +48,7 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
                             $current->setMessage($reducedMessage);
 
                             if ($error instanceof Throwable) {
-                                $reducedMessages[] = [$error->getMessage(), $reducedMessage];
+                                $reducedMessages[] = [$error->getMessage(), $reducedMessage, $sqlState];
                             }
                         }
                     }
@@ -66,7 +66,7 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
     /**
      * Other configurators copy the messages into the metadata (e.g. "error.message", "error.previous_1.message")
      *
-     * @param list<array{string, string}> $reducedMessages Original message and its reduced form
+     * @param list<array{string, string, string}> $reducedMessages Original message, its reduced form and SQLSTATE
      */
     private static function reduceMetaData(Report $report, array $reducedMessages): void
     {
@@ -75,10 +75,24 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
 
         // The chain goes from the top, so a wrapper message ("An exception occurred in the driver: <message>")
         // is replaced before the driver message it contains
-        foreach ($reducedMessages as [$message, $reducedMessage]) {
-            if (\strlen($message) >= self::MESSAGE_LENGTH_MIN) {
+        foreach ($reducedMessages as [$message, $reducedMessage, $sqlState]) {
+            if (\strlen($message) < self::MESSAGE_LENGTH_MIN) {
+                continue;
+            }
+
+            $index = \array_search($message, $search, true);
+
+            if ($index === false) {
                 $search[] = $message;
                 $replace[] = $reducedMessage;
+
+                continue;
+            }
+
+            // Two exceptions with the same message (a PDO driver exception and its PDOException): a copy cannot be
+            // traced to one of them, so it gets no class
+            if ($replace[$index] !== $reducedMessage) {
+                $replace[$index] = \sprintf('SQLSTATE[%s]', $sqlState);
             }
         }
 

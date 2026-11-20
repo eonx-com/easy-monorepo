@@ -96,7 +96,9 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         self::assertSame($dbalMessage, $reportData['exceptions'][0]['message']);
         self::assertSame('SQLSTATE[23505] PDOException', $reportData['exceptions'][2]['message']);
         self::assertSame($dbalMessage, $reportData['metaData']['error']['message']);
-        self::assertStringStartsWith('SQLSTATE[23505] ', $reportData['metaData']['error']['previous_2']['message']);
+        // The driver exception and the PDOException have the same message, so their copies get no class
+        self::assertSame('SQLSTATE[23505]', $reportData['metaData']['error']['previous_1']['message']);
+        self::assertSame('SQLSTATE[23505]', $reportData['metaData']['error']['previous_2']['message']);
         $messages = \array_column($reportData['exceptions'], 'message');
         self::assertStringNotContainsString('john@example.com', (string)\json_encode($messages));
         self::assertStringNotContainsString('john@example.com', (string)\json_encode($reportData['metaData']));
