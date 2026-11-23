@@ -326,7 +326,7 @@ final class NaiParser extends AbstractLineByLineParser
      */
     private function continueGroup(string $index, string $line): void
     {
-        if (isset($this->groups[$this->currentGroup][$index]['line']) === false) {
+        if ($this->currentGroup === null || isset($this->groups[$this->currentGroup][$index]['line']) === false) {
             $this->addError($line);
 
             return;
