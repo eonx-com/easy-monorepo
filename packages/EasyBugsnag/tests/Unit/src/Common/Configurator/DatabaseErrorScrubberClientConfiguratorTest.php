@@ -142,8 +142,8 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         /** @var \Bugsnag\Report|null $previous */
         $previous = self::getPrivatePropertyValue($report, 'previous');
         self::assertInstanceOf(Report::class, $previous);
-        self::assertStringStartsWith('SQLSTATE[23000] ', (string)$previous->getMessage());
-        self::assertStringNotContainsString('john@example.com', (string)$previous->getMessage());
+        self::assertStringStartsWith('SQLSTATE[23000] ', (string) $previous->getMessage());
+        self::assertStringNotContainsString('john@example.com', (string) $previous->getMessage());
     }
 
     #[DataProvider('provideMessagesThatJsonEscapes')]
@@ -215,7 +215,7 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
         $report->setMetaData([
             'context' => [
-                'details' => (object)[
+                'details' => (object) [
                     'message' => $throwable->getMessage(),
                 ],
             ],
@@ -254,8 +254,8 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         self::assertSame('SQLSTATE[23505]', $reportData['metaData']['error']['previous_1']['message']);
         self::assertSame('SQLSTATE[23505]', $reportData['metaData']['error']['previous_2']['message']);
         $messages = \array_column($reportData['exceptions'], 'message');
-        self::assertStringNotContainsString('john@example.com', (string)\json_encode($messages));
-        self::assertStringNotContainsString('john@example.com', (string)\json_encode($reportData['metaData']));
+        self::assertStringNotContainsString('john@example.com', (string) \json_encode($messages));
+        self::assertStringNotContainsString('john@example.com', (string) \json_encode($reportData['metaData']));
     }
 
     public function testItReducesNativeExceptionBelowDriverException(): void
@@ -289,8 +289,8 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         ));
 
         $report = $this->getFirstReport($client);
-        self::assertStringStartsWith('SQLSTATE[23000] ', (string)$report->getMessage());
-        self::assertStringNotContainsString('john@example.com', (string)$report->getMessage());
+        self::assertStringStartsWith('SQLSTATE[23000] ', (string) $report->getMessage());
+        self::assertStringNotContainsString('john@example.com', (string) $report->getMessage());
     }
 
     public function testItReducesWrappedDbalExceptionToSkeleton(): void
@@ -308,7 +308,7 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
 
         $report = $this->getFirstReport($client);
         self::assertSame('SQLSTATE[23505] UniqueConstraintViolationException', $report->getMessage());
-        self::assertStringNotContainsString('john@example.com', (string)$report->getMessage());
+        self::assertStringNotContainsString('john@example.com', (string) $report->getMessage());
     }
 
     private static function driverException(

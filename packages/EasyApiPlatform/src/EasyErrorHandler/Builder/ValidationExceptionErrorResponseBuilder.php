@@ -69,7 +69,7 @@ final class ValidationExceptionErrorResponseBuilder extends AbstractApiPlatformE
             return $messageFromHint;
         }
 
-        $message = (string)$violation->getMessage();
+        $message = (string) $violation->getMessage();
 
         if (
             \preg_match(

@@ -14,7 +14,7 @@ final class UnserializeTrackingMessageStub
     public function __unserialize(array $data): void
     {
         self::$unserialized = true;
-        $this->value = (string)$data["\0" . self::class . "\0value"];
+        $this->value = (string) $data["\0" . self::class . "\0value"];
     }
 
     public static function isUnserialized(): bool

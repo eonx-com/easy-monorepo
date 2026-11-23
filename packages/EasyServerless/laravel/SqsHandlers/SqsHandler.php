@@ -174,7 +174,7 @@ final class SqsHandler extends AbstractSqsHandler
 
     private function calculateJobTimeout(int $remainingInvocationTimeInMs): int
     {
-        return \max((int)(($remainingInvocationTimeInMs - self::SAFETY_TIMEOUT_MARGIN_MILLISECONDS) / 1000), 0);
+        return \max((int) (($remainingInvocationTimeInMs - self::SAFETY_TIMEOUT_MARGIN_MILLISECONDS) / 1000), 0);
     }
 
     /**

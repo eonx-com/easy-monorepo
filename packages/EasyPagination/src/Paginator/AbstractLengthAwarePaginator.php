@@ -25,7 +25,7 @@ abstract class AbstractLengthAwarePaginator extends AbstractPaginator implements
             return $this->totalPages;
         }
 
-        return $this->totalPages = \max((int)\ceil($this->getTotalItems() / $this->getItemsPerPage()), 1);
+        return $this->totalPages = \max((int) \ceil($this->getTotalItems() / $this->getItemsPerPage()), 1);
     }
 
     public function hasNextPage(): bool

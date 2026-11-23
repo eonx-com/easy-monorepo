@@ -43,7 +43,7 @@ final readonly class FirebaseJwtDriver implements JwtDriverInterface
         $privateKey = $this->privateKey;
 
         if (\is_object($input)) {
-            $input = (array)$input;
+            $input = (array) $input;
         }
 
         return JWT::encode($input, $privateKey, $this->algo);

@@ -51,7 +51,7 @@ final class ScheduleEntry extends AbstractScheduleEntry
 
     public function getDescription(): string
     {
-        return (string)$this->input;
+        return (string) $this->input;
     }
 
     public function getLockResource(): string

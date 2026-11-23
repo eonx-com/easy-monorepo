@@ -126,6 +126,12 @@ Tips:
 
 - [ ] Enable `'request_limits' => ['enabled' => true]` in `easy_webhook` (Laravel: the same in
   `config/easy-webhook.php`) and test it. In 7.0 it is enabled by default.
+- [ ] Check the HTTP client options of webhooks (`httpClientOptions()`) against the list in
+  `packages/EasyWebhook/docs/config.md` («HTTP client options of a webhook») and move every other option to the HTTP
+  client itself (for example `extra.curl`, `verify_peer: false`, `cafile`, `local_cert`). In 7.0 a webhook with such an
+  option is not sent.
+- [ ] Laravel: when the signature is enabled, set your own `signature.secret` in `config/easy-webhook.php`, or `null`
+  when every webhook has its own secret (`secret()`). In 7.0 the default value `easy-webhook-secret` is rejected.
 
 ### EasyTest
 
@@ -255,6 +261,8 @@ Tips:
   its JSON form, a JSON string is re-encoded. It runs after the other configurators (priority `PHP_INT_MAX - 1`), before
   the sensitive data sanitizer. To keep the full message, remove or decorate this service.
 - `WorkerMessageReceivedListener` sanitizes the message and stamps dump with `SensitiveDataSanitizerInterface`.
+- The `Stamps` dump of `WorkerMessageReceivedListener` keeps only the exception class and code of `ErrorDetailsStamp`,
+  not the exception message and the flattened exception of the failed attempt.
 - `doctrine_dbal` (SQL query breadcrumbs) is disabled by default. To keep the breadcrumbs, set
   `'doctrine_dbal' => true` in `easy_bugsnag`.
 - SQL query breadcrumbs no longer contain the query parameter values. To add them, set
@@ -301,6 +309,11 @@ Tips:
   - `EncryptableInterface::encrypt()` without `EncryptableTrait`: the hash callable is now
     `callable(string $entityClass, string $property, string $value)`.
   - `EncryptableMetadataInterface` has a new method `getHashNormalizationsForField()`.
+- Private `#[EncryptableField]` properties of a parent class (for example on an entity that has a subclass or a
+  Doctrine lazy proxy) are now encrypted and hashed. In 6.x they were skipped and stored in plain text: run your
+  re-encryption command for such entities. A `LogicException` is now thrown when a child class redeclares a private
+  encryptable property with the same name, or when two encryptable properties use the same encrypted data field
+  (`fieldName`), which overwrote one of the values before.
 
 ### EasyErrorHandler
 
@@ -327,6 +340,11 @@ Tips:
 ### EasyHttpClient
 
 - The `easy_http_client.logger` service is removed. The bundle uses `monolog.logger.easy_http_client`.
+- `HttpRequestSentEvent` has an empty response content for a request sent with the `buffer` option set to `false`,
+  to a stream resource or to a closure (also a closure that returns `true`). The client no longer keeps a copy of a
+  response body when the application chose where the body goes. The status code and the headers are still in the
+  event. A listener can tell such a request from a response with an empty body by the `buffer` option in the request
+  data. To get the content in the event, send the request without the `buffer` option or with `'buffer' => true`.
 
 ### EasyLock
 
@@ -538,3 +556,25 @@ Laravel:
       ],
   ]);
   ```
+- The HTTP client options of a webhook (`httpClientOptions()`) are checked against an allow-list: the options that only
+  describe the request (`headers`, `query`, `body`, `json`, auth, time limits and a few more, see
+  `packages/EasyWebhook/docs/config.md`). `verify_peer` and `verify_host` are accepted only as `true`, `extra` only
+  with the keys `no_cache`, `trace_content` and `use_persistent_connections`, `on_progress` only as a closure, an
+  invokable object or `[$object, 'method']`, `no_proxy`, `proxy` and `resolve` only while `ssrf_protection` is
+  disabled (for `proxy`, every value except `null` counts; for `no_proxy`, every value except `null` and an empty
+  string), and `bindto` only empty, also with the protection disabled (a file path is a Unix socket for the HTTP
+  client). A webhook with any other option, for example `extra.curl`,
+  `verify_peer: false`, `cafile`, `local_cert` or an option a later Symfony version adds, is not sent: it fails with a
+  `WebhookHttpClientOptionNotAllowedException`. Set these options on the HTTP client itself (decorate the
+  `easy_webhooks.http_client` service). An `on_progress` closure still works for a webhook that is sent in the same
+  process, but it cannot be stored (it comes back as an empty array, which is rejected), so for an asynchronous webhook
+  set it on the HTTP client too. When you create `SendWebhookMiddleware` yourself with `ssrf_protection` disabled, pass
+  `false` as its new third argument.
+- A webhook whose failure cannot be retried gets the `failed` status and a `FinalFailedWebhookEvent` at once, also when
+  it has attempts left: a webhook with a rejected HTTP client option, and a webhook whose response is over
+  `request_limits.max_response_bytes`. Before, such a webhook stayed in `failed_pending_retry`.
+- Laravel: when the signature is enabled and `signature.secret` is still the default `easy-webhook-secret`, the
+  application fails at startup with an `InvalidWebhookSecretException`. A value shipped with the package is known to
+  everyone, so a signature made with it proves nothing. Set your own secret; receivers that verify the signature with
+  the default value need the new one. When every webhook has its own secret (`secret()`), set `signature.secret` to
+  `null`.

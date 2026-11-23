@@ -449,7 +449,7 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
     public function testItMovesTheClockExactlyToTheDueTimeOfTheDelayedMessage(): void
     {
         $clock = new MockClock();
-        $startTimestamp = (float)$clock->now()
+        $startTimestamp = (float) $clock->now()
             ->format('U.u');
         $transport = new InMemoryTransport(null, $clock);
         $transport->send(new Envelope(new DummyMessage(), [new DelayStamp(10_000)]));
@@ -457,7 +457,7 @@ final class MessengerAssertionsTraitTest extends KernelTestCase
 
         self::advanceClockToNextDelayedMessage(['async' => $transport], $clock);
 
-        $nowTimestamp = (float)$clock->now()
+        $nowTimestamp = (float) $clock->now()
             ->format('U.u');
         self::assertEqualsWithDelta(10.0, $nowTimestamp - $startTimestamp, 0.001);
         self::assertSame(1, self::countAvailableMessages(['async' => $transport]));

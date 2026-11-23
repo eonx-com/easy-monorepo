@@ -48,8 +48,8 @@ final readonly class Auth0JwtDriver implements JwtDriverInterface
         }
 
         $this->allowedAlgorithms = $allowedAlgorithms ?? self::DEFAULT_ALLOWED_ALGORITHMS;
-        $this->audienceForEncode = $audienceForEncode ?? (string)\reset($validAudiences);
-        $this->issuerForEncode = (string)\reset($authorizedIss);
+        $this->audienceForEncode = $audienceForEncode ?? (string) \reset($validAudiences);
+        $this->issuerForEncode = (string) \reset($authorizedIss);
     }
 
     /**
@@ -112,7 +112,7 @@ final readonly class Auth0JwtDriver implements JwtDriverInterface
     public function encode(array|object $input): string
     {
         if (\is_object($input)) {
-            $input = (array)$input;
+            $input = (array) $input;
         }
 
         /** @var string $privateKey */

@@ -7,7 +7,7 @@ final class AuthorizationStringSanitizer extends AbstractStringSanitizer
 {
     public function sanitizeString(string $string, string $maskPattern, array $keysToMask): string
     {
-        return (string)\preg_replace(
+        return (string) \preg_replace(
             '/(^|\b)(Authorization:)[^\r\n]+/mi',
             '${2} ' . $this->escapeForReplacement($maskPattern),
             $string

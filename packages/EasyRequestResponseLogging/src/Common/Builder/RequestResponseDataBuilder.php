@@ -116,7 +116,7 @@ final readonly class RequestResponseDataBuilder
 
         $contentLength = $headers->get('Content-Length');
 
-        if (\is_numeric($contentLength) && (int)$contentLength > $this->maxRawBodySize) {
+        if (\is_numeric($contentLength) && (int) $contentLength > $this->maxRawBodySize) {
             return [null, true, false];
         }
 
@@ -251,7 +251,7 @@ final readonly class RequestResponseDataBuilder
         }
 
         $digits = match (true) {
-            \is_int($value) => (string)$value,
+            \is_int($value) => (string) $value,
             \is_float($value) && \is_finite($value) && \floor($value) === $value => \sprintf('%.0f', $value),
             default => null,
         };

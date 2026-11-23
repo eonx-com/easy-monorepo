@@ -60,7 +60,7 @@ final class LoggerFactory implements LazyLoggerFactoryInterface
         $this->loggerClass = $loggerClass ?? Logger::class;
 
         foreach ($lazyLoggers ?? [] as $channel) {
-            $this->lazyLoggers[(string)$channel] = true;
+            $this->lazyLoggers[(string) $channel] = true;
         }
     }
 

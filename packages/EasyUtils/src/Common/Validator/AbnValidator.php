@@ -36,7 +36,7 @@ final class AbnValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $abn = (string)$value;
+        $abn = (string) $value;
 
         $violationCode = $this->getViolationCode($abn);
         if ($violationCode !== null) {
@@ -47,10 +47,10 @@ final class AbnValidator extends ConstraintValidator
             return;
         }
 
-        $abn[0] = (int)$abn[0] - 1;
+        $abn[0] = (int) $abn[0] - 1;
         $sum = 0;
         foreach (\str_split($abn) as $key => $digit) {
-            $sum += (int)$digit * self::WEIGHTS[$key];
+            $sum += (int) $digit * self::WEIGHTS[$key];
         }
 
         if ($sum % self::MODULUS !== 0) {

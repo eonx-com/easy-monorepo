@@ -30,7 +30,7 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
     {
         $sut = $this->createAdapter();
         $sut->save($sut->getItem('key')->set('value')->expiresAfter(60));
-        $this->items['key']['key_expiration'] = ['N' => (string)(\microtime(true) - 1)];
+        $this->items['key']['key_expiration'] = ['N' => (string) (\microtime(true) - 1)];
 
         $item = $sut->getItem('key');
 
@@ -81,7 +81,7 @@ final class DynamoDbAdapterTest extends AbstractUnitTestCase
 
         self::assertTrue($result);
         self::assertArrayHasKey('key_expiration', $this->items['key']);
-        self::assertEqualsWithDelta($before + 60, (float)$this->items['key']['key_expiration']['N'], 2.0);
+        self::assertEqualsWithDelta($before + 60, (float) $this->items['key']['key_expiration']['N'], 2.0);
         self::assertSame('value', $sut->getItem('key')->get());
         self::assertTrue($sut->hasItem('key'));
     }

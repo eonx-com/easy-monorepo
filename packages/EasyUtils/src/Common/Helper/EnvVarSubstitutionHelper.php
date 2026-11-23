@@ -60,7 +60,7 @@ final class EnvVarSubstitutionHelper
             return $value;
         }
 
-        return (string)\preg_replace_callback(self::VAR_REGEX, static function ($matches): string {
+        return (string) \preg_replace_callback(self::VAR_REGEX, static function ($matches): string {
             // Odd number of backslashes means the $ character is escaped
             if (\strlen($matches['backslashes']) % 2 === 1) {
                 return \substr($matches[0], 1);
@@ -80,7 +80,7 @@ final class EnvVarSubstitutionHelper
             $value = self::resolveEnvVarValue($name);
 
             if ($value === '' && isset($matches['default_value']) && $matches['default_value'] !== '') {
-                $unsupportedChars = \strpbrk((string)$matches['default_value'], '\'"{$');
+                $unsupportedChars = \strpbrk((string) $matches['default_value'], '\'"{$');
 
                 if (\is_string($unsupportedChars)) {
                     throw new RuntimeException(\sprintf(
@@ -90,7 +90,7 @@ final class EnvVarSubstitutionHelper
                     ));
                 }
 
-                $value = \substr((string)$matches['default_value'], 2);
+                $value = \substr((string) $matches['default_value'], 2);
 
                 if ($matches['default_value'][1] === '=') {
                     self::$values[$name] = $value;
@@ -120,6 +120,6 @@ final class EnvVarSubstitutionHelper
             return $_SERVER[$name];
         }
 
-        return (string)(self::$values[$name] ?? \getenv($name));
+        return (string) (self::$values[$name] ?? \getenv($name));
     }
 }

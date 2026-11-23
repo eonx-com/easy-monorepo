@@ -98,7 +98,7 @@ final readonly class MathHelper implements MathHelperInterface
         /** @phpstan-var 1|2|3|4 $roundMode */
         $roundMode = $mode ?? $this->roundMode;
 
-        $rounded = \round((float)$value, $precision, $roundMode);
+        $rounded = \round((float) $value, $precision, $roundMode);
 
         return \number_format($rounded, $precision, $this->decimalSeparator, $this->thousandsSeparator);
     }

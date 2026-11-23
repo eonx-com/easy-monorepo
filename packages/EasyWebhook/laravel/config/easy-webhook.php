@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use EonX\EasyWebhook\Common\Factory\HttpClientFactory;
 use EonX\EasyWebhook\Common\Signer\Rs256WebhookSigner;
+use EonX\EasyWebhook\Laravel\EasyWebhookServiceProvider;
 
 return [
     'event' => [
@@ -17,7 +18,7 @@ return [
     'send_async' => true,
     'signature' => [
         'enabled' => false,
-        'secret' => 'easy-webhook-secret',
+        'secret' => EasyWebhookServiceProvider::DEFAULT_SIGNATURE_SECRET,
         'header' => 'X-Webhook-Signature',
         'signer' => Rs256WebhookSigner::class,
     ],

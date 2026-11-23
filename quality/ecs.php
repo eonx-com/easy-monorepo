@@ -11,9 +11,11 @@ use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
 use EonX\EasyQuality\Sniffs\Classes\MakeClassAbstractSniff;
 use EonX\EasyQuality\Sniffs\Constants\DisallowApplicationConstantAndEnumUsageInTestAssertBlock;
 use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\DisallowElseSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
+use EonX\EasyQuality\Sniffs\Methods\ForbiddenTestMethodConstructSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
@@ -81,6 +83,17 @@ return ECSConfig::configure()
             'packages/EasyLock/src/Common/Exception/LockAcquiringException.php',
         ],
         DateTimeImmutableFixer::class => null,
+        // Conditional class declarations for DBAL 3/4 compatibility, the else branch can't be avoided
+        DisallowElseSniff::class => [
+            'packages/EasyAsync/tests/Stub/Connection/BrokenConnection.php',
+            'packages/EasyBugsnag/src/Doctrine/Connection/BreadcrumbLoggerConnection.php',
+            'packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerStatement.php',
+            'packages/EasyBugsnag/src/Doctrine/ValueObject/QueryBreadcrumb.php',
+            'packages/EasySwoole/src/Doctrine/Connection/DbalConnection.php',
+            'packages/EasySwoole/src/Doctrine/Driver/DbalDriver.php',
+            'packages/EasySwoole/src/Doctrine/Factory/CoroutineConnectionFactory.php',
+            'packages/EasySwoole/src/Doctrine/Statement/DbalStatement.php',
+        ],
         DisallowMixedTypeHintSniff::class => [
             'packages/EasyBankFiles/src/Parsing/Common/Converter/XmlConverter.php',
             'packages/EasySecurity/src/SymfonySecurity/Voter/*',
@@ -94,6 +107,10 @@ return ECSConfig::configure()
             'packages/EasySecurity/src/Common/Context/SecurityContext.php',
             'packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php',
             'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
+        ],
+        // Architecture tests scan the file tree, branching over the found files is their nature
+        ForbiddenTestMethodConstructSniff::class => [
+            'quality/tests/Architecture/*',
         ],
         FullyQualifiedClassNameInAnnotationSniff::class => [
             'packages/EasyTest/src/Common/Trait/ContainerServiceTrait.php',

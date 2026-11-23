@@ -68,7 +68,7 @@ final class SecretsHelper
                     continue;
                 }
 
-                self::doLoad((array)\json_decode($file->getContents(), true));
+                self::doLoad((array) \json_decode($file->getContents(), true));
             }
         }
     }

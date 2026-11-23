@@ -54,7 +54,7 @@ final class ValueExpressionFunctionProvider
             function ($arguments, $condition): IfConditionForValueHelper {
                 $this->validateArguments($arguments);
 
-                return new IfConditionForValueHelper((bool)$condition, $arguments['value']);
+                return new IfConditionForValueHelper((bool) $condition, $arguments['value']);
             },
             'Create if condition allowing usage of ".then()" and/or "else()"'
         );

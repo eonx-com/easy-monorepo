@@ -59,9 +59,9 @@ final class DecisionDataCollector extends AbstractDataCollector
             $decisions[] = [
                 'configurators' => $this->mapConfigurators($decision),
                 'context' => [
-                    'decision_type' => $context !== null ? $context->getDecisionType() : $decision::class,
-                    'original_input' => $context !== null ? $context->getOriginalInput() : 'Decision not made...',
-                    'rule_output' => $context !== null ? $context->getRuleOutputs() : [],
+                    'decision_type' => $context?->getDecisionType() ?? $decision::class,
+                    'original_input' => $context?->getOriginalInput() ?? 'Decision not made...',
+                    'rule_output' => $context?->getRuleOutputs() ?? [],
                 ],
                 'name' => $decision->getName(),
             ];

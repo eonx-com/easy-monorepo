@@ -24,7 +24,7 @@ final readonly class SerializerContextBuilder implements SerializerContextBuilde
 
         // Customize context only for collection get
         if ($operation instanceof GetCollection) {
-            $groups = (array)($context['groups'] ?? []);
+            $groups = (array) ($context['groups'] ?? []);
 
             if (\in_array(CustomPaginatorInterface::SERIALIZER_GROUP, $groups, true) === false) {
                 $groups[] = CustomPaginatorInterface::SERIALIZER_GROUP;

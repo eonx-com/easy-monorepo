@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
+use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Throwable;
@@ -54,7 +55,7 @@ final class WorkerMessageReceivedListener
                     'Message' => $this->dump($envelope->getMessage()),
                     'Received At' => $this->receivedAt->format('Y-m-d H:i:s.u'),
                     'Receiver Name' => $this->event->getReceiverName(),
-                    'Stamps' => $this->dump($envelope->all()),
+                    'Stamps' => $this->dump(self::reduceErrorDetailsStamps($envelope->all())),
                 ],
             ]);
         };
@@ -87,18 +88,39 @@ final class WorkerMessageReceivedListener
             $expanded['@class'] = \get_debug_type($value);
         }
 
-        foreach ((array)$value as $key => $item) {
+        foreach ((array) $value as $key => $item) {
             if (--$budget < 0) {
                 $expanded['...'] = 'truncated';
 
                 break;
             }
 
-            $name = \is_object($value) ? \substr((string)\strrchr("\0" . $key, "\0"), 1) : $key;
+            $name = \is_object($value) ? \substr((string) \strrchr("\0" . $key, "\0"), 1) : $key;
             $expanded[$name] = self::expand($item, $depth + 1, $visited, $budget);
         }
 
         return $expanded;
+    }
+
+    /**
+     * The message and the flattened exception of a failed attempt can hold data (e.g. a DB error with the duplicate
+     * value) that the sanitizer cannot recognize
+     *
+     * @param array<string, \Symfony\Component\Messenger\Stamp\StampInterface[]> $stamps
+     */
+    private static function reduceErrorDetailsStamps(array $stamps): array
+    {
+        foreach ($stamps[ErrorDetailsStamp::class] ?? [] as $index => $stamp) {
+            if ($stamp instanceof ErrorDetailsStamp) {
+                $stamps[ErrorDetailsStamp::class][$index] = new ErrorDetailsStamp(
+                    $stamp->getExceptionClass(),
+                    $stamp->getExceptionCode(),
+                    ''
+                );
+            }
+        }
+
+        return $stamps;
     }
 
     private function dump(mixed $var): string
@@ -111,7 +133,7 @@ final class WorkerMessageReceivedListener
             $var = $this->sensitiveDataSanitizer->sanitize(self::expand($var, 0, $visited, $budget));
         }
 
-        return (string)$this->getDumper()
+        return (string) $this->getDumper()
             ->dump($this->getCloner()->cloneVar($var), true);
     }
 

@@ -58,7 +58,7 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
 
                         // The short class name has no backslashes, so the reduced message can replace a copy of the
                         // message inside a JSON string in the metadata and the JSON stays valid
-                        $className = (string)\strrchr('\\' . \get_debug_type($error), '\\');
+                        $className = (string) \strrchr('\\' . \get_debug_type($error), '\\');
                         $reducedMessage = \sprintf('SQLSTATE[%s] %s', $sqlState, \substr($className, 1));
                         $current->setMessage($reducedMessage);
 
@@ -82,7 +82,7 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
 
             // The application can put a DB message into its own message, e.g. "Checkout failed: <message>"
             foreach ($reportsAbove as $reportAbove) {
-                $reportAbove->setMessage(\strtr((string)$reportAbove->getMessage(), $replacements));
+                $reportAbove->setMessage(\strtr((string) $reportAbove->getMessage(), $replacements));
             }
 
             // Other configurators copy the messages into the metadata (e.g. "error.message", "error.previous_1.message")
@@ -114,7 +114,7 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
                 return $value;
             }
 
-            $data = (array)\json_decode((string)\json_encode($value), true);
+            $data = (array) \json_decode((string) \json_encode($value), true);
             $reducedData = self::reduceValue($data, $replacements);
 
             return $reducedData === $data ? $value : $reducedData;
@@ -131,7 +131,7 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
 
             return $reducedData === $data
                 ? $value
-                : (string)\json_encode($reducedData, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
+                : (string) \json_encode($reducedData, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
         }
 
         // One pass that takes the longest match at each position: a JSON-escaped form wins over the raw message it
@@ -165,7 +165,7 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
         foreach ($replacements as $message => $reducedMessage) {
             foreach (self::JSON_ENCODE_FLAGS as $flags) {
                 // False for a message with invalid UTF-8, which JSON cannot hold
-                $encodedMessage = \json_encode((string)$message, $flags);
+                $encodedMessage = \json_encode((string) $message, $flags);
 
                 if ($encodedMessage !== false) {
                     $replacements[\substr($encodedMessage, 1, -1)] ??= $reducedMessage;

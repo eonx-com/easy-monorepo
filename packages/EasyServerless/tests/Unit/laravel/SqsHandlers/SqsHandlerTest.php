@@ -670,7 +670,7 @@ final class SqsHandlerTest extends AbstractLaravelTestCase
     {
         return new Context(
             'aws-request-id',
-            (int)(\microtime(true) * 1000) + 60000,
+            (int) (\microtime(true) * 1000) + 60000,
             'arn:aws:lambda:ap-southeast-2:123456789012:function:test',
             'trace-id'
         );
@@ -732,7 +732,7 @@ final class SqsHandlerTest extends AbstractLaravelTestCase
 
         $attributes = [
             'ApproximateFirstReceiveTimestamp' => '0',
-            'ApproximateReceiveCount' => (string)$receiveCount,
+            'ApproximateReceiveCount' => (string) $receiveCount,
             'SenderId' => 'sender-id',
             'SentTimestamp' => '0',
         ];

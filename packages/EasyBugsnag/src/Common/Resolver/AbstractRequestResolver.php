@@ -15,7 +15,7 @@ abstract class AbstractRequestResolver implements ResolverInterface
     public function resolve(): RequestInterface
     {
         $inCli = \in_array(\PHP_SAPI, self::IN_CLI, true);
-        $resolveInCli = (bool)($_SERVER[ServerParam::ResolveRequestInCli->value] ?? false);
+        $resolveInCli = (bool) ($_SERVER[ServerParam::ResolveRequestInCli->value] ?? false);
 
         if ($inCli && $resolveInCli === false) {
             /** @var string[] $argv */

@@ -58,7 +58,7 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
             return false;
         }
 
-        $scheme = \mb_strtolower((string)\parse_url($url, \PHP_URL_SCHEME));
+        $scheme = \mb_strtolower((string) \parse_url($url, \PHP_URL_SCHEME));
 
         if (\in_array($scheme, ['http', 'https'], true) === false) {
             return false;
@@ -91,7 +91,7 @@ final class AllowedHostsHttpClient implements HttpClientInterface, ResetInterfac
             return true;
         }
 
-        $lastLabel = \mb_strtolower((string)\strrchr('.' . $host, '.'));
+        $lastLabel = \mb_strtolower((string) \strrchr('.' . $host, '.'));
 
         return \preg_match('/^\.(0x[0-9a-f]+|[0-9]+)$/', $lastLabel) === 1;
     }

@@ -63,7 +63,7 @@ final class EasyAsyncServiceProvider extends ServiceProvider
 
     private function logQueueWorkerStopping(): void
     {
-        if ((bool)\config('easy-async.log_queue_worker_stop', true) === false) {
+        if ((bool) \config('easy-async.log_queue_worker_stop', true) === false) {
             return;
         }
 

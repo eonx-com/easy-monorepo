@@ -28,7 +28,7 @@ final class EasyRandomServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-random.php', 'easy-random');
 
-        $uuidVersion = (int)\config('easy-random.uuid_version', 6);
+        $uuidVersion = (int) \config('easy-random.uuid_version', 6);
         $supportedUuidVersions = [1, 4, 6, 7];
 
         if (\in_array($uuidVersion, $supportedUuidVersions, true) === false) {

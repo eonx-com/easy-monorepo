@@ -29,7 +29,7 @@ final class ArrayHelper
 
     public static function set(array &$array, int|string $key, mixed $value): void
     {
-        $keys = \explode('/', (string)$key);
+        $keys = \explode('/', (string) $key);
 
         // Iterate through key parts to find the position to set the value
         while (\count($keys) > 1) {

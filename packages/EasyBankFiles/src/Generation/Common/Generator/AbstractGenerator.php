@@ -72,7 +72,7 @@ abstract class AbstractGenerator implements GeneratorInterface
         $errors = [];
 
         foreach ($rules ?? [] as $attribute => $rule) {
-            $this->processRule($errors, $rule, $attribute, (string)$object->{'get' . \ucfirst($attribute)}());
+            $this->processRule($errors, $rule, $attribute, (string) $object->{'get' . \ucfirst($attribute)}());
         }
 
         if (\count($errors) > 0) {

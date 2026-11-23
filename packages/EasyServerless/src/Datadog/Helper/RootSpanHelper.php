@@ -49,8 +49,8 @@ final class RootSpanHelper
             && self::isJitEnabled($opcacheStatus, \ini_get('opcache.jit'), \ini_get('opcache.jit_buffer_size'));
 
         $runtimeInfo = [
-            'php.max_execution_time' => (string)\ini_get('max_execution_time'),
-            'php.memory_limit' => (string)\ini_get('memory_limit'),
+            'php.max_execution_time' => (string) \ini_get('max_execution_time'),
+            'php.memory_limit' => (string) \ini_get('memory_limit'),
             'php.opcache.enabled' => $opcacheEnabled ? 'true' : 'false',
             'php.opcache.jit.enabled' => $jitEnabled ? 'true' : 'false',
             'php.os' => \PHP_OS_FAMILY,
@@ -90,11 +90,11 @@ final class RootSpanHelper
             return ($opcacheStatus['jit']['on'] ?? false) === true;
         }
 
-        if (\in_array(\strtolower(\trim((string)$jit)), self::JIT_DISABLED_VALUES, true)) {
+        if (\in_array(\strtolower(\trim((string) $jit)), self::JIT_DISABLED_VALUES, true)) {
             return false;
         }
 
-        return (int)$jitBufferSize > 0;
+        return (int) $jitBufferSize > 0;
     }
 
     /**
@@ -136,7 +136,7 @@ final class RootSpanHelper
     private static function getOpcacheStatus(): array|false
     {
         // The opcache_get_status() function raises a warning outside of the opcache.restrict_api path
-        if (\function_exists('opcache_get_status') === false || (string)\ini_get('opcache.restrict_api') !== '') {
+        if (\function_exists('opcache_get_status') === false || (string) \ini_get('opcache.restrict_api') !== '') {
             return false;
         }
 

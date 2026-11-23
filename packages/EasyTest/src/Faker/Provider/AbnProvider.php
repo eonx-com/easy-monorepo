@@ -17,7 +17,7 @@ final class AbnProvider extends Base
     public function abn(): string
     {
         $randomNumber = \str_pad(
-            (string)\random_int(1, 999999999),
+            (string) \random_int(1, 999999999),
             9,
             '0',
             \STR_PAD_LEFT
@@ -27,7 +27,7 @@ final class AbnProvider extends Base
 
         $sum = 0;
         foreach (self::WEIGHTS as $position => $weight) {
-            $digit = (int)$abn[$position] - ($position !== 0 ? 0 : 1);
+            $digit = (int) $abn[$position] - ($position !== 0 ? 0 : 1);
             $sum += $weight * $digit;
         }
 

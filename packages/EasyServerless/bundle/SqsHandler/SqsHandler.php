@@ -341,7 +341,7 @@ final class SqsHandler extends AbstractSqsHandler
         }
 
         $delayInMilliseconds ??= $retryStrategy?->getWaitingTime($envelope, $throwable) ?? 0;
-        $delay = (int)\ceil($delayInMilliseconds / 1000);
+        $delay = (int) \ceil($delayInMilliseconds / 1000);
 
         // Ensure a minimum delay to ensure the Lambda function has time to complete before the message
         // becomes visible again, and prevent to exceed SQS limit

@@ -64,13 +64,11 @@ abstract class AbstractFilterTestCase extends AbstractUnitTestCase
         ?callable $filterFactory = null,
         ?string $resourceClass = null,
     ): void {
-        if ($filterFactory === null) {
-            $filterFactory = function (ManagerRegistry $managerRegistry, ?array $properties = null): FilterInterface {
-                $filterClass = $this->filterClass;
+        $filterFactory ??= function (ManagerRegistry $managerRegistry, ?array $properties = null): FilterInterface {
+            $filterClass = $this->filterClass;
 
-                return new $filterClass($managerRegistry, null, $properties);
-            };
-        }
+            return new $filterClass($managerRegistry, null, $properties);
+        };
 
         $repository = $this->repository;
         if ($resourceClass !== null) {

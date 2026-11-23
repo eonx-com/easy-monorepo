@@ -84,10 +84,10 @@ final class EasyRequestResponseLoggingServiceProvider extends ServiceProvider
             static fn(Container $app): RequestResponseDataBuilder => new RequestResponseDataBuilder(
                 sensitiveDataSanitizer: $app->make(SensitiveDataSanitizerInterface::class),
                 requestIdProvider: $app->make(RequestIdProviderInterface::class),
-                logRequestBody: (bool)\config('easy-request-response-logging.log_request_body', true),
-                logResponseBody: (bool)\config('easy-request-response-logging.log_response_body', true),
-                maxBodySize: (int)\config('easy-request-response-logging.max_body_size', 32768),
-                maxRawBodySize: (int)\config('easy-request-response-logging.max_raw_body_size', 1048576)
+                logRequestBody: (bool) \config('easy-request-response-logging.log_request_body', true),
+                logResponseBody: (bool) \config('easy-request-response-logging.log_response_body', true),
+                maxBodySize: (int) \config('easy-request-response-logging.max_body_size', 32768),
+                maxRawBodySize: (int) \config('easy-request-response-logging.max_raw_body_size', 1048576)
             )
         );
 
@@ -96,7 +96,7 @@ final class EasyRequestResponseLoggingServiceProvider extends ServiceProvider
             static fn(Container $app): RequestResponseLogger => new RequestResponseLogger(
                 logger: $app->make(ConfigServiceId::Logger->value),
                 requestResponseDataBuilder: $app->make(RequestResponseDataBuilder::class),
-                doNotLogPaths: (array)\config('easy-request-response-logging.do_not_log_paths', [])
+                doNotLogPaths: (array) \config('easy-request-response-logging.do_not_log_paths', [])
             )
         );
 
@@ -105,6 +105,6 @@ final class EasyRequestResponseLoggingServiceProvider extends ServiceProvider
 
     private function isEnabled(): bool
     {
-        return (bool)\config('easy-request-response-logging.enabled', false);
+        return (bool) \config('easy-request-response-logging.enabled', false);
     }
 }

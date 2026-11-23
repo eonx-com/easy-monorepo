@@ -47,14 +47,14 @@ final class CloverCoverageResolver implements CoverageResolverInterface
         }
 
         foreach ($files as $file) {
-            $elements = (int)$this->extractXmlAttribute($file->metrics, self::ATTRIBUTE_NAME_ELEMENTS);
-            $coveredElements = (int)$this->extractXmlAttribute($file->metrics, self::ATTRIBUTE_NAME_COVERED_ELEMENTS);
+            $elements = (int) $this->extractXmlAttribute($file->metrics, self::ATTRIBUTE_NAME_ELEMENTS);
+            $coveredElements = (int) $this->extractXmlAttribute($file->metrics, self::ATTRIBUTE_NAME_COVERED_ELEMENTS);
 
             if ($elements !== $coveredElements) {
                 $violations[] = 'File: ' . $this->extractXmlAttribute($file, self::ATTRIBUTE_NAME_FILE_NAME);
 
                 foreach ($file->line as $line) {
-                    $count = (int)$this->extractXmlAttribute($line, self::ATTRIBUTE_NAME_COUNT);
+                    $count = (int) $this->extractXmlAttribute($line, self::ATTRIBUTE_NAME_COUNT);
 
                     if ($count === 0) {
                         $violations[] = 'Line: ' . $this->extractXmlAttribute($line, self::ATTRIBUTE_NAME_NUM);
@@ -79,8 +79,8 @@ final class CloverCoverageResolver implements CoverageResolverInterface
             ));
         }
 
-        $totalElements = (int)$elements[0];
-        $totalCoveredElements = (int)$coveredElements[0];
+        $totalElements = (int) $elements[0];
+        $totalCoveredElements = (int) $coveredElements[0];
 
         $coverage = $totalElements === 0 ? 100 : ($totalCoveredElements / $totalElements) * 100;
 
@@ -105,6 +105,6 @@ final class CloverCoverageResolver implements CoverageResolverInterface
             ));
         }
 
-        return (string)$attr[$attributeName];
+        return (string) $attr[$attributeName];
     }
 }

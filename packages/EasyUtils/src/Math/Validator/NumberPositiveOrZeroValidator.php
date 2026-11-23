@@ -26,6 +26,6 @@ final class NumberPositiveOrZeroValidator extends AbstractComparisonValidator
             $value = new NumberValueObject($value);
         }
 
-        return (string)$value;
+        return (string) $value;
     }
 }

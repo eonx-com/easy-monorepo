@@ -5,6 +5,8 @@ namespace EonX\EasyWebhook\Common\Helper;
 
 use EonX\EasyUtils\Common\Helper\ErrorDetailsHelper;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
+use EonX\EasyWebhook\Common\Exception\WebhookHttpClientOptionNotAllowedException;
+use EonX\EasyWebhook\Common\Exception\WebhookResponseTooLargeException;
 
 final class WebhookResultHelper
 {
@@ -42,5 +44,13 @@ final class WebhookResultHelper
         }
 
         return $data;
+    }
+
+    public static function isRetryable(WebhookResultInterface $result): bool
+    {
+        $throwable = $result->getThrowable();
+
+        return ($throwable instanceof WebhookHttpClientOptionNotAllowedException) === false
+            && WebhookResponseTooLargeException::isInChain($throwable) === false;
     }
 }

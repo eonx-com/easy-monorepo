@@ -35,7 +35,7 @@ final class EasyLoggingServiceProvider extends ServiceProvider
             static function (Container $app): LoggerFactoryInterface {
                 $factory = new LoggerFactory(
                     defaultChannel: \config('easy-logging.default_channel'),
-                    lazyLoggers: (array)\config('easy-logging.lazy_loggers', []),
+                    lazyLoggers: (array) \config('easy-logging.lazy_loggers', []),
                 );
 
                 // Add default stream handler only if no handler config providers
@@ -45,7 +45,7 @@ final class EasyLoggingServiceProvider extends ServiceProvider
                 $streamHandlerConfig = \config('easy-logging.stream_handler', true);
                 $streamHandlerConfig = \is_array($streamHandlerConfig)
                     ? $streamHandlerConfig
-                    : ['enabled' => (bool)$streamHandlerConfig];
+                    : ['enabled' => (bool) $streamHandlerConfig];
 
                 if (($streamHandlerConfig['enabled'] ?? true) && \count($handlerConfigProviders) < 1) {
                     /** @var int|string|\Monolog\Level|null $level */

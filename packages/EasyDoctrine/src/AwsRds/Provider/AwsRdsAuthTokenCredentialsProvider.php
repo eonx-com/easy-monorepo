@@ -27,15 +27,15 @@ final readonly class AwsRdsAuthTokenCredentialsProvider implements AwsRdsAuthTok
 
         // Support __not_implemented__ value as env vars do not always support null or empty values
         if (\is_string($assumeRoleArn) && $assumeRoleArn !== '' && $assumeRoleArn !== '__not_implemented__') {
-            $assumeRoleDurationSeconds = (int)($driverOptions[AwsRdsOption::AssumeRoleDurationSeconds->value]
+            $assumeRoleDurationSeconds = (int) ($driverOptions[AwsRdsOption::AssumeRoleDurationSeconds->value]
                 ?? $this->assumeRoleDurationSeconds
                 ?? 900);
 
-            $assumeRoleRegion = (string)($driverOptions[AwsRdsOption::AssumeRoleRegion->value]
+            $assumeRoleRegion = (string) ($driverOptions[AwsRdsOption::AssumeRoleRegion->value]
                 ?? $this->assumeRoleRegion
                 ?? $awsRegion);
 
-            $assumeRoleSessionName = (string)($driverOptions[AwsRdsOption::AssumeRoleSessionName->value]
+            $assumeRoleSessionName = (string) ($driverOptions[AwsRdsOption::AssumeRoleSessionName->value]
                 ?? $this->assumeRoleSessionName
                 ?? \hash('xxh128', $assumeRoleArn . $assumeRoleRegion));
 

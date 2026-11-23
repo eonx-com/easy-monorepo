@@ -15,7 +15,7 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
     {
         self::bootKernel(['environment' => 'doctrine_dbal']);
         $this->persistAuthor();
-        $expectedTypes = \version_compare((string)InstalledVersions::getVersion('doctrine/dbal'), '4.0.0', '>=')
+        $expectedTypes = \version_compare((string) InstalledVersions::getVersion('doctrine/dbal'), '4.0.0', '>=')
             ? '["STRING","STRING","INTEGER"]'
             : '[2,2,1]';
 
@@ -66,7 +66,7 @@ final class BreadcrumbLoggerTest extends AbstractUnitTestCase
         $breadcrumbs = self::getPrivatePropertyValue($recorder, 'breadcrumbs');
 
         foreach ($breadcrumbs as $breadcrumb) {
-            if (\str_starts_with((string)($breadcrumb->getMetaData()['SQL'] ?? ''), 'INSERT INTO author')) {
+            if (\str_starts_with((string) ($breadcrumb->getMetaData()['SQL'] ?? ''), 'INSERT INTO author')) {
                 return $breadcrumb;
             }
         }

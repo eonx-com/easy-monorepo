@@ -14,6 +14,6 @@ final class DefaultObjectTransformer extends AbstractObjectTransformer
 
     public function transform(object $object): array
     {
-        return (array)\json_decode((string)\json_encode($object), true);
+        return (array) \json_decode((string) \json_encode($object), true);
     }
 }

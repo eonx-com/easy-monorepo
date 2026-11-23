@@ -155,7 +155,7 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
     private function sanitizeArray(array $data): array
     {
         foreach ($data as $key => $value) {
-            $data[$key] = $this->isKeyToMask((string)$key)
+            $data[$key] = $this->isKeyToMask((string) $key)
                 ? $this->maskPattern
                 : $this->sanitize($value);
         }
@@ -194,9 +194,11 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
                     $spanStart = $index;
                     $depth = 1;
                     $inString = false;
-                } else {
-                    $result .= $char;
+
+                    continue;
                 }
+
+                $result .= $char;
 
                 continue;
             }
@@ -204,7 +206,11 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             if ($inString) {
                 if ($char === '\\') {
                     $index++;
-                } elseif ($char === '"') {
+
+                    continue;
+                }
+
+                if ($char === '"') {
                     $inString = false;
                 }
 
@@ -213,9 +219,17 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
 
             if ($char === '"') {
                 $inString = true;
-            } elseif ($char === '{' || $char === '[') {
+
+                continue;
+            }
+
+            if ($char === '{' || $char === '[') {
                 $depth++;
-            } elseif ($char === '}' || $char === ']') {
+
+                continue;
+            }
+
+            if ($char === '}' || $char === ']') {
                 $depth--;
 
                 if ($depth === 0) {
@@ -271,7 +285,7 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
     private function sanitizeNumber(int|float $number): int|float|string
     {
         $digits = match (true) {
-            \is_int($number) => (string)$number,
+            \is_int($number) => (string) $number,
             \is_finite($number) && \floor($number) === $number => \sprintf('%.0f', $number),
             default => null,
         };

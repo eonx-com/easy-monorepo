@@ -56,7 +56,7 @@ final class JsonFormatterTest extends AbstractUnitTestCase
         $log($logger);
 
         \rewind($stream);
-        $logContents = (string)\fread($stream, 2048);
+        $logContents = (string) \fread($stream, 2048);
         \fclose($stream);
 
         $assert($logContents);

@@ -10,7 +10,7 @@ final class UnanimousDecision extends AbstractDecision
     protected function doHandleRuleOutput(mixed $output): void
     {
         // If at least one false, decision output is false
-        if ((bool)$output === false) {
+        if ((bool) $output === false) {
             $this->output = false;
             // No need to keep processing rules because only one false is required to output false
             $this->getContext()

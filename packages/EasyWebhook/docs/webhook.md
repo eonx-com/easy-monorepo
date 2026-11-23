@@ -26,7 +26,8 @@ A Webhook object has the following properties:
 - `$event`: Event descriptor, which will be sent in the Event header of the webhook HTTP request. The Event header is
   called `X-Webhook-Event` by default.
 - `$extra`: Array of extra information pertaining to the webhook.
-- `$httpClientOptions`: Array of HTTP client options for the webhook HTTP request.
+- `$httpClientOptions`: Array of HTTP client options for the webhook HTTP request. Some options are rejected, see
+  [HTTP client options of a webhook](config.md#http-client-options-of-a-webhook).
 - `$id`: A unique identifier for the webhook, which will be sent in the ID header of the webhook HTTP request. The ID
   header is called `X-Webhook-Id` by default.
 - `$maxAttempt`: Maximum number of times to try to send the webhook before giving up.

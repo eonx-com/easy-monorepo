@@ -26,8 +26,8 @@ final class FileTrailerTest extends AbstractUnitTestCase
         $trailer = new FileTrailer($data);
 
         self::assertSame($data['code'], $trailer->getCode());
-        self::assertSame((float)100, $trailer->getFileControlTotalA());
-        self::assertSame((float)100, $trailer->getFileControlTotalB());
+        self::assertSame((float) 100, $trailer->getFileControlTotalA());
+        self::assertSame((float) 100, $trailer->getFileControlTotalB());
         self::assertSame($data['numberOfGroups'], $trailer->getNumberOfGroups());
         self::assertSame($data['numberOfRecords'], $trailer->getNumberOfRecords());
     }

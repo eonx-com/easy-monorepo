@@ -45,7 +45,7 @@ final class PermissionExpressionFunctionProvider implements ExpressionFunctionPr
                             $value = \constant($constant);
 
                             if ($value instanceof BackedEnum) {
-                                $value = (string)$value->value;
+                                $value = (string) $value->value;
                             }
 
                             $this->cached[$permission] = $value;

@@ -146,7 +146,9 @@ trait MessengerAssertionsTrait
             /** @var list<array<class-string<\Throwable>, int|string|null>> $exactExpectedFailures */
             $exactExpectedFailures = $expectedFailures;
             self::assertMessageFailuresExactly($exactExpectedFailures, $messageFailures);
-        } else {
+        }
+
+        if (\array_is_list($expectedFailures) === false || $expectedFailures === []) {
             /** @var array<class-string<\Throwable>, int|string|null> $leastOnceExpectedFailures */
             $leastOnceExpectedFailures = $expectedFailures;
             self::assertMessageFailures($leastOnceExpectedFailures, $messageFailures);
@@ -191,7 +193,7 @@ trait MessengerAssertionsTrait
             $availableAt = new ReflectionProperty(InMemoryTransport::class, 'availableAt')->getValue($transport);
 
             foreach ($availableAt as $dueAt) {
-                $dueAtTimestamps[] = (float)$dueAt->format('U.u');
+                $dueAtTimestamps[] = (float) $dueAt->format('U.u');
             }
         }
 
@@ -199,9 +201,9 @@ trait MessengerAssertionsTrait
             return null;
         }
 
-        $nowTimestamp = (float)$clock->now()
+        $nowTimestamp = (float) $clock->now()
             ->format('U.u');
-        $advanceBySeconds = (float)\max(0, \min($dueAtTimestamps) - $nowTimestamp);
+        $advanceBySeconds = (float) \max(0, \min($dueAtTimestamps) - $nowTimestamp);
 
         $clock->sleep($advanceBySeconds + self::CLOCK_OVERSHOOT_IN_SECONDS);
 
@@ -222,7 +224,7 @@ trait MessengerAssertionsTrait
      */
     private static function assertClockAdvances(array $expectedDelays, array $actualAdvances): void
     {
-        $toMilliseconds = static fn(int|float $seconds): int => (int)\round($seconds * 1000);
+        $toMilliseconds = static fn(int|float $seconds): int => (int) \round($seconds * 1000);
         $expectedMilliseconds = \array_map($toMilliseconds, $expectedDelays);
         $actualMilliseconds = \array_map($toMilliseconds, $actualAdvances);
         $message = '';
@@ -299,7 +301,7 @@ trait MessengerAssertionsTrait
                     ));
                 }
 
-                $exceptionClass = (string)\array_key_first($expectedFailure);
+                $exceptionClass = (string) \array_key_first($expectedFailure);
                 self::assertExpectedFailureCodeShape($exceptionClass, $expectedFailure[$exceptionClass]);
                 $hasPairs = true;
             }

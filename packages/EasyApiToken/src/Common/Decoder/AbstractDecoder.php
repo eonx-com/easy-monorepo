@@ -18,7 +18,7 @@ abstract class AbstractDecoder implements DecoderInterface
 
     protected function getHeaderWithoutPrefix(string $header, string $prefix, Request $request): ?string
     {
-        $header = (string)$request->headers->get($header, '');
+        $header = (string) $request->headers->get($header, '');
 
         if (\str_starts_with($header, $prefix) === false) {
             return null;

@@ -31,7 +31,7 @@ final class SqsQueueJob extends SqsJob
      */
     public function attempts(): int
     {
-        return (int)($this->job['Attributes']['ApproximateReceiveCount'] ?? 1);
+        return (int) ($this->job['Attributes']['ApproximateReceiveCount'] ?? 1);
     }
 
     public function delete(): void
@@ -106,7 +106,7 @@ final class SqsQueueJob extends SqsJob
         $this->released = true;
         // Keep the delay, either explicit or computed by the worker from the backoff of the job,
         // so the handler can apply it to the SQS message visibility
-        $this->releaseDelay = (int)$this->secondsUntil($delay);
+        $this->releaseDelay = (int) $this->secondsUntil($delay);
     }
 
     public function setThrowable(?Throwable $throwable = null): void

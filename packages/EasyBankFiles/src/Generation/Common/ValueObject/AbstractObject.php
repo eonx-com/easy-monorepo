@@ -39,8 +39,8 @@ abstract class AbstractObject extends AbstractDataBag
             $value = $this->data[$attribute] ?? '';
 
             if (isset($paddingRules[$attribute])) {
-                $paddingRulesForAttribute = (array)$paddingRules[$attribute];
-                \array_unshift($paddingRulesForAttribute, (string)$value);
+                $paddingRulesForAttribute = (array) $paddingRules[$attribute];
+                \array_unshift($paddingRulesForAttribute, (string) $value);
 
                 $value = \str_pad(...$paddingRulesForAttribute);
             }
@@ -59,9 +59,7 @@ abstract class AbstractObject extends AbstractDataBag
     public function setAttribute(string $attribute, $value = null): self
     {
         // Set value if null
-        if ($value === null) {
-            $value = '';
-        }
+        $value ??= '';
 
         $this->data[$attribute] = $value;
 

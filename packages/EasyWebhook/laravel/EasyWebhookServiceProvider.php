@@ -16,6 +16,7 @@ use EonX\EasyWebhook\Common\Client\WebhookClientInterface;
 use EonX\EasyWebhook\Common\Dispatcher\AsyncDispatcherInterface;
 use EonX\EasyWebhook\Common\Dispatcher\NullAsyncDispatcher;
 use EonX\EasyWebhook\Common\Enum\MiddlewarePriority;
+use EonX\EasyWebhook\Common\Exception\InvalidWebhookSecretException;
 use EonX\EasyWebhook\Common\Factory\HttpClientFactory;
 use EonX\EasyWebhook\Common\Factory\HttpClientFactoryInterface;
 use EonX\EasyWebhook\Common\Formatter\JsonWebhookBodyFormatter;
@@ -56,6 +57,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class EasyWebhookServiceProvider extends ServiceProvider
 {
+    public const string DEFAULT_SIGNATURE_SECRET = 'easy-webhook-secret';
+
     public function boot(): void
     {
         $this->publishes([
@@ -160,7 +163,8 @@ final class EasyWebhookServiceProvider extends ServiceProvider
                 Container $app,
             ): SendWebhookMiddleware => new SendWebhookMiddleware(
                 $app->make(ConfigServiceId::HttpClient->value),
-                MiddlewarePriority::CoreAfter->value + 4
+                MiddlewarePriority::CoreAfter->value + 4,
+                (bool) \config('easy-webhook.ssrf_protection.enabled', true)
             ),
         ];
 
@@ -196,21 +200,21 @@ final class EasyWebhookServiceProvider extends ServiceProvider
         $this->app->singleton(
             HttpClientFactoryInterface::class,
             static fn(): HttpClientFactoryInterface => new HttpClientFactory(
-                (bool)\config('easy-webhook.ssrf_protection.enabled', true),
-                (array)\config('easy-webhook.ssrf_protection.extra_blocked_ranges', []),
-                (array)\config('easy-webhook.ssrf_protection.allowed_ranges', []),
-                (bool)\config('easy-webhook.request_limits.enabled', true),
+                (bool) \config('easy-webhook.ssrf_protection.enabled', true),
+                (array) \config('easy-webhook.ssrf_protection.extra_blocked_ranges', []),
+                (array) \config('easy-webhook.ssrf_protection.allowed_ranges', []),
+                (bool) \config('easy-webhook.request_limits.enabled', true),
                 // ?? keeps a present-but-null value (e.g. an unset env() override) falling back to
                 // the intended default instead of casting to 0, which would silently disable the limit
-                (int)(\config('easy-webhook.request_limits.timeout', HttpClientFactory::DEFAULT_TIMEOUT)
+                (int) (\config('easy-webhook.request_limits.timeout', HttpClientFactory::DEFAULT_TIMEOUT)
                     ?? HttpClientFactory::DEFAULT_TIMEOUT),
-                (int)(\config('easy-webhook.request_limits.max_duration', HttpClientFactory::DEFAULT_MAX_DURATION)
+                (int) (\config('easy-webhook.request_limits.max_duration', HttpClientFactory::DEFAULT_MAX_DURATION)
                     ?? HttpClientFactory::DEFAULT_MAX_DURATION),
-                (int)(\config(
+                (int) (\config(
                     'easy-webhook.request_limits.max_response_bytes',
                     HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES
                 ) ?? HttpClientFactory::DEFAULT_MAX_RESPONSE_BYTES),
-                (array)\config('easy-webhook.ssrf_protection.allowed_hosts', []),
+                (array) \config('easy-webhook.ssrf_protection.allowed_hosts', []),
             )
         );
         $this->app->singleton(
@@ -279,6 +283,15 @@ final class EasyWebhookServiceProvider extends ServiceProvider
     {
         if (\config('easy-webhook.signature.enabled', false) === false) {
             return;
+        }
+
+        if (\config('easy-webhook.signature.secret') === self::DEFAULT_SIGNATURE_SECRET) {
+            throw new InvalidWebhookSecretException(\sprintf(
+                'The webhook signature is enabled with the default secret "%s", which is public. '
+                . 'Set your own value in the "easy-webhook.signature.secret" config, '
+                . 'or null when every webhook has its own secret.',
+                self::DEFAULT_SIGNATURE_SECRET
+            ));
         }
 
         $this->app->singleton(

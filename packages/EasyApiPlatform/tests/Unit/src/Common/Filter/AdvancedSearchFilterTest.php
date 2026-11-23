@@ -822,7 +822,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ['filters' => $filters]
         );
 
-        $actual = \strtolower((string)$queryBuilder->getQuery()->getDQL());
+        $actual = \strtolower((string) $queryBuilder->getQuery()->getDQL());
         $expected = \strtolower(\sprintf(
             'SELECT %s FROM %s %1$s inner join %1$s.relatedDummy relateddummy_a1'
             . ' WHERE relateddummy_a1.symfony = :symfony_p1',
@@ -1271,7 +1271,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             ['filters' => $filters]
         );
 
-        $actual = \strtolower((string)$queryBuilder->getQuery()->getDQL());
+        $actual = \strtolower((string) $queryBuilder->getQuery()->getDQL());
         $expected = \strtolower(\sprintf(
             'SELECT %s FROM %s %1$s LEFT JOIN %1$s.relatedDummy relateddummy_a1'
             . ' LEFT JOIN relateddummy_a1.thirdLevel thirdLevel_a1'
@@ -1308,7 +1308,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
             new Get(),
             ['filters' => $filters]
         );
-        $actual = \strtolower((string)$queryBuilder->getQuery()->getDQL());
+        $actual = \strtolower((string) $queryBuilder->getQuery()->getDQL());
         $expected = \strtolower(\sprintf(
             'SELECT %s FROM %s %1$s INNER JOIN %1$s.relatedDummy relateddummy_a1'
             . ' INNER JOIN relateddummy_a1.thirdLevel thirdLevel_a1'
@@ -1329,7 +1329,7 @@ final class AdvancedSearchFilterTest extends AbstractFilterTestCase
 
         $iriConverterProphecy->getResourceFromIri(Argument::type('string'), ['fetch_data' => false])
             ->will(function ($args) use ($relatedDummyProphecy): RelatedDummy {
-                if (\str_contains((string)$args[0], '/related_dummies')) {
+                if (\str_contains((string) $args[0], '/related_dummies')) {
                     $relatedDummyProphecy->getId()
                         ->shouldBeCalled()
                         ->willReturn(1);

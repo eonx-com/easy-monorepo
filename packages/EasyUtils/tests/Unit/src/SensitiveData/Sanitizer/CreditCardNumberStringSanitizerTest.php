@@ -13,8 +13,8 @@ final class CreditCardNumberStringSanitizerTest extends AbstractUnitTestCase
     {
         $sanitizer = new CreditCardNumberStringSanitizer(new CreditCardNumberValidator());
         $string = 'job 1f1dc398-654c-6538-9652-0579065566b8 card 4005550000000001 tail';
-        $backtrackLimit = (string)\ini_get('pcre.backtrack_limit');
-        $jit = (string)\ini_get('pcre.jit');
+        $backtrackLimit = (string) \ini_get('pcre.backtrack_limit');
+        $jit = (string) \ini_get('pcre.jit');
         // Without JIT, a backtrack limit of 1 makes every preg_* call of the sanitizer fail
         \ini_set('pcre.jit', '0');
         \ini_set('pcre.backtrack_limit', '1');

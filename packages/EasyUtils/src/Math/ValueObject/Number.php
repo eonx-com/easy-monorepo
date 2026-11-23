@@ -24,7 +24,7 @@ final readonly class Number implements Stringable
         if ($value instanceof self === false && \is_numeric($value) === false) {
             throw new UnexpectedValueException("Value must be a number but '{$value}' is given.");
         }
-        $this->value = (string)$value;
+        $this->value = (string) $value;
         $this->precision = $precision ?? self::DEFAULT_PRECISION;
     }
 
@@ -74,7 +74,7 @@ final readonly class Number implements Stringable
 
     public function add(int|string|float|self $addition): self
     {
-        $additionValue = $addition instanceof self ? $addition->value : (string)$addition;
+        $additionValue = $addition instanceof self ? $addition->value : (string) $addition;
         $sum = $this->round(\bcadd($this->value, $additionValue, self::SCALE));
 
         return new self($sum, $this->precision);
@@ -85,14 +85,14 @@ final readonly class Number implements Stringable
      */
     public function compare(int|string|float|self $operand): int
     {
-        $operandValue = $operand instanceof self ? $operand->value : (string)$operand;
+        $operandValue = $operand instanceof self ? $operand->value : (string) $operand;
 
         return \bccomp($this->value, $operandValue, self::SCALE);
     }
 
     public function divide(int|string|float|self $divisor): self
     {
-        $quotient = $this->round(\bcdiv($this->value, (string)$divisor, self::SCALE));
+        $quotient = $this->round(\bcdiv($this->value, (string) $divisor, self::SCALE));
 
         return new self($quotient, $this->precision);
     }
@@ -154,25 +154,25 @@ final readonly class Number implements Stringable
 
     public function multiply(int|string|float|self $multiplier): self
     {
-        $product = $this->round(\bcmul($this->value, (string)$multiplier, self::SCALE));
+        $product = $this->round(\bcmul($this->value, (string) $multiplier, self::SCALE));
 
         return new self($product, $this->precision);
     }
 
     public function subtract(int|string|float|self $subtrahend): self
     {
-        $difference = $this->round(\bcsub($this->value, (string)$subtrahend, self::SCALE));
+        $difference = $this->round(\bcsub($this->value, (string) $subtrahend, self::SCALE));
 
         return new self($difference, $this->precision);
     }
 
     public function toMoneyString(bool $truncateZeroCents = true): string
     {
-        $value = (string)new self($this->value, 2)
+        $value = (string) new self($this->value, 2)
             ->divide(100);
 
         if ($truncateZeroCents === true && \str_ends_with($value, '.00')) {
-            return (string)(int)$value;
+            return (string) (int) $value;
         }
 
         return $value;
@@ -194,12 +194,12 @@ final readonly class Number implements Stringable
 
         $delta = '0.' . \str_repeat('0', $this->precision) . '5';
 
-        $lastDigit = (int)$value[\strlen($value) - 1];
+        $lastDigit = (int) $value[\strlen($value) - 1];
         if ($lastDigit === 5) {
             $previousDigit = $value[\strlen($value) - 2] === '.'
                 ? $value[\strlen($value) - 3]
                 : $value[\strlen($value) - 2];
-            $isEven = ((int)$previousDigit % 2 === 0);
+            $isEven = ((int) $previousDigit % 2 === 0);
             $delta = $isEven ? '-' . $delta : $delta;
         }
 

@@ -6,6 +6,7 @@ namespace EonX\EasyWebhook\Common\Middleware;
 use EonX\EasyWebhook\Common\Entity\WebhookInterface;
 use EonX\EasyWebhook\Common\Entity\WebhookResultInterface;
 use EonX\EasyWebhook\Common\Enum\WebhookStatus;
+use EonX\EasyWebhook\Common\Helper\WebhookResultHelper;
 use EonX\EasyWebhook\Common\Stack\StackInterface;
 
 final class StatusAndAttemptMiddleware extends AbstractMiddleware
@@ -32,8 +33,12 @@ final class StatusAndAttemptMiddleware extends AbstractMiddleware
 
                 break;
             case false:
+                // No retry layer sends a not retryable result again, so its failure is final
+                $isFinal = WebhookResultHelper::isRetryable($webhookResult) === false
+                    || $webhook->getCurrentAttempt() >= $webhook->getMaxAttempt();
+
                 $webhook->status(
-                    $webhook->getCurrentAttempt() >= $webhook->getMaxAttempt()
+                    $isFinal
                         ? WebhookStatus::Failed
                         : WebhookStatus::FailedPendingRetry
                 );

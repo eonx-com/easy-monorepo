@@ -48,7 +48,7 @@ final class RoleExpressionFunctionProvider implements ExpressionFunctionProvider
                             $value = \constant($constant);
 
                             if ($value instanceof BackedEnum) {
-                                $value = (string)$value->value;
+                                $value = (string) $value->value;
                             }
 
                             $this->cached[$role] = $value;

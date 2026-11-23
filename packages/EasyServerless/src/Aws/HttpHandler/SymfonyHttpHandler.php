@@ -79,7 +79,7 @@ final class SymfonyHttpHandler extends HttpHandler
     {
         $this->reset();
         $this->ensureHttpRuntimeMode();
-        $this->setRequestContext((string)\json_encode($event->getRequestContext()));
+        $this->setRequestContext((string) \json_encode($event->getRequestContext()));
 
         $symfonyRequest = $this->httpFoundationFactory->createRequest(Psr7Bridge::convertRequest($event, $context));
         $symfonyResponse = $this->kernel->handle($symfonyRequest);
