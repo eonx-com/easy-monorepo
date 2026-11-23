@@ -254,8 +254,12 @@ Tips:
 ### EasyBugsnag
 
 - New `DatabaseErrorScrubberClientConfigurator` (Symfony only, always on). In reports, the message of each Doctrine
-  driver exception (and the exceptions below it) is replaced by `SQLSTATE[<state>] <class>`. To keep the full message,
-  remove or decorate this service.
+  driver exception (and the exceptions below it) is replaced by `SQLSTATE[<state>] <short class name>`, also where other
+  configurators copied it into the metadata (e.g. `error.message` from EasyErrorHandler, also inside objects and JSON
+  strings) and where an exception above put it into its own message (`Checkout failed: <message>`). A metadata value
+  where it replaced a message changes form as the sensitive data sanitizer changes it: an object becomes the array of
+  its JSON form, a JSON string is re-encoded. It runs after the other configurators (priority `PHP_INT_MAX - 1`), before
+  the sensitive data sanitizer. To keep the full message, remove or decorate this service.
 - `WorkerMessageReceivedListener` sanitizes the message and stamps dump with `SensitiveDataSanitizerInterface`.
 - The `Stamps` dump of `WorkerMessageReceivedListener` keeps only the exception class and code of `ErrorDetailsStamp`,
   not the exception message and the flattened exception of the failed attempt.

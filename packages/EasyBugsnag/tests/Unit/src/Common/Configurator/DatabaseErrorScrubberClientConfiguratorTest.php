@@ -9,11 +9,93 @@ use Doctrine\DBAL\Driver\Exception as DriverException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
 use PDOException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Throwable;
 
 final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTestCase
 {
+    /**
+     * @see testItReducesJsonEncodedCopiesOfMessageInText
+     */
+    public static function provideMessagesThatJsonEscapes(): iterable
+    {
+        yield 'multiline PostgreSQL message' => [
+            "SQLSTATE[23505]: Unique violation: 7 ERROR: duplicate key value\n"
+            . 'DETAIL:  Key (email)=(john@example.com) already exists.',
+        ];
+
+        yield 'message with a slash' => ["SQLSTATE[23505]: Unique violation: key 'john@example.com/1' already exists"];
+    }
+
+    public function testItKeepsJsonInMetadataDecodableForSensitiveDataSanitizer(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(
+            self::driverException("1062 Duplicate entry 'john@example.com' for key 'users.email_unique'", '23000'),
+            null
+        );
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'payload' => \json_encode([
+                    'api_key' => 'some-api-key',
+                    'error' => $throwable->getMessage(),
+                    'note' => 'a "quoted" word',
+                ]),
+            ],
+        ]);
+
+        $client->notify($report);
+
+        $payload = $this->getFirstReport($client)
+            ->toArray()['metaData']['context']['payload'];
+        self::assertIsString($payload);
+        self::assertSame(
+            [
+                'api_key' => '*REDACTED*',
+                'error' => 'SQLSTATE[23000] UniqueConstraintViolationException',
+                'note' => 'a "quoted" word',
+            ],
+            \json_decode($payload, true)
+        );
+    }
+
+    public function testItKeepsJsonInTextDecodableWhenMessageEndsWithBackslash(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(
+            self::driverException('SQLSTATE[HY000]: General error: 1 no such table: users\\', 'HY000'),
+            null
+        );
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'payload' => 'Sync failed: ' . \json_encode([
+                    'api_key' => 'some-api-key',
+                    'error' => $throwable->getMessage(),
+                    'note' => 'a "quoted" word',
+                ]),
+            ],
+        ]);
+
+        $client->notify($report);
+
+        $payload = $this->getFirstReport($client)
+            ->toArray()['metaData']['context']['payload'];
+        self::assertIsString($payload);
+        self::assertSame(
+            [
+                'api_key' => '*REDACTED*',
+                'error' => 'SQLSTATE[HY000] UniqueConstraintViolationException',
+                'note' => 'a "quoted" word',
+            ],
+            \json_decode(\substr($payload, \strlen('Sync failed: ')), true)
+        );
+    }
+
     public function testItLeavesNonDatabaseExceptionUntouched(): void
     {
         $client = self::getService(Client::class);
@@ -22,6 +104,26 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
 
         $report = $this->getFirstReport($client);
         self::assertSame('Something failed for john@example.com', $report->getMessage());
+    }
+
+    public function testItReducesDbMessagesEmbeddedInMessagesAboveDriverException(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $dbalException = new UniqueConstraintViolationException(
+            self::driverException("1062 Duplicate entry 'john@example.com' for key 'users.email_unique'", '23000'),
+            null
+        );
+
+        $client->notifyException(
+            new RuntimeException('Checkout failed: ' . $dbalException->getMessage(), 0, $dbalException)
+        );
+
+        $reportData = $this->getFirstReport($client)
+            ->toArray();
+        $message = 'Checkout failed: SQLSTATE[23000] UniqueConstraintViolationException';
+        self::assertSame($message, $reportData['exceptions'][0]['message']);
+        self::assertSame($message, $reportData['metaData']['error']['message']);
     }
 
     public function testItReducesDbalExceptionInThePreviousChain(): void
@@ -44,6 +146,118 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         self::assertStringNotContainsString('john@example.com', (string) $previous->getMessage());
     }
 
+    #[DataProvider('provideMessagesThatJsonEscapes')]
+    public function testItReducesJsonEncodedCopiesOfMessageInText(string $message): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(self::driverException($message, '23505'), null);
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'payload' => 'Sync failed: ' . \json_encode([
+                    'error' => $throwable->getMessage(),
+                ]),
+            ],
+        ]);
+
+        $client->notify($report);
+
+        $payload = $this->getFirstReport($client)
+            ->toArray()['metaData']['context']['payload'];
+        self::assertIsString($payload);
+        self::assertSame(
+            [
+                'error' => 'SQLSTATE[23505] UniqueConstraintViolationException',
+            ],
+            \json_decode(\substr($payload, \strlen('Sync failed: ')), true)
+        );
+    }
+
+    public function testItReducesMessageInJsonEncodedWithOtherFlags(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(
+            self::driverException("1062 Duplicate entry 'john@example.com' for key 'users.email_unique'", '23000'),
+            null
+        );
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'payload' => \json_encode([
+                    'error' => $throwable->getMessage(),
+                ], \JSON_HEX_APOS | \JSON_HEX_QUOT),
+            ],
+        ]);
+
+        $client->notify($report);
+
+        $payload = $this->getFirstReport($client)
+            ->toArray()['metaData']['context']['payload'];
+        self::assertIsString($payload);
+        self::assertSame(
+            [
+                'error' => 'SQLSTATE[23000] UniqueConstraintViolationException',
+            ],
+            \json_decode($payload, true)
+        );
+    }
+
+    public function testItReducesMessageInObjectMetadata(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(
+            self::driverException("1062 Duplicate entry 'john@example.com' for key 'users.email_unique'", '23000'),
+            null
+        );
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'details' => (object) [
+                    'message' => $throwable->getMessage(),
+                ],
+            ],
+        ]);
+
+        $client->notify($report);
+
+        self::assertSame(
+            [
+                'message' => 'SQLSTATE[23000] UniqueConstraintViolationException',
+            ],
+            $this->getFirstReport($client)
+                ->toArray()['metaData']['context']['details']
+        );
+    }
+
+    public function testItReducesMessagesRestoredAndCopiedByOtherConfigurators(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $message = "SQLSTATE[23505]: Unique violation: 7 ERROR: duplicate key value\n"
+            . 'DETAIL:  Key (email)=(john@example.com) already exists.';
+
+        $client->notifyException(new UniqueConstraintViolationException(
+            self::driverException($message, '23505', new PDOException($message)),
+            null
+        ));
+
+        $reportData = $this->getFirstReport($client)
+            ->toArray();
+        $dbalMessage = 'SQLSTATE[23505] UniqueConstraintViolationException';
+        self::assertSame($dbalMessage, $reportData['exceptions'][0]['message']);
+        self::assertSame('SQLSTATE[23505] PDOException', $reportData['exceptions'][2]['message']);
+        self::assertSame($dbalMessage, $reportData['metaData']['error']['message']);
+        // The driver exception and the PDOException have the same message, so their copies get no class
+        self::assertSame('SQLSTATE[23505]', $reportData['metaData']['error']['previous_1']['message']);
+        self::assertSame('SQLSTATE[23505]', $reportData['metaData']['error']['previous_2']['message']);
+        $messages = \array_column($reportData['exceptions'], 'message');
+        self::assertStringNotContainsString('john@example.com', (string) \json_encode($messages));
+        self::assertStringNotContainsString('john@example.com', (string) \json_encode($reportData['metaData']));
+    }
+
     public function testItReducesNativeExceptionBelowDriverException(): void
     {
         $client = self::getService(Client::class);
@@ -62,7 +276,7 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         /** @var \Bugsnag\Report|null $nativeReport */
         $nativeReport = self::getPrivatePropertyValue($driverReport, 'previous');
         self::assertInstanceOf(Report::class, $nativeReport);
-        self::assertSame('SQLSTATE[23505] ' . PDOException::class, $nativeReport->getMessage());
+        self::assertSame('SQLSTATE[23505] PDOException', $nativeReport->getMessage());
     }
 
     public function testItReducesRawDriverException(): void
@@ -93,7 +307,7 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         ));
 
         $report = $this->getFirstReport($client);
-        self::assertSame('SQLSTATE[23505] ' . UniqueConstraintViolationException::class, $report->getMessage());
+        self::assertSame('SQLSTATE[23505] UniqueConstraintViolationException', $report->getMessage());
         self::assertStringNotContainsString('john@example.com', (string) $report->getMessage());
     }
 
