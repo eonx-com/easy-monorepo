@@ -37,7 +37,6 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
         $this->registerHttpClient();
         $this->registerEasyWebhookIntegration();
 
-        // Laravel calls the listeners in the order they are registered
         $this->app->make('events')
             ->listen(HttpRequestSentEvent::class, AwsMessagingRequestSanitizerListener::class);
 

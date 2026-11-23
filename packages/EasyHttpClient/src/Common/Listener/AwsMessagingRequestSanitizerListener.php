@@ -5,9 +5,6 @@ namespace EonX\EasyHttpClient\Common\Listener;
 
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 
-/**
- * The text of an e-mail or an SMS has no key of its own, so the sensitive data sanitizers cannot mask it
- */
 final class AwsMessagingRequestSanitizerListener
 {
     private const BODY_KEYS_TO_REDACT = [
@@ -86,7 +83,6 @@ final class AwsMessagingRequestSanitizerListener
             return (string)\json_encode(self::redactArray($data));
         }
 
-        // SNS sends a form-encoded body, e.g. "Action=Publish&Message=...&PhoneNumber=..."
         $formKeys = \implode('|', self::BODY_KEYS_TO_REDACT);
 
         return (string)\preg_replace('/(?<=^|&)(' . $formKeys . ')=[^&]*/', '$1=' . self::REDACTED, $body);

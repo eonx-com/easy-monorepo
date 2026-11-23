@@ -8,7 +8,6 @@ use EonX\EasyHttpClient\Common\Listener\AwsMessagingRequestSanitizerListener;
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
-    // Runs before the listeners that record the request (priority 0)
     $services
         ->set(AwsMessagingRequestSanitizerListener::class)
         ->tag('kernel.event_listener', [
