@@ -66,14 +66,14 @@ final class StrictTestResponse extends AbstractTestResponse
 
         if ($this->body !== null) {
             $expectedRequestData = $this->body;
-            \parse_str((string)($options['body']), $actualRequestData);
+            \parse_str((string) ($options['body']), $actualRequestData);
         }
 
         if ($this->json !== null) {
             $expectedRequestData = $this->json;
 
             try {
-                $actualRequestData = \json_decode((string)$options['body'], true, 512, \JSON_THROW_ON_ERROR);
+                $actualRequestData = \json_decode((string) $options['body'], true, 512, \JSON_THROW_ON_ERROR);
             } catch (JsonException) {
                 TestResponseFactory::throwException(new UnexpectedValueException(\sprintf(
                     'Invalid JSON in request body, probably you should pass `body` instead of `json` for %s',

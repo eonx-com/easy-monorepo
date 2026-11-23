@@ -22,11 +22,11 @@ final readonly class FromHttpFoundationRequestPaginationResolver
         $query = $this->request->query;
 
         return Pagination::create(
-            (int)$query->get(
+            (int) $query->get(
                 $this->paginationConfigProvider->getPageAttribute(),
                 $this->paginationConfigProvider->getPageDefault()
             ),
-            (int)$query->get(
+            (int) $query->get(
                 $this->paginationConfigProvider->getPerPageAttribute(),
                 $this->paginationConfigProvider->getPerPageDefault()
             ),

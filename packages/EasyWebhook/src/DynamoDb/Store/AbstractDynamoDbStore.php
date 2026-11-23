@@ -76,7 +76,7 @@ abstract class AbstractDynamoDbStore extends AbstractStore
         if (\is_string($this->ttl) && $this->ttl !== '') {
             $ttlAttr = $this->ttlAttribute ?? self::DEFAULT_TTL_ATTRIBUTE;
             $item[$ttlAttr] = AttributeValue::create([
-                'N' => (string)CarbonImmutable::now('UTC')->add($this->ttl)->getTimestamp(),
+                'N' => (string) CarbonImmutable::now('UTC')->add($this->ttl)->getTimestamp(),
             ]);
         }
 

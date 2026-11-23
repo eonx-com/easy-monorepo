@@ -79,7 +79,7 @@ final readonly class BatchItemIterator implements BatchItemIteratorInterface
      */
     private function generateItemPageHash(int $page, array $batchItems): string
     {
-        $hash = (string)$page;
+        $hash = (string) $page;
 
         foreach ($batchItems as $batchItem) {
             $hash .= $batchItem->getId();

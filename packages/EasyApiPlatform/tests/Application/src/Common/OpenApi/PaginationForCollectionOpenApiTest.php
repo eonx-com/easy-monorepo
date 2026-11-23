@@ -45,11 +45,11 @@ final class PaginationForCollectionOpenApiTest extends AbstractApplicationTestCa
 
     private static function getExpectedOpenApiJson(string $filename): string
     {
-        $expected = (string)\file_get_contents($filename);
-        $installedVersion = (string)InstalledVersions::getVersion('api-platform/openapi');
+        $expected = (string) \file_get_contents($filename);
+        $installedVersion = (string) InstalledVersions::getVersion('api-platform/openapi');
 
         if (\version_compare($installedVersion, '5.0.6', '<')) {
-            return (string)\preg_replace(self::PAGE_PARAMETER_MINIMUM_PATTERN, '', $expected);
+            return (string) \preg_replace(self::PAGE_PARAMETER_MINIMUM_PATTERN, '', $expected);
         }
 
         return $expected;

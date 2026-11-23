@@ -75,7 +75,7 @@ final class RequestLimitsHttpClient implements HttpClientInterface
                 // is the wire size, so this only pre-empts a plain (uncompressed) oversized body;
                 // a compressed body slips past here and is caught below on its decoded size
                 if ($chunk->isFirst()) {
-                    $contentLength = (int)($context->getHeaders()['content-length'][0] ?? '0');
+                    $contentLength = (int) ($context->getHeaders()['content-length'][0] ?? '0');
 
                     if ($contentLength > $maxResponseBytes) {
                         throw new WebhookResponseTooLargeException(\sprintf(

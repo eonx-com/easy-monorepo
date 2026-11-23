@@ -32,7 +32,7 @@ final class SecurityContextClientConfiguratorTest extends AbstractUnitTestCase
 
         self::assertSame(\hash('sha256', $rawToken), $token['original_hash']);
         self::assertArrayNotHasKey('original', $token);
-        self::assertStringNotContainsString($rawToken, (string)\json_encode($token));
+        self::assertStringNotContainsString($rawToken, (string) \json_encode($token));
     }
 
     private function getFirstReport(Client $client): Report

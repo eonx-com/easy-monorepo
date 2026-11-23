@@ -67,7 +67,7 @@ final class EnvVarHelper
         if (($outputEnabled ?? true) && $dotEnvPath !== null && isset($_SERVER['SYMFONY_DOTENV_VARS'])) {
             /** @var scalar $symfonyDotEnvVars */
             $symfonyDotEnvVars = $_SERVER['SYMFONY_DOTENV_VARS'];
-            foreach (\explode(',', (string)$symfonyDotEnvVars) as $name) {
+            foreach (\explode(',', (string) $symfonyDotEnvVars) as $name) {
                 OutputHelper::writeln(\sprintf('Loading env var %s from %s', $name, $dotEnvPath));
             }
         }

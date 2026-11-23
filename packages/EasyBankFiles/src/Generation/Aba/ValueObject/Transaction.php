@@ -44,12 +44,12 @@ final class Transaction extends AbstractObject
 
     public function isCredit(): bool
     {
-        return (int)$this->getTransactionCode() === self::TRANSACTION_CODE_CREDIT;
+        return (int) $this->getTransactionCode() === self::TRANSACTION_CODE_CREDIT;
     }
 
     public function isDebit(): bool
     {
-        return (int)$this->getTransactionCode() === self::TRANSACTION_CODE_DEBIT;
+        return (int) $this->getTransactionCode() === self::TRANSACTION_CODE_DEBIT;
     }
 
     /**

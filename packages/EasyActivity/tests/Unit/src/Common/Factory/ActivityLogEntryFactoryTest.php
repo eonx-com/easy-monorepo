@@ -39,7 +39,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         $result = $sut->create(
             ActivityAction::Create,
             new Article()
-                ->setId((string)(new NilUuid())),
+                ->setId((string) (new NilUuid())),
             ['title' => [null, 'New Title']]
         );
 
@@ -54,7 +54,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         self::assertSame(DefaultActorResolver::DEFAULT_ACTOR_TYPE, $result->getActorType());
         self::assertSame(ActivityAction::Create->value, $result->getAction());
         self::assertNull($result->getActorName());
-        self::assertSame((string)(new NilUuid()), $result->getSubjectId());
+        self::assertSame((string) (new NilUuid()), $result->getSubjectId());
         self::assertSame(Article::class, $result->getSubjectType());
         self::assertEquals($now, $result->getCreatedAt());
         self::assertEquals($now, $result->getUpdatedAt());
@@ -97,7 +97,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         self::bootKernel(['environment' => 'default_subject_config']);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
         $comment1 = new Comment()
-            ->setId((string)(new NilUuid()))
+            ->setId((string) (new NilUuid()))
             ->setMessage('Test 1');
         $comment2 = new Comment()
             ->setId('00000000-0000-0000-0000-000000000001')
@@ -123,11 +123,11 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
             [
                 'content' => 'Content',
                 'comments' => [
-                    ['id' => (string)(new NilUuid())],
+                    ['id' => (string) (new NilUuid())],
                     ['id' => '00000000-0000-0000-0000-000000000001'],
                 ],
             ],
-            \json_decode((string)$result->getSubjectData(), true)
+            \json_decode((string) $result->getSubjectData(), true)
         );
     }
 
@@ -138,7 +138,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
     {
         self::bootKernel(['environment' => 'custom_activity_subject_data_resolver']);
         $author = new Author();
-        $author->setId((string)(new NilUuid()));
+        $author->setId((string) (new NilUuid()));
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
 
         $result = $sut->create(
@@ -183,7 +183,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         self::bootKernel(['environment' => 'default_subject_config']);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
         $author = new Author();
-        $author->setId((string)(new NilUuid()));
+        $author->setId((string) (new NilUuid()));
         $author->setName('John');
         $author->setPosition(1);
         $article = new Article();
@@ -204,9 +204,9 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         self::assertEquals(
             [
                 'title' => 'Related objects',
-                'author' => ['id' => (string)(new NilUuid())],
+                'author' => ['id' => (string) (new NilUuid())],
             ],
-            \json_decode((string)$result->getSubjectData(), true)
+            \json_decode((string) $result->getSubjectData(), true)
         );
     }
 
@@ -218,7 +218,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
         self::bootKernel(['environment' => 'nested_object_allowed_properties']);
         $sut = self::getService(ActivityLogEntryFactoryInterface::class);
         $author = new Author();
-        $author->setId((string)(new NilUuid()));
+        $author->setId((string) (new NilUuid()));
         $author->setName('John');
         $author->setPosition(1);
         $article = new Article();
@@ -244,7 +244,7 @@ final class ActivityLogEntryFactoryTest extends AbstractUnitTestCase
                     'position' => 1,
                 ],
             ],
-            \json_decode((string)$result->getSubjectData(), true)
+            \json_decode((string) $result->getSubjectData(), true)
         );
     }
 }

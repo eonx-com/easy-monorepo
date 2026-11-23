@@ -26,7 +26,7 @@ final readonly class HmacMessageSigner implements MessageSignerInterface
     ) {
         $keys = [];
 
-        foreach ((array)$secrets as $secret) {
+        foreach ((array) $secrets as $secret) {
             if ($secret === '') {
                 throw new InvalidArgumentException('Signing secret must not be empty.');
             }

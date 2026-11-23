@@ -32,6 +32,6 @@ final class ValidateSensitiveDataSanitizerCompilerPass implements CompilerPassIn
     private function isEnabled(ContainerBuilder $container): bool
     {
         return $container->hasParameter(ConfigParam::SensitiveDataSanitizerEnabled->value)
-            && (bool)$container->getParameter(ConfigParam::SensitiveDataSanitizerEnabled->value);
+            && (bool) $container->getParameter(ConfigParam::SensitiveDataSanitizerEnabled->value);
     }
 }

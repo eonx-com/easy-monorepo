@@ -90,7 +90,7 @@ final class SendWebhookMiddleware extends AbstractMiddleware
         $notAllowedOptions = [];
 
         foreach ($options as $name => $value) {
-            $name = (string)$name;
+            $name = (string) $name;
 
             if ($name === 'extra') {
                 $notAllowedOptions = [...$notAllowedOptions, ...$this->findNotAllowedExtraOptions($value)];
@@ -159,7 +159,7 @@ final class SendWebhookMiddleware extends AbstractMiddleware
         // An existing file path is a Unix socket for the HTTP client, which no webhook URL can reach, so it is
         // rejected also with the SSRF protection disabled. The local interface belongs on the HTTP client itself
         if ($name === 'bindto') {
-            return (bool)$value === false;
+            return (bool) $value === false;
         }
 
         if (\in_array($name, self::CONNECTION_OPTIONS, true)) {
@@ -168,7 +168,7 @@ final class SendWebhookMiddleware extends AbstractMiddleware
             $isEmpty = match ($name) {
                 'no_proxy' => $value === null || $value === '',
                 'proxy' => $value === null,
-                default => (bool)$value === false,
+                default => (bool) $value === false,
             };
 
             return $this->ssrfProtectionEnabled === false || $isEmpty;

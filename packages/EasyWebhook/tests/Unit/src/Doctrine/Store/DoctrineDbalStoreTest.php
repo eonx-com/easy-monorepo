@@ -151,7 +151,7 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
         ]);
 
         $store->store($webhook);
-        $found = $store->find((string)$webhook->getId());
+        $found = $store->find((string) $webhook->getId());
 
         self::assertNull($store->find('invalid'));
         self::assertInstanceOf(WebhookInterface::class, $found);
@@ -171,7 +171,7 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
             ['id' => $webhook->getId()]
         );
 
-        $found = $store->find((string)$webhook->getId());
+        $found = $store->find((string) $webhook->getId());
 
         self::assertInstanceOf(WebhookInterface::class, $found);
         self::assertSame('2026-06-02 12:00:00.123456', $found->getSendAfter()?->format('Y-m-d H:i:s.u'));

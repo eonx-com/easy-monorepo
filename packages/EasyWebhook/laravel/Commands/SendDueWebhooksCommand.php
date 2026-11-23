@@ -82,13 +82,13 @@ final class SendDueWebhooksCommand extends Command
     {
         $option = $this->option($name);
 
-        return \is_array($option) || \is_bool($option) || $option === null ? null : (int)$option;
+        return \is_array($option) || \is_bool($option) || $option === null ? null : (int) $option;
     }
 
     private function getStringOption(string $name): ?string
     {
         $option = $this->option($name);
 
-        return \is_array($option) || \is_bool($option) || $option === null ? null : (string)$option;
+        return \is_array($option) || \is_bool($option) || $option === null ? null : (string) $option;
     }
 }

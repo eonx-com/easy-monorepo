@@ -54,8 +54,8 @@ final class RequestLimitsHttpClientTest extends AbstractUnitTestCase
             'max_duration' => 0,
         ])->getContent();
 
-        self::assertSame(10.0, (float)$captured['timeout']);
-        self::assertSame(30.0, (float)$captured['max_duration']);
+        self::assertSame(10.0, (float) $captured['timeout']);
+        self::assertSame(30.0, (float) $captured['max_duration']);
     }
 
     public function testDoesNotCapResponseWhenSizeLimitIsZero(): void
@@ -95,8 +95,8 @@ final class RequestLimitsHttpClientTest extends AbstractUnitTestCase
             'max_duration' => 5,
         ])->getContent();
 
-        self::assertSame(3.0, (float)$captured['timeout']);
-        self::assertSame(5.0, (float)$captured['max_duration']);
+        self::assertSame(3.0, (float) $captured['timeout']);
+        self::assertSame(5.0, (float) $captured['max_duration']);
     }
 
     public function testLeavesTimeLimitsUntouchedWhenCeilingDisabled(): void
@@ -120,8 +120,8 @@ final class RequestLimitsHttpClientTest extends AbstractUnitTestCase
             'max_duration' => 0,
         ])->getContent();
 
-        self::assertSame(9999.0, (float)$captured['timeout']);
-        self::assertSame(0.0, (float)$captured['max_duration']);
+        self::assertSame(9999.0, (float) $captured['timeout']);
+        self::assertSame(0.0, (float) $captured['max_duration']);
     }
 
     public function testPassesResponseUnderLimit(): void

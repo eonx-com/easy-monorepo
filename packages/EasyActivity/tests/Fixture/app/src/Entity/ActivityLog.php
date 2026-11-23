@@ -89,7 +89,7 @@ class ActivityLog implements Stringable
 
     public function __toString(): string
     {
-        return (string)$this->id;
+        return (string) $this->id;
     }
 
     public function getAction(): string

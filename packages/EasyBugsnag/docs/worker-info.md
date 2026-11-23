@@ -12,4 +12,6 @@ Set the `worker_info.enabled` configuration to `true` to enable this feature (se
 information).
 
 The following worker information is added as metadata in Bugsnag reports: `Message`, `Receiver Name`, `Received At` and
-`Stamps`.
+`Stamps`. For an `ErrorDetailsStamp` (the failure of the previous attempt of a retried message), only the exception
+class and code are added, because its exception message can hold data that cannot be masked. To report the message of
+each failed attempt, set `report_retryable_exception_attempts` to `true` in EasyErrorHandler.

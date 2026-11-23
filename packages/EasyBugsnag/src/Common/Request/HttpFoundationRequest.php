@@ -27,7 +27,7 @@ final readonly class HttpFoundationRequest implements RequestInterface
         /** @var string $content */
         $content = $this->request->getContent();
 
-        if (\str_contains((string)($this->request->getContentTypeFormat() ?? ''), 'json')) {
+        if (\str_contains((string) ($this->request->getContentTypeFormat() ?? ''), 'json')) {
             $content = \json_decode($content) ?? $content;
         }
 

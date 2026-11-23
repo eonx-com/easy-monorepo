@@ -64,14 +64,14 @@ final class OptionHelper
         $value = self::getOption($option, $env);
 
         if (\is_numeric($value)) {
-            return (float)$value > 0;
+            return (float) $value > 0;
         }
 
         if (\is_string($value)) {
             return $value === 'true';
         }
 
-        return (bool)$value;
+        return (bool) $value;
     }
 
     public static function getInteger(string $option, ?string $env = null): int
@@ -79,7 +79,7 @@ final class OptionHelper
         /** @var scalar $option */
         $option = self::getOption($option, $env);
 
-        return (int)$option;
+        return (int) $option;
     }
 
     public static function getOptions(): array
@@ -92,7 +92,7 @@ final class OptionHelper
         /** @var scalar $option */
         $option = self::getOption($option, $env);
 
-        return (string)$option;
+        return (string) $option;
     }
 
     public static function getStringNullable(string $option, ?string $env = null): ?string

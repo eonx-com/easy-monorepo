@@ -44,7 +44,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                     'maskNull' => null,
                     'maskString' => 'will be masked',
                 ],
-                'a sub-object (instance of \stdClass)' => \json_decode((string)\json_encode([
+                'a sub-object (instance of \stdClass)' => \json_decode((string) \json_encode([
                     'ignoreBool' => true,
                     'ignoreDouble' => 1.23,
                     'ignoreInteger' => 1,

@@ -68,7 +68,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
     private function registerStringTrimmerMiddleware(): void
     {
-        if ((bool)\config('easy-utils.string_trimmer.enabled', false) === false) {
+        if ((bool) \config('easy-utils.string_trimmer.enabled', false) === false) {
             return;
         }
 
@@ -85,7 +85,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
     private function sensitiveData(): void
     {
-        if ((bool)\config('easy-utils.sensitive_data.enabled', true) === false) {
+        if ((bool) \config('easy-utils.sensitive_data.enabled', true) === false) {
             return;
         }
 
@@ -163,7 +163,7 @@ final class EasyUtilsServiceProvider extends ServiceProvider
 
     private function stringTrimmer(): void
     {
-        if ((bool)\config('easy-utils.string_trimmer.enabled', false) === false) {
+        if ((bool) \config('easy-utils.string_trimmer.enabled', false) === false) {
             return;
         }
 

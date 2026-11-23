@@ -62,7 +62,7 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
             $parts = \explode(':', $host, 2);
 
             if (isset($parts[1]) && \ctype_digit($parts[1])) {
-                $host = $parts[0] . ':' . (int)$parts[1];
+                $host = $parts[0] . ':' . (int) $parts[1];
             }
 
             $normalized[] = $host;
@@ -90,7 +90,7 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
             $host = $parts[0];
             $port = $parts[1] ?? null;
 
-            if ($port !== null && (\ctype_digit($port) === false || (int)$port < 1 || (int)$port > 65535)) {
+            if ($port !== null && (\ctype_digit($port) === false || (int) $port < 1 || (int) $port > 65535)) {
                 throw new InvalidSsrfProtectionConfigException(\sprintf(
                     'SSRF "allowed_hosts" entry "%s" has an invalid port. Use "host" or "host:port" '
                     . 'with a port between 1 and 65535.',
@@ -211,7 +211,7 @@ final readonly class HttpClientFactory implements HttpClientFactoryInterface
             return true;
         }
 
-        $lastLabel = \mb_strtolower((string)\strrchr('.' . $host, '.'));
+        $lastLabel = \mb_strtolower((string) \strrchr('.' . $host, '.'));
 
         return \preg_match('/^\.(0x[0-9a-f]+|[0-9]+)$/', $lastLabel) === 1;
     }

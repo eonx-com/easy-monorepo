@@ -36,7 +36,7 @@ final class AcnValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $acn = (string)$value;
+        $acn = (string) $value;
 
         $violationCode = $this->getViolationCode($acn);
         if ($violationCode !== null) {
@@ -49,11 +49,11 @@ final class AcnValidator extends ConstraintValidator
 
         $sum = 0;
         foreach (\str_split($acn) as $key => $digit) {
-            $sum += (int)$digit * self::WEIGHTS[$key];
+            $sum += (int) $digit * self::WEIGHTS[$key];
         }
 
         $remainder = $sum % self::MODULUS;
-        $complement = (string)(self::MODULUS - $remainder);
+        $complement = (string) (self::MODULUS - $remainder);
 
         if ($complement === '10') {
             $complement = '0';

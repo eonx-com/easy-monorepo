@@ -61,7 +61,7 @@ final class SendDueWebhooksCommand extends Command
         $page = 1;
         /** @var string|false $bulkValue */
         $bulkValue = $input->getOption('bulk');
-        $perPage = (int)$bulkValue;
+        $perPage = (int) $bulkValue;
         /** @var string|false $sendAfterValue */
         $sendAfterValue = $input->getOption('sendAfter');
         $sendAfterString = $sendAfterValue !== false ? $sendAfterValue : null;

@@ -24,7 +24,7 @@ final class TextCoverageResolver implements CoverageResolverInterface
         $match = Strings::match($output, '/lines:(\d+.\d+\d+)%/i') ?? [];
 
         if (isset($match[1])) {
-            return new CoverageReport((float)$match[1]);
+            return new CoverageReport((float) $match[1]);
         }
 
         throw new UnableToResolveCoverageException(\sprintf(

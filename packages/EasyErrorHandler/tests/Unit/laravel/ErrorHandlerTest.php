@@ -158,7 +158,7 @@ final class ErrorHandlerTest extends AbstractLaravelTestCase
     {
         $result = [];
         foreach ($translations ?? [] as $key => $value) {
-            $result[$key] = \str_replace('$', ':', (string)$value);
+            $result[$key] = \str_replace('$', ':', (string) $value);
         }
 
         return $result;

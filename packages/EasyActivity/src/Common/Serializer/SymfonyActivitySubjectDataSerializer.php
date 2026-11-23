@@ -79,6 +79,6 @@ final readonly class SymfonyActivitySubjectDataSerializer implements ActivitySub
             return null;
         }
 
-        return $this->serializer->serialize((object)$data, 'json', $context);
+        return $this->serializer->serialize((object) $data, 'json', $context);
     }
 }

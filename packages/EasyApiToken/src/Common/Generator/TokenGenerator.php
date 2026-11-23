@@ -45,13 +45,13 @@ final readonly class TokenGenerator implements TokenGeneratorInterface
             $payload['iss'] = $this->issuer;
         }
 
-        $payload['jti'] = \md5((string)\json_encode($payload));
+        $payload['jti'] = \md5((string) \json_encode($payload));
 
         $secret = $secretEncoded === true ? \base64_decode(
             \strtr($this->secret ?? '', '-_', '+/'),
             true
         ) : $this->secret;
 
-        return JWT::encode($payload, (string)$secret, self::DEFAULT_ALGO);
+        return JWT::encode($payload, (string) $secret, self::DEFAULT_ALGO);
     }
 }

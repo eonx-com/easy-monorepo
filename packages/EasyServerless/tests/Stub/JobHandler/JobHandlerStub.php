@@ -24,7 +24,7 @@ final class JobHandlerStub
     public function failed(array $data, ?Throwable $throwable): void
     {
         if (isset($data['failedException'])) {
-            throw new RuntimeException((string)$data['failedException']);
+            throw new RuntimeException((string) $data['failedException']);
         }
     }
 
@@ -33,7 +33,7 @@ final class JobHandlerStub
         self::$firedCount++;
 
         if (isset($data['release'])) {
-            $job->release((int)$data['release']);
+            $job->release((int) $data['release']);
 
             return;
         }
@@ -45,7 +45,7 @@ final class JobHandlerStub
         }
 
         if (isset($data['exception'])) {
-            throw new RuntimeException((string)$data['exception']);
+            throw new RuntimeException((string) $data['exception']);
         }
     }
 }

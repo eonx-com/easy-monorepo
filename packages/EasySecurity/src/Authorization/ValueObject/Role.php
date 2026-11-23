@@ -32,9 +32,7 @@ final class Role implements Stringable
 
     public function addMetadata(string $name, mixed $value): self
     {
-        if ($this->metadata === null) {
-            $this->metadata = [];
-        }
+        $this->metadata ??= [];
 
         $this->metadata[$name] = $value;
 

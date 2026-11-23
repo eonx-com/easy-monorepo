@@ -44,17 +44,13 @@ final class TrustApiGatewayProxyRequestListenerTest extends AbstractUnitTestCase
     {
         Request::setTrustedProxies([], 0);
 
+        unset($_SERVER['REMOTE_ADDR']);
+
         if ($this->serverHadRemoteAddr) {
             $_SERVER['REMOTE_ADDR'] = $this->serverRemoteAddr;
-        } else {
-            unset($_SERVER['REMOTE_ADDR']);
         }
 
-        if ($this->lambdaTaskRoot === false) {
-            \putenv('LAMBDA_TASK_ROOT');
-        } else {
-            \putenv('LAMBDA_TASK_ROOT=' . $this->lambdaTaskRoot);
-        }
+        \putenv($this->lambdaTaskRoot === false ? 'LAMBDA_TASK_ROOT' : 'LAMBDA_TASK_ROOT=' . $this->lambdaTaskRoot);
 
         if ($this->serverHadSamLocal) {
             $_SERVER['AWS_SAM_LOCAL'] = $this->serverSamLocal;

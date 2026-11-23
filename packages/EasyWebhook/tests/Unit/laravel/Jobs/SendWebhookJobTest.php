@@ -20,7 +20,7 @@ final class SendWebhookJobTest extends AbstractUnitTestCase
         $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
         $webhook = $store->store(Webhook::create('https://eonx.com')->maxAttempt(3));
         $client = new WebhookClientStub(new WebhookHttpClientOptionNotAllowedException('not allowed'));
-        $job = new SendWebhookJob((string)$webhook->getId(), 3)
+        $job = new SendWebhookJob((string) $webhook->getId(), 3)
             ->withFakeQueueInteractions();
 
         $job->handle($client, new MultiplierWebhookRetryStrategy(), $store);
@@ -37,7 +37,7 @@ final class SendWebhookJobTest extends AbstractUnitTestCase
             message: 'failed',
             previous: new WebhookResponseTooLargeException('too large')
         ));
-        $job = new SendWebhookJob((string)$webhook->getId(), 3)
+        $job = new SendWebhookJob((string) $webhook->getId(), 3)
             ->withFakeQueueInteractions();
 
         $job->handle($client, new MultiplierWebhookRetryStrategy(), $store);
@@ -50,7 +50,7 @@ final class SendWebhookJobTest extends AbstractUnitTestCase
         $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
         $webhook = $store->store(Webhook::create('https://eonx.com')->maxAttempt(3));
         $client = new WebhookClientStub(new WebhookRequestFailedException('failed'));
-        $job = new SendWebhookJob((string)$webhook->getId(), 3)
+        $job = new SendWebhookJob((string) $webhook->getId(), 3)
             ->withFakeQueueInteractions();
 
         $job->handle($client, new MultiplierWebhookRetryStrategy(), $store);

@@ -13,7 +13,7 @@ final class ArrayStoreTest extends AbstractUnitTestCase
     {
         $store = new ArrayStore(self::getRandomGenerator(), $this->getDataCleaner());
         $webhook = $store->store(Webhook::fromArray([]));
-        $findWebhook = $store->find((string)$webhook->getId());
+        $findWebhook = $store->find((string) $webhook->getId());
         $webhooks = $store->getWebhooks();
         $store->reset();
         $resetWebhooks = $store->getWebhooks();

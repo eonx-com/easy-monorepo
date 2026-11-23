@@ -17,7 +17,7 @@ final class OutputSanitizerListener
 
         $response = $event->getResponse();
 
-        if (\str_contains((string)$response->headers->get('Content-Type'), 'application/json') === false) {
+        if (\str_contains((string) $response->headers->get('Content-Type'), 'application/json') === false) {
             return;
         }
 

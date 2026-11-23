@@ -38,7 +38,7 @@ final class DynamoDbStore extends AbstractDynamoDbStore implements StoreInterfac
             // If we get here, the item already exists, so we update it
             $this->doPutItem(
                 instance: $webhook,
-                previousData: $this->doFindRaw('id', (string)$webhook->getId(), true)
+                previousData: $this->doFindRaw('id', (string) $webhook->getId(), true)
             );
         }
 
@@ -68,7 +68,7 @@ final class DynamoDbStore extends AbstractDynamoDbStore implements StoreInterfac
         }
 
         return \array_map(
-            static fn($value): AttributeValue => AttributeValue::create(['S' => (string)$value]),
+            static fn($value): AttributeValue => AttributeValue::create(['S' => (string) $value]),
             $this->formatData($data)
         );
     }

@@ -15,7 +15,7 @@ final class RoleTest extends AbstractUnitTestCase
         $role = new Role('app:role', [new Permission('perm'), 'perm-as-string', new stdClass()]);
 
         self::assertEquals('app:role', $role->getIdentifier());
-        self::assertEquals('app:role', (string)$role);
+        self::assertEquals('app:role', (string) $role);
         self::assertCount(2, $role->getPermissions());
         self::assertNull($role->getName());
 

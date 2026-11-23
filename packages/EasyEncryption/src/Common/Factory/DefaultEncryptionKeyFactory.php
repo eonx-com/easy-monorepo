@@ -66,8 +66,8 @@ final class DefaultEncryptionKeyFactory implements EncryptionKeyFactoryInterface
     {
         if (isset($key[EncryptionKeyOption::Key->value], $key[EncryptionKeyOption::Salt->value])) {
             return KeyFactory::deriveEncryptionKey(
-                $this->getHiddenString((string)$key[EncryptionKeyOption::Key->value]),
-                (string)$key[EncryptionKeyOption::Salt->value]
+                $this->getHiddenString((string) $key[EncryptionKeyOption::Key->value]),
+                (string) $key[EncryptionKeyOption::Salt->value]
             );
         }
 

@@ -15,7 +15,7 @@ final class ErrorResponseHelper
     public static function getContent(Throwable $throwable, bool $debug = false): string
     {
         if ($debug === false) {
-            return (string)\json_encode([
+            return (string) \json_encode([
                 'error' => HttpStatusCode::InternalServerError->description() ?? self::INTERNAL_SERVER_ERROR,
             ]);
         }
@@ -26,7 +26,7 @@ final class ErrorResponseHelper
             $details = \array_merge(ErrorDetailsHelper::resolveSimpleDetails($throwable), $details);
         }
 
-        return (string)\json_encode($details);
+        return (string) \json_encode($details);
     }
 
     public static function sendErrorResponse(Throwable $throwable, Response $response, bool $debug = false): void

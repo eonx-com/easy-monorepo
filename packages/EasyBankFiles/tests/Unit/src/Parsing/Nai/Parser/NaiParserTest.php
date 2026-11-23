@@ -97,7 +97,7 @@ final class NaiParserTest extends AbstractUnitTestCase
 
                 // Assert fixed values
                 self::assertEquals('0', $transaction->getFundsType());
-                self::assertEquals('z', \strtolower((string)$baiTransaction->getFundsType()));
+                self::assertEquals('z', \strtolower((string) $baiTransaction->getFundsType()));
 
                 self::assertEquals($transaction->getAmount(), $baiTransaction->getAmount(), 'mismatch amount');
                 self::assertEquals($transaction->getCode(), $baiTransaction->getCode(), 'mismatch code');

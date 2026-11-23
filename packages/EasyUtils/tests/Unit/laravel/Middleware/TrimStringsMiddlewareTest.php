@@ -50,7 +50,7 @@ final class TrimStringsMiddlewareTest extends AbstractUnitTestCase
         $data = [
             'abc' => '  123  ',
         ];
-        $json = (string)\json_encode($data);
+        $json = (string) \json_encode($data);
         $except = [];
         $expectedResult = [
             'abc' => '123',

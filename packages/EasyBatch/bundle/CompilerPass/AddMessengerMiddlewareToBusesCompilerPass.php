@@ -35,7 +35,7 @@ final class AddMessengerMiddlewareToBusesCompilerPass implements CompilerPassInt
                 $middleware->getValues(),
                 static fn(
                     Reference $ref,
-                ): bool => \in_array((string)$ref, self::EASY_BATCH_MIDDLEWARE_LIST, true) === false
+                ): bool => \in_array((string) $ref, self::EASY_BATCH_MIDDLEWARE_LIST, true) === false
             );
 
             // Convert easy batch middleware classes to reference

@@ -31,7 +31,7 @@ final class AccessLogListener extends AbstractTerminateListener
         $accessLog = $this->accessLogFormatter->formatAccessLog($request, $event->getResponse());
 
         if ($this->sensitiveDataSanitizer !== null) {
-            $accessLog = (string)$this->sensitiveDataSanitizer->sanitize($accessLog);
+            $accessLog = (string) $this->sensitiveDataSanitizer->sanitize($accessLog);
         }
 
         $this->logger->debug($accessLog);

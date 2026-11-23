@@ -25,8 +25,8 @@ final class GroupTrailerTest extends AbstractUnitTestCase
         $trailer = new GroupTrailer($data);
 
         self::assertSame($data['code'], $trailer->getCode());
-        self::assertSame((float)100, $trailer->getGroupControlTotalA());
-        self::assertSame((float)100, $trailer->getGroupControlTotalB());
+        self::assertSame((float) 100, $trailer->getGroupControlTotalA());
+        self::assertSame((float) 100, $trailer->getGroupControlTotalB());
         self::assertSame($data['numberOfAccounts'], $trailer->getNumberOfAccounts());
     }
 }

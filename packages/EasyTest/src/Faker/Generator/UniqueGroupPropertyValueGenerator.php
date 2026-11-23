@@ -55,7 +55,7 @@ final class UniqueGroupPropertyValueGenerator
                 ));
             }
 
-            return (string)$callbackResult;
+            return (string) $callbackResult;
         }
 
         return '';

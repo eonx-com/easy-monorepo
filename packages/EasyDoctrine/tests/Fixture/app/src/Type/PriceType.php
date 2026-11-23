@@ -16,7 +16,7 @@ final class PriceType extends StringType
      */
     public function convertToPHPValue($value, AbstractPlatform $platform): Price
     {
-        $price = \explode(' ', (string)$value);
+        $price = \explode(' ', (string) $value);
 
         return new Price($price[0], $price[1]);
     }

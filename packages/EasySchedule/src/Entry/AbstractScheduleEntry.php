@@ -53,8 +53,8 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
         $segments = \explode(':', $time);
 
         return $this
-            ->spliceIntoPosition(2, (int)$segments[0])
-            ->spliceIntoPosition(1, \count($segments) === 2 ? (int)$segments[1] : '0');
+            ->spliceIntoPosition(2, (int) $segments[0])
+            ->spliceIntoPosition(1, \count($segments) === 2 ? (int) $segments[1] : '0');
     }
 
     public function days(int|array $days): ScheduleEntryInterface
@@ -91,11 +91,11 @@ abstract class AbstractScheduleEntry implements ScheduleEntryInterface
 
     public function filtersPass(): bool
     {
-        if (\array_all($this->filters, static fn($filter): bool => (bool)$filter()) === false) {
+        if (\array_all($this->filters, static fn($filter): bool => (bool) $filter()) === false) {
             return false;
         }
 
-        return \array_any($this->rejects, static fn($reject): bool => (bool)$reject()) === false;
+        return \array_any($this->rejects, static fn($reject): bool => (bool) $reject()) === false;
     }
 
     public function fridays(): ScheduleEntryInterface

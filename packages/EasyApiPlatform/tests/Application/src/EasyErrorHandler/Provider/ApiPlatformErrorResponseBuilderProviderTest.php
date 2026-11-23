@@ -21,7 +21,7 @@ final class ApiPlatformErrorResponseBuilderProviderTest extends AbstractApplicat
     {
         // Symfony 8.1 changed the backed enum denormalization message in BackedEnumNormalizer
         $hasNewEnumMessage = \version_compare(
-            (string)InstalledVersions::getVersion('symfony/serializer'),
+            (string) InstalledVersions::getVersion('symfony/serializer'),
             '8.1.0',
             '>='
         );

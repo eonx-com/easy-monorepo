@@ -30,7 +30,7 @@ final class BearerTokenDecoder extends AbstractDecoder
         }
 
         try {
-            return new Jwt((array)$this->jwtDriver->decode(\trim($authorization)), $authorization);
+            return new Jwt((array) $this->jwtDriver->decode(\trim($authorization)), $authorization);
         } catch (Throwable $throwable) {
             $this->logger?->info(\sprintf('Invalid JWT token from request: "%s"', $throwable->getMessage()));
 

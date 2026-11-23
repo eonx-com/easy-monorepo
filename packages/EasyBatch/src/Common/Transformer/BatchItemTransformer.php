@@ -57,19 +57,19 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
     protected function hydrateBatchObject(AbstractBatchObject $batchObject, array $data): void
     {
         $batchObject
-            ->setAttempts((int)($data['attempts'] ?? 0))
-            ->setBatchId((string)$data['batch_id'])
-            ->setEncrypted((bool)($data['encrypted'] ?? 0))
-            ->setMaxAttempts((int)($data['max_attempts'] ?? 1));
+            ->setAttempts((int) ($data['attempts'] ?? 0))
+            ->setBatchId((string) $data['batch_id'])
+            ->setEncrypted((bool) ($data['encrypted'] ?? 0))
+            ->setMaxAttempts((int) ($data['max_attempts'] ?? 1));
 
         if (isset($data['type']) === false) {
             $batchObject->setType(BatchItemType::Message->value);
         }
 
         if (isset($data['message'])) {
-            $message = (string)$data['message'];
+            $message = (string) $data['message'];
 
-            if (((bool)($data['encrypted'] ?? false)) === true) {
+            if (((bool) ($data['encrypted'] ?? false)) === true) {
                 $decrypted = $this->getEncryptor()
                     ->decrypt($message);
                 $message = $decrypted->getRawDecryptedString();
@@ -81,7 +81,7 @@ final class BatchItemTransformer extends AbstractBatchObjectTransformer
         }
 
         if (isset($data['depends_on_name'])) {
-            $batchObject->setDependsOnName((string)$data['depends_on_name']);
+            $batchObject->setDependsOnName((string) $data['depends_on_name']);
         }
     }
 
