@@ -65,8 +65,8 @@ return [
 ### Sensitive data
 
 The listeners record the request options and the response body as they are. This includes the credentials and the
-personal data that the application sends to the remote API or receives from it. The package does not mask anything
-itself:
+personal data that the application sends to the remote API or receives from it. The package masks only the requests
+to AWS SES and SNS (see below). Everything else is masked by the sanitizers:
 
 - Log records are masked when the sensitive data sanitizer of EasyLogging is enabled
   (`easy_logging.sensitive_data_sanitizer.enabled` in Symfony, `easy-logging.sensitive_data_sanitizer.enabled` in
@@ -83,6 +83,20 @@ Laravel/Lumen). A key matches only as a whole, for example `name` does not cover
   a field.
 - A value that has no key of its own cannot be masked this way, for example the text of an e-mail or an SMS. For
   such requests turn the events off or change the recorded data, as described below.
+
+### E-mails and SMS sent through AWS
+
+`AwsMessagingRequestSanitizerListener` changes the recorded request options of every request to AWS SES
+(`email.<region>.amazonaws.com`) and SNS (`sns.<region>.amazonaws.com`), for example the requests of
+`symfony/amazon-mailer` and `symfony/amazon-sns-notifier`. It runs before the listeners that record the request and
+replaces with `*REDACTED*`:
+
+- the `Authorization` and `X-Amz-Security-Token` headers
+- in the body: the recipients (`ToAddresses`, `CcAddresses`, `BccAddresses`, `ReplyToAddresses`), the subject, text
+  and raw content of an e-mail (`Data`), the template data (`TemplateData`), the attachments (`RawContent`), the text
+  of an SNS message (`Message`) and the phone number (`PhoneNumber`)
+
+The listener is always registered. The request itself is sent unchanged.
 
 ### Turn the events off for a request
 
