@@ -14,6 +14,7 @@ use EonX\EasyHttpClient\Common\ValueObject\RequestData;
 use EonX\EasyHttpClient\Common\ValueObject\ResponseData;
 use EonX\EasyUtils\Common\Helper\CollectorHelper;
 use Symfony\Component\HttpClient\AsyncDecoratorTrait;
+use Symfony\Component\HttpClient\Exception\TimeoutException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Response\AsyncContext;
 use Symfony\Component\HttpClient\Response\AsyncResponse;
@@ -95,15 +96,51 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
 
     private function getPassThruClosure(RequestData $requestData, Config $config): Closure
     {
-        return function (ChunkInterface $chunk, AsyncContext $asyncContext) use ($requestData, $config): iterable {
-            // Get chunk content here, so we can handle transport/timeout exceptions
+        $isTimedOut = false;
+
+        return function (ChunkInterface $chunk, AsyncContext $asyncContext) use (
+            $requestData,
+            $config,
+            &$isTimedOut,
+        ): iterable {
+            // Get chunk content here, so we can handle transport exceptions
             try {
-                $chunkContent = $chunk->getContent();
+                $isTimeout = $chunk->isTimeout();
+                $chunkContent = $isTimeout ? '' : $chunk->getContent();
             } catch (Throwable $throwable) {
+                $isTimedOut = false;
                 $this->dispatchEvent($config, $requestData, throwable: $throwable);
 
                 throw $throwable;
             }
+
+            // A timeout chunk is not an error by itself: with a zero timeout (StreamWrapper, Psr18Client) it only means
+            // "no data yet", so the consumer decides whether it is an error
+            if ($isTimeout) {
+                $isTimedOut = true;
+
+                yield $chunk;
+
+                return;
+            }
+
+            // The consumer gave up after a timeout chunk: the response is cancelled (also by RetryableHttpClient before
+            // a retry) or destructed
+            if ($isTimedOut && $chunk->isLast() && $asyncContext->getInfo('canceled') === true) {
+                /** @var string $url */
+                $url = $asyncContext->getInfo('url');
+                $this->dispatchEvent(
+                    $config,
+                    $requestData,
+                    throwable: new TimeoutException(\sprintf('Idle timeout reached for "%s".', $url))
+                );
+
+                yield $chunk;
+
+                return;
+            }
+
+            $isTimedOut = false;
 
             if ($chunkContent !== '') {
                 $asyncContext->setInfo(
