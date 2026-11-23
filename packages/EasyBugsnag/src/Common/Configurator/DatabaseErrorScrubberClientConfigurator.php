@@ -6,8 +6,10 @@ namespace EonX\EasyBugsnag\Common\Configurator;
 use Bugsnag\Client;
 use Bugsnag\Report;
 use Closure;
+use DateTimeInterface;
 use Doctrine\DBAL\Driver\Exception as DriverException;
 use Throwable;
+use UnitEnum;
 
 final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfigurator
 {
@@ -72,83 +74,105 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
             );
 
             [$reducedMessages, $reportsAbove] = $reduceChain($report);
-            [$search, $replace] = self::resolveReplacements($reducedMessages);
+            $replacements = self::resolveReplacements($reducedMessages);
 
-            if ($search === []) {
+            if ($replacements === []) {
                 return;
             }
 
             // The application can put a DB message into its own message, e.g. "Checkout failed: <message>"
             foreach ($reportsAbove as $reportAbove) {
-                $reportAbove->setMessage(\str_replace($search, $replace, (string)$reportAbove->getMessage()));
+                $reportAbove->setMessage(\strtr((string)$reportAbove->getMessage(), $replacements));
             }
 
             // Other configurators copy the messages into the metadata (e.g. "error.message", "error.previous_1.message")
-            $metaData = $report->getMetaData();
-
-            \array_walk_recursive($metaData, static function (mixed &$value) use ($search, $replace): void {
-                if (\is_string($value)) {
-                    $value = \str_replace($search, $replace, $value);
-                }
-            });
-
+            /** @var array<array> $metaData */
+            $metaData = self::reduceValue($report->getMetaData(), $replacements);
             $report->setMetaData($metaData, false);
         });
     }
 
     /**
+     * Objects and JSON strings are read the way they reach the report: Bugsnag and the sensitive data sanitizer turn
+     * an object into the array of its JSON form, and the sanitizer re-encodes a JSON string. A message inside JSON that
+     * is embedded in text is replaced only in the JSON-escaped forms of JSON_ENCODE_FLAGS
+     *
+     * @param array<string, string> $replacements
+     */
+    private static function reduceValue(mixed $value, array $replacements): mixed
+    {
+        if (\is_array($value)) {
+            foreach ($value as $key => $item) {
+                $value[$key] = self::reduceValue($item, $replacements);
+            }
+
+            return $value;
+        }
+
+        if (\is_object($value)) {
+            if ($value instanceof DateTimeInterface || $value instanceof Throwable || $value instanceof UnitEnum) {
+                return $value;
+            }
+
+            $data = (array)\json_decode((string)\json_encode($value), true);
+            $reducedData = self::reduceValue($data, $replacements);
+
+            return $reducedData === $data ? $value : $reducedData;
+        }
+
+        if (\is_string($value) === false) {
+            return $value;
+        }
+
+        $data = \json_decode($value, true, flags: \JSON_BIGINT_AS_STRING);
+
+        if (\is_array($data)) {
+            $reducedData = self::reduceValue($data, $replacements);
+
+            return $reducedData === $data
+                ? $value
+                : (string)\json_encode($reducedData, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
+        }
+
+        // One pass that takes the longest match at each position: a JSON-escaped form wins over the raw message it
+        // starts with, so a backslash pair is never split
+        return \strtr($value, $replacements);
+    }
+
+    /**
      * @param list<array{string, string, string}> $reducedMessages Original message, its reduced form and SQLSTATE
      *
-     * @return array{list<string>, array<int, string>}
+     * @return array<string, string> Reduced form by original message
      */
     private static function resolveReplacements(array $reducedMessages): array
     {
-        $search = [];
-        $replace = [];
+        $replacements = [];
 
-        // The chain goes from the top, so a wrapper message ("An exception occurred in the driver: <message>")
-        // is replaced before the driver message it contains
         foreach ($reducedMessages as [$message, $reducedMessage, $sqlState]) {
             if (\strlen($message) < self::MESSAGE_LENGTH_MIN) {
                 continue;
             }
 
-            $index = \array_search($message, $search, true);
-
-            if ($index === false) {
-                $search[] = $message;
-                $replace[] = $reducedMessage;
-
-                continue;
-            }
-
             // Two exceptions with the same message (a PDO driver exception and its PDOException): a copy cannot be
             // traced to one of them, so it gets no class
-            if ($replace[$index] !== $reducedMessage) {
-                $replace[$index] = \sprintf('SQLSTATE[%s]', $sqlState);
-            }
+            $replacements[$message] = isset($replacements[$message]) && $replacements[$message] !== $reducedMessage
+                ? \sprintf('SQLSTATE[%s]', $sqlState)
+                : $reducedMessage;
         }
 
         // A copy can also sit JSON-encoded in a string (newlines, quotes and backslashes escaped). The reduced message has
         // no characters that JSON escapes, so it replaces the encoded form as it is
-        foreach ($search as $index => $message) {
+        foreach ($replacements as $message => $reducedMessage) {
             foreach (self::JSON_ENCODE_FLAGS as $flags) {
                 // False for a message with invalid UTF-8, which JSON cannot hold
-                $encodedMessage = \json_encode($message, $flags);
+                $encodedMessage = \json_encode((string)$message, $flags);
 
-                if ($encodedMessage === false) {
-                    continue;
-                }
-
-                $encodedMessage = \substr($encodedMessage, 1, -1);
-
-                if (\in_array($encodedMessage, $search, true) === false) {
-                    $search[] = $encodedMessage;
-                    $replace[] = $replace[$index];
+                if ($encodedMessage !== false) {
+                    $replacements[\substr($encodedMessage, 1, -1)] ??= $reducedMessage;
                 }
             }
         }
 
-        return [$search, $replace];
+        return $replacements;
     }
 }

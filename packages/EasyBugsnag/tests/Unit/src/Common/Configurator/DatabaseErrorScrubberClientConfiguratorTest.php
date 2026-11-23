@@ -16,7 +16,7 @@ use Throwable;
 final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTestCase
 {
     /**
-     * @see testItReducesJsonEncodedCopiesOfMessage
+     * @see testItReducesJsonEncodedCopiesOfMessageInText
      */
     public static function provideMessagesThatJsonEscapes(): iterable
     {
@@ -59,6 +59,40 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
                 'note' => 'a "quoted" word',
             ],
             \json_decode($payload, true)
+        );
+    }
+
+    public function testItKeepsJsonInTextDecodableWhenMessageEndsWithBackslash(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(
+            self::driverException('SQLSTATE[HY000]: General error: 1 no such table: users\\', 'HY000'),
+            null
+        );
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'payload' => 'Sync failed: ' . \json_encode([
+                    'api_key' => 'some-api-key',
+                    'error' => $throwable->getMessage(),
+                    'note' => 'a "quoted" word',
+                ]),
+            ],
+        ]);
+
+        $client->notify($report);
+
+        $payload = $this->getFirstReport($client)
+            ->toArray()['metaData']['context']['payload'];
+        self::assertIsString($payload);
+        self::assertSame(
+            [
+                'api_key' => '*REDACTED*',
+                'error' => 'SQLSTATE[HY000] UniqueConstraintViolationException',
+                'note' => 'a "quoted" word',
+            ],
+            \json_decode(\substr($payload, \strlen('Sync failed: ')), true)
         );
     }
 
@@ -113,7 +147,7 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
     }
 
     #[DataProvider('provideMessagesThatJsonEscapes')]
-    public function testItReducesJsonEncodedCopiesOfMessage(string $message): void
+    public function testItReducesJsonEncodedCopiesOfMessageInText(string $message): void
     {
         self::bootKernel(['environment' => 'error_details']);
         $client = self::getService(Client::class);
@@ -121,7 +155,7 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
         $report->setMetaData([
             'context' => [
-                'payload' => \json_encode([
+                'payload' => 'Sync failed: ' . \json_encode([
                     'error' => $throwable->getMessage(),
                 ]),
             ],
@@ -136,7 +170,65 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
             [
                 'error' => 'SQLSTATE[23505] UniqueConstraintViolationException',
             ],
+            \json_decode(\substr($payload, \strlen('Sync failed: ')), true)
+        );
+    }
+
+    public function testItReducesMessageInJsonEncodedWithOtherFlags(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(
+            self::driverException("1062 Duplicate entry 'john@example.com' for key 'users.email_unique'", '23000'),
+            null
+        );
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'payload' => \json_encode([
+                    'error' => $throwable->getMessage(),
+                ], \JSON_HEX_APOS | \JSON_HEX_QUOT),
+            ],
+        ]);
+
+        $client->notify($report);
+
+        $payload = $this->getFirstReport($client)
+            ->toArray()['metaData']['context']['payload'];
+        self::assertIsString($payload);
+        self::assertSame(
+            [
+                'error' => 'SQLSTATE[23000] UniqueConstraintViolationException',
+            ],
             \json_decode($payload, true)
+        );
+    }
+
+    public function testItReducesMessageInObjectMetadata(): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(
+            self::driverException("1062 Duplicate entry 'john@example.com' for key 'users.email_unique'", '23000'),
+            null
+        );
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'details' => (object)[
+                    'message' => $throwable->getMessage(),
+                ],
+            ],
+        ]);
+
+        $client->notify($report);
+
+        self::assertSame(
+            [
+                'message' => 'SQLSTATE[23000] UniqueConstraintViolationException',
+            ],
+            $this->getFirstReport($client)
+                ->toArray()['metaData']['context']['details']
         );
     }
 

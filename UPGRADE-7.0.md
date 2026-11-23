@@ -249,10 +249,11 @@ Tips:
 
 - New `DatabaseErrorScrubberClientConfigurator` (Symfony only, always on). In reports, the message of each Doctrine
   driver exception (and the exceptions below it) is replaced by `SQLSTATE[<state>] <short class name>`, also where other
-  configurators copied it into the metadata (e.g. `error.message` from EasyErrorHandler, also JSON-encoded) and where an
-  exception above put it into its own message (`Checkout failed: <message>`). It runs after the other configurators
-  (priority `PHP_INT_MAX - 1`), before the sensitive data sanitizer. To keep the full message, remove or decorate this
-  service.
+  configurators copied it into the metadata (e.g. `error.message` from EasyErrorHandler, also inside objects and JSON
+  strings) and where an exception above put it into its own message (`Checkout failed: <message>`). A metadata value
+  where it replaced a message changes form as the sensitive data sanitizer changes it: an object becomes the array of
+  its JSON form, a JSON string is re-encoded. It runs after the other configurators (priority `PHP_INT_MAX - 1`), before
+  the sensitive data sanitizer. To keep the full message, remove or decorate this service.
 - `WorkerMessageReceivedListener` sanitizes the message and stamps dump with `SensitiveDataSanitizerInterface`.
 - `doctrine_dbal` (SQL query breadcrumbs) is disabled by default. To keep the breadcrumbs, set
   `'doctrine_dbal' => true` in `easy_bugsnag`.
