@@ -95,6 +95,16 @@ final class AwsMessagingRequestSanitizerListener
     private static function redactHeaders(array $headers): array
     {
         foreach ($headers as $name => $value) {
+            if (\is_int($name) && \is_string($value)) {
+                $headerName = \trim(\explode(':', $value, 2)[0]);
+
+                if (\in_array(\strtolower($headerName), self::HEADERS_TO_REDACT, true)) {
+                    $headers[$name] = $headerName . ': ' . self::REDACTED;
+                }
+
+                continue;
+            }
+
             if (\in_array(\strtolower((string)$name), self::HEADERS_TO_REDACT, true)) {
                 $headers[$name] = \is_array($value) ? \array_fill(0, \count($value), self::REDACTED) : self::REDACTED;
             }
