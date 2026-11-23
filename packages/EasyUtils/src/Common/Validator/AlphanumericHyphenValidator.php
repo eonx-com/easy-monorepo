@@ -26,7 +26,7 @@ final class AlphanumericHyphenValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $value = (string)$value;
+        $value = (string) $value;
 
         if (\preg_match('/^[a-z0-9_-]+$/i', $value) === 0) {
             $this->context->buildViolation($constraint->message)

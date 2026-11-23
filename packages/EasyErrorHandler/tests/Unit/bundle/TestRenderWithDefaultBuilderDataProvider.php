@@ -22,7 +22,7 @@ final class TestRenderWithDefaultBuilderDataProvider
             'exception' => new Exception(),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertSame('Oops, something went wrong.', $content['custom_message']);
             },
             'translations' => null,
@@ -33,7 +33,7 @@ final class TestRenderWithDefaultBuilderDataProvider
             'exception' => new Exception(),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertSame('Default message', $content['custom_message']);
             },
             'translations' => [
@@ -66,7 +66,7 @@ final class TestRenderWithDefaultBuilderDataProvider
                 ->setSubCode(123456),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertArrayHasKey('custom_sub_code', $content);
                 TestCase::assertSame(123456, $content['custom_sub_code']);
             },
@@ -78,7 +78,7 @@ final class TestRenderWithDefaultBuilderDataProvider
             'exception' => new Exception(),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertMatchesRegularExpression(
                     '/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/',
                     $content['custom_time']
@@ -93,7 +93,7 @@ final class TestRenderWithDefaultBuilderDataProvider
                 ->setErrors(['foo' => 'bar']),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertArrayHasKey('custom_violations', $content);
                 TestCase::assertSame(['foo' => 'bar'], $content['custom_violations']);
             },
@@ -105,7 +105,7 @@ final class TestRenderWithDefaultBuilderDataProvider
             'exception' => new Exception(),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertSame(['custom_code', 'custom_message', 'custom_time'], \array_keys($content));
             },
             'translations' => null,
@@ -117,7 +117,7 @@ final class TestRenderWithDefaultBuilderDataProvider
                 ->setSubCode(123),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertArrayHasKey('custom_sub_code', $content);
                 TestCase::assertSame(123, $content['custom_sub_code']);
             },
@@ -130,7 +130,7 @@ final class TestRenderWithDefaultBuilderDataProvider
                 ->setErrors(['foo' => ['bar']]),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertArrayHasKey('custom_violations', $content);
                 TestCase::assertSame(['foo' => ['bar']], $content['custom_violations']);
             },
@@ -142,7 +142,7 @@ final class TestRenderWithDefaultBuilderDataProvider
             'exception' => new NotFoundHttpException('my-message'),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
                 TestCase::assertSame('Not Found', $content['custom_message']);
                 TestCase::assertSame(1, $content['custom_code']);
@@ -158,7 +158,7 @@ final class TestRenderWithDefaultBuilderDataProvider
             'exception' => new Exception(),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertSame(
                     ['custom_code', 'custom_exception', 'custom_message', 'custom_time'],
                     \array_keys($content)
@@ -177,7 +177,7 @@ final class TestRenderWithDefaultBuilderDataProvider
                 ->setUserMessage('User-friendly error message'),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertSame('User-friendly error message', $content['custom_message']);
                 TestCase::assertSame('Exception message', $content['custom_exception']['custom_message']);
             },
@@ -196,7 +196,7 @@ final class TestRenderWithDefaultBuilderDataProvider
                 ]),
             'assertResponse' => static function (Response $response): void {
                 /** @var array $content */
-                $content = \json_decode((string)$response->getContent(), true);
+                $content = \json_decode((string) $response->getContent(), true);
                 TestCase::assertSame('Exception message with foo', $content['custom_exception']['custom_message']);
                 TestCase::assertSame('User-friendly error message with bar', $content['custom_message']);
             },

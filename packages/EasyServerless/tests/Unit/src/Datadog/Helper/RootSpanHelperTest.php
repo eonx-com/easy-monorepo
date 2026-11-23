@@ -81,8 +81,8 @@ final class RootSpanHelperTest extends AbstractUnitTestCase
         self::assertSame(\PHP_VERSION, $runtimeInfo['php.version']);
         self::assertSame(\PHP_SAPI, $runtimeInfo['php.sapi']);
         self::assertSame(\PHP_OS_FAMILY, $runtimeInfo['php.os']);
-        self::assertSame((string)\ini_get('memory_limit'), $runtimeInfo['php.memory_limit']);
-        self::assertSame((string)\ini_get('max_execution_time'), $runtimeInfo['php.max_execution_time']);
+        self::assertSame((string) \ini_get('memory_limit'), $runtimeInfo['php.memory_limit']);
+        self::assertSame((string) \ini_get('max_execution_time'), $runtimeInfo['php.max_execution_time']);
         self::assertContains($runtimeInfo['php.opcache.enabled'], ['true', 'false']);
         self::assertContains($runtimeInfo['php.opcache.jit.enabled'], ['true', 'false']);
 

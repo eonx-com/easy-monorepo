@@ -89,11 +89,11 @@ final class AwsCognitoJwtDriverTest extends AbstractUnitTestCase
 
     private function getPrivateKey(): string
     {
-        return (string)\file_get_contents(__DIR__ . '/../../../../Fixture/keys/jwt_private.pem');
+        return (string) \file_get_contents(__DIR__ . '/../../../../Fixture/keys/jwt_private.pem');
     }
 
     private function getPublicKey(): string
     {
-        return (string)\file_get_contents(__DIR__ . '/../../../../Fixture/keys/jwt_public.pem');
+        return (string) \file_get_contents(__DIR__ . '/../../../../Fixture/keys/jwt_public.pem');
     }
 }

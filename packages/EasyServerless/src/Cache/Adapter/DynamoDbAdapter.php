@@ -87,17 +87,15 @@ final class DynamoDbAdapter extends AbstractAdapter
         $requestItems = null;
 
         do {
-            if ($requestItems === null) {
-                $requestItems = [
-                    $this->tableName => \array_map(fn(string $id): WriteRequest => new WriteRequest([
-                        'DeleteRequest' => new DeleteRequest([
-                            'Key' => [
-                                $this->idAttr => new AttributeValue(['S' => $id]),
-                            ],
-                        ]),
-                    ]), $ids),
-                ];
-            }
+            $requestItems ??= [
+                $this->tableName => \array_map(fn(string $id): WriteRequest => new WriteRequest([
+                    'DeleteRequest' => new DeleteRequest([
+                        'Key' => [
+                            $this->idAttr => new AttributeValue(['S' => $id]),
+                        ],
+                    ]),
+                ]), $ids),
+            ];
 
             $response = $this->dynamoDbClient->batchWriteItem(new BatchWriteItemInput([
                 'RequestItems' => $requestItems,
@@ -151,7 +149,7 @@ final class DynamoDbAdapter extends AbstractAdapter
                     // Decoding the data attribute from base64
                     $dataAttr = \base64_decode(\strtr($dataAttr, '._', '/+'), true);
 
-                    yield $idAttr => $this->marshaller->unmarshall((string)$dataAttr);
+                    yield $idAttr => $this->marshaller->unmarshall((string) $dataAttr);
                 }
             }
         }
@@ -194,7 +192,7 @@ final class DynamoDbAdapter extends AbstractAdapter
 
                 foreach ($values as $id => $data) {
                     // Prevent malformed utf-8 data error from DynamoDB
-                    $data = \strtr(\base64_encode((string)$data), '/+', '._');
+                    $data = \strtr(\base64_encode((string) $data), '/+', '._');
 
                     $item = [
                         $this->dataAttr => new AttributeValue(['S' => $data]),
@@ -204,7 +202,7 @@ final class DynamoDbAdapter extends AbstractAdapter
                     // Lifetime 0 means "persist until manual cleaning", so DynamoDB TTL must not remove the item
                     if ($lifetime > 0) {
                         $item[$this->expirationAttr] = new AttributeValue([
-                            'N' => (string)(\microtime(true) + $lifetime),
+                            'N' => (string) (\microtime(true) + $lifetime),
                         ]);
                     }
 
@@ -240,6 +238,6 @@ final class DynamoDbAdapter extends AbstractAdapter
         $expirationAttr = isset($item[$this->expirationAttr]) ? $item[$this->expirationAttr]->getN() : null;
 
         // Items without expiration never expire
-        return $expirationAttr !== null && ((float)$expirationAttr) <= \microtime(true);
+        return $expirationAttr !== null && ((float) $expirationAttr) <= \microtime(true);
     }
 }

@@ -13,6 +13,6 @@ final class PermissionTest extends AbstractUnitTestCase
         $permission = new Permission('perm');
 
         self::assertEquals('perm', $permission->getIdentifier());
-        self::assertEquals('perm', (string)$permission);
+        self::assertEquals('perm', (string) $permission);
     }
 }

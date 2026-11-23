@@ -72,7 +72,7 @@ trait QueuedEmailAssertionTrait
             return false;
         }
 
-        if ((string)$email->getSubject() !== $subject) {
+        if ((string) $email->getSubject() !== $subject) {
             return false;
         }
 

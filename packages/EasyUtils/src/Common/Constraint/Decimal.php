@@ -36,7 +36,7 @@ final class Decimal extends AbstractConstraint
             $minPrecision = 0;
 
             if (\is_array($options) && isset($options['minPrecision'])) {
-                $minPrecision = (int)$options['minPrecision'];
+                $minPrecision = (int) $options['minPrecision'];
             }
         }
 
@@ -44,7 +44,7 @@ final class Decimal extends AbstractConstraint
             $maxPrecision = 0;
 
             if (\is_array($options) && isset($options['maxPrecision'])) {
-                $maxPrecision = (int)$options['maxPrecision'];
+                $maxPrecision = (int) $options['maxPrecision'];
             }
         }
 

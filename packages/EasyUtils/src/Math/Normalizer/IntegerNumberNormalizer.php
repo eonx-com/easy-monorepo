@@ -38,7 +38,7 @@ final class IntegerNumberNormalizer implements DenormalizerInterface, Normalizer
             throw new InvalidArgumentException('The object type must be "Number".');
         }
 
-        return (string)$object;
+        return (string) $object;
     }
 
     public function supportsDenormalization(

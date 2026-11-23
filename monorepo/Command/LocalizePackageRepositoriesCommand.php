@@ -130,7 +130,7 @@ final class LocalizePackageRepositoriesCommand extends Command
     private function getRootPolicy(): ?array
     {
         $rootComposerJsonContents = \json_decode(
-            (string)\file_get_contents(__DIR__ . '/../../composer.json'),
+            (string) \file_get_contents(__DIR__ . '/../../composer.json'),
             true
         );
 

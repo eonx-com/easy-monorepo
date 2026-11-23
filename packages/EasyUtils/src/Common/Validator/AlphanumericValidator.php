@@ -26,7 +26,7 @@ final class AlphanumericValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        $value = (string)$value;
+        $value = (string) $value;
 
         if (\preg_match('/^[a-z0-9]+$/i', $value) === 0) {
             $this->context->buildViolation($constraint->message)

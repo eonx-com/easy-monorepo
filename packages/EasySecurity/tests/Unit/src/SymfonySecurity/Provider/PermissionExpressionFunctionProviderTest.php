@@ -15,18 +15,28 @@ final class PermissionExpressionFunctionProviderTest extends AbstractUnitTestCas
     {
         $function = new PermissionExpressionFunctionProvider([self::class])->getFunctions()[0];
 
-        self::assertSame('permission', $function->getEvaluator()([], 'PERMISSION_VALID'));
+        $evaluator = $function->getEvaluator();
+
+        $result = $evaluator([], 'PERMISSION_VALID');
         // Using cached permission
-        self::assertSame('permission', $function->getEvaluator()([], 'PERMISSION_VALID'));
+        $cachedResult = $evaluator([], 'PERMISSION_VALID');
+
+        self::assertSame('permission', $result);
+        self::assertSame('permission', $cachedResult);
     }
 
     public function testPermissionExpressionFunctionFoundWithEnum(): void
     {
         $function = new PermissionExpressionFunctionProvider([PermissionEnum::class])->getFunctions()[0];
 
-        self::assertSame(PermissionEnum::PermissionValid->value, $function->getEvaluator()([], 'PermissionValid'));
+        $evaluator = $function->getEvaluator();
+
+        $result = $evaluator([], 'PermissionValid');
         // Using cached permission
-        self::assertSame(PermissionEnum::PermissionValid->value, $function->getEvaluator()([], 'PermissionValid'));
+        $cachedResult = $evaluator([], 'PermissionValid');
+
+        self::assertSame(PermissionEnum::PermissionValid->value, $result);
+        self::assertSame(PermissionEnum::PermissionValid->value, $cachedResult);
     }
 
     public function testPermissionExpressionFunctionNotFoundWithConstant(): void

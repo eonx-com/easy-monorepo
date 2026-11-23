@@ -58,7 +58,7 @@ final class ReorderMessengerMiddlewareCompilerPass implements CompilerPassInterf
                 $middleware->getValues(),
                 static fn(
                     Reference $ref,
-                ): bool => \in_array((string)$ref, self::EASY_ASYNC_MIDDLEWARE_LIST, true) === false
+                ): bool => \in_array((string) $ref, self::EASY_ASYNC_MIDDLEWARE_LIST, true) === false
             );
 
             // Add reference to easy async middleware at the start of existing list

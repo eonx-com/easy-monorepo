@@ -131,7 +131,7 @@ final class EncryptorTest extends AbstractUnitTestCase
 
         $encrypted = $encryptor->encrypt($text, $key);
 
-        self::assertEquals($text, (string)$encryptor->decrypt($encrypted));
+        self::assertEquals($text, (string) $encryptor->decrypt($encrypted));
     }
 
     /**

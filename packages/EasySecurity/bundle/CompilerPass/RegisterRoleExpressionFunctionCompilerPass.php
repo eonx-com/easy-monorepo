@@ -15,7 +15,7 @@ final class RegisterRoleExpressionFunctionCompilerPass implements CompilerPassIn
 {
     public function process(ContainerBuilder $container): void
     {
-        $locations = (array)$container->getParameter(ConfigParam::RolesLocations->value);
+        $locations = (array) $container->getParameter(ConfigParam::RolesLocations->value);
         $exprLangId = 'security.expression_language';
 
         if (\count($locations) === 0 || $container->has($exprLangId) === false) {

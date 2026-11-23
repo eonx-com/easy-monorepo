@@ -13,12 +13,10 @@ return static function (DefinitionConfigurator $definition) {
                     ->arrayNode('do_not_log_paths')
                         ->beforeNormalization()
                             ->always(static function ($value): array {
-                                if ($value === null) {
-                                    $value = [];
-                                }
+                                $value ??= [];
 
                                 return \array_map(
-                                    static fn($mapValue): string => new UnicodeString((string)$mapValue)
+                                    static fn($mapValue): string => new UnicodeString((string) $mapValue)
                                         ->ensureStart('/')
                                         ->toString(),
                                     \is_array($value) ? $value : [$value]
@@ -84,13 +82,11 @@ return static function (DefinitionConfigurator $definition) {
                         ->defaultValue(['%kernel.project_dir%/public'])
                         ->beforeNormalization()
                             ->always(static function ($value): array {
-                                if ($value === null) {
-                                    $value = [];
-                                }
+                                $value ??= [];
 
                                 // Remove trailing slashes
                                 $dirs = \array_map(static function ($mapValue): string {
-                                    $dir = new UnicodeString((string)$mapValue);
+                                    $dir = new UnicodeString((string) $mapValue);
 
                                     while ($dir->endsWith('/')) {
                                         $dir = $dir->trimSuffix('/');
@@ -116,12 +112,10 @@ return static function (DefinitionConfigurator $definition) {
                     ->arrayNode('allowed_filenames')
                         ->beforeNormalization()
                             ->always(static function ($value): array {
-                                if ($value === null) {
-                                    $value = [];
-                                }
+                                $value ??= [];
 
                                 return \array_map(static function ($mapValue): string {
-                                    $phpFile = new UnicodeString((string)$mapValue)->ensureStart('/');
+                                    $phpFile = new UnicodeString((string) $mapValue)->ensureStart('/');
 
                                     if ($phpFile->endsWith('.php') === false) {
                                         throw new InvalidArgumentException(

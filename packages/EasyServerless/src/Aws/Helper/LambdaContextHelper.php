@@ -27,12 +27,12 @@ final class LambdaContextHelper
         /** @var string $lambdaInvocationContext */
         $lambdaInvocationContext = $_SERVER['LAMBDA_INVOCATION_CONTEXT'] ?? '[]';
 
-        return (array)\json_decode($lambdaInvocationContext, true);
+        return (array) \json_decode($lambdaInvocationContext, true);
     }
 
     public static function getRemainingTimeInMilliseconds(): int
     {
-        return (self::getInvocationContext()['deadlineMs'] ?? 0) - (int)(\microtime(true) * 1000);
+        return (self::getInvocationContext()['deadlineMs'] ?? 0) - (int) (\microtime(true) * 1000);
     }
 
     public static function getRequestContext(): array
@@ -40,7 +40,7 @@ final class LambdaContextHelper
         /** @var string $lambdaRequestContext */
         $lambdaRequestContext = $_SERVER['LAMBDA_REQUEST_CONTEXT'] ?? '[]';
 
-        return (array)\json_decode($lambdaRequestContext, true);
+        return (array) \json_decode($lambdaRequestContext, true);
     }
 
     public static function getTaskRoot(): ?string

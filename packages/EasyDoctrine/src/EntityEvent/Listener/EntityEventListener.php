@@ -74,7 +74,7 @@ final readonly class EntityEventListener
 
             if (($changeSetItem[0] ?? null) instanceof Stringable
                 && ($changeSetItem[1] ?? null) instanceof Stringable) {
-                return (string)$changeSetItem[0] !== (string)$changeSetItem[1];
+                return (string) $changeSetItem[0] !== (string) $changeSetItem[1];
             }
 
             return true;

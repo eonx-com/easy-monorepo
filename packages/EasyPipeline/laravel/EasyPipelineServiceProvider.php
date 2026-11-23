@@ -42,7 +42,7 @@ final class EasyPipelineServiceProvider extends ServiceProvider
 
     private function registerPipelines(): void
     {
-        $pipelines = (array)\config('easy-pipeline.pipelines', []);
+        $pipelines = (array) \config('easy-pipeline.pipelines', []);
 
         if (\count($pipelines) === 0) {
             throw new EmptyPipelinesListException(

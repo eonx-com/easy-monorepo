@@ -30,6 +30,6 @@ abstract class AbstractNumberComparisonValidator extends AbstractComparisonValid
             $value = new NumberValueObject($value);
         }
 
-        return $this->constraint->isMoney ? $value->toMoneyString() : (string)$value;
+        return $this->constraint->isMoney ? $value->toMoneyString() : (string) $value;
     }
 }

@@ -54,7 +54,7 @@ final class ErrorHandlerTest extends AbstractUnitTestCase
     {
         $result = [];
         foreach ($translations ?? [] as $key => $value) {
-            $result[$key] = \str_replace('$', '', (string)$value);
+            $result[$key] = \str_replace('$', '', (string) $value);
         }
 
         return $result;

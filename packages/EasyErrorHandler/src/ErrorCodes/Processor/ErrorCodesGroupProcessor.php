@@ -40,7 +40,7 @@ final readonly class ErrorCodesGroupProcessor implements ErrorCodesGroupProcesso
             return new ErrorCodes();
         }
 
-        $nextGroupErrorCode = (int)\max(\array_keys($groupedErrorCodes)) + $this->categorySize;
+        $nextGroupErrorCode = (int) \max(\array_keys($groupedErrorCodes)) + $this->categorySize;
         $nextGroupedErrorCodes = [];
 
         foreach ($groupedErrorCodes as $errorCodes) {

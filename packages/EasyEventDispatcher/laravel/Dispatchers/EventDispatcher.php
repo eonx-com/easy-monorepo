@@ -16,9 +16,11 @@ final readonly class EventDispatcher implements EventDispatcherInterface
     {
         if ($eventName !== null) {
             $this->dispatcher->dispatch($eventName, $event);
-        } else {
-            $this->dispatcher->dispatch($event);
+
+            return $event;
         }
+
+        $this->dispatcher->dispatch($event);
 
         return $event;
     }

@@ -56,15 +56,15 @@ trait ExceptionTrait
         }
 
         if ($previousException === null) {
-            self::assertNull($this->thrownException?->getPrevious());
+            self::assertNull($this->thrownException->getPrevious());
         }
 
         if ($previousException !== null) {
-            self::assertInstanceOf($previousException, $this->thrownException?->getPrevious());
+            self::assertInstanceOf($previousException, $this->thrownException->getPrevious());
         }
 
         if ($expectedMessage !== null) {
-            self::assertSame($expectedMessage, $this->thrownException?->getMessage());
+            self::assertSame($expectedMessage, $this->thrownException->getMessage());
         }
     }
 

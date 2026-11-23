@@ -19,7 +19,7 @@ trait EncryptableTrait
         }
 
         $decryptedString = $decryptor($this->encryptedData);
-        $decryptedData = \json_decode((string)$decryptedString, true);
+        $decryptedData = \json_decode((string) $decryptedString, true);
 
         if (\is_array($decryptedData) === false) {
             throw new UnexpectedValueException('Decrypted data has to be an array.');
@@ -78,7 +78,7 @@ trait EncryptableTrait
             }
         }
 
-        $encryptedText = $encryptor((string)\json_encode($rawData));
+        $encryptedText = $encryptor((string) \json_encode($rawData));
 
         $this->encryptedData = $encryptedText->value;
         $this->encryptionKeyName = $encryptedText->encryptionKeyName;

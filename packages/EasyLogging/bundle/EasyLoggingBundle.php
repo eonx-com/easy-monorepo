@@ -106,7 +106,7 @@ final class EasyLoggingBundle extends AbstractBundle
             if (\is_array($bugsnagHandlerConfig)) {
                 $channels = [
                     ...$channels,
-                    ...\array_filter((array)($bugsnagHandlerConfig['channels'] ?? []), \is_string(...)),
+                    ...\array_filter((array) ($bugsnagHandlerConfig['channels'] ?? []), \is_string(...)),
                 ];
             }
         }
@@ -178,8 +178,8 @@ final class EasyLoggingBundle extends AbstractBundle
         foreach ($bugsnagHandlerConfigs as $bugsnagHandlerConfig) {
             $enabled = match (true) {
                 $bugsnagHandlerConfig === null => true,
-                \is_array($bugsnagHandlerConfig) => (bool)($bugsnagHandlerConfig['enabled'] ?? true),
-                default => (bool)$bugsnagHandlerConfig,
+                \is_array($bugsnagHandlerConfig) => (bool) ($bugsnagHandlerConfig['enabled'] ?? true),
+                default => (bool) $bugsnagHandlerConfig,
             };
         }
 

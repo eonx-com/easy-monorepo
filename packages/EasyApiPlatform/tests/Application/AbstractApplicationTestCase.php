@@ -55,7 +55,7 @@ abstract class AbstractApplicationTestCase extends WebTestCase
 
     protected static function getResponseData(Response $response): array
     {
-        return (array)\json_decode((string)$response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+        return (array) \json_decode((string) $response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
     }
 
     /**

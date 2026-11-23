@@ -54,19 +54,19 @@ final readonly class AwsCognitoJwkProvider implements AwsCognitoJwkProviderInter
             throw new UnexpectedValueException('The exponent value has to be a string.');
         }
 
-        $exponent = (string)\base64_decode($exponent, true);
+        $exponent = (string) \base64_decode($exponent, true);
         $modulus = JWT::urlsafeB64Decode($jwk['n']);
 
         // Version 4.x of phpseclib moved the same API from the phpseclib3 namespace to phpseclib4
         if (\class_exists(Phpseclib4PublicKeyLoader::class)) {
-            return (string)Phpseclib4PublicKeyLoader::load([
+            return (string) Phpseclib4PublicKeyLoader::load([
                 'e' => new Phpseclib4BigInteger($exponent, 256),
                 'n' => new Phpseclib4BigInteger($modulus, 256),
             ]);
         }
 
         if (\class_exists(Phpseclib3PublicKeyLoader::class)) {
-            return (string)Phpseclib3PublicKeyLoader::load([
+            return (string) Phpseclib3PublicKeyLoader::load([
                 'e' => new Phpseclib3BigInteger($exponent, 256),
                 'n' => new Phpseclib3BigInteger($modulus, 256),
             ]);

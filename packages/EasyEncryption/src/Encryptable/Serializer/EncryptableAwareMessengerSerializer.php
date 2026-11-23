@@ -80,7 +80,7 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         if ($message instanceof EncryptableInterface) {
             $this->objectEncryptor->encrypt($message);
             $headers[self::ENVELOPE_HEADER_ENCRYPTION_TYPE] = self::ENCRYPTION_TYPE_PARTIAL;
-            $headers[self::ENVELOPE_HEADER_ENCRYPTABLE_FIELD_NAMES] = (string)\json_encode(
+            $headers[self::ENVELOPE_HEADER_ENCRYPTABLE_FIELD_NAMES] = (string) \json_encode(
                 $this->encryptableMetadata->getEncryptableFieldNames($message::class)
             );
         }
@@ -90,7 +90,7 @@ final readonly class EncryptableAwareMessengerSerializer implements SerializerIn
         if (\in_array($message::class, $this->fullyEncryptedMessages, true)) {
             $encodedBody = $encodedEnvelope['body']
                 ?? throw new UnexpectedValueException('Encoded envelope should have a "body" value.');
-            $encodedEnvelope['body'] = $this->stringEncryptor->encrypt((string)$encodedBody)->value;
+            $encodedEnvelope['body'] = $this->stringEncryptor->encrypt((string) $encodedBody)->value;
             $headers[self::ENVELOPE_HEADER_ENCRYPTION_TYPE] = self::ENCRYPTION_TYPE_FULL;
         }
 

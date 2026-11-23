@@ -43,7 +43,7 @@ final readonly class SymfonySerializerErrorResponseFactory implements ErrorRespo
 
     private function getFormat(Request $request): ErrorResponseFormat
     {
-        $requestFormat = (string)$request->getRequestFormat('');
+        $requestFormat = (string) $request->getRequestFormat('');
 
         if ($requestFormat !== '' && isset($this->errorFormats[$requestFormat])) {
             return ErrorResponseFormat::create($requestFormat, $this->errorFormats[$requestFormat][0]);

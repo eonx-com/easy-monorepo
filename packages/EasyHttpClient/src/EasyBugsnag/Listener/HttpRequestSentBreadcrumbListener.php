@@ -92,7 +92,7 @@ final readonly class HttpRequestSentBreadcrumbListener
         $breadcrumbData = $breadcrumb->toArray();
         $breadcrumbData['metaData'] = $metadata;
 
-        return \strlen((string)\json_encode($breadcrumbData));
+        return \strlen((string) \json_encode($breadcrumbData));
     }
 
     private function getCarbonInstance(DateTimeInterface $dateTime): Carbon

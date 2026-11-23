@@ -31,9 +31,9 @@ final class TrustedProxiesListener extends AbstractRequestListener
 
             // Replace REMOTE_ADDR using request object instead of globals
             return $trustedProxy === 'REMOTE_ADDR'
-                ? (string)$remoteAddr
+                ? (string) $remoteAddr
                 : $trustedProxy;
-        }, \is_array($trustedProxies) ? $trustedProxies : \explode(',', (string)$trustedProxies));
+        }, \is_array($trustedProxies) ? $trustedProxies : \explode(',', (string) $trustedProxies));
 
         /** @var int-mask-of<\Symfony\Component\HttpFoundation\Request::HEADER_*> $trustedHeaders */
         $trustedHeaders = $this->container->getParameter('kernel.trusted_headers');

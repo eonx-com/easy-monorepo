@@ -63,10 +63,10 @@ final class CreditCardNumberStringSanitizer extends AbstractStringSanitizer
                     return $candidate;
                 }
 
-                return (string)\preg_replace(
+                return (string) \preg_replace(
                     '/^(\d{6}).+(\d{4})$/',
                     '${1}' . $this->escapeForReplacement($maskPattern) . '${2}',
-                    (string)\preg_replace('/\D/', '', $candidate)
+                    (string) \preg_replace('/\D/', '', $candidate)
                 );
             },
             $string

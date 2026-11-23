@@ -369,7 +369,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
 
     private function createContext(): Context
     {
-        return new Context('request-id', (int)(\microtime(true) * 1000) + 300000, 'function-arn', '');
+        return new Context('request-id', (int) (\microtime(true) * 1000) + 300000, 'function-arn', '');
     }
 
     /**
@@ -384,7 +384,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
             'Records' => [
                 [
                     'attributes' => [
-                        'ApproximateReceiveCount' => (string)$receiveCount,
+                        'ApproximateReceiveCount' => (string) $receiveCount,
                     ],
                     'body' => $encodedEnvelope['body'],
                     'eventSource' => 'aws:sqs',

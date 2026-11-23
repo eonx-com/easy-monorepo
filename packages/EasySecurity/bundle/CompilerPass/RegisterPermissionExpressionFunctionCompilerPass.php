@@ -15,7 +15,7 @@ final class RegisterPermissionExpressionFunctionCompilerPass implements Compiler
 {
     public function process(ContainerBuilder $container): void
     {
-        $locations = (array)$container->getParameter(ConfigParam::PermissionsLocations->value);
+        $locations = (array) $container->getParameter(ConfigParam::PermissionsLocations->value);
         $exprLangId = 'security.expression_language';
 
         if (\count($locations) === 0 || $container->has($exprLangId) === false) {

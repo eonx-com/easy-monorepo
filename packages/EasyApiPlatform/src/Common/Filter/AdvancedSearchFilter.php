@@ -76,9 +76,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $description = [];
 
         $properties = $this->properties;
-        if ($properties === null) {
-            $properties = \array_fill_keys($this->getClassMetadata($resourceClass)->getFieldNames(), null);
-        }
+        $properties ??= \array_fill_keys($this->getClassMetadata($resourceClass)->getFieldNames(), null);
 
         foreach ($properties as $property => $strategy) {
             $filterParameter = $property;
@@ -92,13 +90,13 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 continue;
             }
 
+            $field = $property;
+            $metadata = $this->getClassMetadata($resourceClass);
+
             if ($this->isPropertyNested($property, $resourceClass)) {
                 $propertyParts = $this->splitPropertyParts($property, $resourceClass);
                 $field = $propertyParts['field'];
                 $metadata = $this->getNestedMetadata($resourceClass, $propertyParts['associations']);
-            } else {
-                $field = $property;
-                $metadata = $this->getClassMetadata($resourceClass);
             }
 
             $propertyName = $this->normalizePropertyName($property);
@@ -121,7 +119,11 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                         'type' => $typeOfField,
                     ];
                 }
-            } elseif ($metadata->hasAssociation($field)) {
+
+                continue;
+            }
+
+            if ($metadata->hasAssociation($field)) {
                 $filterParameterNames = [
                     $filterParameterName,
                     $filterParameterName . '[]',
@@ -187,31 +189,31 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         /** @var scalar $value */
         foreach ($values as $key => $value) {
             $keyValueParameter = \sprintf('%s_%s', $valueParameter, $key);
-            $parameters[] = [$caseSensitive ? $value : \strtolower((string)$value), $keyValueParameter];
+            $parameters[] = [$caseSensitive ? $value : \strtolower((string) $value), $keyValueParameter];
 
             $ors[] = match ($strategy) {
                 self::STRATEGY_PARTIAL => $queryBuilder->expr()->like(
                     $wrapCase($aliasedField),
-                    $wrapCase((string)$queryBuilder->expr()->concat("'%'", $keyValueParameter, "'%'"))
+                    $wrapCase((string) $queryBuilder->expr()->concat("'%'", $keyValueParameter, "'%'"))
                 ),
                 self::STRATEGY_START => $queryBuilder->expr()->like(
                     $wrapCase($aliasedField),
-                    $wrapCase((string)$queryBuilder->expr()->concat($keyValueParameter, "'%'"))
+                    $wrapCase((string) $queryBuilder->expr()->concat($keyValueParameter, "'%'"))
                 ),
                 self::STRATEGY_END => $queryBuilder->expr()->like(
                     $wrapCase($aliasedField),
-                    $wrapCase((string)$queryBuilder->expr()->concat("'%'", $keyValueParameter))
+                    $wrapCase((string) $queryBuilder->expr()->concat("'%'", $keyValueParameter))
                 ),
                 self::STRATEGY_WORD_START => $queryBuilder->expr()->orX(
                     $queryBuilder->expr()
                         ->like(
                             $wrapCase($aliasedField),
-                            $wrapCase((string)$queryBuilder->expr()->concat($keyValueParameter, "'%'"))
+                            $wrapCase((string) $queryBuilder->expr()->concat($keyValueParameter, "'%'"))
                         ),
                     $queryBuilder->expr()
                         ->like(
                             $wrapCase($aliasedField),
-                            $wrapCase((string)$queryBuilder->expr()->concat("'% '", $keyValueParameter, "'%'"))
+                            $wrapCase((string) $queryBuilder->expr()->concat("'% '", $keyValueParameter, "'%'"))
                         )
                 ),
                 default => throw new InvalidArgumentException(\sprintf('strategy %s does not exist.', $strategy)),
@@ -253,7 +255,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
     ): void {
         $filterParameter = $property;
         if (isset($this->properties[$filterParameter]) && \is_array($this->properties[$filterParameter])) {
-            $property = (string)\array_keys($this->properties[$filterParameter])[0];
+            $property = (string) \array_keys($this->properties[$filterParameter])[0];
             $strategy = \array_values($this->properties[$filterParameter])[0];
         }
 
@@ -267,7 +269,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             ) {
                 $filterParameter = $possibleFilterParameter;
 
-                $property = (string)\array_keys($this->properties[$filterParameter])[0];
+                $property = (string) \array_keys($this->properties[$filterParameter])[0];
                 $strategy = \array_values($this->properties[$filterParameter])[0];
 
                 $value = $value[$valueKey];
@@ -286,7 +288,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $field = $property;
 
         /** @var list<string>|null $values */
-        $values = $this->normalizeValues((array)$value, $property);
+        $values = $this->normalizeValues((array) $value, $property);
         if ($values === null) {
             return;
         }
@@ -307,8 +309,8 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
         $strategy ??= $this->properties[$filterParameter] ?? self::STRATEGY_EXACT;
 
         // Prefixing the strategy with i makes it case-insensitive
-        if (\str_starts_with((string)$strategy, 'i')) {
-            $strategy = \substr((string)$strategy, 1);
+        if (\str_starts_with((string) $strategy, 'i')) {
+            $strategy = \substr((string) $strategy, 1);
             $caseSensitive = false;
         }
 
@@ -371,7 +373,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 /** @var \Stringable|int|string|null $propertyValue */
                 $propertyValue = $this->propertyAccessor->getValue($item, $associationFieldIdentifier);
 
-                return (string)$propertyValue;
+                return (string) $propertyValue;
             } catch (InvalidArgumentException) {
                 /*
                  * Can we do better? This is not the ApiResource the call was made on,
@@ -455,13 +457,13 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
                 $value = $this->getPropertyAccessor()
                     ->getValue($item, 'id');
 
-                return (string)$value;
+                return (string) $value;
             }
 
             /** @var array<string, \Stringable|int|string> $identifiers */
             $identifiers = $this->identifiersExtractor->getIdentifiersFromItem($item);
             if (\count($identifiers) === 1) {
-                return (string)\array_pop($identifiers);
+                return (string) \array_pop($identifiers);
             }
 
             throw new InvalidArgumentException('Composite identifiers are not supported.');
@@ -489,7 +491,7 @@ final class AdvancedSearchFilter extends AbstractFilter implements SearchFilterI
             }
 
             if (
-                \in_array($type, (array)self::DOCTRINE_INTEGER_TYPE, true)
+                \in_array($type, (array) self::DOCTRINE_INTEGER_TYPE, true)
                 && \filter_var($value, \FILTER_VALIDATE_INT) === false
             ) {
                 return false;

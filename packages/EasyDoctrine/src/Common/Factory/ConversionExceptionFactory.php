@@ -28,7 +28,7 @@ final class ConversionExceptionFactory
 
         $stringValue = match (true) {
             \is_string($value) => $value,
-            \is_int($value), \is_float($value) => (string)$value,
+            \is_int($value), \is_float($value) => (string) $value,
             \is_bool($value) => $value ? '1' : '0',
             $value === null => '',
             default => \get_debug_type($value),

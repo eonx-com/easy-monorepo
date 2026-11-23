@@ -120,7 +120,7 @@ final class CreditCardNumberValidator implements CreditCardNumberValidatorInterf
         $isSecond = false;
 
         for ($i = $length - 1; $i >= 0; $i--) {
-            $current = (int)$number[$i];
+            $current = (int) $number[$i];
 
             if ($isSecond) {
                 $current *= 2;

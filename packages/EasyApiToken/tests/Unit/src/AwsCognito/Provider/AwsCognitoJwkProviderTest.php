@@ -50,7 +50,7 @@ final class AwsCognitoJwkProviderTest extends AbstractUnitTestCase
         $provider = new AwsCognitoJwkProvider(new ArrayAdapter(), 3600, $httpClient);
         $token = JWT::encode(
             ['sub' => 'user-id'],
-            (string)\file_get_contents(self::KEYS_DIR . '/jwt_private.pem'),
+            (string) \file_get_contents(self::KEYS_DIR . '/jwt_private.pem'),
             'RS256',
             self::KEY_ID
         );
@@ -101,7 +101,7 @@ final class AwsCognitoJwkProviderTest extends AbstractUnitTestCase
 
     private static function getFixturePublicKey(): string
     {
-        return (string)\file_get_contents(self::KEYS_DIR . '/jwt_public.pem');
+        return (string) \file_get_contents(self::KEYS_DIR . '/jwt_public.pem');
     }
 
     private static function normalizePem(string $pem): string

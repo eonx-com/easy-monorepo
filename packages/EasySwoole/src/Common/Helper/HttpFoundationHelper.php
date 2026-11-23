@@ -59,7 +59,7 @@ final class HttpFoundationHelper
 
         // Reflect headers, use swoole response methods for cookie
         foreach ($hfResponse->headers->allPreserveCaseWithoutCookies() as $name => $values) {
-            $response->header((string)$name, $values);
+            $response->header((string) $name, $values);
         }
 
         foreach ($hfResponse->headers->getCookies() as $cookie) {

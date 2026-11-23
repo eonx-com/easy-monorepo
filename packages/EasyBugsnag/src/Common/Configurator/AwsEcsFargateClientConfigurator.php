@@ -34,7 +34,7 @@ final class AwsEcsFargateClientConfigurator extends AbstractClientConfigurator
 
                 // Something happened
                 if ($awsData === null) {
-                    $message = $this->throwable !== null ? $this->throwable->getMessage() : 'Something went wrong...';
+                    $message = $this->throwable?->getMessage() ?? 'Something went wrong...';
 
                     $report->addMetaData([
                         'aws' => [
@@ -70,10 +70,10 @@ final class AwsEcsFargateClientConfigurator extends AbstractClientConfigurator
                     throw new UnexpectedValueException('Invalid URL for AWS Fargate task data.');
                 }
 
-                $this->filesystem->dumpFile($this->storageFilename, (string)\file_get_contents($url));
+                $this->filesystem->dumpFile($this->storageFilename, (string) \file_get_contents($url));
             }
 
-            $result = \json_decode((string)\file_get_contents($this->storageFilename), true);
+            $result = \json_decode((string) \file_get_contents($this->storageFilename), true);
 
             if (\is_array($result) === false) {
                 throw new UnexpectedValueException('Failed to decode task data.');
@@ -96,7 +96,7 @@ final class AwsEcsFargateClientConfigurator extends AbstractClientConfigurator
         }
 
         $awsData = $this->getAwsFargateTaskData();
-        $image = (string)($awsData['Containers'][0]['Image'] ?? '');
+        $image = (string) ($awsData['Containers'][0]['Image'] ?? '');
 
         $appVersion = \explode(':', $image)[1] ?? null;
 

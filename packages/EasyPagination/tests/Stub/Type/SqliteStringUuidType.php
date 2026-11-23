@@ -21,7 +21,7 @@ final class SqliteStringUuidType extends Type
      */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string
     {
-        return (string)$value;
+        return (string) $value;
     }
 
     /**

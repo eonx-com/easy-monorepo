@@ -109,7 +109,7 @@ final class BatchItemIteratorTest extends AbstractSymfonyTestCase
                 ], self::$iteratedItems);
             },
             static function (BatchItem $batchItem): void {
-                self::$iteratedItems[] = (string)$batchItem->getName();
+                self::$iteratedItems[] = (string) $batchItem->getName();
                 self::$iterateFuncCalls++;
             },
             static fn(BatchItemRepositoryInterface $batchItemRepo): Closure => static function (

@@ -51,7 +51,7 @@ final class BpayGenerator extends AbstractGenerator
             }
 
             $objects[] = $transaction;
-            $totalAmount += (int)$transaction->getAmount();
+            $totalAmount += (int) $transaction->getAmount();
         }
 
         $objects[] = $this->trailer ?? $this->createTrailer(\count($objects) - 1, $totalAmount);

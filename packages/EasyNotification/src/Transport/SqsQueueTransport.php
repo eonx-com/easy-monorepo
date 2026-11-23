@@ -23,8 +23,8 @@ final readonly class SqsQueueTransport implements QueueTransportInterface
         ];
 
         if (\str_ends_with($queueUrl, '.fifo')) {
-            $args['MessageDeduplicationId'] = (string)Uuid::v4();
-            $args['MessageGroupId'] = (string)Uuid::v4();
+            $args['MessageDeduplicationId'] = (string) Uuid::v4();
+            $args['MessageGroupId'] = (string) Uuid::v4();
         }
 
         $this->sqs->sendMessage($args);

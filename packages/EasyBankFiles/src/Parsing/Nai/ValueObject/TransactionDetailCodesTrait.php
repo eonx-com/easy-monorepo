@@ -446,11 +446,11 @@ trait TransactionDetailCodesTrait
      */
     public function getTransactionCodeDetails(string $code): ?TransactionDetails
     {
-        if (isset(self::$transactionCodes[(int)$code]) === false) {
+        if (isset(self::$transactionCodes[(int) $code]) === false) {
             return null;
         }
 
-        $details = self::$transactionCodes[(int)$code];
+        $details = self::$transactionCodes[(int) $code];
 
         return new TransactionDetails([
             'description' => $details['description'],

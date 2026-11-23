@@ -15,18 +15,28 @@ final class RoleExpressionFunctionProviderTest extends AbstractUnitTestCase
     {
         $function = new RoleExpressionFunctionProvider([self::class])->getFunctions()[0];
 
-        self::assertSame('role', $function->getEvaluator()([], 'ROLE_VALID'));
+        $evaluator = $function->getEvaluator();
+
+        $result = $evaluator([], 'ROLE_VALID');
         // Using cached role
-        self::assertSame('role', $function->getEvaluator()([], 'ROLE_VALID'));
+        $cachedResult = $evaluator([], 'ROLE_VALID');
+
+        self::assertSame('role', $result);
+        self::assertSame('role', $cachedResult);
     }
 
     public function testRoleExpressionFunctionFoundWithEnum(): void
     {
         $function = new RoleExpressionFunctionProvider([RoleEnum::class])->getFunctions()[0];
 
-        self::assertSame(RoleEnum::RoleValid->value, $function->getEvaluator()([], 'RoleValid'));
+        $evaluator = $function->getEvaluator();
+
+        $result = $evaluator([], 'RoleValid');
         // Using cached role
-        self::assertSame(RoleEnum::RoleValid->value, $function->getEvaluator()([], 'RoleValid'));
+        $cachedResult = $evaluator([], 'RoleValid');
+
+        self::assertSame(RoleEnum::RoleValid->value, $result);
+        self::assertSame(RoleEnum::RoleValid->value, $cachedResult);
     }
 
     public function testRoleExpressionFunctionNotFoundWithConstant(): void

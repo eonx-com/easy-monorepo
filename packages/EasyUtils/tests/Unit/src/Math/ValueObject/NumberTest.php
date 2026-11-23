@@ -509,12 +509,12 @@ final class NumberTest extends TestCase
             static fn(int $a): Number => new Number($a),
         ];
         $args = \array_map($argumentCastFunctions[\random_int(0, 3)], $args);
-        $objectValue = (string)$object;
+        $objectValue = (string) $object;
 
         $result = $object->{$function}(...$args);
 
-        self::assertSame((string)$expectedResult, (string)$result);
-        self::assertSame($objectValue, (string)$object);
+        self::assertSame((string) $expectedResult, (string) $result);
+        self::assertSame($objectValue, (string) $object);
     }
 
     /**
@@ -525,7 +525,7 @@ final class NumberTest extends TestCase
     {
         $result = Number::max(...$values);
 
-        self::assertSame((string)$expectedValue, (string)$result);
+        self::assertSame((string) $expectedValue, (string) $result);
     }
 
     /**
@@ -536,7 +536,7 @@ final class NumberTest extends TestCase
     {
         $result = Number::min(...$values);
 
-        self::assertSame((string)$expectedValue, (string)$result);
+        self::assertSame((string) $expectedValue, (string) $result);
     }
 
     #[DataProvider('provideToMoneyStringData')]
@@ -557,7 +557,7 @@ final class NumberTest extends TestCase
     ): void {
         $integer = new Number($value, $precision);
 
-        self::assertSame($expectedResult, (string)$integer);
+        self::assertSame($expectedResult, (string) $integer);
     }
 
     public function testToStringSucceedsWithBigNumbers(): void
@@ -566,7 +566,7 @@ final class NumberTest extends TestCase
 
         $result = $integer1->add(1);
 
-        self::assertSame('10000000000000000000000', (string)$result);
+        self::assertSame('10000000000000000000000', (string) $result);
     }
 
     public function testToStringSucceedsWithMultipleOperations(): void
@@ -575,6 +575,6 @@ final class NumberTest extends TestCase
         $integer2 = $integer1->divide(3);
         $integer3 = $integer2->multiply(3);
 
-        self::assertSame('9', (string)$integer3);
+        self::assertSame('9', (string) $integer3);
     }
 }

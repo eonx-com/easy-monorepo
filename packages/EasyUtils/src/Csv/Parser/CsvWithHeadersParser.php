@@ -34,7 +34,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
             }
 
             foreach ($row as $key => $value) {
-                $trimmedValue = \trim((string)$value);
+                $trimmedValue = \trim((string) $value);
 
                 // Accept only value for known headers and no empty string
                 if (isset($headers[$key]) && $trimmedValue !== '') {
@@ -83,7 +83,7 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
                 // User give prefix without dot, add it
                 $prefixWithDot = \sprintf('%s.', $prefix);
                 // Extract prefix from current key
-                $extractPrefixWithDot = \substr((string)$key, 0, \strlen($prefixWithDot));
+                $extractPrefixWithDot = \substr((string) $key, 0, \strlen($prefixWithDot));
 
                 // If current key, doesn't start with prefix, skip
                 if ($extractPrefixWithDot !== $prefixWithDot) {
@@ -127,8 +127,8 @@ final class CsvWithHeadersParser implements CsvWithHeadersParserInterface
 
         $headers = \array_map(static function (string $header) use ($config, $requiredHeaders): string {
             // Sanitize given headers first
-            $header = (string)\iconv('UTF-8', 'ISO-8859-1//IGNORE', $header);
-            $header = (string)\iconv('ISO-8859-1', 'UTF-8', $header);
+            $header = (string) \iconv('UTF-8', 'ISO-8859-1//IGNORE', $header);
+            $header = (string) \iconv('ISO-8859-1', 'UTF-8', $header);
             $header = \trim($header);
 
             if ($config->ignoreHeadersCase() && isset($requiredHeaders[\strtolower($header)])) {
