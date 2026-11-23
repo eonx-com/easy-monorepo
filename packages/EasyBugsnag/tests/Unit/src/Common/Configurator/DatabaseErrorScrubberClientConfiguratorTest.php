@@ -9,11 +9,25 @@ use Doctrine\DBAL\Driver\Exception as DriverException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
 use PDOException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Throwable;
 
 final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTestCase
 {
+    /**
+     * @see testItReducesJsonEncodedCopiesOfMessage
+     */
+    public static function provideMessagesThatJsonEscapes(): iterable
+    {
+        yield 'multiline PostgreSQL message' => [
+            "SQLSTATE[23505]: Unique violation: 7 ERROR: duplicate key value\n"
+            . 'DETAIL:  Key (email)=(john@example.com) already exists.',
+        ];
+
+        yield 'message with a slash' => ["SQLSTATE[23505]: Unique violation: key 'john@example.com/1' already exists"];
+    }
+
     public function testItKeepsJsonInMetadataDecodableForSensitiveDataSanitizer(): void
     {
         self::bootKernel(['environment' => 'error_details']);
@@ -96,6 +110,34 @@ final class DatabaseErrorScrubberClientConfiguratorTest extends AbstractUnitTest
         self::assertInstanceOf(Report::class, $previous);
         self::assertStringStartsWith('SQLSTATE[23000] ', (string)$previous->getMessage());
         self::assertStringNotContainsString('john@example.com', (string)$previous->getMessage());
+    }
+
+    #[DataProvider('provideMessagesThatJsonEscapes')]
+    public function testItReducesJsonEncodedCopiesOfMessage(string $message): void
+    {
+        self::bootKernel(['environment' => 'error_details']);
+        $client = self::getService(Client::class);
+        $throwable = new UniqueConstraintViolationException(self::driverException($message, '23505'), null);
+        $report = Report::fromPHPThrowable($client->getConfig(), $throwable);
+        $report->setMetaData([
+            'context' => [
+                'payload' => \json_encode([
+                    'error' => $throwable->getMessage(),
+                ]),
+            ],
+        ]);
+
+        $client->notify($report);
+
+        $payload = $this->getFirstReport($client)
+            ->toArray()['metaData']['context']['payload'];
+        self::assertIsString($payload);
+        self::assertSame(
+            [
+                'error' => 'SQLSTATE[23505] UniqueConstraintViolationException',
+            ],
+            \json_decode($payload, true)
+        );
     }
 
     public function testItReducesMessagesRestoredAndCopiedByOtherConfigurators(): void

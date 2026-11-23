@@ -11,6 +11,13 @@ use Throwable;
 
 final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfigurator
 {
+    private const array JSON_ENCODE_FLAGS = [
+        0,
+        \JSON_UNESCAPED_SLASHES,
+        \JSON_UNESCAPED_UNICODE,
+        \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE,
+    ];
+
     /**
      * Shorter messages are not replaced in the metadata, so a common string cannot be replaced by accident
      */
@@ -119,6 +126,26 @@ final class DatabaseErrorScrubberClientConfigurator extends AbstractClientConfig
             // traced to one of them, so it gets no class
             if ($replace[$index] !== $reducedMessage) {
                 $replace[$index] = \sprintf('SQLSTATE[%s]', $sqlState);
+            }
+        }
+
+        // A copy can also sit JSON-encoded in a string (newlines, quotes and backslashes escaped). The reduced message has
+        // no characters that JSON escapes, so it replaces the encoded form as it is
+        foreach ($search as $index => $message) {
+            foreach (self::JSON_ENCODE_FLAGS as $flags) {
+                // False for a message with invalid UTF-8, which JSON cannot hold
+                $encodedMessage = \json_encode($message, $flags);
+
+                if ($encodedMessage === false) {
+                    continue;
+                }
+
+                $encodedMessage = \substr($encodedMessage, 1, -1);
+
+                if (\in_array($encodedMessage, $search, true) === false) {
+                    $search[] = $encodedMessage;
+                    $replace[] = $replace[$index];
+                }
             }
         }
 
