@@ -43,6 +43,10 @@ final class AwsMessagingRequestSanitizerListener
             $options['body'] = self::redactBody($options['body']);
         }
 
+        if (\is_array($options['json'] ?? null)) {
+            $options['json'] = self::redactArray($options['json']);
+        }
+
         if (\is_array($options['headers'] ?? null)) {
             $options['headers'] = self::redactHeaders($options['headers']);
         }

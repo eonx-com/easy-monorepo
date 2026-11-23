@@ -214,6 +214,26 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
             ],
         ];
 
+        yield 'SES e-mail with the json option' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'json' => [
+                    'Destination' => [
+                        'ToAddresses' => ['john@example.com'],
+                    ],
+                    'ConfigurationSetName' => 'some-configuration-set',
+                ],
+            ],
+            'expectedOptions' => [
+                'json' => [
+                    'Destination' => [
+                        'ToAddresses' => '*REDACTED*',
+                    ],
+                    'ConfigurationSetName' => 'some-configuration-set',
+                ],
+            ],
+        ];
+
         yield 'body of an unsupported type' => [
             'url' => self::SES_URL,
             'options' => [
