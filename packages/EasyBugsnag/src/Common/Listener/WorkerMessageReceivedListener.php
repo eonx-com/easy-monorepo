@@ -104,19 +104,20 @@ final class WorkerMessageReceivedListener
 
     /**
      * The message and the flattened exception of a failed attempt can hold data (e.g. a DB error with the duplicate
-     * value) that the sanitizer cannot recognize. That failure was reported to Bugsnag on its own when it happened
+     * value) that the sanitizer cannot recognize
      *
      * @param array<string, \Symfony\Component\Messenger\Stamp\StampInterface[]> $stamps
      */
     private static function reduceErrorDetailsStamps(array $stamps): array
     {
         foreach ($stamps[ErrorDetailsStamp::class] ?? [] as $index => $stamp) {
-            /** @var \Symfony\Component\Messenger\Stamp\ErrorDetailsStamp $stamp */
-            $stamps[ErrorDetailsStamp::class][$index] = [
-                '@class' => ErrorDetailsStamp::class,
-                'exceptionClass' => $stamp->getExceptionClass(),
-                'exceptionCode' => $stamp->getExceptionCode(),
-            ];
+            if ($stamp instanceof ErrorDetailsStamp) {
+                $stamps[ErrorDetailsStamp::class][$index] = new ErrorDetailsStamp(
+                    $stamp->getExceptionClass(),
+                    $stamp->getExceptionCode(),
+                    ''
+                );
+            }
         }
 
         return $stamps;
