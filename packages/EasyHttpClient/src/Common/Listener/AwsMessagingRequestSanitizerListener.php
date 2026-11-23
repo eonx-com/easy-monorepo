@@ -31,13 +31,13 @@ final class AwsMessagingRequestSanitizerListener
     public function __invoke(HttpRequestSentEvent $event): void
     {
         $requestData = $event->getRequestData();
-        $host = (string)\parse_url($requestData->getUrl(), \PHP_URL_HOST);
+        $options = $requestData->getOptions();
+        $host = \parse_url($requestData->getUrl(), \PHP_URL_HOST)
+            ?? \parse_url((string)($options['base_uri'] ?? ''), \PHP_URL_HOST);
 
-        if (\preg_match(self::HOST_PATTERN, \strtolower($host)) !== 1) {
+        if (\preg_match(self::HOST_PATTERN, \strtolower((string)$host)) !== 1) {
             return;
         }
-
-        $options = $requestData->getOptions();
 
         if (\array_key_exists('body', $options)) {
             $options['body'] = self::redactBody($options['body']);

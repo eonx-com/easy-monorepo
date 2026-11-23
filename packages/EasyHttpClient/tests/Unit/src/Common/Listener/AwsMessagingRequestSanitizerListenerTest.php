@@ -202,6 +202,18 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
             ],
         ];
 
+        yield 'SES e-mail with a relative URL and the base URI option' => [
+            'url' => '/v2/email/outbound-emails',
+            'options' => [
+                'base_uri' => 'https://email.ap-southeast-2.amazonaws.com',
+                'body' => '{"Destination":{"ToAddresses":["john@example.com"]}}',
+            ],
+            'expectedOptions' => [
+                'base_uri' => 'https://email.ap-southeast-2.amazonaws.com',
+                'body' => '{"Destination":{"ToAddresses":"*REDACTED*"}}',
+            ],
+        ];
+
         yield 'body of an unsupported type' => [
             'url' => self::SES_URL,
             'options' => [
