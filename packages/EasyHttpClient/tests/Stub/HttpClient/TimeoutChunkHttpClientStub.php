@@ -36,6 +36,10 @@ final class TimeoutChunkHttpClientStub implements HttpClientInterface
 
     public function stream(iterable|ResponseInterface $responses, ?float $timeout = null): ResponseStreamInterface
     {
+        if ($responses instanceof ResponseInterface) {
+            $responses = [$responses];
+        }
+
         if ($timeout === 0.0 && $this->isHeadersReceived && $this->isTimeoutYielded === false) {
             $this->isTimeoutYielded = true;
 
@@ -50,10 +54,7 @@ final class TimeoutChunkHttpClientStub implements HttpClientInterface
         return $this;
     }
 
-    /**
-     * @param iterable<array-key, \Symfony\Contracts\HttpClient\ResponseInterface>|\Symfony\Contracts\HttpClient\ResponseInterface $responses
-     */
-    private function yieldChunks(iterable|ResponseInterface $responses, ?float $timeout): Generator
+    private function yieldChunks(iterable $responses, ?float $timeout): Generator
     {
         foreach ($this->decorated->stream($responses, $timeout) as $response => $chunk) {
             if ($chunk->isFirst()) {
@@ -64,12 +65,9 @@ final class TimeoutChunkHttpClientStub implements HttpClientInterface
         }
     }
 
-    /**
-     * @param iterable<array-key, \Symfony\Contracts\HttpClient\ResponseInterface>|\Symfony\Contracts\HttpClient\ResponseInterface $responses
-     */
-    private function yieldTimeoutChunks(iterable|ResponseInterface $responses): Generator
+    private function yieldTimeoutChunks(iterable $responses): Generator
     {
-        foreach ($responses instanceof ResponseInterface ? [$responses] : $responses as $response) {
+        foreach ($responses as $response) {
             /** @var string $url */
             $url = $response->getInfo('url');
 

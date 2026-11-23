@@ -46,12 +46,10 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         );
         $response = $sut->request('GET', 'https://eonx.com/');
         $response->getStatusCode();
+        $sut->stream($response, 0)
+            ->current()
+            ->isTimeout();
 
-        foreach ($sut->stream($response, 0) as $chunk) {
-            if ($chunk->isTimeout()) {
-                break;
-            }
-        }
         $response->cancel();
 
         /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
@@ -72,6 +70,34 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         self::assertCount(0, $eventDispatcher->getDispatchedEvents());
     }
 
+    public function testDestructedResponseAfterTimeoutChunkAndDataDispatchesEventWithResponse(): void
+    {
+        $sut = new WithEventsHttpClient(
+            self::getContainer()->get(EasyEventDispatcherInterface::class),
+            new TimeoutChunkHttpClientStub(new MockResponse(['some-', 'content']))
+        );
+        $response = $sut->request('GET', 'https://eonx.com/');
+        $response->getStatusCode();
+        $sut->stream($response, 0)
+            ->current()
+            ->isTimeout();
+        $sut->stream($response, 0)
+            ->current();
+
+        unset($response);
+
+        /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
+        $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
+        self::assertCount(1, $eventDispatcher->getDispatchedEvents());
+
+        /** @var \EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent $event */
+        $event = $eventDispatcher->getDispatchedEvents()[0];
+
+        self::assertInstanceOf(ResponseData::class, $event->getResponseData());
+        self::assertSame('some-', $event->getResponseData()->getContent());
+        self::assertNull($event->getThrowable());
+    }
+
     public function testIdleTimeoutDispatchesEventWithThrowable(): void
     {
         $sut = new WithEventsHttpClient(
@@ -82,12 +108,11 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
 
         try {
             $response->getContent();
-
-            self::fail('The idle timeout is not thrown.');
-        } catch (TransportExceptionInterface) {
-            // The consumer gives up and the response is destructed
-            unset($response);
+        } catch (TransportExceptionInterface $exception) {
+            self::assertInstanceOf(TimeoutException::class, $exception);
         }
+
+        unset($response);
 
         /** @var \EonX\EasyTest\EasyEventDispatcher\Dispatcher\EventDispatcherStub $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
@@ -207,7 +232,6 @@ final class WithEventsHttpClientTest extends AbstractApplicationTestCase
         );
         $response = $sut->request('GET', 'https://eonx.com/');
 
-        // Psr18Client reads the response body through this stream
         $content = \stream_get_contents(StreamWrapper::createResource($response, $sut));
 
         self::assertSame('some-content', $content);
