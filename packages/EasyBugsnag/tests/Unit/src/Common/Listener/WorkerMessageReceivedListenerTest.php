@@ -7,13 +7,26 @@ use Bugsnag\Client;
 use EonX\EasyBugsnag\Common\Listener\WorkerMessageReceivedListener;
 use EonX\EasyBugsnag\Tests\Unit\AbstractUnitTestCase;
 use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
+use RuntimeException;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
+use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 
 final class WorkerMessageReceivedListenerTest extends AbstractUnitTestCase
 {
+    /**
+     * @see testItKeepsOnlyExceptionClassAndCodeOfErrorDetailsStamp
+     */
+    public static function provideIsSanitizerEnabled(): iterable
+    {
+        yield 'with sanitizer' => [true];
+
+        yield 'without sanitizer' => [false];
+    }
+
     public function testItCapsExpandedItems(): void
     {
         $client = self::getService(Client::class);
@@ -59,6 +72,30 @@ final class WorkerMessageReceivedListenerTest extends AbstractUnitTestCase
         $dump = $this->getWorkerMetadata($client)['Message'];
         self::assertSame(1, \substr_count($dump, '@class'));
         self::assertStringNotContainsString('super-secret', $dump);
+    }
+
+    #[DataProvider('provideIsSanitizerEnabled')]
+    public function testItKeepsOnlyExceptionClassAndCodeOfErrorDetailsStamp(bool $isSanitizerEnabled): void
+    {
+        $client = self::getService(Client::class);
+        $listener = new WorkerMessageReceivedListener(
+            $client,
+            $isSanitizerEnabled ? self::getService(SensitiveDataSanitizerInterface::class) : null
+        );
+        $stamp = ErrorDetailsStamp::create(new RuntimeException(
+            'Checkout failed',
+            1062,
+            new RuntimeException('DETAIL:  Key (email)=(john@example.com) already exists.')
+        ));
+
+        $listener(new WorkerMessageReceivedEvent(new Envelope(new stdClass(), [$stamp]), 'async'));
+
+        $stamps = $this->getWorkerMetadata($client)['Stamps'];
+        self::assertStringContainsString(ErrorDetailsStamp::class, $stamps);
+        self::assertStringContainsString(RuntimeException::class, $stamps);
+        self::assertStringContainsString('1062', $stamps);
+        self::assertStringNotContainsString('Checkout failed', $stamps);
+        self::assertStringNotContainsString('john@example.com', $stamps);
     }
 
     public function testItKeepsPrivatePropertiesAndClassNameWhenMasking(): void
