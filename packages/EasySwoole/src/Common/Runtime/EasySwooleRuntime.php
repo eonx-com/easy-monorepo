@@ -23,6 +23,10 @@ use function Symfony\Component\String\u;
 
 final class EasySwooleRuntime extends SymfonyRuntime
 {
+    private const APP_RUNTIME_MODE = 'APP_RUNTIME_MODE';
+
+    private const HTTP_RUNTIME_MODE = 'web=1&worker=1';
+
     public function __construct(?array $options = null)
     {
         // If dotenv_path is not set, set it to "envs/$env.env" if file exists
@@ -51,6 +55,11 @@ final class EasySwooleRuntime extends SymfonyRuntime
             OptionHelper::getStringNullable('dotenv_path'),
             OptionHelper::getBoolean('env_var_output_enabled'),
         );
+
+        // Must happen before the cache warmup, which resolves and caches kernel.runtime_mode for the process lifetime
+        if (\interface_exists(HttpKernelInterface::class) && $application instanceof HttpKernelInterface) {
+            self::ensureHttpRuntimeMode();
+        }
 
         $callbacks = OptionHelper::getArray('callbacks');
 
@@ -99,6 +108,24 @@ final class EasySwooleRuntime extends SymfonyRuntime
         }
 
         return parent::getRunner($application);
+    }
+
+    private static function ensureHttpRuntimeMode(): void
+    {
+        $values = [
+            \getenv(self::APP_RUNTIME_MODE),
+            $_ENV[self::APP_RUNTIME_MODE] ?? null,
+            $_SERVER[self::APP_RUNTIME_MODE] ?? null,
+        ];
+
+        foreach ($values as $current) {
+            if (\is_string($current) && $current !== '') {
+                return;
+            }
+        }
+
+        $_ENV[self::APP_RUNTIME_MODE] = $_SERVER[self::APP_RUNTIME_MODE] = self::HTTP_RUNTIME_MODE;
+        \putenv(\sprintf('%s=%s', self::APP_RUNTIME_MODE, self::HTTP_RUNTIME_MODE));
     }
 
     /**
