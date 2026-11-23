@@ -134,7 +134,7 @@ final class EasyRequestIdServiceProvider extends ServiceProvider
      */
     private function packageEnabled(string $config, string $enum): bool
     {
-        $enabled = (bool)\config(\sprintf('easy-request-id.%s', $config), true);
+        $enabled = (bool) \config(\sprintf('easy-request-id.%s', $config), true);
 
         return $enabled && \enum_exists($enum);
     }

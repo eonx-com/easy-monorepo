@@ -97,7 +97,7 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
                 ->findKey($keyName)
                 ->sign(new Mechanism(CKM_SHA512_HMAC, null), $text);
 
-            return \bin2hex((string)$signature);
+            return \bin2hex((string) $signature);
         });
     }
 
@@ -114,7 +114,7 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
 
         return $this->execWithRetries(fn(): string => $this
             ->findKey($this->getKeyName($keyAsString))
-            ->decrypt($this->getMechanism(), (string)\hex2bin($text)));
+            ->decrypt($this->getMechanism(), (string) \hex2bin($text)));
     }
 
     protected function doEncrypt(
@@ -146,7 +146,7 @@ final class AwsCloudHsmEncryptor extends AbstractEncryptor implements AwsCloudHs
             $attempt++;
 
             try {
-                return (string)$callback();
+                return (string) $callback();
             } catch (Throwable $throwable) {
                 $shouldRetry = $attempt < self::EXCEPTION_DEFAULT_RETRIES;
 

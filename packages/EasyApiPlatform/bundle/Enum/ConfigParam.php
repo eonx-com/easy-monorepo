@@ -8,7 +8,7 @@ enum ConfigParam: string
     case AdvancedSearchFilterIriFields = 'easy_api_platform.advanced_search_filter.iri_fields';
 
     case EasyErrorHandlerCustomSerializerExceptions
-    = 'easy_api_platform.easy_error_handler_custom_serializer_exceptions';
+        = 'easy_api_platform.easy_error_handler_custom_serializer_exceptions';
 
     case EasyErrorHandlerValidationErrorCode = 'easy_api_platform.easy_error_handler_validation_error_code';
 }

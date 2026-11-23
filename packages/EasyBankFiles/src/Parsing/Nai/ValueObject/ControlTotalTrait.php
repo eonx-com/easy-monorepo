@@ -11,6 +11,6 @@ trait ControlTotalTrait
      */
     private function formatAmount(string $amount): float
     {
-        return (float)$amount / 100;
+        return (float) $amount / 100;
     }
 }

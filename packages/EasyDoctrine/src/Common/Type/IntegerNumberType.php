@@ -19,7 +19,7 @@ final class IntegerNumberType extends Type
         }
 
         if ($value instanceof Number) {
-            return (string)$value;
+            return (string) $value;
         }
 
         throw ConversionExceptionFactory::invalidType($value, self::class, ['null', Number::class]);

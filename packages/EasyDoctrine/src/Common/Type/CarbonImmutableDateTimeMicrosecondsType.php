@@ -79,9 +79,7 @@ final class CarbonImmutableDateTimeMicrosecondsType extends DateTimeImmutableTyp
 
     private static function getUtc(): DateTimeZone
     {
-        if (self::$utc === null) {
-            self::$utc = new DateTimeZone('UTC');
-        }
+        self::$utc ??= new DateTimeZone('UTC');
 
         return self::$utc;
     }

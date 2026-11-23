@@ -188,7 +188,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                 self::addItemToTable($connection, 'my-title');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
-                $item = (array)($paginator->getItems()[0] ?? []);
+                $item = (array) ($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -206,7 +206,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                 self::addItemToTable($connection, 'my-title');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
-                $item = (array)($paginator->getItems()[0] ?? []);
+                $item = (array) ($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -226,7 +226,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                 $paginator->setSelect('*');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
-                $item = (array)($paginator->getItems()[0] ?? []);
+                $item = (array) ($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -246,7 +246,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                 $paginator->setSelect('*');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
-                $item = (array)($paginator->getItems()[0] ?? []);
+                $item = (array) ($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -266,7 +266,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                 $paginator->setSelect('title');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
-                $item = (array)($paginator->getItems()[0] ?? []);
+                $item = (array) ($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -286,7 +286,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                 $paginator->setSelect('title');
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator): void {
-                $item = (array)($paginator->getItems()[0] ?? []);
+                $item = (array) ($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());
@@ -345,7 +345,7 @@ final class DoctrineDbalLengthAwarePaginatorTest extends AbstractDoctrineDbalPag
                 });
             },
             static function (DoctrineDbalLengthAwarePaginator $paginator) use ($childItemId): void {
-                $item = (array)($paginator->getItems()[0] ?? []);
+                $item = (array) ($paginator->getItems()[0] ?? []);
 
                 self::assertCount(1, $paginator->getItems());
                 self::assertEquals(1, $paginator->getTotalItems());

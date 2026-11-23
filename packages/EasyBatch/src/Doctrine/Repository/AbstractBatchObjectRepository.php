@@ -57,7 +57,7 @@ abstract class AbstractBatchObjectRepository
         }
 
         $batchObjectExists = $this->has($batchObjectId);
-        $affectedRows = (int)($batchObjectExists === false
+        $affectedRows = (int) ($batchObjectExists === false
             ? $this->connection->insert($this->table, $data)
             : $this->connection->update($this->table, $data, ['id' => $batchObjectId]));
 

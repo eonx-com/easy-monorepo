@@ -38,7 +38,7 @@ final class CheckCoverageCommand extends Command
         $inputOutput = new SymfonyStyle($input, $output);
         /** @var string $coverageValue */
         $coverageValue = $input->getOption('coverage');
-        $checkCoverage = (float)$coverageValue;
+        $checkCoverage = (float) $coverageValue;
 
         /** @var string $fileArgumentValue */
         $fileArgumentValue = $input->getArgument('file');

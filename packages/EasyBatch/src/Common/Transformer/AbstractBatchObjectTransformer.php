@@ -52,7 +52,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
     {
         $object = $this->instantiateForClass($data['class'] ?? null);
         $object
-            ->setApprovalRequired((bool)($data['requires_approval'] ?? 0))
+            ->setApprovalRequired((bool) ($data['requires_approval'] ?? 0))
             ->setName($data['name'] ?? null)
             ->setId($data['id'])
             ->setStatus(isset($data['status']) ? BatchObjectStatus::from($data['status']) : BatchObjectStatus::Pending);
@@ -68,7 +68,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         }
 
         if (isset($data['throwable'])) {
-            $throwableDetails = \json_decode((string)$data['throwable'], true);
+            $throwableDetails = \json_decode((string) $data['throwable'], true);
 
             if (\is_array($throwableDetails) === false) {
                 $throwableDetails = [];
@@ -78,7 +78,7 @@ abstract class AbstractBatchObjectTransformer implements BatchObjectTransformerI
         }
 
         if (isset($data['type'])) {
-            $object->setType((string)$data['type']);
+            $object->setType((string) $data['type']);
         }
 
         $this->hydrateBatchObject($object, $data);

@@ -464,7 +464,7 @@ final class EasyDoctrineEntityEventsSubscriberTest extends AbstractUnitTestCase
         $activityLog = self::findOneEntity(ActivityLog::class, []);
         self::assertNotNull($activityLog);
         /** @var array $subjectData */
-        $subjectData = \json_decode((string)$activityLog->getSubjectData(), true);
+        $subjectData = \json_decode((string) $activityLog->getSubjectData(), true);
         self::assertEqualsCanonicalizing(
             $expectedProperties,
             \array_keys($subjectData)

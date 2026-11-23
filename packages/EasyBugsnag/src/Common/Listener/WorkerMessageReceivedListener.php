@@ -88,14 +88,14 @@ final class WorkerMessageReceivedListener
             $expanded['@class'] = \get_debug_type($value);
         }
 
-        foreach ((array)$value as $key => $item) {
+        foreach ((array) $value as $key => $item) {
             if (--$budget < 0) {
                 $expanded['...'] = 'truncated';
 
                 break;
             }
 
-            $name = \is_object($value) ? \substr((string)\strrchr("\0" . $key, "\0"), 1) : $key;
+            $name = \is_object($value) ? \substr((string) \strrchr("\0" . $key, "\0"), 1) : $key;
             $expanded[$name] = self::expand($item, $depth + 1, $visited, $budget);
         }
 
@@ -133,7 +133,7 @@ final class WorkerMessageReceivedListener
             $var = $this->sensitiveDataSanitizer->sanitize(self::expand($var, 0, $visited, $budget));
         }
 
-        return (string)$this->getDumper()
+        return (string) $this->getDumper()
             ->dump($this->getCloner()->cloneVar($var), true);
     }
 

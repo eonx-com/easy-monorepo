@@ -54,7 +54,7 @@ abstract class AbstractTestResponse
                     continue;
                 }
 
-                $value = \is_scalar($value) ? $value : (string)$value;
+                $value = \is_scalar($value) ? $value : (string) $value;
             }
         }
         unset($value);
@@ -164,7 +164,7 @@ abstract class AbstractTestResponse
         }
 
         if (\is_array($this->responseData)) {
-            $responseBody = (string)\json_encode($this->responseData);
+            $responseBody = (string) \json_encode($this->responseData);
         }
 
         return new MockResponse($responseBody, [
@@ -177,7 +177,7 @@ abstract class AbstractTestResponse
     {
         $normalizedHeaders = [];
         foreach ($this->headers as $header => $value) {
-            $normalizedHeaders[\strtolower((string)$header)] = [\sprintf('%s: %s', $header, $value)];
+            $normalizedHeaders[\strtolower((string) $header)] = [\sprintf('%s: %s', $header, $value)];
         }
 
         return \array_merge($options['normalized_headers'], $normalizedHeaders);

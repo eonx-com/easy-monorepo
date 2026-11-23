@@ -177,12 +177,12 @@ final class DecimalValidatorTest extends AbstractUnitTestCase
             static function (MockInterface $mock) use ($code, $minPrecision, $maxPrecision): void {
                 $mock->shouldReceive('setParameter')
                     ->once()
-                    ->withArgs(['{{ minPrecision }}', (string)$minPrecision])
+                    ->withArgs(['{{ minPrecision }}', (string) $minPrecision])
                     ->andReturnSelf();
 
                 $mock->shouldReceive('setParameter')
                     ->once()
-                    ->withArgs(['{{ maxPrecision }}', (string)$maxPrecision])
+                    ->withArgs(['{{ maxPrecision }}', (string) $maxPrecision])
                     ->andReturnSelf();
 
                 $mock->shouldReceive('setCode')

@@ -32,7 +32,7 @@ final class OctaneHttpHandler extends OctaneHandler
 
     public function handleRequest(HttpRequestEvent $event, Context $context): HttpResponse
     {
-        $this->setRequestContext((string)\json_encode($event->getRequestContext()));
+        $this->setRequestContext((string) \json_encode($event->getRequestContext()));
 
         return parent::handleRequest($event, $context);
     }

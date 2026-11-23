@@ -13,6 +13,6 @@ final readonly class UuidGenerator implements UuidGeneratorInterface
 
     public function generate(): string
     {
-        return (string)$this->uuidFactory->create();
+        return (string) $this->uuidFactory->create();
     }
 }

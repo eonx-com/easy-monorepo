@@ -36,9 +36,7 @@ abstract class AbstractPaginator implements PaginatorInterface
             return $this->transformedItems;
         }
 
-        if ($this->items === null) {
-            $this->items = $this->doGetItems();
-        }
+        $this->items ??= $this->doGetItems();
 
         return $this->transformedItems = $this->transformer !== null
             ? \array_map($this->transformer, $this->items)

@@ -128,7 +128,7 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
                 /** @var resource|string|null $content */
                 $content = $asyncContext->getInfo('temp_content');
                 $this->dispatchEvent($config, $requestData, new ResponseData(
-                    (string)($content ?? ''),
+                    (string) ($content ?? ''),
                     $asyncContext->getHeaders(),
                     Carbon::now('UTC'),
                     $asyncContext->getStatusCode()
@@ -200,8 +200,8 @@ final class WithEventsHttpClient implements HttpClientInterface, ResetInterface
             $extra,
             CollectorHelper::filterByClassAsArray($modifiers, RequestDataModifierInterface::class),
             $modifiersWhitelist,
-            (bool)$modifiersEnabled,
-            (bool)$eventsEnabled
+            (bool) $modifiersEnabled,
+            (bool) $eventsEnabled
         );
     }
 }

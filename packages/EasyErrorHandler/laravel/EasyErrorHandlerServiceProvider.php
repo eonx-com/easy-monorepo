@@ -78,8 +78,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             static fn(Container $app): ErrorDetailsResolverInterface => new ErrorDetailsResolver(
                 $app->make(LoggerInterface::class),
                 $app->make(TranslatorInterface::class),
-                (bool)\config('easy-error-handler.translate_internal_error_messages.enabled', false),
-                (string)\config('easy-error-handler.translate_internal_error_messages.locale', self::DEFAULT_LOCALE)
+                (bool) \config('easy-error-handler.translate_internal_error_messages.enabled', false),
+                (string) \config('easy-error-handler.translate_internal_error_messages.locale', self::DEFAULT_LOCALE)
             )
         );
 
@@ -96,7 +96,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             VerboseStrategyInterface::class,
             static fn(Container $app): VerboseStrategyInterface => new ChainVerboseStrategy(
                 $app->tagged(ConfigTag::VerboseStrategyDriver->value),
-                (bool)\config('easy-error-handler.use_extended_response', false)
+                (bool) \config('easy-error-handler.use_extended_response', false)
             )
         );
 
@@ -108,8 +108,8 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
                 $app->tagged(ConfigTag::ErrorReporterProvider->value),
                 $app->make(VerboseStrategyInterface::class),
                 \config('easy-error-handler.ignored_exceptions'),
-                (bool)\config('easy-error-handler.report_retryable_exception_attempts', false),
-                (bool)\config('easy-error-handler.skip_reported_exceptions', false)
+                (bool) \config('easy-error-handler.report_retryable_exception_attempts', false),
+                (bool) \config('easy-error-handler.skip_reported_exceptions', false)
             )
         );
 
@@ -126,7 +126,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             static fn(Container $app): TranslatorInterface => new LaravelTranslator($app->make('translator'))
         );
 
-        if ((bool)\config('easy-error-handler.use_default_builders', true)) {
+        if ((bool) \config('easy-error-handler.use_default_builders', true)) {
             $this->app->singleton(
                 DefaultErrorResponseBuilderProvider::class,
                 static fn(
@@ -146,7 +146,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             );
         }
 
-        if ((bool)\config('easy-error-handler.use_default_reporters', true)) {
+        if ((bool) \config('easy-error-handler.use_default_reporters', true)) {
             $this->app->singleton(
                 DefaultErrorReporterProvider::class,
                 static fn(Container $app): DefaultErrorReporterProvider => new DefaultErrorReporterProvider(
@@ -169,7 +169,7 @@ final class EasyErrorHandlerServiceProvider extends ServiceProvider
             )
         );
 
-        if ((bool)\config('easy-error-handler.bugsnag.enabled', true) && \class_exists(Client::class)) {
+        if ((bool) \config('easy-error-handler.bugsnag.enabled', true) && \class_exists(Client::class)) {
             $this->app->tag(
                 BugsnagExceptionIgnorerInterface::class,
                 [ConfigTag::BugsnagExceptionIgnorer->value]

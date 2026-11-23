@@ -24,7 +24,7 @@ final class AccountTrailerTest extends AbstractUnitTestCase
         $trailer = new AccountTrailer($data);
 
         self::assertSame($data['code'], $trailer->getCode());
-        self::assertSame((float)100, $trailer->getAccountControlTotalA());
-        self::assertSame((float)100, $trailer->getAccountControlTotalB());
+        self::assertSame((float) 100, $trailer->getAccountControlTotalA());
+        self::assertSame((float) 100, $trailer->getAccountControlTotalB());
     }
 }

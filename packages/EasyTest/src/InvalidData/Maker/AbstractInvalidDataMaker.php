@@ -110,7 +110,7 @@ abstract class AbstractInvalidDataMaker
                 throw new UnexpectedValueException('Value must be scalar when using asString().');
             }
 
-            $value = (string)$value;
+            $value = (string) $value;
         }
 
         if ($this->asArrayElement === true) {
@@ -135,7 +135,7 @@ abstract class AbstractInvalidDataMaker
             $caseName => [
                 'data' => $invalidData,
                 'propertyPath' => $this->resolvePropertyPath($invalidData),
-                'validationErrorMessage' => (string)($this->message ?? $message),
+                'validationErrorMessage' => (string) ($this->message ?? $message),
             ],
         ];
     }
@@ -191,7 +191,7 @@ abstract class AbstractInvalidDataMaker
             return $this->propertyPath;
         }
 
-        $propertyName = (string)\array_key_first($invalidData);
+        $propertyName = (string) \array_key_first($invalidData);
 
         if (\is_array($invalidData[$propertyName]) && \count($invalidData[$propertyName]) > 0) {
             // The case of stubs collection ('prop' => [ [], [], [], [] ])
@@ -199,7 +199,7 @@ abstract class AbstractInvalidDataMaker
                 return $propertyName;
             }
 
-            $currentProperty = \current(\array_keys($invalidData[$propertyName]));
+            $currentProperty = \array_key_first($invalidData[$propertyName]);
 
             if ($currentProperty === 0) {
                 return $propertyName . '[0]';

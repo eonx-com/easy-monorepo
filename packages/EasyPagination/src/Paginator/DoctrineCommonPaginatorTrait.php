@@ -83,7 +83,7 @@ trait DoctrineCommonPaginatorTrait
 
         $results = $this->fetchResults($queryBuilder);
 
-        return $this->totalItems = (int)($results[0][$countAlias] ?? 0);
+        return $this->totalItems = (int) ($results[0][$countAlias] ?? 0);
     }
 
     /**
@@ -127,7 +127,7 @@ trait DoctrineCommonPaginatorTrait
         $select = \sprintf('%s.%s', $this->fromAlias ?? $this->from, $primaryKeyIndex);
         $fetchPrimaryKeysQueryBuilder->select($select);
 
-        $primaryKeysMap = static fn(array $row): string => (string)$row[$primaryKeyIndex];
+        $primaryKeysMap = static fn(array $row): string => (string) $row[$primaryKeyIndex];
 
         /** @var string[] $primaryKeys */
         $primaryKeys = \array_map($primaryKeysMap, $this->fetchResults($fetchPrimaryKeysQueryBuilder));
@@ -240,7 +240,7 @@ trait DoctrineCommonPaginatorTrait
             $matches = new UnicodeString($queryPlan)
                 ->match('/rows=(\d+)/');
 
-            return isset($matches[1]) ? (int)$matches[1] : null;
+            return isset($matches[1]) ? (int) $matches[1] : null;
         }
 
         return null;

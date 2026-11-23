@@ -47,7 +47,7 @@ final class BugsnagMonologHandler extends AbstractProcessingHandler
         $this->bugsnagClient
             ->notifyError(
                 $name,
-                (string)$message,
+                (string) $message,
                 static function (Report $report) use ($record, $severity): void {
                     $report->setSeverity($severity->value);
                     $report->setMetaData(['context' => $record->context, 'extra' => $record->extra]);

@@ -33,7 +33,7 @@ final readonly class DoctrineActivitySubjectResolver implements ActivitySubjectR
         }
 
         return new ActivitySubject(
-            (string)$object->getId(),
+            (string) $object->getId(),
             $subjectConfig['type'] ?? $subjectClass,
             $subjectConfig['disallowed_properties'] ?? [],
             $subjectConfig['nested_object_allowed_properties'] ?? [],

@@ -71,7 +71,7 @@ final readonly class StringEncryptor implements StringEncryptorInterface
 
     private function doDecrypt(string $text): string
     {
-        return \mb_convert_encoding((string)$this->encryptor->decrypt($text), self::DEFAULT_ENCODING);
+        return \mb_convert_encoding((string) $this->encryptor->decrypt($text), self::DEFAULT_ENCODING);
     }
 
     private function doEncrypt(string $text): string

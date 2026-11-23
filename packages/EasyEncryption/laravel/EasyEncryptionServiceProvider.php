@@ -78,7 +78,7 @@ final class EasyEncryptionServiceProvider extends ServiceProvider
         );
 
         $useConfigureTool
-            = (bool)\config('easy-encryption.aws_cloud_hsm_encryptor.use_aws_cloud_hsm_configure_tool');
+            = (bool) \config('easy-encryption.aws_cloud_hsm_encryptor.use_aws_cloud_hsm_configure_tool');
 
         $this->app->singleton(
             AwsCloudHsmSdkConfigurator::class,

@@ -43,7 +43,7 @@ final class JsonbTypeTest extends AbstractUnitTestCase
         }
 
         yield 'object phpValue' => [
-            'phpValue' => (object)[
+            'phpValue' => (object) [
                 'property' => 'value',
             ],
             'postgresValue' => '{"property":"value"}',

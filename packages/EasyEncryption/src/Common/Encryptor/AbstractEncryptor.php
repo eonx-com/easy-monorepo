@@ -59,7 +59,7 @@ abstract class AbstractEncryptor implements EncryptorInterface
         return $this->execSafely(CouldNotEncryptException::class, function () use ($text, $keyName): string {
             $keyName = $this->getKeyName($keyName);
 
-            return Encoding::base64Encode((string)\json_encode([
+            return Encoding::base64Encode((string) \json_encode([
                 self::ENCRYPTED_KEY_NAME => $keyName,
                 self::ENCRYPTED_KEY_VALUE => $this->doEncrypt($text, $keyName, false),
             ]));

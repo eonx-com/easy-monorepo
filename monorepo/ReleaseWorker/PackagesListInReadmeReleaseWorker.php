@@ -81,7 +81,7 @@ final readonly class PackagesListInReadmeReleaseWorker implements ReleaseWorkerI
         $openTag = '<!-- monorepo-packages -->';
         $closeTag = '<!-- end-monorepo-packages -->';
         $filename = __DIR__ . '/../../readme.md';
-        $original = (string)\file_get_contents($filename);
+        $original = (string) \file_get_contents($filename);
 
         $this->filesystem->dumpFile($filename, $this->replaceBetween($original, $contents, $openTag, $closeTag));
     }

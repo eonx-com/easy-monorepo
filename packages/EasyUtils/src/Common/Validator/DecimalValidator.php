@@ -26,7 +26,7 @@ final class DecimalValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'scalar');
         }
 
-        $value = (string)$value;
+        $value = (string) $value;
 
         if (\is_numeric($value) === true && \str_contains($value, 'E') === true) {
             $value = \sprintf('%0.10f', $value);

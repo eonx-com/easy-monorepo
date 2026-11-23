@@ -162,7 +162,7 @@ trait DatabaseEntityTrait
             $attrsToNormalize = self::clearAsterisksFromAttrs($attrsToNormalize);
         }
 
-        return (array)$serializer->normalize($entity, null, ['attributes' => $attrsToNormalize]);
+        return (array) $serializer->normalize($entity, null, ['attributes' => $attrsToNormalize]);
     }
 
     private static function clearAsterisksFromAttrs(array $attrs): array
@@ -195,7 +195,7 @@ trait DatabaseEntityTrait
                     DateTimeInterface::class => static fn(DateTimeInterface $dateTime): array => [
                         'date' => $dateTime->format(DateTimeInterface::ATOM),
                     ],
-                    Uuid::class => static fn(Uuid $uid): array => ['uid' => (string)$uid],
+                    Uuid::class => static fn(Uuid $uid): array => ['uid' => (string) $uid],
                 ]
             )
         );

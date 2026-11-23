@@ -13,6 +13,6 @@ final readonly class UuidFactory implements IdFactoryInterface
 
     public function create(): string
     {
-        return (string)$this->uuidFactory->create();
+        return (string) $this->uuidFactory->create();
     }
 }

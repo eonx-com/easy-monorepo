@@ -19,7 +19,7 @@ final class EasyRepositoryServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/easy-repository.php', 'easy-repository');
 
-        $repositories = (array)\config('easy-repository.repositories', []);
+        $repositories = (array) \config('easy-repository.repositories', []);
         if (\count($repositories) === 0) {
             throw new LogicException(
                 'No repositories to register. Please make sure your application has the expected configuration'

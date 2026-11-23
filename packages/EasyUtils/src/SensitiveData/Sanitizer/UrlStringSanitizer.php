@@ -12,7 +12,7 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
         $replacement = '${1}' . $this->escapeForReplacement($maskPattern);
 
         foreach ($keysToMask as $key) {
-            $key = (string)$key;
+            $key = (string) $key;
 
             if ($key === '') {
                 continue;
@@ -40,14 +40,14 @@ final class UrlStringSanitizer extends AbstractStringSanitizer
             // delimiter (& ? # , ; " ' ) ] } < >) but may legitimately contain "/" (e.g. base64
             // tokens). Stopping at the field boundary avoids eating the rest of a log line or
             // neighbouring fields when the value is embedded in free text
-            $string = (string)\preg_replace(
+            $string = (string) \preg_replace(
                 \sprintf('/(%s=|\[%s\]=)([^\s&?#,;"\')\]}<>]+)/i', $quotedKey, $prefixedQuotedKey),
                 $replacement,
                 $string
             );
 
             // Path style (/key/...): the value is a single path segment, so "/" terminates it
-            $string = (string)\preg_replace(
+            $string = (string) \preg_replace(
                 \sprintf('/(\/%s\/)([^&\/?#]+)/i', $prefixedQuotedKey),
                 $replacement,
                 $string

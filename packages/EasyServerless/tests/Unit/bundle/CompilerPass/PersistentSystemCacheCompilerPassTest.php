@@ -53,11 +53,7 @@ final class PersistentSystemCacheCompilerPassTest extends AbstractUnitTestCase
 
     protected function tearDown(): void
     {
-        if ($this->lambdaTaskRoot === false) {
-            \putenv('LAMBDA_TASK_ROOT');
-        } else {
-            \putenv('LAMBDA_TASK_ROOT=' . $this->lambdaTaskRoot);
-        }
+        \putenv($this->lambdaTaskRoot === false ? 'LAMBDA_TASK_ROOT' : 'LAMBDA_TASK_ROOT=' . $this->lambdaTaskRoot);
 
         if ($this->serverHadSamLocal) {
             $_SERVER['AWS_SAM_LOCAL'] = $this->serverSamLocal;

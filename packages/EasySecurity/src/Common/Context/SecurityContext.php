@@ -53,7 +53,7 @@ class SecurityContext implements SecurityContextInterface
     {
         $this->cachePermissions = null;
 
-        foreach (AuthorizationMatrixFormatter::formatPermissions((array)$permissions) as $permission) {
+        foreach (AuthorizationMatrixFormatter::formatPermissions((array) $permissions) as $permission) {
             $this->permissions[$permission->getIdentifier()] = $permission;
         }
     }
@@ -66,7 +66,7 @@ class SecurityContext implements SecurityContextInterface
         $this->cachePermissions = null;
 
         $roleIdentifiers = AuthorizationMatrixFormatter::formatRolesToIdentifiers(
-            AuthorizationMatrixFormatter::formatRoles((array)$roles)
+            AuthorizationMatrixFormatter::formatRoles((array) $roles)
         );
 
         foreach ($this->authorizationMatrix->getRolesByIdentifiers($roleIdentifiers) as $role) {
@@ -190,7 +190,7 @@ class SecurityContext implements SecurityContextInterface
 
         $overridePermissions = [];
 
-        foreach (AuthorizationMatrixFormatter::formatPermissions((array)$permissions) as $permission) {
+        foreach (AuthorizationMatrixFormatter::formatPermissions((array) $permissions) as $permission) {
             $overridePermissions[$permission->getIdentifier()] = $permission;
         }
 

@@ -5,10 +5,11 @@
     "license": "proprietary",
     "require": {
         "php": "^8.4",
-        "eonx-com/easy-quality": "^6.0",
+        "eonx-com/easy-quality": "^6.5",
         "phpunit/phpunit": "^12.5|^13.0",
         "symfony/finder": "^8.1",
-        "symfony/string": "^8.1"
+        "symfony/string": "^8.1",
+        "symplify/phpstan-extensions": "^12.0"
     },
     "config": {
         "allow-plugins": {

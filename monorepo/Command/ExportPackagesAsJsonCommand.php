@@ -38,7 +38,7 @@ final class ExportPackagesAsJsonCommand extends Command
             $noKeys[] = $package;
         }
 
-        $output->write((string)\json_encode($noKeys));
+        $output->write((string) \json_encode($noKeys));
 
         return 0;
     }

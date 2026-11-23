@@ -16,6 +16,6 @@ final readonly class CallbackRandomStringConstraint implements RandomStringConst
 
     public function isValid(string $randomString): bool
     {
-        return (bool)\call_user_func($this->callback, $randomString);
+        return (bool) \call_user_func($this->callback, $randomString);
     }
 }

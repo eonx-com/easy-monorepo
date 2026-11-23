@@ -86,7 +86,7 @@ final readonly class AwsCloudHsmSdkConfigurator
         $servers = [];
 
         if (isset($options['-a'])) {
-            $hsmIpAddresses = \explode(' ', (string)$options['-a']);
+            $hsmIpAddresses = \explode(' ', (string) $options['-a']);
 
             foreach ($hsmIpAddresses as $hsmIpAddress) {
                 $servers[] = [
@@ -145,7 +145,7 @@ final readonly class AwsCloudHsmSdkConfigurator
                 );
             }
 
-            $cloudHsmClusters = (array)$awsResult->get('Clusters');
+            $cloudHsmClusters = (array) $awsResult->get('Clusters');
             /** @var array $cloudHsmCluster */
             $cloudHsmCluster = $cloudHsmClusters[0]
                 ?? throw new AwsCloudHsmCouldNotConfigureSdkException(
@@ -157,7 +157,7 @@ final readonly class AwsCloudHsmSdkConfigurator
                 );
 
             /** @var array $cloudHsmClusterServer */
-            foreach ((array)$cloudHsmClusterServers as $cloudHsmClusterServer) {
+            foreach ((array) $cloudHsmClusterServers as $cloudHsmClusterServer) {
                 $servers[] = [
                     'enable' => true,
                     'hostname' => $cloudHsmClusterServer['EniIp']
@@ -190,7 +190,7 @@ final readonly class AwsCloudHsmSdkConfigurator
         $filesystem = new Filesystem();
         $filesystem->dumpFile(
             self::CONFIG_FILE,
-            (string)\json_encode($config, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES)
+            (string) \json_encode($config, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES)
         );
     }
 

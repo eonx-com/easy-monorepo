@@ -56,7 +56,7 @@ final class ReorderMessengerMiddlewareCompilerPass implements CompilerPassInterf
                 $middleware->getValues(),
                 static fn(
                     Reference $ref,
-                ): bool => \in_array((string)$ref, self::EASY_LOCK_MIDDLEWARE_LIST, true) === false
+                ): bool => \in_array((string) $ref, self::EASY_LOCK_MIDDLEWARE_LIST, true) === false
             );
 
             // Add reference to easy lock middleware at the start of existing list

@@ -6,6 +6,7 @@ use EonX\EasyQuality\Rector\DataProviderSeeAnnotationRector;
 use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
+use Rector\CodingStyle\Rector\Closure\ClosureDelegatingCallToFirstClassCallableRector;
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
@@ -14,8 +15,6 @@ use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\Rector\ClassMethod\AddParamBasedOnParentClassMethodRector;
 use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
-use Rector\Php84\Rector\Class_\DeprecatedAnnotationToDeprecatedAttributeRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -46,7 +45,6 @@ return RectorConfig::configure()
         EasyQualitySetList::RECTOR_PHPUNIT_12,
     ])
     ->withSkip([
-        AddOverrideAttributeToOverriddenMethodsRector::class => null,
         AddParamBasedOnParentClassMethodRector::class => [
             // @todo Remove when Doctrine DBAL 3 support is dropped
             'packages/EasyBugsnag/src/Doctrine/Statement/BreadcrumbLoggerDbal3Statement.php',
@@ -68,11 +66,14 @@ return RectorConfig::configure()
             'packages/*/ApiResource/*',
             'packages/*/Entity/*',
         ],
+        ClosureDelegatingCallToFirstClassCallableRector::class => [
+            // The closure narrows $entityClass to class-string for the callable(string, string, string) shape
+            'packages/EasyEncryption/tests/Unit/src/Encryptable/Encryptable/EncryptableTraitEncryptableTest.php',
+        ],
         ClosureToArrowFunctionRector::class => [
             'packages/EasyEncryption/src/Encryptable/Encryptor/ObjectEncryptor.php',
             'packages/EasyEncryption/tests/Unit/src/Encryptable/Encryptable/EncryptableTraitEncryptableTest.php',
         ],
-        DeprecatedAnnotationToDeprecatedAttributeRector::class => null,
         ReadOnlyPropertyRector::class => [
             'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
         ],

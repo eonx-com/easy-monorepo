@@ -32,19 +32,19 @@ final class SymfonyServicesAppStateResetter implements AppStateResetterInterface
     public function resetState(): void
     {
         foreach ($this->resettableServices as $id => $service) {
-            foreach ((array)$this->resetMethods[$id] as $resetMethod) {
+            foreach ((array) $this->resetMethods[$id] as $resetMethod) {
                 $resetMethod = new UnicodeString($resetMethod);
 
                 if ($resetMethod->startsWith('?')) {
                     $resetMethod = $resetMethod->trimStart('?');
 
-                    if (\method_exists($service, (string)$resetMethod) === false) {
+                    if (\method_exists($service, (string) $resetMethod) === false) {
                         continue;
                     }
                 }
 
                 if ($this->shouldReset($id)) {
-                    $service->{(string)$resetMethod}();
+                    $service->{(string) $resetMethod}();
                 }
             }
         }

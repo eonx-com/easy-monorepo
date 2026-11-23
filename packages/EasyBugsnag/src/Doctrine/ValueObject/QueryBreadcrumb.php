@@ -48,9 +48,7 @@ if (\enum_exists(ParameterType::class)) {
          */
         public function getQueryDuration(): float
         {
-            if ($this->queryDuration === null) {
-                $this->queryDuration = \microtime(true) - $this->queryStartTime;
-            }
+            $this->queryDuration ??= \microtime(true) - $this->queryStartTime;
 
             return $this->queryDuration;
         }

@@ -98,11 +98,11 @@ abstract class AbstractWebhook implements WebhookInterface
                 $value = $data[$name];
 
                 if (\in_array($name, static::$booleans, true)) {
-                    $value = (bool)$value;
+                    $value = (bool) $value;
                 }
 
                 if (\in_array($name, static::$integers, true)) {
-                    $value = (int)$value;
+                    $value = (int) $value;
                 }
 
                 if ($name === WebhookOption::Status->value) {
@@ -253,9 +253,7 @@ abstract class AbstractWebhook implements WebhookInterface
 
     public function header(string $name, mixed $value): WebhookInterface
     {
-        if ($this->headers === null) {
-            $this->headers = [];
-        }
+        $this->headers ??= [];
 
         $this->headers[$name] = $value;
 
@@ -340,9 +338,7 @@ abstract class AbstractWebhook implements WebhookInterface
 
     public function query(string $name, mixed $value): WebhookInterface
     {
-        if ($this->queries === null) {
-            $this->queries = [];
-        }
+        $this->queries ??= [];
 
         $this->queries[$name] = $value;
 

@@ -259,7 +259,7 @@ final readonly class EasySwooleRunner implements RunnerInterface
             new SymfonyProcess($cmd)
                 ->setTimeout(null)
                 ->run(static function ($type, $buffer) use ($extensions, $server): void {
-                    foreach (\explode(\PHP_EOL, (string)$buffer) as $line) {
+                    foreach (\explode(\PHP_EOL, (string) $buffer) as $line) {
                         if (new UnicodeString($line)->endsWith($extensions)) {
                             OutputHelper::writeln(\sprintf('File %s updated', $line));
                             OutputHelper::writeln('Reloading server...');

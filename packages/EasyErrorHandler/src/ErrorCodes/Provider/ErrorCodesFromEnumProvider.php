@@ -34,7 +34,7 @@ final readonly class ErrorCodesFromEnumProvider implements ErrorCodesProviderInt
 
         $enums = [];
         foreach ($files as $file) {
-            $fqcn = (string)$this->extractFqcn($file->getRealPath());
+            $fqcn = (string) $this->extractFqcn($file->getRealPath());
             if (\class_exists($fqcn) && \count(new ReflectionClass($fqcn)->getAttributes(AsErrorCodes::class)) > 0) {
                 $enums[] = $fqcn;
             }
@@ -57,7 +57,7 @@ final readonly class ErrorCodesFromEnumProvider implements ErrorCodesProviderInt
             foreach ($cases as $case) {
                 $splitName = \preg_split(
                     pattern: '/([A-Z\d][a-z\d]+)/u',
-                    subject: (string)$case->name,
+                    subject: (string) $case->name,
                     flags: \PREG_SPLIT_DELIM_CAPTURE
                 );
                 if (\is_array($splitName)) {
@@ -76,14 +76,14 @@ final readonly class ErrorCodesFromEnumProvider implements ErrorCodesProviderInt
     private function extractFqcn(string $file): ?string
     {
         try {
-            $code = (string)\file_get_contents($file);
+            $code = (string) \file_get_contents($file);
             if (\str_contains($code, AsErrorCodes::class) === false) {
                 return null;
             }
             $stmts = $this->parser->parse($code);
-            foreach ((array)$stmts as $stmt) {
+            foreach ((array) $stmts as $stmt) {
                 if ($stmt instanceof Namespace_) {
-                    $namespace = (string)$stmt->name;
+                    $namespace = (string) $stmt->name;
                     foreach ($stmt->stmts as $namespaceStmt) {
                         if ($namespaceStmt instanceof Enum_) {
                             return $namespace . '\\' . $namespaceStmt->name;
