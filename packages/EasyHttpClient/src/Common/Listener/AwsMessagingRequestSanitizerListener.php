@@ -67,10 +67,15 @@ final class AwsMessagingRequestSanitizerListener
         }
     }
 
+    private static function isKeyToRedact(string $key): bool
+    {
+        return \array_intersect(\explode('.', $key), self::BODY_KEYS_TO_REDACT) !== [];
+    }
+
     private static function redactArray(array $data): array
     {
         foreach ($data as $key => $value) {
-            if (\in_array($key, self::BODY_KEYS_TO_REDACT, true)) {
+            if (self::isKeyToRedact((string)$key)) {
                 $data[$key] = self::REDACTED;
 
                 continue;
@@ -100,11 +105,11 @@ final class AwsMessagingRequestSanitizerListener
             return (string)\json_encode(self::redactArray($data));
         }
 
-        $formKeys = \implode('|', self::BODY_KEYS_TO_REDACT);
-
-        return (string)\preg_replace(
-            '/(?<=^|&)((?:[^=&.]*\.)*(?:' . $formKeys . ')(?:\.[^=&]*)?)=[^&]*/',
-            '$1=' . self::REDACTED,
+        return (string)\preg_replace_callback(
+            '/(^|&)([^=&]+)=[^&]*/',
+            static fn (array $matches): string => self::isKeyToRedact(\urldecode($matches[2]))
+                ? $matches[1] . $matches[2] . '=' . self::REDACTED
+                : $matches[0],
             $body
         );
     }

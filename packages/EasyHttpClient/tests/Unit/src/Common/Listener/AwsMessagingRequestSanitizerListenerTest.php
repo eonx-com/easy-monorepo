@@ -354,6 +354,38 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
             ],
         ];
 
+        yield 'form body with URL-encoded field names' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Action=Publish&%4Dessage=Your+code+is+123456&Phone%4Eumber=%2B61400000000'
+                    . '&PublishBatchRequestEntries%2Emember%2E1%2EMessage=Your+code&Some%4Eame=some%40value',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=Publish&%4Dessage=*REDACTED*&Phone%4Eumber=*REDACTED*'
+                    . '&PublishBatchRequestEntries%2Emember%2E1%2EMessage=*REDACTED*&Some%4Eame=some%40value',
+            ],
+        ];
+
+        yield 'form body as an array with prefixed keys' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => [
+                    'Action' => 'PublishBatch',
+                    'PublishBatchRequestEntries.member.1.Id' => '1',
+                    'PublishBatchRequestEntries.member.1.Message' => 'Your code is 123456',
+                    'Destination.ToAddresses.member.1' => 'john@example.com',
+                ],
+            ],
+            'expectedOptions' => [
+                'body' => [
+                    'Action' => 'PublishBatch',
+                    'PublishBatchRequestEntries.member.1.Id' => '1',
+                    'PublishBatchRequestEntries.member.1.Message' => '*REDACTED*',
+                    'Destination.ToAddresses.member.1' => '*REDACTED*',
+                ],
+            ],
+        ];
+
         yield 'body of an unsupported type' => [
             'url' => self::SES_URL,
             'options' => [

@@ -95,8 +95,9 @@ replaces with `*REDACTED*`:
 - the `Authorization` and `X-Amz-Security-Token` headers
 - in the body: the recipients (`ToAddresses`, `CcAddresses`, `BccAddresses`, `ReplyToAddresses`, `Destinations`), the
   subject (`Subject`), text and raw content of an e-mail (`Data`), the template data (`TemplateData`), the attachments
-  (`RawContent`), the text of an SNS message (`Message`) and the phone number (`PhoneNumber`). In a form body (SNS, the
-  SES v1 API) a key also matches as a part of a longer key, for example `PublishBatchRequestEntries.member.1.Message`
+  (`RawContent`), the text of an SNS message (`Message`) and the phone number (`PhoneNumber`). A key also matches as a
+  dot-separated part of a longer key, for example `PublishBatchRequestEntries.member.1.Message` in a form body (SNS,
+  the SES v1 API). The field names of a form body are URL-decoded before the match
 - in the response: the error message (`message` in a JSON body, `<Message>` in an XML body), as AWS puts the failed
   e-mail addresses and phone numbers there. The error code stays
 
