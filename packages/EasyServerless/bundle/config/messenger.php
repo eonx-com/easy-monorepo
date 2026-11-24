@@ -20,10 +20,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(SqsClient::class);
 
     $services->set(SqsHandler::class)
-        ->arg('$envelopeTracer', service(EnvelopeTracer::class)->nullOnInvalid())
+        ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid())
         ->arg('$errorHandler', service(ErrorHandlerInterface::class)->nullOnInvalid())
         ->arg('$eventDispatcher', service(EventDispatcherInterface::class)->nullOnInvalid())
-        ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid())
         ->arg('$symfonyEventDispatcher', service(SymfonyEventDispatcherInterface::class)->nullOnInvalid())
+        ->arg('$envelopeTracer', service(EnvelopeTracer::class)->nullOnInvalid())
         ->public();
 };
