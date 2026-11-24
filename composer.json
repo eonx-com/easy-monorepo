@@ -67,7 +67,7 @@
         "symfony/translation": "^7.2",
         "symfony/uid": "^7.2",
         "symfony/var-dumper": "^7.2",
-        "twig/twig": "^3.27"
+        "twig/twig": "^3.31.1"
     },
     "require-dev": {
         "auth0/auth0-php": "^8.19",
@@ -404,9 +404,17 @@
             },
             "cooldown": {
                 "period": "1 day",
-                "ignore": [
-                    "eonx-com/*"
-                ]
+                "ignore": {
+                    "eonx-com/*": "Own packages",
+                    "twig/html-extra": {
+                        "constraint": "3.31.1",
+                        "reason": "Security fix for PKSA-b7yd-vc3m-dv17, no-op once the cooldown period passes"
+                    },
+                    "twig/twig": {
+                        "constraint": "3.31.1",
+                        "reason": "Security fixes for new twig/twig advisories, no-op once the cooldown period passes"
+                    }
+                }
             }
         }
     },
