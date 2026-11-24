@@ -86,15 +86,19 @@ Laravel/Lumen). A key matches only as a whole, for example `name` does not cover
 
 ### E-mails and SMS sent through AWS
 
-`AwsMessagingRequestSanitizerListener` changes the recorded request options of every request to AWS SES
-(`email.<region>.amazonaws.com`) and SNS (`sns.<region>.amazonaws.com`), for example the requests of
+`AwsMessagingRequestSanitizerListener` changes the recorded request and response of every request to AWS SES
+(`email.<region>.amazonaws.com`) and SNS (`sns.<region>.amazonaws.com`), FIPS (`email-fips`, `sns-fips`) and China
+(`.amazonaws.com.cn`) endpoints included, for example the requests of
 `symfony/amazon-mailer` and `symfony/amazon-sns-notifier`. It runs before the listeners that record the request and
 replaces with `*REDACTED*`:
 
 - the `Authorization` and `X-Amz-Security-Token` headers
-- in the body: the recipients (`ToAddresses`, `CcAddresses`, `BccAddresses`, `ReplyToAddresses`), the subject, text
-  and raw content of an e-mail (`Data`), the template data (`TemplateData`), the attachments (`RawContent`), the text
-  of an SNS message (`Message`) and the phone number (`PhoneNumber`)
+- in the body: the recipients (`ToAddresses`, `CcAddresses`, `BccAddresses`, `ReplyToAddresses`, `Destinations`), the
+  subject (`Subject`), text and raw content of an e-mail (`Data`), the template data (`TemplateData`), the attachments
+  (`RawContent`), the text of an SNS message (`Message`) and the phone number (`PhoneNumber`). In a form body (SNS, the
+  SES v1 API) a key also matches as a part of a longer key, for example `PublishBatchRequestEntries.member.1.Message`
+- in the response: the error message (`message` in a JSON body, `<Message>` in an XML body), as AWS puts the failed
+  e-mail addresses and phone numbers there. The error code stays
 
 The listener is always registered. The request itself is sent unchanged.
 
@@ -154,5 +158,5 @@ final class RemoveMessageTextListener
 }
 ```
 
-The request is already sent at this point, so the listener changes only what is recorded. The response data cannot be
-changed.
+The request is already sent at this point, so the listener changes only what is recorded. To change the recorded
+response body, call `setContent()` on `$event->getResponseData()`.

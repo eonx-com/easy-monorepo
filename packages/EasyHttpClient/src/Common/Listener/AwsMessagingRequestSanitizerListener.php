@@ -11,10 +11,12 @@ final class AwsMessagingRequestSanitizerListener
         'BccAddresses',
         'CcAddresses',
         'Data',
+        'Destinations',
         'Message',
         'PhoneNumber',
         'RawContent',
         'ReplyToAddresses',
+        'Subject',
         'TemplateData',
         'ToAddresses',
     ];
@@ -24,9 +26,14 @@ final class AwsMessagingRequestSanitizerListener
         'x-amz-security-token',
     ];
 
-    private const HOST_PATTERN = '/^(email|sns)\.[a-z0-9-]+\.amazonaws\.com$/';
+    private const HOST_PATTERN = '/^(email|sns)(-fips)?\.[a-z0-9-]+\.amazonaws\.com(\.cn)?$/';
 
     private const REDACTED = '*REDACTED*';
+
+    private const RESPONSE_KEYS_TO_REDACT = [
+        'Message',
+        'message',
+    ];
 
     public function __invoke(HttpRequestSentEvent $event): void
     {
@@ -43,8 +50,8 @@ final class AwsMessagingRequestSanitizerListener
             $options['body'] = self::redactBody($options['body']);
         }
 
-        if (\is_array($options['json'] ?? null)) {
-            $options['json'] = self::redactArray($options['json']);
+        if (isset($options['json'])) {
+            $options['json'] = \is_array($options['json']) ? self::redactArray($options['json']) : self::REDACTED;
         }
 
         if (\is_array($options['headers'] ?? null)) {
@@ -52,6 +59,12 @@ final class AwsMessagingRequestSanitizerListener
         }
 
         $requestData->setOptions($options);
+
+        $responseData = $event->getResponseData();
+
+        if ($responseData !== null) {
+            $responseData->setContent(self::redactResponseContent($responseData->getContent()));
+        }
     }
 
     private static function redactArray(array $data): array
@@ -89,7 +102,11 @@ final class AwsMessagingRequestSanitizerListener
 
         $formKeys = \implode('|', self::BODY_KEYS_TO_REDACT);
 
-        return (string)\preg_replace('/(?<=^|&)(' . $formKeys . ')=[^&]*/', '$1=' . self::REDACTED, $body);
+        return (string)\preg_replace(
+            '/(?<=^|&)((?:[^=&.]*\.)*(?:' . $formKeys . ')(?:\.[^=&]*)?)=[^&]*/',
+            '$1=' . self::REDACTED,
+            $body
+        );
     }
 
     private static function redactHeaders(array $headers): array
@@ -111,5 +128,28 @@ final class AwsMessagingRequestSanitizerListener
         }
 
         return $headers;
+    }
+
+    private static function redactResponseContent(string $content): string
+    {
+        $data = \json_decode($content, true);
+
+        if (\is_array($data)) {
+            $redactedData = $data;
+
+            foreach (self::RESPONSE_KEYS_TO_REDACT as $key) {
+                if (\array_key_exists($key, $redactedData)) {
+                    $redactedData[$key] = self::REDACTED;
+                }
+            }
+
+            return $redactedData === $data ? $content : (string)\json_encode($redactedData);
+        }
+
+        return (string)\preg_replace(
+            '/<Message>.*?<\/Message>/s',
+            '<Message>' . self::REDACTED . '</Message>',
+            $content
+        );
     }
 }

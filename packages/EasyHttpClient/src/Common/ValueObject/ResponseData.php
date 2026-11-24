@@ -5,13 +5,13 @@ namespace EonX\EasyHttpClient\Common\ValueObject;
 
 use DateTimeInterface;
 
-final readonly class ResponseData
+final class ResponseData
 {
     public function __construct(
         private string $content,
-        private array $headers,
-        private DateTimeInterface $receivedAt,
-        private int $statusCode,
+        private readonly array $headers,
+        private readonly DateTimeInterface $receivedAt,
+        private readonly int $statusCode,
     ) {
     }
 
@@ -33,5 +33,12 @@ final readonly class ResponseData
     public function getStatusCode(): int
     {
         return $this->statusCode;
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
     }
 }

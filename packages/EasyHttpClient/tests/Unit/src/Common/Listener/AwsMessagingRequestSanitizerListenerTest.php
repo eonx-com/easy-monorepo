@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyHttpClient\Tests\Unit\Common\Listener;
 
+use ArrayObject;
 use Carbon\CarbonImmutable;
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Common\Listener\AwsMessagingRequestSanitizerListener;
 use EonX\EasyHttpClient\Common\ValueObject\RequestData;
+use EonX\EasyHttpClient\Common\ValueObject\ResponseData;
 use EonX\EasyHttpClient\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
@@ -99,9 +101,7 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
                     'ReplyToAddresses' => '*REDACTED*',
                     'Content' => [
                         'Simple' => [
-                            'Subject' => [
-                                'Data' => '*REDACTED*',
-                            ],
+                            'Subject' => '*REDACTED*',
                             'Body' => [
                                 'Text' => [
                                     'Data' => '*REDACTED*',
@@ -252,6 +252,108 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
             ],
         ];
 
+        yield 'SNS SMS through a FIPS endpoint' => [
+            'url' => 'https://sns-fips.us-east-1.amazonaws.com/',
+            'options' => [
+                'body' => 'Action=Publish&Message=Your+code+is+123456',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=Publish&Message=*REDACTED*',
+            ],
+        ];
+
+        yield 'SNS SMS in China' => [
+            'url' => 'https://sns.cn-north-1.amazonaws.com.cn/',
+            'options' => [
+                'body' => 'Action=Publish&Message=Your+code+is+123456',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=Publish&Message=*REDACTED*',
+            ],
+        ];
+
+        yield 'SNS SMS with a subject' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Action=Publish&Message=Your+code+is+123456&MessageStructure=string&Subject=Code+for+John',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=Publish&Message=*REDACTED*&MessageStructure=string&Subject=*REDACTED*',
+            ],
+        ];
+
+        yield 'SNS batch with prefixed keys' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Action=PublishBatch&TopicArn=some-topic'
+                    . '&PublishBatchRequestEntries.member.1.Id=1'
+                    . '&PublishBatchRequestEntries.member.1.Message=Your+code+is+123456'
+                    . '&PublishBatchRequestEntries.member.1.Subject=Code+for+John'
+                    . '&PublishBatchRequestEntries.member.1.MessageAttributes.entry.1.Name=some-attribute'
+                    . '&PublishBatchRequestEntries.member.2.Id=2'
+                    . '&PublishBatchRequestEntries.member.2.Message=Your+code+is+654321',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=PublishBatch&TopicArn=some-topic'
+                    . '&PublishBatchRequestEntries.member.1.Id=1'
+                    . '&PublishBatchRequestEntries.member.1.Message=*REDACTED*'
+                    . '&PublishBatchRequestEntries.member.1.Subject=*REDACTED*'
+                    . '&PublishBatchRequestEntries.member.1.MessageAttributes.entry.1.Name=some-attribute'
+                    . '&PublishBatchRequestEntries.member.2.Id=2'
+                    . '&PublishBatchRequestEntries.member.2.Message=*REDACTED*',
+            ],
+        ];
+
+        yield 'SES v1 e-mail with a form body' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'body' => 'Action=SendEmail&Source=no-reply%40example.com'
+                    . '&Destination.ToAddresses.member.1=john%40example.com'
+                    . '&Message.Subject.Data=Code+for+John'
+                    . '&Message.Body.Text.Data=Your+code+is+123456',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=SendEmail&Source=no-reply%40example.com'
+                    . '&Destination.ToAddresses.member.1=*REDACTED*'
+                    . '&Message.Subject.Data=*REDACTED*'
+                    . '&Message.Body.Text.Data=*REDACTED*',
+            ],
+        ];
+
+        yield 'SES v1 raw e-mail with a form body' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'body' => 'Action=SendRawEmail&Destinations.member.1=john%40example.com&RawMessage.Data=RnJvbQ%3D%3D',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=SendRawEmail&Destinations.member.1=*REDACTED*&RawMessage.Data=*REDACTED*',
+            ],
+        ];
+
+        yield 'json option of another type' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'json' => new ArrayObject([
+                    'Destination' => [
+                        'ToAddresses' => ['john@example.com'],
+                    ],
+                ]),
+            ],
+            'expectedOptions' => [
+                'json' => '*REDACTED*',
+            ],
+        ];
+
+        yield 'null json option' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'json' => null,
+            ],
+            'expectedOptions' => [
+                'json' => null,
+            ],
+        ];
+
         yield 'body of an unsupported type' => [
             'url' => self::SES_URL,
             'options' => [
@@ -263,6 +365,48 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
         ];
     }
 
+    /**
+     * @see testItRedactsErrorMessagesOfResponses
+     */
+    public static function provideResponses(): iterable
+    {
+        yield 'SES error' => [
+            'url' => self::SES_URL,
+            'content' => '{"message":"Email address is not verified. The following identities failed the check'
+                . ' in region AP-SOUTHEAST-2: john@example.com"}',
+            'expectedContent' => '{"message":"*REDACTED*"}',
+        ];
+
+        yield 'SNS error' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'content' => '<ErrorResponse><Error><Type>Sender</Type><Code>InvalidParameter</Code>'
+                . '<Message>Invalid parameter: PhoneNumber Reason: +61400000000 is not valid to publish to</Message>'
+                . '</Error><RequestId>some-request-id</RequestId></ErrorResponse>',
+            'expectedContent' => '<ErrorResponse><Error><Type>Sender</Type><Code>InvalidParameter</Code>'
+                . '<Message>*REDACTED*</Message></Error><RequestId>some-request-id</RequestId></ErrorResponse>',
+        ];
+
+        yield 'SES success' => [
+            'url' => self::SES_URL,
+            'content' => '{"MessageId":"some-message-id"}',
+            'expectedContent' => '{"MessageId":"some-message-id"}',
+        ];
+
+        yield 'SNS success' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'content' => '<PublishResponse><PublishResult><MessageId>some-message-id</MessageId></PublishResult>'
+                . '</PublishResponse>',
+            'expectedContent' => '<PublishResponse><PublishResult><MessageId>some-message-id</MessageId>'
+                . '</PublishResult></PublishResponse>',
+        ];
+
+        yield 'not an AWS host' => [
+            'url' => 'https://api.example.com/messages',
+            'content' => '{"message":"Unknown recipient john@example.com"}',
+            'expectedContent' => '{"message":"Unknown recipient john@example.com"}',
+        ];
+    }
+
     #[DataProvider('provideRequestsToKeep')]
     public function testItKeepsRequestOptions(string $url, array $options): void
     {
@@ -271,6 +415,24 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
         (new AwsMessagingRequestSanitizerListener())(new HttpRequestSentEvent($requestData));
 
         self::assertSame($options, $requestData->getOptions());
+    }
+
+    #[DataProvider('provideResponses')]
+    public function testItRedactsErrorMessagesOfResponses(string $url, string $content, string $expectedContent): void
+    {
+        $responseData = new ResponseData(
+            content: $content,
+            headers: [],
+            receivedAt: CarbonImmutable::parse('2026-01-01 00:00:01'),
+            statusCode: 400
+        );
+
+        (new AwsMessagingRequestSanitizerListener())(new HttpRequestSentEvent(
+            self::createRequestData($url, []),
+            $responseData
+        ));
+
+        self::assertSame($expectedContent, $responseData->getContent());
     }
 
     #[DataProvider('provideRequestsToRedact')]
