@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyNotification\Tests\Unit\Configurator;
 
+use EonX\EasyNotification\Configurator\IdempotencyKeyQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\ProviderHeaderQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\QueueMessageConfiguratorInterface;
 use EonX\EasyNotification\Configurator\QueueUrlQueueMessageConfigurator;
@@ -13,6 +14,7 @@ use EonX\EasyNotification\Configurator\TypeQueueMessageConfigurator;
 use EonX\EasyNotification\Enum\MessageHeader;
 use EonX\EasyNotification\Enum\MessageType;
 use EonX\EasyNotification\Message\MessageInterface;
+use EonX\EasyNotification\Message\PushMessage;
 use EonX\EasyNotification\Message\QueueMessage;
 use EonX\EasyNotification\Message\QueueMessageInterface;
 use EonX\EasyNotification\Message\RealTimeMessage;
@@ -31,6 +33,52 @@ final class QueueMessageConfiguratorTest extends AbstractUnitTestCase
      */
     public static function provideConfigureData(): iterable
     {
+        yield 'IdempotencyKey with PushMessage' => [
+            new IdempotencyKeyQueueMessageConfigurator(),
+            Config::fromArray(static::$defaultConfig),
+            PushMessage::create('device', 'token')->setIdempotencyKey('my-idempotency-key'),
+            static function (QueueMessageInterface $queueMessage): void {
+                self::assertEquals(
+                    [
+                        MessageHeader::IdempotencyKey->value => 'my-idempotency-key',
+                    ],
+                    $queueMessage->getHeaders()
+                );
+            },
+        ];
+
+        yield 'IdempotencyKey with RealTimeMessage' => [
+            new IdempotencyKeyQueueMessageConfigurator(),
+            Config::fromArray(static::$defaultConfig),
+            RealTimeMessage::create([], ['nathan'])->setIdempotencyKey('my-idempotency-key'),
+            static function (QueueMessageInterface $queueMessage): void {
+                self::assertEquals(
+                    [
+                        MessageHeader::IdempotencyKey->value => 'my-idempotency-key',
+                    ],
+                    $queueMessage->getHeaders()
+                );
+            },
+        ];
+
+        yield 'IdempotencyKey with message without key' => [
+            new IdempotencyKeyQueueMessageConfigurator(),
+            Config::fromArray(static::$defaultConfig),
+            PushMessage::create('device', 'token'),
+            static function (QueueMessageInterface $queueMessage): void {
+                self::assertSame([], $queueMessage->getHeaders());
+            },
+        ];
+
+        yield 'IdempotencyKey with not idempotency key aware message' => [
+            new IdempotencyKeyQueueMessageConfigurator(),
+            Config::fromArray(static::$defaultConfig),
+            new SlackMessage('channel', 'text'),
+            static function (QueueMessageInterface $queueMessage): void {
+                self::assertSame([], $queueMessage->getHeaders());
+            },
+        ];
+
         yield 'Provider Header' => [
             new ProviderHeaderQueueMessageConfigurator(),
             Config::fromArray(static::$defaultConfig),

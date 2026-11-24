@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyNotification\Tests\Unit\Message;
 
 use EonX\EasyNotification\Enum\MessageType;
+use EonX\EasyNotification\Exception\InvalidIdempotencyKeyException;
 use EonX\EasyNotification\Exception\InvalidRealTimeMessageTypeException;
 use EonX\EasyNotification\Message\RealTimeMessage;
 use EonX\EasyNotification\Tests\Unit\AbstractUnitTestCase;
@@ -73,6 +74,13 @@ final class RealTimeMessageTest extends AbstractUnitTestCase
         self::assertSame($topics, $message->getTopics());
     }
 
+    public function testInvalidIdempotencyKeyException(): void
+    {
+        $this->expectException(InvalidIdempotencyKeyException::class);
+
+        RealTimeMessage::create()->setIdempotencyKey('');
+    }
+
     public function testInvalidTypeException(): void
     {
         $this->expectException(InvalidRealTimeMessageTypeException::class);
@@ -85,5 +93,12 @@ final class RealTimeMessageTest extends AbstractUnitTestCase
         $message = RealTimeMessage::create(null, null, MessageType::Flash);
 
         self::assertEquals(MessageType::Flash, $message->getType());
+    }
+
+    public function testMessageCanHaveIdempotencyKey(): void
+    {
+        $message = RealTimeMessage::create(static::$body, static::$topics)->setIdempotencyKey('my-idempotency-key');
+
+        self::assertSame('my-idempotency-key', $message->getIdempotencyKey());
     }
 }
