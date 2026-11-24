@@ -137,6 +137,10 @@ final class AwsMessagingRequestSanitizerListener
 
     private static function redactResponseContent(string $content): string
     {
+        if ($content === '') {
+            return $content;
+        }
+
         $data = \json_decode($content, true);
 
         if (\is_array($data)) {
@@ -151,10 +155,14 @@ final class AwsMessagingRequestSanitizerListener
             return $redactedData === $data ? $content : (string)\json_encode($redactedData);
         }
 
-        return (string)\preg_replace(
-            '/<Message>.*?<\/Message>/s',
+        if (\str_starts_with(\ltrim($content), '<') === false) {
+            return self::REDACTED;
+        }
+
+        return \preg_replace(
+            '/<Message>.*?(?:<\/Message>|\z)/s',
             '<Message>' . self::REDACTED . '</Message>',
             $content
-        );
+        ) ?? self::REDACTED;
     }
 }

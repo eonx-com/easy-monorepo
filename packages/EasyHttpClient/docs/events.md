@@ -99,7 +99,8 @@ replaces with `*REDACTED*`:
   dot-separated part of a longer key, for example `PublishBatchRequestEntries.member.1.Message` in a form body (SNS,
   the SES v1 API). The field names of a form body are URL-decoded before the match
 - in the response: the error message (`message` in a JSON body, `<Message>` in an XML body), as AWS puts the failed
-  e-mail addresses and phone numbers there. The error code stays
+  e-mail addresses and phone numbers there. The error code stays. A body that is neither JSON nor XML (for example,
+  a JSON body cut off when the response is destructed before the end) is replaced as a whole
 
 The listener is always registered. The request itself is sent unchanged.
 

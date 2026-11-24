@@ -418,6 +418,30 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
                 . '<Message>*REDACTED*</Message></Error><RequestId>some-request-id</RequestId></ErrorResponse>',
         ];
 
+        yield 'truncated SES error' => [
+            'url' => self::SES_URL,
+            'content' => '{"message":"Unknown recipient john@example.com',
+            'expectedContent' => '*REDACTED*',
+        ];
+
+        yield 'truncated SNS error' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'content' => '<ErrorResponse><Error><Code>InvalidParameter</Code><Message>Invalid parameter: +6140',
+            'expectedContent' => '<ErrorResponse><Error><Code>InvalidParameter</Code><Message>*REDACTED*</Message>',
+        ];
+
+        yield 'plain text error' => [
+            'url' => self::SES_URL,
+            'content' => 'Unknown recipient john@example.com',
+            'expectedContent' => '*REDACTED*',
+        ];
+
+        yield 'empty response' => [
+            'url' => self::SES_URL,
+            'content' => '',
+            'expectedContent' => '',
+        ];
+
         yield 'SES success' => [
             'url' => self::SES_URL,
             'content' => '{"MessageId":"some-message-id"}',
