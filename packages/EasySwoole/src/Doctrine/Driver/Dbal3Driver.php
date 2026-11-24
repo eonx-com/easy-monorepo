@@ -6,6 +6,7 @@ namespace EonX\EasySwoole\Doctrine\Driver;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\API\ExceptionConverter;
+use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use EonX\EasyDoctrine\AwsRds\Resolver\AwsRdsConnectionParamsResolver;
@@ -36,7 +37,7 @@ final readonly class Dbal3Driver implements Driver
         private ?LoggerInterface $logger = null,
     ) {}
 
-    public function connect(#[SensitiveParameter] array $params)
+    public function connect(#[SensitiveParameter] array $params): DriverConnection
     {
         $request = $this->requestStack->getCurrentRequest();
         if ($request?->attributes->get(RequestAttribute::EasySwooleEnabled->value) !== true) {
@@ -81,7 +82,7 @@ final readonly class Dbal3Driver implements Driver
         return new DbalConnection($pool);
     }
 
-    public function getDatabasePlatform()
+    public function getDatabasePlatform(): AbstractPlatform
     {
         return $this->decorated->getDatabasePlatform();
     }
