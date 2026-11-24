@@ -29,7 +29,7 @@ $ composer require bref/symfony-bridge
 
 ### SQS handler retries (Symfony Messenger)
 
-`EonX\EasyServerless\Bundle\SqsHandler\SqsHandler` does not send failed messages back to the transport. When a
+`EonX\EasyServerless\Messenger\SqsHandler\SqsHandler` does not send failed messages back to the transport. When a
 message fails, the handler keeps the same SQS message and changes its visibility timeout. SQS then delivers it again
 after the delay. The handler counts attempts with the SQS `ApproximateReceiveCount` attribute.
 

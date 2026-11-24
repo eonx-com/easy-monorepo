@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Tests\Unit\bundle\SqsHandler;
+namespace EonX\EasyServerless\Tests\Unit\Messenger\SqsHandler;
 
 use AsyncAws\Core\Credentials\Credentials;
 use AsyncAws\Sqs\SqsClient;
 use Bref\Context\Context;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
-use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
+use EonX\EasyServerless\Messenger\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Tests\Stub\ErrorHandler\ErrorHandler\ErrorHandlerStub;
 use EonX\EasyServerless\Tests\Stub\Messenger\MessageBus\MessageBusStub;
 use EonX\EasyServerless\Tests\Stub\Messenger\RetryStrategy\RetryStrategyStub;

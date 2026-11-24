@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Tests\Unit\Bundle\Listener;
+namespace EonX\EasyServerless\Tests\Unit\Aws\Listener;
 
-use EonX\EasyServerless\Bundle\Listener\TrustApiGatewayProxyRequestListener;
+use EonX\EasyServerless\Aws\Listener\TrustApiGatewayProxyRequestListener;
 use EonX\EasyServerless\Tests\Unit\AbstractUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

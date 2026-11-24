@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use EonX\EasyServerless\Bundle\Enum\BundleParam;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
-use EonX\EasyServerless\Bundle\Loader\HealthCheckRouteLoader;
 use EonX\EasyServerless\Health\Checker\AggregatedHealthChecker;
 use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
+use EonX\EasyServerless\Health\Loader\HealthCheckRouteLoader;
 use Psr\Log\LoggerInterface;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -27,6 +28,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(HealthCheckRouteLoader::class)
+        ->arg('$routeType', BundleParam::RouteType->value)
         ->tag('routing.loader');
 
     $services->set(SanityChecker::class);

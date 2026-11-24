@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyDoctrine\Bundle\Factory;
+namespace EonX\EasyDoctrine\EntityEvent\Factory;
 
 use DeepCopy\DeepCopy;
 use DeepCopy\Matcher\PropertyTypeMatcher;

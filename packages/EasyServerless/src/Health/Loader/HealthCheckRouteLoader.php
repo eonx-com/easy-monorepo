@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Bundle\Loader;
+namespace EonX\EasyServerless\Health\Loader;
 
-use EonX\EasyServerless\Bundle\Enum\BundleParam;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
 use RuntimeException;
 use Symfony\Component\Config\Loader\Loader;
@@ -15,12 +14,18 @@ final class HealthCheckRouteLoader extends Loader
 {
     private bool $isLoaded = false;
 
+    public function __construct(
+        private readonly string $routeType,
+    ) {
+        parent::__construct();
+    }
+
     public function load(mixed $resource, ?string $type = null): RouteCollection
     {
         if ($this->isLoaded) {
             throw new RuntimeException(\sprintf(
                 'Do not add the "%s" loader twice',
-                BundleParam::RouteType->value
+                $this->routeType
             ));
         }
 
@@ -39,6 +44,6 @@ final class HealthCheckRouteLoader extends Loader
 
     public function supports(mixed $resource, ?string $type = null): bool
     {
-        return $type === BundleParam::RouteType->value;
+        return $type === $this->routeType;
     }
 }

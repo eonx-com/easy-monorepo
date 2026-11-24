@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use EonX\EasyDoctrine\Bundle\Enum\ConfigServiceId;
-use EonX\EasyDoctrine\Bundle\Factory\ObjectCopierFactory;
 use EonX\EasyDoctrine\Common\Listener\TimestampableListener;
 use EonX\EasyDoctrine\EntityEvent\Copier\ObjectCopierInterface;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcher;
 use EonX\EasyDoctrine\EntityEvent\Dispatcher\DeferredEntityEventDispatcherInterface;
+use EonX\EasyDoctrine\EntityEvent\Factory\ObjectCopierFactory;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
