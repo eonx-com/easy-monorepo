@@ -69,7 +69,9 @@ namespace DDTrace {
 
     function active_span(): ?SpanData
     {
-        return SpanStackStub::$spans[\array_key_last(SpanStackStub::$spans)] ?? null;
+        $span = \end(SpanStackStub::$spans);
+
+        return $span === false ? null : $span;
     }
 
     function close_span(float $finishTime = 0): ?false
