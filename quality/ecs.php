@@ -106,6 +106,8 @@ return ECSConfig::configure()
             'packages/EasyDoctrine/src/EntityEvent/EntityManager/WithEventsEntityManager.php',
             'packages/EasySecurity/src/Common/Context/SecurityContext.php',
             'packages/EasyServerless/src/Aws/Runtime/ServerlessSymfonyRuntime.php',
+            // RootSpanData extends SpanData, as in the ddtrace extension
+            'packages/EasyServerless/tests/Fixture/ddtrace/ddtrace.php',
             'packages/EasyTest/src/InvalidData/Maker/InvalidDataMaker.php',
         ],
         // Architecture tests scan the file tree, branching over the found files is their nature

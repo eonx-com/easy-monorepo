@@ -8,6 +8,7 @@ use Bref\Context\Context;
 use Bref\Event\Sqs\SqsRecord;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use EonX\EasyServerless\Datadog\Tracer\EnvelopeTracer;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
 use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
@@ -54,6 +55,7 @@ final class SqsHandler extends AbstractSqsHandler
         int $timeoutThresholdMilliseconds = 1000,
         iterable $stateCheckers = [],
         private readonly ?SymfonyEventDispatcherInterface $symfonyEventDispatcher = null,
+        private readonly ?EnvelopeTracer $envelopeTracer = null,
     ) {
         parent::__construct($appMaxRetries, $partialBatchFailure, $timeoutThresholdMilliseconds, $stateCheckers);
     }
@@ -87,6 +89,9 @@ final class SqsHandler extends AbstractSqsHandler
 
         // The number of retries comes only from SQS, a RedeliveryStamp serialized in the message is not relevant
         $envelope = $envelope->withoutAll(RedeliveryStamp::class);
+
+        // Each record gets its own trace, connected to the trace that sent the message
+        $span = $this->envelopeTracer?->startSpan($envelope, $this->transportName);
 
         try {
             $stamps = [
@@ -198,7 +203,11 @@ final class SqsHandler extends AbstractSqsHandler
                 );
             }
         } finally {
-            $this->dispatchEvent(new EnvelopeDispatchedEvent());
+            try {
+                $this->dispatchEvent(new EnvelopeDispatchedEvent());
+            } finally {
+                $this->envelopeTracer?->finishSpan($span);
+            }
         }
     }
 

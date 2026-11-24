@@ -5,13 +5,30 @@ namespace EonX\EasyServerless\Tests\Unit\Bundle;
 
 use Bref\Symfony\Messenger\BrefMessengerBundle;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
+use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Datadog\Listener\PhpRuntimeInfoListener;
+use EonX\EasyServerless\Datadog\Tracer\EnvelopeTracer;
 use EonX\EasyServerless\Messenger\Listener\ResetServicesListener;
 use EonX\EasyServerless\Monolog\Processor\PhpSourceProcessor;
 use EonX\EasyServerless\Tests\Unit\AbstractSymfonyTestCase;
+use ReflectionProperty;
 
 final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
 {
+    public function testDisableDatadogRemovesEnvelopeTracerFromSqsHandler(): void
+    {
+        $container = $this->getKernel(
+            configs: [__DIR__ . '/../../Fixture/config/datadog_disabled.php'],
+            bundles: [new BrefMessengerBundle()]
+        )->getContainer();
+        /** @var \EonX\EasyServerless\Bundle\SqsHandler\SqsHandler $sqsHandler */
+        $sqsHandler = $container->get(SqsHandler::class);
+
+        $envelopeTracer = new ReflectionProperty(SqsHandler::class, 'envelopeTracer')->getValue($sqsHandler);
+
+        self::assertNull($envelopeTracer);
+    }
+
     public function testDisableDatadogSucceeds(): void
     {
         $container = $this->getKernel(
@@ -19,6 +36,7 @@ final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
         )->getContainer();
 
         self::assertFalse($container->has(PhpRuntimeInfoListener::class));
+        self::assertFalse($container->has(EnvelopeTracer::class));
     }
 
     public function testDisableMonologSucceeds(): void
@@ -56,6 +74,20 @@ final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
 
         self::assertTrue($container->has(PhpSourceProcessor::class));
         self::assertTrue($container->has(PhpRuntimeInfoListener::class));
+        self::assertTrue($container->has(EnvelopeTracer::class));
         self::assertTrue($container->hasParameter(ConfigParam::AssetsSeparateDomainEnabled->value));
+    }
+
+    public function testSqsHandlerUsesEnvelopeTracerByDefault(): void
+    {
+        $container = $this->getKernel(
+            bundles: [new BrefMessengerBundle()]
+        )->getContainer();
+        /** @var \EonX\EasyServerless\Bundle\SqsHandler\SqsHandler $sqsHandler */
+        $sqsHandler = $container->get(SqsHandler::class);
+
+        $envelopeTracer = new ReflectionProperty(SqsHandler::class, 'envelopeTracer')->getValue($sqsHandler);
+
+        self::assertInstanceOf(EnvelopeTracer::class, $envelopeTracer);
     }
 }
