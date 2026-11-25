@@ -7,14 +7,20 @@ use EonX\EasySecurity\Common\Configurator\DefaultSecurityContextConfigurator;
 use EonX\EasySecurity\Common\Context\SecurityContextInterface;
 use EonX\EasySecurity\Common\Resolver\SecurityContextResolverInterface;
 use EonX\EasySecurity\EasyBugsnag\Configurator\SecurityContextClientConfigurator;
+use EonX\EasySecurity\SymfonySecurity\Controller\EasySecurityLoginController;
 use EonX\EasySecurity\SymfonySecurity\Listener\AddWwwAuthenticateHeaderListener;
 use EonX\EasySecurity\Tests\Unit\AbstractSymfonyTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Bundle\FrameworkBundle\Routing\AttributeRouteControllerLoader;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\Loader\AttributeDirectoryLoader;
+use Symfony\Component\Routing\Loader\PhpFileLoader;
 
 final class EasySecurityBundleTest extends AbstractSymfonyTestCase
 {
@@ -32,6 +38,25 @@ final class EasySecurityBundleTest extends AbstractSymfonyTestCase
             'authorization' => 'Basic ' . \base64_encode('username:password'),
             'expectedChallenge' => 'Basic realm="user"',
         ];
+    }
+
+    public function testLoginRouteIsImportedFromRoutesConfig(): void
+    {
+        $fileLocator = new FileLocator();
+        $attributeLoader = new AttributeRouteControllerLoader();
+        $loader = new PhpFileLoader($fileLocator);
+        $loader->setResolver(new LoaderResolver([
+            $loader,
+            new AttributeDirectoryLoader($fileLocator, $attributeLoader),
+        ]));
+
+        $routes = $loader->load(__DIR__ . '/../../../bundle/config/routes.php');
+
+        $route = $routes->get('easy_security.login');
+        self::assertCount(1, $routes);
+        self::assertNotNull($route);
+        self::assertSame('/easy-security/login', $route->getPath());
+        self::assertSame(EasySecurityLoginController::class . '::login', $route->getDefault('_controller'));
     }
 
     public function testSanity(): void

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Bundle\Listener;
+namespace EonX\EasyServerless\Aws\Listener;
 
 use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;

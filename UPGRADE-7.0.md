@@ -87,8 +87,8 @@ Tips:
 
 ### EasyDoctrine
 
-- [ ] Replace `ObjectCopierFactory::create()` with `ObjectCopierFactory::createForDeletedEntity()`.
-- [ ] Replace the `ObjectCopierInterface` service with `easy_doctrine.deleted_entity_copier`.
+- [ ] Replace the `ObjectCopierInterface` service and the `ObjectCopierFactory::create()` calls with the
+  `easy_doctrine.deleted_entity_copier` service. In 7.0 `ObjectCopierFactory` is removed.
 - [ ] If you create `DeferredEntityEventDispatcher` yourself, pass `deletedEntityCopier:` and remove `objectCopier:`.
 
 ### EasyBatch
@@ -114,7 +114,8 @@ Tips:
 ### EasyServerless
 
 - [ ] Symfony: use `EonX\EasyServerless\Bundle\SqsHandler\SqsHandler` as the Lambda SQS handler. Stop using
-  `ReportBusDriver`. Laravel is not affected.
+  `ReportBusDriver`. Laravel is not affected. In 7.0 this class has a new namespace, see
+  [EasyServerless](#easyserverless-1).
 - [ ] Remove the `easy_serverless.easy_error_handler` config key. It does nothing on 6.x.
 
 ### EasyUtils
@@ -273,8 +274,8 @@ Tips:
 
 ### EasyDoctrine
 
-- `ObjectCopierFactory::create()` and the `ObjectCopierInterface` service are removed. Use
-  `createForDeletedEntity()` and `easy_doctrine.deleted_entity_copier`.
+- `EonX\EasyDoctrine\Bundle\Factory\ObjectCopierFactory` and the `ObjectCopierInterface` service are removed. Use
+  the `easy_doctrine.deleted_entity_copier` service.
 - `DeferredEntityEventDispatcher::__construct()`: the `$objectCopier` argument is removed. `$deletedEntityCopier` is
   required and is now the second argument.
 - `DeferredEntityEventDispatcherInterface::deferUpdate()`: argument `$object` is renamed to `$entity`.
@@ -448,12 +449,26 @@ Laravel:
 - `FromRequestSecurityContextConfiguratorListener` priority changed from 9999 to 9990.
 - Bugsnag metadata: the API token key `original` (raw token) is now `original_hash` (SHA-256 of the token). Update
   your Bugsnag filters.
+- Symfony: `EonX\EasySecurity\Bundle\Controller\EasySecurityLoginController` is moved to
+  `EonX\EasySecurity\SymfonySecurity\Controller\EasySecurityLoginController`. The service id changes too. The
+  `easy_security.login` route and the `@EasySecurityBundle/config/routes.php` import do not change.
 
 ### EasyServerless
 
 - Symfony: `ReportBusDriver` and its alias `EonX\EasyServerless\EasyErrorHandler\BusDriver\ReportBusDriver` are
-  removed. Use `EonX\EasyServerless\Bundle\SqsHandler\SqsHandler`. With the Bref SQS consumer, errors are not
+  removed. Use `EonX\EasyServerless\Messenger\SqsHandler\SqsHandler`. With the Bref SQS consumer, errors are not
   reported anymore. Laravel keeps `EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler`.
+- Symfony: these classes are moved out of the `Bundle` namespace. The service ids change too. Update the Lambda
+  handler in your `serverless.yml` and your DI config:
+
+  | 6.x | 7.0 |
+  | --- | --- |
+  | `EonX\EasyServerless\Bundle\SqsHandler\SqsHandler` | `EonX\EasyServerless\Messenger\SqsHandler\SqsHandler` |
+  | `EonX\EasyServerless\Bundle\Listener\SecurityHeadersResponseListener` | `EonX\EasyServerless\SecurityHeader\Listener\SecurityHeadersResponseListener` |
+  | `EonX\EasyServerless\Bundle\Listener\TrustApiGatewayProxyRequestListener` | `EonX\EasyServerless\Aws\Listener\TrustApiGatewayProxyRequestListener` |
+  | `EonX\EasyServerless\Bundle\Loader\HealthCheckRouteLoader` | `EonX\EasyServerless\Health\Loader\HealthCheckRouteLoader` |
+
+- `HealthCheckRouteLoader::__construct()` has a new required `$routeType` argument.
 - The `easy_serverless.easy_error_handler` config key is removed.
 - `LumenHttpKernel` is removed.
 

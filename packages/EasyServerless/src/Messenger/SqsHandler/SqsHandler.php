@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Bundle\SqsHandler;
+namespace EonX\EasyServerless\Messenger\SqsHandler;
 
 use AsyncAws\Sqs\SqsClient;
 use Bref\Context\Context;
@@ -11,7 +11,6 @@ use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
 use EonX\EasyServerless\Datadog\Tracer\EnvelopeTracer;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
-use EonX\EasyServerless\Messenger\SqsHandler\AbstractSqsHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;

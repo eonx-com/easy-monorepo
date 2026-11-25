@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyServerless\Tests\Unit\bundle\SqsHandler;
+namespace EonX\EasyServerless\Tests\Unit\Messenger\SqsHandler;
 
 use AsyncAws\Core\Credentials\Credentials;
 use AsyncAws\Sqs\SqsClient;
 use Bref\Context\Context;
 use DDTrace\RootSpanData;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
-use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Datadog\Tracer\EnvelopeTracer;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
+use EonX\EasyServerless\Messenger\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Tests\Stub\ErrorHandler\ErrorHandler\ErrorHandlerStub;
 use EonX\EasyServerless\Tests\Stub\Messenger\MessageBus\MessageBusStub;
 use EonX\EasyServerless\Tests\Stub\Messenger\RetryStrategy\RetryStrategyStub;
@@ -293,7 +293,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
             self::markTestSkipped('The ddtrace extension is loaded');
         }
 
-        require_once __DIR__ . '/../../../Fixture/ddtrace/ddtrace.php';
+        require_once __DIR__ . '/../../../../Fixture/ddtrace/ddtrace.php';
         $activeSpans = [];
         $symfonyEventDispatcher = new EventDispatcher();
         $symfonyEventDispatcher->addListener(
@@ -353,7 +353,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
             self::markTestSkipped('The ddtrace extension is loaded');
         }
 
-        require_once __DIR__ . '/../../../Fixture/ddtrace/ddtrace.php';
+        require_once __DIR__ . '/../../../../Fixture/ddtrace/ddtrace.php';
         $symfonyEventDispatcher = new EventDispatcher();
         $symfonyEventDispatcher->addListener(
             EnvelopeDispatchedEvent::class,
@@ -413,7 +413,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
             self::markTestSkipped('The ddtrace extension is loaded');
         }
 
-        require_once __DIR__ . '/../../../Fixture/ddtrace/ddtrace.php';
+        require_once __DIR__ . '/../../../../Fixture/ddtrace/ddtrace.php';
         $rootSpans = [];
         $symfonyEventDispatcher = new EventDispatcher();
         $symfonyEventDispatcher->addListener(
@@ -525,7 +525,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
             self::markTestSkipped('The ddtrace extension is loaded');
         }
 
-        require_once __DIR__ . '/../../../Fixture/ddtrace/ddtrace.php';
+        require_once __DIR__ . '/../../../../Fixture/ddtrace/ddtrace.php';
         $rootSpans = [];
         $symfonyEventDispatcher = new EventDispatcher();
         $symfonyEventDispatcher->addListener(

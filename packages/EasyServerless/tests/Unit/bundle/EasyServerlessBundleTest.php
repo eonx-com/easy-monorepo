@@ -5,10 +5,10 @@ namespace EonX\EasyServerless\Tests\Unit\Bundle;
 
 use Bref\Symfony\Messenger\BrefMessengerBundle;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
-use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Datadog\Listener\PhpRuntimeInfoListener;
 use EonX\EasyServerless\Datadog\Tracer\EnvelopeTracer;
 use EonX\EasyServerless\Messenger\Listener\ResetServicesListener;
+use EonX\EasyServerless\Messenger\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Monolog\Processor\PhpSourceProcessor;
 use EonX\EasyServerless\Tests\Unit\AbstractSymfonyTestCase;
 use ReflectionProperty;
@@ -21,7 +21,7 @@ final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
             configs: [__DIR__ . '/../../Fixture/config/datadog_disabled.php'],
             bundles: [new BrefMessengerBundle()]
         )->getContainer();
-        /** @var \EonX\EasyServerless\Bundle\SqsHandler\SqsHandler $sqsHandler */
+        /** @var \EonX\EasyServerless\Messenger\SqsHandler\SqsHandler $sqsHandler */
         $sqsHandler = $container->get(SqsHandler::class);
 
         $envelopeTracer = new ReflectionProperty(SqsHandler::class, 'envelopeTracer')->getValue($sqsHandler);
@@ -83,7 +83,7 @@ final class EasyServerlessBundleTest extends AbstractSymfonyTestCase
         $container = $this->getKernel(
             bundles: [new BrefMessengerBundle()]
         )->getContainer();
-        /** @var \EonX\EasyServerless\Bundle\SqsHandler\SqsHandler $sqsHandler */
+        /** @var \EonX\EasyServerless\Messenger\SqsHandler\SqsHandler $sqsHandler */
         $sqsHandler = $container->get(SqsHandler::class);
 
         $envelopeTracer = new ReflectionProperty(SqsHandler::class, 'envelopeTracer')->getValue($sqsHandler);
