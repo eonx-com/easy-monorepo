@@ -58,4 +58,9 @@ final class LambdaContextHelper
     {
         return self::inLambda() === true && self::inLocalLambda() === false;
     }
+
+    public static function inSnapStartLambda(): bool
+    {
+        return self::inRemoteLambda() && \getenv('AWS_LAMBDA_INITIALIZATION_TYPE') === 'snap-start';
+    }
 }

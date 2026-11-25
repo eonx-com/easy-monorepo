@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Laravel;
 
+use Bref\Bref;
 use EonX\EasyPagination\Pagination\PaginationInterface;
 use EonX\EasyPagination\Pagination\StatelessPagination;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClient;
 use EonX\EasyServerless\AppMetric\Client\AppMetricClientInterface;
 use EonX\EasyServerless\AppMetric\Factory\AppMetricLoggerFactory;
+use EonX\EasyServerless\Aws\Helper\LambdaContextHelper;
 use EonX\EasyServerless\Bundle\Enum\ConfigServiceId;
 use EonX\EasyServerless\Bundle\Enum\ConfigTag;
 use EonX\EasyServerless\Datadog\Helper\RootSpanHelper;
@@ -17,6 +19,11 @@ use EonX\EasyServerless\Health\Checker\SanityChecker;
 use EonX\EasyServerless\Health\Controller\HealthCheckController;
 use EonX\EasyServerless\Laravel\Middleware\PhpRuntimeInfoMiddleware;
 use EonX\EasyServerless\Laravel\SqsHandlers\SqsHandler;
+use EonX\EasyServerless\Laravel\Subscribers\LazySnapStartLifecycleSubscriber;
+use EonX\EasyServerless\Laravel\Warmers\DatabaseConnectionsWarmer;
+use EonX\EasyServerless\SnapStart\Enum\SnapStartTag;
+use EonX\EasyServerless\SnapStart\Subscriber\SnapStartLifecycleSubscriber;
+use EonX\EasyServerless\SnapStart\Warmer\ClassMapWarmer;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Http\Kernel as HttpKernel;
@@ -47,6 +54,7 @@ final class EasyServerlessServiceProvider extends ServiceProvider
         $this->registerAppMetric();
         $this->registerDatadog();
         $this->registerHealth();
+        $this->registerSnapStart();
 
         if (\class_exists(PaginationInterface::class)) {
             $this->registerPagination();
@@ -72,6 +80,22 @@ final class EasyServerlessServiceProvider extends ServiceProvider
                     : [],
             );
         });
+    }
+
+    /**
+     * Container::tagged() creates the services of a tag in a single generator, which stops at the first service that
+     * cannot be created. With a closure per service, the SnapStartLifecycleSubscriber skips it and goes on.
+     *
+     * @return iterable<string, \Closure(): object>
+     */
+    private static function createTaggedServiceClosures(Container $app, string $tag): iterable
+    {
+        /** @var array<string, string[]> $tags */
+        $tags = (new ReflectionProperty(Container::class, 'tags'))->getValue($app);
+
+        foreach ($tags[$tag] ?? [] as $abstract) {
+            yield $abstract => static fn (): object => $app->make($abstract);
+        }
     }
 
     private function registerAppMetric(): void
@@ -172,5 +196,44 @@ final class EasyServerlessServiceProvider extends ServiceProvider
                 $app->make(PaginationProviderInterface::class)
             )
         );
+    }
+
+    private function registerSnapStart(): void
+    {
+        if ((bool)\config('easy-serverless.snap_start.enabled', false) === false) {
+            return;
+        }
+
+        if (\config('easy-serverless.snap_start.warmers.class_map.enabled', true)) {
+            $this->app->singleton(
+                ClassMapWarmer::class,
+                static fn (): ClassMapWarmer => new ClassMapWarmer(
+                    \config('easy-serverless.snap_start.warmers.class_map.namespaces', ['App\\'])
+                )
+            );
+            $this->app->tag([ClassMapWarmer::class], [SnapStartTag::Warmer->value]);
+        }
+
+        $this->app->singleton(DatabaseConnectionsWarmer::class);
+
+        $this->app->singleton(
+            SnapStartLifecycleSubscriber::class,
+            static fn (Container $app): SnapStartLifecycleSubscriber => new SnapStartLifecycleSubscriber(
+                (static function () use ($app): iterable {
+                    yield from self::createTaggedServiceClosures($app, SnapStartTag::Warmer->value);
+
+                    // Closes the connections opened during the initialization, it must run last
+                    yield DatabaseConnectionsWarmer::class => static fn (): DatabaseConnectionsWarmer
+                        => $app->make(DatabaseConnectionsWarmer::class);
+                })(),
+                self::createTaggedServiceClosures($app, SnapStartTag::AfterRestoreHook->value),
+                $app->make(LoggerInterface::class)
+            )
+        );
+
+        // Subscribed now as Lumen boots the providers on the first request, after the snapshot
+        if (LambdaContextHelper::inSnapStartLambda()) {
+            Bref::events()->subscribe(new LazySnapStartLifecycleSubscriber($this->app));
+        }
     }
 }

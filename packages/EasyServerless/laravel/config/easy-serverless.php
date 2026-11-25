@@ -12,6 +12,15 @@ return [
     'health' => [
         'enabled' => true,
     ],
+    'snap_start' => [
+        'enabled' => false,
+        'warmers' => [
+            'class_map' => [
+                'enabled' => true,
+                'namespaces' => ['App\\'],
+            ],
+        ],
+    ],
     'state' => [
         'check' => true,
     ],
