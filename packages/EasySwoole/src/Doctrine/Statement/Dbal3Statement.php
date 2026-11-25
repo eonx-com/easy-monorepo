@@ -42,7 +42,7 @@ final readonly class Dbal3Statement implements Statement
     public function execute($params = null): Result
     {
         try {
-            $this->pdoStatement->execute($params ?? []);
+            $this->pdoStatement->execute($params);
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }

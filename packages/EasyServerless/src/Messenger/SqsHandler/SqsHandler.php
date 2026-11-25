@@ -8,6 +8,7 @@ use Bref\Context\Context;
 use Bref\Event\Sqs\SqsRecord;
 use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyEventDispatcher\Dispatcher\EventDispatcherInterface;
+use EonX\EasyServerless\Datadog\Tracer\EnvelopeTracer;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
 use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
 use Psr\Container\ContainerInterface;
@@ -53,6 +54,7 @@ final class SqsHandler extends AbstractSqsHandler
         int $timeoutThresholdMilliseconds = 1000,
         iterable $stateCheckers = [],
         private readonly ?SymfonyEventDispatcherInterface $symfonyEventDispatcher = null,
+        private readonly ?EnvelopeTracer $envelopeTracer = null,
     ) {
         parent::__construct($appMaxRetries, $partialBatchFailure, $timeoutThresholdMilliseconds, $stateCheckers);
     }
@@ -87,6 +89,8 @@ final class SqsHandler extends AbstractSqsHandler
         // The number of retries comes only from SQS, a RedeliveryStamp serialized in the message is not relevant
         $envelope = $envelope->withoutAll(RedeliveryStamp::class);
 
+        $span = null;
+
         try {
             $stamps = [
                 new AmazonSqsReceivedStamp($sqsRecord->getMessageId()),
@@ -107,6 +111,10 @@ final class SqsHandler extends AbstractSqsHandler
 
             // Replacing the envelope with the containing the new stamps allows the retry strategy to work properly
             $envelope = $envelope->with(...$stamps);
+
+            // Each record gets its own trace, connected to the trace that sent the message. It starts once the
+            // envelope has the stamps of the record, as its tags come from them
+            $span = $this->envelopeTracer?->startSpan($envelope, $this->transportName);
 
             $event = new WorkerMessageReceivedEvent($envelope, $this->transportName);
             $this->dispatchEvent($event);
@@ -197,7 +205,11 @@ final class SqsHandler extends AbstractSqsHandler
                 );
             }
         } finally {
-            $this->dispatchEvent(new EnvelopeDispatchedEvent());
+            try {
+                $this->dispatchEvent(new EnvelopeDispatchedEvent());
+            } finally {
+                $this->envelopeTracer?->finishSpan($span);
+            }
         }
     }
 

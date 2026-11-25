@@ -27,7 +27,10 @@ return static function (DefinitionConfigurator $definition) {
             ->end()
             ->arrayNode('datadog')
                 ->canBeDisabled()
-                ->info('Add PHP runtime information to the Datadog root span when the ddtrace extension is loaded.')
+                ->info(
+                    'When the ddtrace extension is loaded, add PHP runtime information to the Datadog root span, '
+                    . 'and continue the trace that sent the message for each SQS record.'
+                )
             ->end()
             ->arrayNode('health')
                 ->canBeDisabled()
