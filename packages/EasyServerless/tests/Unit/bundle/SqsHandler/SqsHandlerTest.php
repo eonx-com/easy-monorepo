@@ -11,6 +11,7 @@ use EonX\EasyErrorHandler\Common\ErrorHandler\ErrorHandlerInterface;
 use EonX\EasyServerless\Bundle\SqsHandler\SqsHandler;
 use EonX\EasyServerless\Datadog\Tracer\EnvelopeTracer;
 use EonX\EasyServerless\Event\ServerlessWorkerMessageFailedEvent;
+use EonX\EasyServerless\Messenger\Event\EnvelopeDispatchedEvent;
 use EonX\EasyServerless\Tests\Stub\ErrorHandler\ErrorHandler\ErrorHandlerStub;
 use EonX\EasyServerless\Tests\Stub\Messenger\MessageBus\MessageBusStub;
 use EonX\EasyServerless\Tests\Stub\Messenger\RetryStrategy\RetryStrategyStub;
@@ -286,6 +287,126 @@ final class SqsHandlerTest extends AbstractUnitTestCase
     }
 
     #[RunInSeparateProcess]
+    public function testHandleFinishesTraceOfRecordAfterEnvelopeDispatchedEvent(): void
+    {
+        if (\extension_loaded('ddtrace')) {
+            self::markTestSkipped('The ddtrace extension is loaded');
+        }
+
+        require_once __DIR__ . '/../../../Fixture/ddtrace/ddtrace.php';
+        $activeSpans = [];
+        $symfonyEventDispatcher = new EventDispatcher();
+        $symfonyEventDispatcher->addListener(
+            EnvelopeDispatchedEvent::class,
+            static function () use (&$activeSpans): void {
+                $activeSpans[] = active_span();
+            }
+        );
+        $encodedEnvelope = new PhpSerializer()
+            ->encode(new Envelope(new stdClass(), [
+                new SerializerStamp([
+                    'datadog' => [
+                        'x-datadog-parent-id' => '2222',
+                        'x-datadog-trace-id' => '1111',
+                    ],
+                ]),
+            ]));
+        $sut = new SqsHandler(
+            bus: new MessageBusStub(),
+            serializer: new PhpSerializer(),
+            retryStrategyLocator: new ServiceLocator([]),
+            sqsClient: new SqsClient(['region' => 'ap-southeast-2']),
+            transportName: self::TRANSPORT_NAME,
+            symfonyEventDispatcher: $symfonyEventDispatcher,
+            envelopeTracer: new EnvelopeTracer()
+        );
+
+        $sut->handle(
+            [
+                'Records' => [
+                    [
+                        'attributes' => [
+                            'ApproximateReceiveCount' => '1',
+                        ],
+                        'body' => $encodedEnvelope['body'],
+                        'eventSource' => 'aws:sqs',
+                        'eventSourceARN' => 'arn:aws:sqs:ap-southeast-2:123456789012:queue',
+                        'messageAttributes' => [],
+                        'messageId' => self::MESSAGE_ID,
+                        'receiptHandle' => 'receipt-handle',
+                    ],
+                ],
+            ],
+            new Context('request-id', (int) (\microtime(true) * 1000) + 300000, 'function-arn', '')
+        );
+
+        self::assertCount(1, $activeSpans);
+        self::assertInstanceOf(RootSpanData::class, $activeSpans[0]);
+        self::assertSame('2222', $activeSpans[0]->parentId);
+        self::assertNull(active_span());
+    }
+
+    #[RunInSeparateProcess]
+    public function testHandleFinishesTraceOfRecordWhenEnvelopeDispatchedListenerFails(): void
+    {
+        if (\extension_loaded('ddtrace')) {
+            self::markTestSkipped('The ddtrace extension is loaded');
+        }
+
+        require_once __DIR__ . '/../../../Fixture/ddtrace/ddtrace.php';
+        $symfonyEventDispatcher = new EventDispatcher();
+        $symfonyEventDispatcher->addListener(
+            EnvelopeDispatchedEvent::class,
+            static function (): void {
+                throw new RuntimeException('Listener failure');
+            }
+        );
+        $encodedEnvelope = new PhpSerializer()
+            ->encode(new Envelope(new stdClass(), [
+                new SerializerStamp([
+                    'datadog' => [
+                        'x-datadog-parent-id' => '2222',
+                        'x-datadog-trace-id' => '1111',
+                    ],
+                ]),
+            ]));
+        $sut = new SqsHandler(
+            bus: new MessageBusStub(),
+            serializer: new PhpSerializer(),
+            retryStrategyLocator: new ServiceLocator([]),
+            sqsClient: new SqsClient(['region' => 'ap-southeast-2']),
+            transportName: self::TRANSPORT_NAME,
+            symfonyEventDispatcher: $symfonyEventDispatcher,
+            envelopeTracer: new EnvelopeTracer()
+        );
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Listener failure');
+
+        try {
+            $sut->handle(
+                [
+                    'Records' => [
+                        [
+                            'attributes' => [
+                                'ApproximateReceiveCount' => '1',
+                            ],
+                            'body' => $encodedEnvelope['body'],
+                            'eventSource' => 'aws:sqs',
+                            'eventSourceARN' => 'arn:aws:sqs:ap-southeast-2:123456789012:queue',
+                            'messageAttributes' => [],
+                            'messageId' => self::MESSAGE_ID,
+                            'receiptHandle' => 'receipt-handle',
+                        ],
+                    ],
+                ],
+                new Context('request-id', (int) (\microtime(true) * 1000) + 300000, 'function-arn', '')
+            );
+        } finally {
+            self::assertNull(active_span());
+        }
+    }
+
+    #[RunInSeparateProcess]
     public function testHandleFinishesTraceOfRecordWhenMessageFails(): void
     {
         if (\extension_loaded('ddtrace')) {
@@ -458,6 +579,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
         self::assertInstanceOf(RootSpanData::class, $rootSpans[1]);
         self::assertSame('1111', $rootSpans[0]->traceId);
         self::assertSame('2222', $rootSpans[0]->parentId);
+        self::assertSame('message-id-1111', $rootSpans[0]->meta['messaging.message_id']);
         self::assertSame('3333', $rootSpans[1]->traceId);
         self::assertSame('4444', $rootSpans[1]->parentId);
         self::assertSame('async -> stdClass', $rootSpans[1]->resource);

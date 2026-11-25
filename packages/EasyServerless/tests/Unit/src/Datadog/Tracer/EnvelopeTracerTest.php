@@ -10,7 +10,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\SerializerStamp;
+use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 
 use function DDTrace\active_span;
 use function DDTrace\start_span;
@@ -97,13 +99,29 @@ final class EnvelopeTracerTest extends AbstractUnitTestCase
         }
 
         require_once __DIR__ . '/../../../../Fixture/ddtrace/ddtrace.php';
-        $envelope = new Envelope(new stdClass(), [new SerializerStamp(['datadog' => self::HEADERS])]);
+        $envelope = new Envelope(new stdClass(), [
+            new SerializerStamp(['datadog' => self::HEADERS]),
+            new TransportMessageIdStamp('message-id'),
+            new RedeliveryStamp(2),
+        ]);
+        $expectedMeta = [
+            'component' => 'symfonymessenger',
+            'messaging.destination' => 'async',
+            'messaging.destination_kind' => 'queue',
+            'messaging.operation' => 'receive',
+            'messaging.symfony.message' => stdClass::class,
+            'messaging.system' => 'symfony',
+            'span.kind' => 'consumer',
+            'messaging.message_id' => 'message-id',
+        ];
         $sut = new EnvelopeTracer();
 
         $span = $sut->startSpan($envelope, 'async');
 
         self::assertInstanceOf(RootSpanData::class, $span);
         self::assertSame($span, active_span());
+        self::assertSame($expectedMeta, $span->meta);
+        self::assertSame(['messaging.symfony.retry_count' => 2], $span->metrics);
         self::assertSame('symfony.messenger.consume', $span->name);
         self::assertSame('async -> stdClass', $span->resource);
         self::assertSame('queue', $span->type);

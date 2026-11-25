@@ -90,8 +90,7 @@ final class SqsHandler extends AbstractSqsHandler
         // The number of retries comes only from SQS, a RedeliveryStamp serialized in the message is not relevant
         $envelope = $envelope->withoutAll(RedeliveryStamp::class);
 
-        // Each record gets its own trace, connected to the trace that sent the message
-        $span = $this->envelopeTracer?->startSpan($envelope, $this->transportName);
+        $span = null;
 
         try {
             $stamps = [
@@ -113,6 +112,10 @@ final class SqsHandler extends AbstractSqsHandler
 
             // Replacing the envelope with the containing the new stamps allows the retry strategy to work properly
             $envelope = $envelope->with(...$stamps);
+
+            // Each record gets its own trace, connected to the trace that sent the message. It starts once the
+            // envelope has the stamps of the record, as its tags come from them
+            $span = $this->envelopeTracer?->startSpan($envelope, $this->transportName);
 
             $event = new WorkerMessageReceivedEvent($envelope, $this->transportName);
             $this->dispatchEvent($event);
