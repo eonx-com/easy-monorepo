@@ -19,7 +19,7 @@ use stdClass;
 
 final class ConnectionsWarmerTest extends AbstractUnitTestCase
 {
-    public function testWarmClosesAllConnectionsWhenQueryFails(): void
+    public function testWarmClosesAllConnectionsWhenClosingConnectionFails(): void
     {
         $platform = $this->createStub(AbstractPlatform::class);
         $platform
@@ -31,14 +31,17 @@ final class ConnectionsWarmerTest extends AbstractUnitTestCase
             ->willReturn($platform);
         $failingConnection
             ->expects(self::once())
-            ->method('executeQuery')
-            ->willThrowException(new RuntimeException('__error__'));
+            ->method('executeQuery');
         $failingConnection
             ->expects(self::once())
-            ->method('close');
+            ->method('close')
+            ->willThrowException(new RuntimeException('__close_error__'));
         $nextConnection = $this->createMock(Connection::class);
         $nextConnection
-            ->expects(self::never())
+            ->method('getDatabasePlatform')
+            ->willReturn($platform);
+        $nextConnection
+            ->expects(self::once())
             ->method('executeQuery');
         $nextConnection
             ->expects(self::once())
@@ -59,7 +62,7 @@ final class ConnectionsWarmerTest extends AbstractUnitTestCase
             ->willReturnCallback(static fn (string $name): object => $connections[$name]);
         $sut = new ConnectionsWarmer($managerRegistry);
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('__error__');
+        $this->expectExceptionMessage('__close_error__');
 
         $sut->warm();
     }
@@ -108,6 +111,54 @@ final class ConnectionsWarmerTest extends AbstractUnitTestCase
         $sut = new ConnectionsWarmer($managerRegistry);
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('__creation_error__');
+
+        $sut->warm();
+    }
+
+    public function testWarmQueriesAndClosesAllConnectionsWhenQueryFails(): void
+    {
+        $platform = $this->createStub(AbstractPlatform::class);
+        $platform
+            ->method('getDummySelectSQL')
+            ->willReturn('SELECT 1');
+        $failingConnection = $this->createMock(Connection::class);
+        $failingConnection
+            ->method('getDatabasePlatform')
+            ->willReturn($platform);
+        $failingConnection
+            ->expects(self::once())
+            ->method('executeQuery')
+            ->willThrowException(new RuntimeException('__error__'));
+        $failingConnection
+            ->expects(self::once())
+            ->method('close');
+        $nextConnection = $this->createMock(Connection::class);
+        $nextConnection
+            ->method('getDatabasePlatform')
+            ->willReturn($platform);
+        $nextConnection
+            ->expects(self::once())
+            ->method('executeQuery');
+        $nextConnection
+            ->expects(self::once())
+            ->method('close');
+        $connections = [
+            'failing' => $failingConnection,
+            'next' => $nextConnection,
+        ];
+        $managerRegistry = $this->createStub(ManagerRegistry::class);
+        $managerRegistry
+            ->method('getConnectionNames')
+            ->willReturn([
+                'failing' => 'doctrine.dbal.failing_connection',
+                'next' => 'doctrine.dbal.next_connection',
+            ]);
+        $managerRegistry
+            ->method('getConnection')
+            ->willReturnCallback(static fn (string $name): object => $connections[$name]);
+        $sut = new ConnectionsWarmer($managerRegistry);
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('__error__');
 
         $sut->warm();
     }

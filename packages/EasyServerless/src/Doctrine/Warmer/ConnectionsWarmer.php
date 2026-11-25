@@ -22,7 +22,7 @@ final readonly class ConnectionsWarmer implements SnapStartWarmerInterface
     public function warm(): void
     {
         $connections = [];
-        $creationThrowable = null;
+        $failure = null;
 
         // Each connection is created separately: getConnections() creates them all and stops at the first one that
         // cannot be created, e.g. a missing environment variable, so the open ones would not be closed
@@ -30,7 +30,7 @@ final readonly class ConnectionsWarmer implements SnapStartWarmerInterface
             try {
                 $connection = $this->managerRegistry->getConnection($name);
             } catch (Throwable $throwable) {
-                $creationThrowable ??= $throwable;
+                $failure ??= $throwable;
 
                 continue;
             }
@@ -40,20 +40,27 @@ final readonly class ConnectionsWarmer implements SnapStartWarmerInterface
             }
         }
 
-        try {
-            foreach ($connections as $connection) {
+        foreach ($connections as $connection) {
+            try {
                 $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL())
                     ->free();
-            }
-        } finally {
-            foreach ($connections as $connection) {
-                $connection->close();
+            } catch (Throwable $throwable) {
+                $failure ??= $throwable;
             }
         }
 
-        // Thrown once the connections are closed, so the subscriber logs it
-        if ($creationThrowable !== null) {
-            throw $creationThrowable;
+        // Every connection is closed, even when closing another one fails, e.g. a logging middleware that throws
+        foreach ($connections as $connection) {
+            try {
+                $connection->close();
+            } catch (Throwable $throwable) {
+                $failure ??= $throwable;
+            }
+        }
+
+        // Thrown once all the connections are closed, so the subscriber logs it
+        if ($failure !== null) {
+            throw $failure;
         }
     }
 }
