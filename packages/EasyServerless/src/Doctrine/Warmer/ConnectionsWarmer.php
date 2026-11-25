@@ -6,6 +6,7 @@ namespace EonX\EasyServerless\Doctrine\Warmer;
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 use EonX\EasyServerless\SnapStart\Warmer\SnapStartWarmerInterface;
+use Throwable;
 
 /**
  * Runs a query on each connection, which loads the driver and the platform, then closes all the connections, including
@@ -20,10 +21,24 @@ final readonly class ConnectionsWarmer implements SnapStartWarmerInterface
 
     public function warm(): void
     {
-        $connections = \array_filter(
-            $this->managerRegistry->getConnections(),
-            static fn (object $connection): bool => $connection instanceof Connection
-        );
+        $connections = [];
+        $creationThrowable = null;
+
+        // Each connection is created separately: getConnections() creates them all and stops at the first one that
+        // cannot be created, e.g. a missing environment variable, so the open ones would not be closed
+        foreach (\array_keys($this->managerRegistry->getConnectionNames()) as $name) {
+            try {
+                $connection = $this->managerRegistry->getConnection($name);
+            } catch (Throwable $throwable) {
+                $creationThrowable ??= $throwable;
+
+                continue;
+            }
+
+            if ($connection instanceof Connection) {
+                $connections[] = $connection;
+            }
+        }
 
         try {
             foreach ($connections as $connection) {
@@ -34,6 +49,11 @@ final readonly class ConnectionsWarmer implements SnapStartWarmerInterface
             foreach ($connections as $connection) {
                 $connection->close();
             }
+        }
+
+        // Thrown once the connections are closed, so the subscriber logs it
+        if ($creationThrowable !== null) {
+            throw $creationThrowable;
         }
     }
 }

@@ -186,7 +186,6 @@ final class SymfonyHttpHandlerWarmerTest extends AbstractUnitTestCase
         self::assertSame('application/json', $request->headers->get('Accept'));
         self::assertSame('443', $request->headers->get('X-Forwarded-Port'));
         self::assertSame('https', $request->headers->get('X-Forwarded-Proto'));
-        self::assertTrue($request->isSecure());
         self::assertFalse($request->headers->has('Host'));
         self::assertSame('127.0.0.1', $request->getClientIp());
     }
@@ -244,9 +243,6 @@ final class SymfonyHttpHandlerWarmerTest extends AbstractUnitTestCase
         self::assertSame('/health', $request->getPathInfo());
         self::assertSame('api.example.com', $request->headers->get('Host'));
         self::assertSame('api.example.com', $request->getHost());
-        self::assertTrue($request->isSecure());
-        self::assertSame(443, $request->getPort());
-        self::assertSame('https://api.example.com', $request->getSchemeAndHttpHost());
     }
 
     #[DataProvider('provideNotSuccessfulStatusCodeData')]

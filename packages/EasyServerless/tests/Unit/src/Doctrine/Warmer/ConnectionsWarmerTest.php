@@ -43,16 +43,71 @@ final class ConnectionsWarmerTest extends AbstractUnitTestCase
         $nextConnection
             ->expects(self::once())
             ->method('close');
+        $connections = [
+            'failing' => $failingConnection,
+            'next' => $nextConnection,
+        ];
         $managerRegistry = $this->createStub(ManagerRegistry::class);
         $managerRegistry
-            ->method('getConnections')
+            ->method('getConnectionNames')
             ->willReturn([
-                'failing' => $failingConnection,
-                'next' => $nextConnection,
+                'failing' => 'doctrine.dbal.failing_connection',
+                'next' => 'doctrine.dbal.next_connection',
             ]);
+        $managerRegistry
+            ->method('getConnection')
+            ->willReturnCallback(static fn (string $name): object => $connections[$name]);
         $sut = new ConnectionsWarmer($managerRegistry);
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('__error__');
+
+        $sut->warm();
+    }
+
+    public function testWarmClosesCreatedConnectionsAndThrowsWhenConnectionCannotBeCreated(): void
+    {
+        $platform = $this->createStub(AbstractPlatform::class);
+        $platform
+            ->method('getDummySelectSQL')
+            ->willReturn('SELECT 1');
+        $firstConnection = $this->createMock(Connection::class);
+        $firstConnection
+            ->method('getDatabasePlatform')
+            ->willReturn($platform);
+        $firstConnection
+            ->expects(self::once())
+            ->method('executeQuery');
+        $firstConnection
+            ->expects(self::once())
+            ->method('close');
+        $nextConnection = $this->createMock(Connection::class);
+        $nextConnection
+            ->method('getDatabasePlatform')
+            ->willReturn($platform);
+        $nextConnection
+            ->expects(self::once())
+            ->method('executeQuery');
+        $nextConnection
+            ->expects(self::once())
+            ->method('close');
+        $managerRegistry = $this->createStub(ManagerRegistry::class);
+        $managerRegistry
+            ->method('getConnectionNames')
+            ->willReturn([
+                'first' => 'doctrine.dbal.first_connection',
+                'not_creatable' => 'doctrine.dbal.not_creatable_connection',
+                'next' => 'doctrine.dbal.next_connection',
+            ]);
+        $managerRegistry
+            ->method('getConnection')
+            ->willReturnCallback(static fn (string $name): object => match ($name) {
+                'first' => $firstConnection,
+                'next' => $nextConnection,
+                default => throw new RuntimeException('__creation_error__'),
+            });
+        $sut = new ConnectionsWarmer($managerRegistry);
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('__creation_error__');
 
         $sut->warm();
     }
@@ -75,14 +130,22 @@ final class ConnectionsWarmerTest extends AbstractUnitTestCase
             ],
             (new Configuration())->setMiddlewares([new Middleware(new Logger('other', [$otherTestHandler]))])
         );
+        $connections = [
+            'default' => $defaultConnection,
+            'not_dbal' => new stdClass(),
+            'other' => $otherConnection,
+        ];
         $managerRegistry = $this->createStub(ManagerRegistry::class);
         $managerRegistry
-            ->method('getConnections')
+            ->method('getConnectionNames')
             ->willReturn([
-                'default' => $defaultConnection,
-                'not_dbal' => new stdClass(),
-                'other' => $otherConnection,
+                'default' => 'doctrine.dbal.default_connection',
+                'not_dbal' => 'doctrine.dbal.not_dbal_connection',
+                'other' => 'doctrine.dbal.other_connection',
             ]);
+        $managerRegistry
+            ->method('getConnection')
+            ->willReturnCallback(static fn (string $name): object => $connections[$name]);
         $sut = new ConnectionsWarmer($managerRegistry);
         $expectedLogMessages = ['Connecting with parameters {params}', 'Executing query: {sql}', 'Disconnecting'];
         $expectedQueryContext = ['sql' => 'SELECT 1'];
