@@ -155,8 +155,11 @@ parameters:
           path: %currentWorkingDirectory%/packages/EasySecurity/tests/Unit/src/Authorization/ValueObject/RoleTest.php
 
         # ---- EasyServerless ----
-        # The stand-in mirrors the ddtrace extension signature, which returns null when no trace is active
+        # The stand-in mirrors the ddtrace extension signatures, which return null when no trace is active
         - message: '#Function DDTrace\\root_span\(\) never returns null so it can be removed from the return type#'
+          path: %currentWorkingDirectory%/packages/EasyServerless/tests/Fixture/ddtrace/ddtrace.php
+        # and false on unexpected arguments
+        - message: '#Function DDTrace\\(close_spans_until|start_span)\(\) never returns false so it can be removed from the return type#'
           path: %currentWorkingDirectory%/packages/EasyServerless/tests/Fixture/ddtrace/ddtrace.php
 
         # ---- EasySwoole ----

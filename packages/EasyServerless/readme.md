@@ -138,6 +138,12 @@ Nothing happens when the extension is not loaded or no trace is active. Console 
 span when `DD_TRACE_CLI_ENABLED=true` is set. OPcache/JIT status comes from `opcache_get_status()`, or from the ini
 settings when `opcache.restrict_api` is set.
 
+In Symfony, each SQS record handled by the `SqsHandler` also gets its own trace, connected to the trace that sent the
+message. The Symfony Messenger integration of the extension adds the Datadog context of the sender to the envelope (as a
+`SerializerStamp`), but only reads it back in `Worker::handleMessage()`, which the `SqsHandler` does not call. Like the
+integration, the record trace continues the trace of the sender, or only links to it when
+`DD_TRACE_SYMFONY_MESSENGER_DISTRIBUTED_TRACING=false`. Records without this context are handled as before.
+
 Disable it with `datadog.enabled: false` in the Symfony bundle config, or `easy-serverless.datadog.enabled` set to
 `false` in Laravel. In Laravel, requests are covered by a global middleware registered first, so
 unmatched routes and requests short-circuited by other global middleware (e.g. maintenance mode) are enriched as well.
