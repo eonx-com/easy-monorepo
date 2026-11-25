@@ -87,8 +87,8 @@ Tips:
 
 ### EasyDoctrine
 
-- [ ] Replace `ObjectCopierFactory::create()` with `ObjectCopierFactory::createForDeletedEntity()`.
-- [ ] Replace the `ObjectCopierInterface` service with `easy_doctrine.deleted_entity_copier`.
+- [ ] Replace the `ObjectCopierInterface` service and the `ObjectCopierFactory::create()` calls with the
+  `easy_doctrine.deleted_entity_copier` service. In 7.0 `ObjectCopierFactory` is removed.
 - [ ] If you create `DeferredEntityEventDispatcher` yourself, pass `deletedEntityCopier:` and remove `objectCopier:`.
 
 ### EasyBatch
@@ -274,10 +274,8 @@ Tips:
 
 ### EasyDoctrine
 
-- `ObjectCopierFactory::create()` and the `ObjectCopierInterface` service are removed. Use
-  `createForDeletedEntity()` and `easy_doctrine.deleted_entity_copier`.
-- `EonX\EasyDoctrine\Bundle\Factory\ObjectCopierFactory` is moved to
-  `EonX\EasyDoctrine\EntityEvent\Factory\ObjectCopierFactory`.
+- `EonX\EasyDoctrine\Bundle\Factory\ObjectCopierFactory` and the `ObjectCopierInterface` service are removed. Use
+  the `easy_doctrine.deleted_entity_copier` service.
 - `DeferredEntityEventDispatcher::__construct()`: the `$objectCopier` argument is removed. `$deletedEntityCopier` is
   required and is now the second argument.
 - `DeferredEntityEventDispatcherInterface::deferUpdate()`: argument `$object` is renamed to `$entity`.
