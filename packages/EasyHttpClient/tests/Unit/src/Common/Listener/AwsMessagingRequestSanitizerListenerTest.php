@@ -39,6 +39,11 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
             'options' => $options,
         ];
 
+        yield 'unparsable URL' => [
+            'url' => 'https:///email.ap-southeast-2.amazonaws.com/',
+            'options' => $options,
+        ];
+
         yield 'host that only starts like an AWS host' => [
             'url' => 'https://email.ap-southeast-2.amazonaws.com.example.com/v2/email/outbound-emails',
             'options' => $options,
@@ -272,6 +277,83 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
             ],
         ];
 
+        yield 'SNS subscription' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Action=Subscribe&Endpoint=john%40example.com&Protocol=email&TopicArn=some-topic',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=Subscribe&Endpoint=*REDACTED*&Protocol=email&TopicArn=some-topic',
+            ],
+        ];
+
+        yield 'SNS sandbox phone number verification' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Action=VerifySMSSandboxPhoneNumber&OneTimePassword=123456&PhoneNumber=%2B61400000000',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=VerifySMSSandboxPhoneNumber&OneTimePassword=*REDACTED*&PhoneNumber=*REDACTED*',
+            ],
+        ];
+
+        yield 'SNS opt-out check' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Action=CheckIfPhoneNumberIsOptedOut&phoneNumber=%2B61400000000',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=CheckIfPhoneNumberIsOptedOut&phoneNumber=*REDACTED*',
+            ],
+        ];
+
+        yield 'SNS platform endpoint' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Action=CreatePlatformEndpoint&CustomUserData=john%40example.com'
+                    . '&PlatformApplicationArn=some-application&Token=some-device-token',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=CreatePlatformEndpoint&CustomUserData=*REDACTED*'
+                    . '&PlatformApplicationArn=some-application&Token=*REDACTED*',
+            ],
+        ];
+
+        yield 'SNS list with a next token' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Action=ListTopics&NextToken=some-next-token',
+            ],
+            'expectedOptions' => [
+                'body' => 'Action=ListTopics&NextToken=some-next-token',
+            ],
+        ];
+
+        yield 'SES bulk e-mail' => [
+            'url' => 'https://email.ap-southeast-2.amazonaws.com/v2/email/outbound-bulk-emails',
+            'options' => [
+                'body' => '{"BulkEmailEntries":[{"Destination":{"ToAddresses":["john@example.com"]},'
+                    . '"ReplacementEmailContent":{"ReplacementTemplate":'
+                    . '{"ReplacementTemplateData":"{\\"code\\":\\"123456\\"}"}}}],'
+                    . '"DefaultContent":{"Template":{"TemplateName":"some-template"}}}',
+            ],
+            'expectedOptions' => [
+                'body' => '{"BulkEmailEntries":[{"Destination":{"ToAddresses":"*REDACTED*"},'
+                    . '"ReplacementEmailContent":{"ReplacementTemplate":{"ReplacementTemplateData":"*REDACTED*"}}}],'
+                    . '"DefaultContent":{"Template":{"TemplateName":"some-template"}}}',
+            ],
+        ];
+
+        yield 'SES suppressed destination' => [
+            'url' => 'https://email.ap-southeast-2.amazonaws.com/v2/email/suppression/addresses',
+            'options' => [
+                'body' => '{"EmailAddress":"john@example.com","Reason":"BOUNCE"}',
+            ],
+            'expectedOptions' => [
+                'body' => '{"EmailAddress":"*REDACTED*","Reason":"BOUNCE"}',
+            ],
+        ];
+
         yield 'SNS SMS with a subject' => [
             'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
             'options' => [
@@ -327,6 +409,126 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
             ],
             'expectedOptions' => [
                 'body' => 'Action=SendRawEmail&Destinations.member.1=*REDACTED*&RawMessage.Data=*REDACTED*',
+            ],
+        ];
+
+        yield 'upper-case host' => [
+            'url' => 'https://EMAIL.AP-SOUTHEAST-2.AMAZONAWS.COM/v2/email/outbound-emails',
+            'options' => [
+                'body' => '{"Destination":{"ToAddresses":["john@example.com"]}}',
+            ],
+            'expectedOptions' => [
+                'body' => '{"Destination":{"ToAddresses":"*REDACTED*"}}',
+            ],
+        ];
+
+        yield 'null body' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => null,
+            ],
+            'expectedOptions' => [
+                'body' => null,
+            ],
+        ];
+
+        yield 'JSON body with a BOM' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'body' => "\u{FEFF}" . '{"Destination":{"ToAddresses":["john@example.com"]}}',
+            ],
+            'expectedOptions' => [
+                'body' => '*REDACTED*',
+            ],
+        ];
+
+        yield 'truncated JSON body' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'body' => '{"Destination":{"ToAddresses":["john@example.com"',
+            ],
+            'expectedOptions' => [
+                'body' => '*REDACTED*',
+            ],
+        ];
+
+        yield 'plain text body' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Your code is 123456',
+            ],
+            'expectedOptions' => [
+                'body' => '*REDACTED*',
+            ],
+        ];
+
+        yield 'empty body' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => '',
+            ],
+            'expectedOptions' => [
+                'body' => '',
+            ],
+        ];
+
+        yield 'JSON body without sensitive keys' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'body' => '{"ConfigurationSetName":"some-set","Tags":{},"Url":"https://example.com/a","Name":"Пётр"}',
+            ],
+            'expectedOptions' => [
+                'body' => '{"ConfigurationSetName":"some-set","Tags":{},"Url":"https://example.com/a","Name":"Пётр"}',
+            ],
+        ];
+
+        yield 'JSON body with slashes and unicode' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'body' => '{"FromEmailAddress":"Пётр <no-reply@example.com>","Url":"https://example.com/a",'
+                    . '"Destination":{"ToAddresses":["john@example.com"]}}',
+            ],
+            'expectedOptions' => [
+                'body' => '{"FromEmailAddress":"Пётр <no-reply@example.com>","Url":"https://example.com/a",'
+                    . '"Destination":{"ToAddresses":"*REDACTED*"}}',
+            ],
+        ];
+
+        yield 'json option with a nested object' => [
+            'url' => self::SES_URL,
+            'options' => [
+                'json' => [
+                    'Content' => new ArrayObject([
+                        'Simple' => [
+                            'Body' => 'Your code is 123456',
+                        ],
+                    ]),
+                    'FromEmailAddress' => 'no-reply@example.com',
+                ],
+            ],
+            'expectedOptions' => [
+                'json' => [
+                    'Content' => '*REDACTED*',
+                    'FromEmailAddress' => 'no-reply@example.com',
+                ],
+            ],
+        ];
+
+        yield 'array body with a nested object' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => [
+                    'Action' => 'Publish',
+                    'MessageAttributes' => new ArrayObject([
+                        'Text' => 'Your code is 123456',
+                    ]),
+                ],
+            ],
+            'expectedOptions' => [
+                'body' => [
+                    'Action' => 'Publish',
+                    'MessageAttributes' => '*REDACTED*',
+                ],
             ],
         ];
 
@@ -416,6 +618,20 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
                 . '</Error><RequestId>some-request-id</RequestId></ErrorResponse>',
             'expectedContent' => '<ErrorResponse><Error><Type>Sender</Type><Code>InvalidParameter</Code>'
                 . '<Message>*REDACTED*</Message></Error><RequestId>some-request-id</RequestId></ErrorResponse>',
+        ];
+
+        yield 'SNS error in a JSON body' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'content' => '{"Code":"InvalidParameter","Message":"Invalid parameter: PhoneNumber Reason: +61400000000"}',
+            'expectedContent' => '{"Code":"InvalidParameter","Message":"*REDACTED*"}',
+        ];
+
+        yield 'SNS error with leading whitespace' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'content' => "\n  <ErrorResponse><Error><Code>InvalidParameter</Code>"
+                . '<Message>Invalid parameter: +61400000000</Message></Error></ErrorResponse>',
+            'expectedContent' => "\n  <ErrorResponse><Error><Code>InvalidParameter</Code>"
+                . '<Message>*REDACTED*</Message></Error></ErrorResponse>',
         ];
 
         yield 'truncated SES error' => [

@@ -16,6 +16,7 @@ final class EasyHttpClientBundleTest extends AbstractApplicationTestCase
     {
         /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
         $eventDispatcher = self::getContainer()->get(EventDispatcherInterface::class);
+
         /** @var callable $listener */
         $listener = $eventDispatcher->getListeners(HttpRequestSentEvent::class)[0];
 

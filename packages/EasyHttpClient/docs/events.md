@@ -66,7 +66,8 @@ return [
 
 The listeners record the request options and the response body as they are. This includes the credentials and the
 personal data that the application sends to the remote API or receives from it. The package masks only the requests
-to AWS SES and SNS (see below). Everything else is masked by the sanitizers:
+to AWS SES and SNS (see below). For other requests, the sanitizers mask only the values of known keys, and only when
+they are enabled:
 
 - Log records are masked when the sensitive data sanitizer of EasyLogging is enabled
   (`easy_logging.sensitive_data_sanitizer.enabled` in Symfony, `easy-logging.sensitive_data_sanitizer.enabled` in
@@ -94,13 +95,24 @@ replaces with `*REDACTED*`:
 
 - the `Authorization` and `X-Amz-Security-Token` headers
 - in the body: the recipients (`ToAddresses`, `CcAddresses`, `BccAddresses`, `ReplyToAddresses`, `Destinations`), the
-  subject (`Subject`), text and raw content of an e-mail (`Data`), the template data (`TemplateData`), the attachments
-  (`RawContent`), the text of an SNS message (`Message`) and the phone number (`PhoneNumber`). A key also matches as a
+  subject (`Subject`), text and raw content of an e-mail (`Data`), the template data (`TemplateData`,
+  `ReplacementTemplateData`), the attachments (`RawContent`), the text of an SNS message (`Message`), the phone number
+  (`PhoneNumber`, `phoneNumber`), the e-mail address (`EmailAddress`), the subscription endpoint (`Endpoint`), the
+  one-time password (`OneTimePassword`), the device token and user data of a push endpoint (`Token`,
+  `CustomUserData`). These are the fields of the operations that send messages (SES `SendEmail`, `SendBulkEmail`,
+  SNS `Publish`, `PublishBatch`) and manage recipients (SNS `Subscribe`, `CreatePlatformEndpoint`, the SMS sandbox and
+  opt-out operations, the SES suppression list). A key also matches as a
   dot-separated part of a longer key, for example `PublishBatchRequestEntries.member.1.Message` in a form body (SNS,
-  the SES v1 API). The field names of a form body are URL-decoded before the match
+  the SES v1 API). The field names of a form body are URL-decoded before the match. An
+  object in the body or in the `json` option, and a string body that is neither JSON nor a form string (for example,
+  truncated JSON) are replaced as a whole
 - in the response: the error message (`message` in a JSON body, `<Message>` in an XML body), as AWS puts the failed
   e-mail addresses and phone numbers there. The error code stays. A body that is neither JSON nor XML (for example,
   a JSON body cut off when the response is destructed before the end) is replaced as a whole
+
+The other fields of the request, the URL (for example, the e-mail address in the path of the SES suppression list)
+and the fields of the response other than the error message (for example, the subscription endpoints returned by SNS
+`ListSubscriptionsByTopic`) are recorded as they are.
 
 The listener is always registered. The request itself is sent unchanged.
 
@@ -143,7 +155,7 @@ listeners of the package. In Symfony these have the priority `0`:
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(priority: 100)]
+#[AsEventListener(priority: 50)]
 final class RemoveMessageTextListener
 {
     public function __invoke(HttpRequestSentEvent $event): void
@@ -162,3 +174,7 @@ final class RemoveMessageTextListener
 
 The request is already sent at this point, so the listener changes only what is recorded. To change the recorded
 response body, call `setContent()` on `$event->getResponseData()`.
+
+`AwsMessagingRequestSanitizerListener` runs with the priority `100` in Symfony and is registered first by
+`EasyHttpClientServiceProvider` in Laravel. A listener that needs the original options of a request to AWS SES or SNS
+must have a priority above `100` in Symfony, or be registered before `EasyHttpClientServiceProvider` in Laravel.

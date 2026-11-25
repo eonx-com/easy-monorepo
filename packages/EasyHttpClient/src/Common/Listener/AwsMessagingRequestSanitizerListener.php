@@ -10,16 +10,25 @@ final class AwsMessagingRequestSanitizerListener
     private const BODY_KEYS_TO_REDACT = [
         'BccAddresses',
         'CcAddresses',
+        'CustomUserData',
         'Data',
         'Destinations',
+        'EmailAddress',
+        'Endpoint',
         'Message',
+        'OneTimePassword',
         'PhoneNumber',
+        'phoneNumber',
         'RawContent',
+        'ReplacementTemplateData',
         'ReplyToAddresses',
         'Subject',
         'TemplateData',
         'ToAddresses',
+        'Token',
     ];
+
+    private const FORM_BODY_PATTERN = '/^[A-Za-z0-9._~%*+-]+=[^&\s]*(?:&[A-Za-z0-9._~%*+-]+=[^&\s]*)*$/';
 
     private const HEADERS_TO_REDACT = [
         'authorization',
@@ -46,7 +55,7 @@ final class AwsMessagingRequestSanitizerListener
             return;
         }
 
-        if (\array_key_exists('body', $options)) {
+        if (isset($options['body'])) {
             $options['body'] = self::redactBody($options['body']);
         }
 
@@ -61,10 +70,7 @@ final class AwsMessagingRequestSanitizerListener
         $requestData->setOptions($options);
 
         $responseData = $event->getResponseData();
-
-        if ($responseData !== null) {
-            $responseData->setContent(self::redactResponseContent($responseData->getContent()));
-        }
+        $responseData?->setContent(self::redactResponseContent($responseData->getContent()));
     }
 
     private static function isKeyToRedact(string $key): bool
@@ -83,6 +89,12 @@ final class AwsMessagingRequestSanitizerListener
 
             if (\is_array($value)) {
                 $data[$key] = self::redactArray($value);
+
+                continue;
+            }
+
+            if (\is_object($value)) {
+                $data[$key] = self::REDACTED;
             }
         }
 
@@ -99,10 +111,22 @@ final class AwsMessagingRequestSanitizerListener
             return self::REDACTED;
         }
 
+        if ($body === '') {
+            return $body;
+        }
+
         $data = \json_decode($body, true);
 
         if (\is_array($data)) {
-            return (string)\json_encode(self::redactArray($data));
+            $redactedData = self::redactArray($data);
+
+            return $redactedData === $data
+                ? $body
+                : (string)\json_encode($redactedData, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
+        }
+
+        if (\preg_match(self::FORM_BODY_PATTERN, $body) !== 1) {
+            return self::REDACTED;
         }
 
         return (string)\preg_replace_callback(
