@@ -100,6 +100,12 @@ final class DeferredEntityEventDispatcher implements DeferredEntityEventDispatch
                 }
             }
 
+            foreach ($this->deletedEntities as $entityHash => $value) {
+                if (isset($activeEntityHashes[$entityHash]) === false) {
+                    unset($this->deletedEntities[$entityHash]);
+                }
+            }
+
             return;
         }
 
