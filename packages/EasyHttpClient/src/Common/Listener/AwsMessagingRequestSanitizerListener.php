@@ -37,6 +37,8 @@ final class AwsMessagingRequestSanitizerListener
 
     private const HOST_PATTERN = '/^(email|sns)(-fips)?\.[a-z0-9-]+\.amazonaws\.com(\.cn)?$/';
 
+    private const JSON_ENCODE_FLAGS = \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE;
+
     private const REDACTED = '*REDACTED*';
 
     private const RESPONSE_KEYS_TO_REDACT = [
@@ -122,7 +124,7 @@ final class AwsMessagingRequestSanitizerListener
 
             return $redactedData === $data
                 ? $body
-                : (string)\json_encode($redactedData, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
+                : (string)\json_encode($redactedData, self::JSON_ENCODE_FLAGS);
         }
 
         if (\preg_match(self::FORM_BODY_PATTERN, $body) !== 1) {
@@ -176,7 +178,7 @@ final class AwsMessagingRequestSanitizerListener
                 }
             }
 
-            return $redactedData === $data ? $content : (string)\json_encode($redactedData);
+            return $redactedData === $data ? $content : (string)\json_encode($redactedData, self::JSON_ENCODE_FLAGS);
         }
 
         if (\str_starts_with(\ltrim($content), '<') === false) {

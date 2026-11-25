@@ -462,6 +462,26 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
             ],
         ];
 
+        yield 'form-like body with whitespace in a value' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Foo=a b',
+            ],
+            'expectedOptions' => [
+                'body' => '*REDACTED*',
+            ],
+        ];
+
+        yield 'form-like body with brackets in a key' => [
+            'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
+            'options' => [
+                'body' => 'Message[0]=x',
+            ],
+            'expectedOptions' => [
+                'body' => '*REDACTED*',
+            ],
+        ];
+
         yield 'empty body' => [
             'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
             'options' => [
@@ -618,6 +638,12 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
                 . '</Error><RequestId>some-request-id</RequestId></ErrorResponse>',
             'expectedContent' => '<ErrorResponse><Error><Type>Sender</Type><Code>InvalidParameter</Code>'
                 . '<Message>*REDACTED*</Message></Error><RequestId>some-request-id</RequestId></ErrorResponse>',
+        ];
+
+        yield 'SES error with slashes and unicode' => [
+            'url' => self::SES_URL,
+            'content' => '{"message":"Unknown recipient Пётр <john@example.com>","url":"https://example.com/a"}',
+            'expectedContent' => '{"message":"*REDACTED*","url":"https://example.com/a"}',
         ];
 
         yield 'SNS error in a JSON body' => [
