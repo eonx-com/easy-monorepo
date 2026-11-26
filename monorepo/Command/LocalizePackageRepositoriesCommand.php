@@ -27,7 +27,7 @@ final class LocalizePackageRepositoriesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $composerJsonFiles = $this->getComposerJsonFiles();
-        $devVersion = \sprintf('dev-%s', $this->gitHelper->getCurrentBranch());
+        $devVersion = $this->getDevVersion($this->gitHelper->getCurrentBranch());
         $filesystem = new Filesystem();
         $monorepoPackages = $this->getMonorepoPackages($composerJsonFiles);
         $monorepoPackageNames = \array_keys($monorepoPackages);
@@ -99,6 +99,23 @@ final class LocalizePackageRepositoriesCommand extends Command
         return new Finder()
             ->in([__DIR__ . '/../../packages'])
             ->name('composer.json');
+    }
+
+    /**
+     * Composer names a version-like branch (e.g. "7.x" or "7.1") "7.x-dev" / "7.1.x-dev" and any other branch
+     * "dev-<branch>", so the constraint must use the same form, otherwise the path repository package does not match it.
+     */
+    private function getDevVersion(string $branch): string
+    {
+        if (\preg_match('/^v?\d+(\.\d+){0,3}(\.[xX*])?$/', $branch) !== 1 || \substr_count($branch, '.') > 3) {
+            return \sprintf('dev-%s', $branch);
+        }
+
+        // Composer adds the missing wildcard itself unless the branch already has all 4 version parts
+        $hasWildcard = \preg_match('/\.[xX*]$/', $branch) === 1;
+        $hasAllParts = \substr_count($branch, '.') === 3;
+
+        return $hasWildcard || $hasAllParts ? \sprintf('%s-dev', $branch) : \sprintf('%s.x-dev', $branch);
     }
 
     private function getDir(SplFileInfo $composerJson): string
