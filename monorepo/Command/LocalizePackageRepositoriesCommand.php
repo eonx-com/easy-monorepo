@@ -27,7 +27,7 @@ final class LocalizePackageRepositoriesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $composerJsonFiles = $this->getComposerJsonFiles();
-        $devVersion = \sprintf('dev-%s', $this->gitHelper->getCurrentBranch());
+        $devVersion = $this->getDevVersion($this->gitHelper->getCurrentBranch());
         $filesystem = new Filesystem();
         $monorepoPackages = $this->getMonorepoPackages($composerJsonFiles);
         $monorepoPackageNames = \array_keys($monorepoPackages);
@@ -99,6 +99,17 @@ final class LocalizePackageRepositoriesCommand extends Command
         return new Finder()
             ->in([__DIR__ . '/../../packages'])
             ->name('composer.json');
+    }
+
+    /**
+     * Composer names a version-like branch (e.g. "7.x") "7.x-dev" and any other branch "dev-<branch>",
+     * so the constraint must use the same form, otherwise the path repository package does not match it.
+     */
+    private function getDevVersion(string $branch): string
+    {
+        $isVersionLikeBranch = \preg_match('/^v?\d+(\.(\d+|[xX*])){0,3}$/', $branch) === 1;
+
+        return $isVersionLikeBranch ? \sprintf('%s-dev', $branch) : \sprintf('dev-%s', $branch);
     }
 
     private function getDir(SplFileInfo $composerJson): string
