@@ -50,6 +50,14 @@ already stopped (or that succeeded) runs again while its receive count is within
 retries of the strategy, set `appMaxRetries` to `max_retries + 1`. The default does this for `max_retries: 3`; set
 `appMaxRetries` explicitly for another value of `max_retries` or for a custom retry strategy.
 
+When you use the default `appMaxRetries`, check these two settings:
+
+- The `maxReceiveCount` of the queue must be at least `4`. With `3`, SQS moves the message to the DLQ before its
+  fourth attempt, so the handler never reports the last failure: no "will not be retried" log and no
+  `ServerlessWorkerMessageFailedEvent` with `willRetry = false`.
+- If `max_retries` is less than `3`, the retry strategy stops before the fourth attempt. The handler then acknowledges
+  the message, and it does not go to the DLQ. Set `appMaxRetries` to `max_retries + 1`.
+
 When a failed attempt is the last one, the handler logs "SQS Record failed to process but will not be retried" and
 dispatches `ServerlessWorkerMessageFailedEvent` with `willRetry = false`. Then:
 
@@ -96,7 +104,7 @@ Example: `max_retries: 3`, `delay: 10000`, `multiplier: 8`, the default `appMaxR
 the SQS `ApproximateReceiveCount`.
 
 - `max_retries` of the queue connection (`appMaxRetries`, default `3`) is the maximum number of attempts of a job,
-  including the first one.
+  including the first one. The default stays `3`, as Laravel has no retry strategy to match.
 - `$tries` of the job can only lower this limit. A value of `0` or less (unlimited in Laravel), or more than
   `max_retries`, gives `max_retries`. In this case, the handler logs a warning when the job fails on its last attempt.
 - The delay before the next attempt is the delay given to `release()`. When the job throws an exception, the worker
