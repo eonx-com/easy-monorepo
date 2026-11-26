@@ -58,7 +58,12 @@ final class SqsHandlerTest extends AbstractUnitTestCase
         yield 'strategy 3, app 4, attempt 4: last attempt, requeue' => [4, 3, 4, false, true, 1, true, false];
         yield 'strategy 3, app 4, attempt 5: not executed, requeue' => [5, 3, 4, false, false, 1, false, null];
 
-        // The application allows fewer attempts than max_retries + 1 (defaults of both)
+        // The default appMaxRetries allows as many attempts as the default max_retries + 1
+        yield 'strategy 3, app default, attempt 3: retry in 640s' => [3, 3, null, false, true, 640, false, true];
+        yield 'strategy 3, app default, attempt 4: last attempt, requeue' => [4, 3, null, false, true, 1, true, false];
+        yield 'strategy 3, app default, attempt 5: not executed, requeue' => [5, 3, null, false, false, 1, false, null];
+
+        // The application allows fewer attempts than max_retries + 1
         yield 'strategy 3, app 3, attempt 1: retry in 10s' => [1, 3, 3, false, true, 10, false, true];
         yield 'strategy 3, app 3, attempt 2: retry in 80s' => [2, 3, 3, false, true, 80, false, true];
         yield 'strategy 3, app 3, attempt 3: last attempt, requeue' => [3, 3, 3, false, true, 1, true, false];
@@ -136,7 +141,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
     public function testHandleFailedMessage(
         int $receiveCount,
         ?int $maxRetries,
-        int $appMaxRetries,
+        ?int $appMaxRetries,
         bool $isUnrecoverable,
         bool $expectedExecuted,
         ?int $expectedVisibilityTimeout,
@@ -403,7 +408,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
     private function createSqsHandler(
         MessageBusStub $bus,
         ?int $maxRetries,
-        int $appMaxRetries,
+        ?int $appMaxRetries,
         TestHandler $logHandler,
         array &$requestBodies,
         array &$failedEvents,
@@ -436,22 +441,28 @@ final class SqsHandlerTest extends AbstractUnitTestCase
             }
         );
 
-        return new SqsHandler(
-            bus: $bus,
-            serializer: new PhpSerializer(),
-            retryStrategyLocator: new ServiceLocator($retryStrategies),
-            sqsClient: new SqsClient(
+        $arguments = [
+            'bus' => $bus,
+            'serializer' => new PhpSerializer(),
+            'retryStrategyLocator' => new ServiceLocator($retryStrategies),
+            'sqsClient' => new SqsClient(
                 ['region' => 'ap-southeast-2'],
                 new Credentials('access-key-id', 'secret-access-key'),
                 $httpClient
             ),
-            logger: new Logger('test', [$logHandler]),
-            errorHandler: $errorHandler,
-            transportName: self::TRANSPORT_NAME,
-            appMaxRetries: $appMaxRetries,
-            partialBatchFailure: $partialBatchFailure,
-            symfonyEventDispatcher: $symfonyEventDispatcher
-        );
+            'logger' => new Logger('test', [$logHandler]),
+            'errorHandler' => $errorHandler,
+            'transportName' => self::TRANSPORT_NAME,
+            'partialBatchFailure' => $partialBatchFailure,
+            'symfonyEventDispatcher' => $symfonyEventDispatcher,
+        ];
+
+        // Null keeps the default of the handler
+        if ($appMaxRetries !== null) {
+            $arguments['appMaxRetries'] = $appMaxRetries;
+        }
+
+        return new SqsHandler(...$arguments);
     }
 
     /**

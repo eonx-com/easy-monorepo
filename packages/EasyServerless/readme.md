@@ -35,9 +35,10 @@ after the delay. The handler counts attempts with the SQS `ApproximateReceiveCou
 
 Two settings control the retries:
 
-- `$appMaxRetries` argument of the `SqsHandler` service (default `3`): the maximum number of **attempts** of a
+- `$appMaxRetries` argument of the `SqsHandler` service (default `4`): the maximum number of **attempts** of a
   message, including the first one. This is a hard limit: the handler does not execute a message received more than
-  `appMaxRetries` times.
+  `appMaxRetries` times. The default is the first attempt and the 3 retries of the default retry strategy
+  (`max_retries: 3`). Before 6.29, the default was `3`.
 - The retry strategy of the transport (`retry_strategy` in the Messenger config): it decides whether the handler asks
   SQS for a retry after a failure, and the delay. `max_retries` is the maximum number of **retries** after the first
   attempt.
@@ -46,7 +47,8 @@ The retry strategy stops asking for retries after `max_retries` retries, so a fa
 `min(appMaxRetries, max_retries + 1)` times. Only `appMaxRetries` is a hard limit: without partial batch failure,
 when another record fails the Lambda invocation, SQS gives the whole batch back, and a message that the retry strategy
 already stopped (or that succeeded) runs again while its receive count is within `appMaxRetries`. To use all the
-retries of the strategy, set `appMaxRetries` to `max_retries + 1`.
+retries of the strategy, set `appMaxRetries` to `max_retries + 1`. The default does this for `max_retries: 3`; set
+`appMaxRetries` explicitly for another value of `max_retries` or for a custom retry strategy.
 
 When a failed attempt is the last one, the handler logs "SQS Record failed to process but will not be retried" and
 dispatches `ServerlessWorkerMessageFailedEvent` with `willRetry = false`. Then:
@@ -83,7 +85,7 @@ The handler dispatches `ServerlessWorkerMessageFailedEvent` for each failed atte
 `EasyErrorHandlerBundle` reports the failure from a listener of `ServerlessWorkerMessageFailedEvent`. Without this
 bundle, the handler does not report the failure.
 
-Example: `max_retries: 3`, `delay: 10000`, `multiplier: 8`, `appMaxRetries: 4` and `maxReceiveCount: 4` give
+Example: `max_retries: 3`, `delay: 10000`, `multiplier: 8`, the default `appMaxRetries` and `maxReceiveCount: 4` give
 4 attempts with delays of 10 s, 80 s and 640 s between them. Then the message goes to the DLQ.
 
 <br>
