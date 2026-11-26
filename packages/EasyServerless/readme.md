@@ -38,7 +38,7 @@ Two settings control the retries:
 - `$appMaxRetries` argument of the `SqsHandler` service (default `4`): the maximum number of **attempts** of a
   message, including the first one. This is a hard limit: the handler does not execute a message received more than
   `appMaxRetries` times. The default is the first attempt and the 3 retries of the default retry strategy
-  (`max_retries: 3`). Before 6.29, the default was `3`.
+  (`max_retries: 3`).
 - The retry strategy of the transport (`retry_strategy` in the Messenger config): it decides whether the handler asks
   SQS for a retry after a failure, and the delay. `max_retries` is the maximum number of **retries** after the first
   attempt.
@@ -52,9 +52,9 @@ retries of the strategy, set `appMaxRetries` to `max_retries + 1`. The default d
 
 When you use the default `appMaxRetries`, check these two settings:
 
-- The `maxReceiveCount` of the queue must be at least `4`. With `3`, SQS moves the message to the DLQ before its
-  fourth attempt, so the handler never reports the last failure: no "will not be retried" log and no
-  `ServerlessWorkerMessageFailedEvent` with `willRetry = false`.
+- Set the `maxReceiveCount` of the queue to `4` (a higher value works only with partial batch failure, see below).
+  With `3`, SQS moves the message to the DLQ before its fourth attempt, so the handler never reports the last
+  failure: no "will not be retried" log and no `ServerlessWorkerMessageFailedEvent` with `willRetry = false`.
 - If `max_retries` is less than `3`, the retry strategy stops before the fourth attempt. The handler then acknowledges
   the message, and it does not go to the DLQ. Set `appMaxRetries` to `max_retries + 1`.
 
