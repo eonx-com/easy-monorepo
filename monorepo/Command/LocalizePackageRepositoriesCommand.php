@@ -102,14 +102,20 @@ final class LocalizePackageRepositoriesCommand extends Command
     }
 
     /**
-     * Composer names a version-like branch (e.g. "7.x") "7.x-dev" and any other branch "dev-<branch>",
-     * so the constraint must use the same form, otherwise the path repository package does not match it.
+     * Composer names a version-like branch (e.g. "7.x" or "7.1") "7.x-dev" / "7.1.x-dev" and any other branch
+     * "dev-<branch>", so the constraint must use the same form, otherwise the path repository package does not match it.
      */
     private function getDevVersion(string $branch): string
     {
-        $isVersionLikeBranch = \preg_match('/^v?\d+(\.(\d+|[xX*])){0,3}$/', $branch) === 1;
+        if (\preg_match('/^v?\d+(\.\d+){0,3}(\.[xX*])?$/', $branch) !== 1 || \substr_count($branch, '.') > 3) {
+            return \sprintf('dev-%s', $branch);
+        }
 
-        return $isVersionLikeBranch ? \sprintf('%s-dev', $branch) : \sprintf('dev-%s', $branch);
+        // Composer adds the missing wildcard itself unless the branch already has all 4 version parts
+        $hasWildcard = \preg_match('/\.[xX*]$/', $branch) === 1;
+        $hasAllParts = \substr_count($branch, '.') === 3;
+
+        return $hasWildcard || $hasAllParts ? \sprintf('%s-dev', $branch) : \sprintf('%s.x-dev', $branch);
     }
 
     private function getDir(SplFileInfo $composerJson): string
