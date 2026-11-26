@@ -9,6 +9,7 @@ use EonX\EasyHttpClient\Bundle\Enum\ConfigServiceId;
 use EonX\EasyHttpClient\Bundle\Enum\ConfigTag;
 use EonX\EasyHttpClient\Common\Event\HttpRequestSentEvent;
 use EonX\EasyHttpClient\Common\HttpClient\WithEventsHttpClient;
+use EonX\EasyHttpClient\Common\Listener\AwsMessagingRequestSanitizerListener;
 use EonX\EasyHttpClient\EasyBugsnag\Listener\HttpRequestSentBreadcrumbListener;
 use EonX\EasyHttpClient\PsrLogger\Listener\LogHttpRequestSentListener;
 use EonX\EasyWebhook\Bundle\Enum\ConfigServiceId as EasyWebhookConfigServiceId;
@@ -35,6 +36,9 @@ final class EasyHttpClientServiceProvider extends ServiceProvider
 
         $this->registerHttpClient();
         $this->registerEasyWebhookIntegration();
+
+        $this->app->make('events')
+            ->listen(HttpRequestSentEvent::class, AwsMessagingRequestSanitizerListener::class);
 
         if (\config('easy-http-client.easy_bugsnag.enabled', true) && \class_exists(Client::class)) {
             $this->app->make('events')
