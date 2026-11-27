@@ -51,6 +51,8 @@ final class EasyHttpClientBundle extends AbstractBundle
 
         $container->import('config/http_client.php');
 
+        $container->import('config/aws_messaging_request_sanitizer.php');
+
         $this->registerEasyBugsnagConfiguration($config, $container, $builder);
         $this->registerPsrLoggerConfiguration($config, $container);
     }

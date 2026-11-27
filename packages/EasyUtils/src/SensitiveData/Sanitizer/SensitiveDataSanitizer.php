@@ -15,11 +15,17 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
     private const int CARD_NUMBER_MIN_DIGITS = 12;
 
     /**
-     * "X-" header prefix, e.g. "x-api-key" matches the "api_key" key
+     * Optional prefixes, removed in this order: "HTTP_" of a header in the server variables and "X-" of a header,
+     * e.g. "x-api-key", "HTTP_API_KEY" and "HTTP_X_API_KEY" match the "api_key" key
      */
-    private const string KEY_PREFIX = 'x';
+    private const array KEY_PREFIXES = ['http', 'x'];
 
     private const array KEY_SEPARATORS = [' ', '-', '_'];
+
+    /**
+     * Apache adds "REDIRECT_" to a server variable on each internal redirect, e.g. "REDIRECT_HTTP_AUTHORIZATION"
+     */
+    private const string REPEATED_KEY_PREFIX = 'redirect';
 
     /**
      * @var string[]
@@ -148,8 +154,27 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             return true;
         }
 
-        return \str_starts_with($normalizedKey, self::KEY_PREFIX)
-            && isset($this->normalizedKeysToMask[\substr($normalizedKey, \strlen(self::KEY_PREFIX))]);
+        while (\str_starts_with($normalizedKey, self::REPEATED_KEY_PREFIX)) {
+            $normalizedKey = \substr($normalizedKey, \strlen(self::REPEATED_KEY_PREFIX));
+
+            if (isset($this->normalizedKeysToMask[$normalizedKey])) {
+                return true;
+            }
+        }
+
+        foreach (self::KEY_PREFIXES as $prefix) {
+            if (\str_starts_with($normalizedKey, $prefix) === false) {
+                continue;
+            }
+
+            $normalizedKey = \substr($normalizedKey, \strlen($prefix));
+
+            if (isset($this->normalizedKeysToMask[$normalizedKey])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function sanitizeArray(array $data): array

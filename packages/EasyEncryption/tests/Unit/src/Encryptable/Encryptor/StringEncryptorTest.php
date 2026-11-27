@@ -35,6 +35,29 @@ final class StringEncryptorTest extends AbstractSymfonyTestCase
     }
 
     /**
+     * @see testItSucceedsWithMultibyteCharacterCutBetweenChunks
+     */
+    public static function provideMultibyteText(): iterable
+    {
+        $texts = [
+            'a 2-byte character' => 'José, café, naïve',
+            'a 3-byte character' => 'It’s the “best” offer',
+            'a 4-byte character' => 'Hello 👋🏻 there 🙂',
+            'a serialized string' => \serialize(['body' => '<p>It’s José’s café</p>']),
+        ];
+
+        foreach ($texts as $name => $text) {
+            // Chunks are cut by bytes, so every size from 1 to 7 cuts some multibyte character
+            for ($maxChunkSize = 1; $maxChunkSize <= 7; $maxChunkSize++) {
+                yield \sprintf('%s, max chunk size %d', $name, $maxChunkSize) => [
+                    'text' => $text,
+                    'maxChunkSize' => $maxChunkSize,
+                ];
+            }
+        }
+    }
+
+    /**
      * @see testItSucceedsWithShortText
      */
     public static function provideShortText(): iterable
@@ -65,6 +88,19 @@ final class StringEncryptorTest extends AbstractSymfonyTestCase
         self::assertSame('app', $encryptedText->encryptionKeyName);
         self::assertTrue(\str_starts_with($encryptedText->value, 'chunked:'));
         self::assertCount($expectedChunksCount, \explode(',', $encryptedText->value));
+    }
+
+    #[DataProvider('provideMultibyteText')]
+    public function testItSucceedsWithMultibyteCharacterCutBetweenChunks(string $text, int $maxChunkSize): void
+    {
+        $container = $this->getKernel()
+            ->getContainer();
+        $encryptor = $container->get(EncryptorInterface::class);
+        $sut = new StringEncryptor($encryptor, 'app', $maxChunkSize);
+
+        $decryptedText = $sut->decrypt($sut->encrypt($text)->value);
+
+        self::assertSame($text, $decryptedText);
     }
 
     #[DataProvider('provideShortText')]

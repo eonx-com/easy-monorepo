@@ -53,6 +53,13 @@ final class IterableLengthAwarePaginatorTest extends AbstractUnitTestCase
         ];
     }
 
+    public function testGetTotalPagesSucceedsWithPageSizeBelowOne(): void
+    {
+        $paginator = new IterableLengthAwarePaginator(new Pagination(1, 0), [], 10);
+
+        self::assertSame(10, $paginator->getTotalPages());
+    }
+
     public function testPaginator(): void
     {
         $paginator = new IterableLengthAwarePaginator(new Pagination(1, 15), [], 10);
