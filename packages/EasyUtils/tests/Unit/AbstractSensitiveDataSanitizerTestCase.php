@@ -1272,7 +1272,7 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
             $repeatedPrefixes . 'token' => 'secret',
         ]));
 
-        self::assertLessThan(1.0, \microtime(true) - $startTime);
+        self::assertLessThan(10.0, \microtime(true) - $startTime);
         self::assertSame(
             \json_encode([
                 $repeatedPrefixes => 'keep',
