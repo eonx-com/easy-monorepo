@@ -1114,6 +1114,24 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
                 'token',
             ],
         ];
+        yield 'Mask keys after many repeated prefixes' => [
+            'input' => [
+                \str_repeat('REDIRECT_', 1000) . 'HTTP_X_API_KEY' => 'secret',
+                \str_repeat('redirect-', 1000) . 'token' => 'secret',
+                \str_repeat('REDIRECT_', 1000) . 'HTTP_HOST' => 'keep',
+                \str_repeat('REDIRECT_', 1000) => 'keep',
+                'json' => '{"' . \str_repeat('REDIRECT_', 1000) . 'HTTP_AUTHORIZATION":"secret"}',
+            ],
+            'expectedOutput' => [
+                \str_repeat('REDIRECT_', 1000) . 'HTTP_X_API_KEY' => '*REDACTED*',
+                \str_repeat('redirect-', 1000) . 'token' => '*REDACTED*',
+                \str_repeat('REDIRECT_', 1000) . 'HTTP_HOST' => 'keep',
+                \str_repeat('REDIRECT_', 1000) => 'keep',
+                'json' => '{"' . \str_repeat('REDIRECT_', 1000) . 'HTTP_AUTHORIZATION":"*REDACTED*"}',
+            ],
+            'maskPattern' => '*REDACTED*',
+            'keysToMask' => EasyUtilsBundle::SENSITIVE_DATA_DEFAULT_KEYS_TO_MASK,
+        ];
         yield 'Mask header lines' => [
             'input' => [
                 'apiKeyHeader' => 'X-Api-Key: secret',
@@ -1241,6 +1259,27 @@ abstract class AbstractSensitiveDataSanitizerTestCase extends AbstractUnitTestCa
         $sanitizedException = $sanitizer->sanitize($exception);
 
         self::assertSame($expectedMessage, $sanitizedException['message']);
+    }
+
+    public function testSanitizeHugeKeyWithRepeatedPrefixesInLinearTime(): void
+    {
+        $sanitizer = $this->getSanitizer('*REDACTED*', ['token']);
+        $repeatedPrefixes = \str_repeat('redirect', 200000);
+        $startTime = \microtime(true);
+
+        $result = $sanitizer->sanitize(\json_encode([
+            $repeatedPrefixes => 'keep',
+            $repeatedPrefixes . 'token' => 'secret',
+        ]));
+
+        self::assertLessThan(1.0, \microtime(true) - $startTime);
+        self::assertSame(
+            \json_encode([
+                $repeatedPrefixes => 'keep',
+                $repeatedPrefixes . 'token' => '*REDACTED*',
+            ]),
+            $result
+        );
     }
 
     public function testSanitizeNumericCardNumbers(): void

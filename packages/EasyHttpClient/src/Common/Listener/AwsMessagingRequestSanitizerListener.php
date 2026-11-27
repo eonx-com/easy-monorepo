@@ -23,6 +23,7 @@ final class AwsMessagingRequestSanitizerListener
         'ReplacementTemplateData',
         'ReplyToAddresses',
         'Subject',
+        'TemplateContent',
         'TemplateData',
         'ToAddresses',
         'Token',
