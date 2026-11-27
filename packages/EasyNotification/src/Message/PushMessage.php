@@ -5,8 +5,10 @@ namespace EonX\EasyNotification\Message;
 
 use EonX\EasyNotification\Enum\MessageType;
 
-final class PushMessage extends AbstractMessage
+final class PushMessage extends AbstractMessage implements IdempotencyKeyAwareMessageInterface
 {
+    use IdempotencyKeyAwareMessageTrait;
+
     private const DO_NOT_SEND_TOKEN = 'do_not_send_token';
 
     public function __construct(

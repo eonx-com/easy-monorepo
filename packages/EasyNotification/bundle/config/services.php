@@ -9,6 +9,7 @@ use EonX\EasyNotification\Bundle\Enum\ConfigServiceId;
 use EonX\EasyNotification\Bundle\Enum\ConfigTag;
 use EonX\EasyNotification\Client\NotificationClient;
 use EonX\EasyNotification\Client\NotificationClientInterface;
+use EonX\EasyNotification\Configurator\IdempotencyKeyQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\ProviderHeaderQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\PushBodyQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\QueueUrlQueueMessageConfigurator;
@@ -62,6 +63,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ProviderHeaderQueueMessageConfigurator::class);
     $services->set(QueueUrlQueueMessageConfigurator::class);
     $services->set(TypeQueueMessageConfigurator::class);
+    $services->set(IdempotencyKeyQueueMessageConfigurator::class);
     $services->set(SignatureQueueMessageConfigurator::class);
 
     // SQS Queue

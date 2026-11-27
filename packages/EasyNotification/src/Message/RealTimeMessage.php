@@ -6,8 +6,10 @@ namespace EonX\EasyNotification\Message;
 use EonX\EasyNotification\Enum\MessageType;
 use EonX\EasyNotification\Exception\InvalidRealTimeMessageTypeException;
 
-final class RealTimeMessage extends AbstractMessage
+final class RealTimeMessage extends AbstractMessage implements IdempotencyKeyAwareMessageInterface
 {
+    use IdempotencyKeyAwareMessageTrait;
+
     private const REAL_TIME_TYPES = [MessageType::Flash, MessageType::RealTime];
 
     /**

@@ -5,6 +5,7 @@ namespace EonX\EasyNotification\Tests\Unit\Client;
 
 use EonX\EasyNotification\Client\NotificationClient;
 use EonX\EasyNotification\Client\NotificationClientInterface;
+use EonX\EasyNotification\Configurator\IdempotencyKeyQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\ProviderHeaderQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\QueueUrlQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\RealTimeBodyQueueMessageConfigurator;
@@ -124,6 +125,39 @@ final class NotificationClientTest extends AbstractUnitTestCase
         self::assertEquals($expected, $sqsClientStub->getCalls()[0]);
     }
 
+    public function testSendWithIdempotencyKey(): void
+    {
+        $config = Config::fromArray(self::$defaultConfig);
+        $sqsClientStub = new SqsClientStub();
+        $client = $this->getNotificationClient($sqsClientStub);
+
+        $client->withConfig($config)
+            ->send(RealTimeMessage::create([
+                'name' => 'nathan',
+            ], ['topic'])->setIdempotencyKey('my-idempotency-key'));
+
+        $expected = [
+            'QueueUrl' => self::$defaultConfig['queueUrl'],
+            'MessageAttributes' => [
+                'idempotencyKey' => [
+                    'DataType' => 'String',
+                    'StringValue' => 'my-idempotency-key',
+                ],
+                'provider' => [
+                    'DataType' => 'String',
+                    'StringValue' => self::$defaultConfig['externalId'],
+                ],
+                'type' => [
+                    'DataType' => 'String',
+                    'StringValue' => MessageType::RealTime->value,
+                ],
+            ],
+            'MessageBody' => '{"body":"{\"name\":\"nathan\"}","topics":["topic"]}',
+        ];
+
+        self::assertEquals($expected, $sqsClientStub->getCalls()[0]);
+    }
+
     public function testUpdateMessagesStatusSuccessful(): void
     {
         $config = Config::fromArray(self::$defaultConfig);
@@ -158,6 +192,7 @@ final class NotificationClientTest extends AbstractUnitTestCase
         yield new TypeQueueMessageConfigurator();
         yield new ProviderHeaderQueueMessageConfigurator();
         yield new QueueUrlQueueMessageConfigurator();
+        yield new IdempotencyKeyQueueMessageConfigurator();
     }
 
     private function getNotificationClient(
