@@ -442,6 +442,12 @@ Laravel:
 ### EasyPagination
 
 - `PaginationFromRequestListener` priority changed from 10000 to 10010.
+- Laravel: the misspelled `user_default_resolver` config key is no longer read. Use `use_default_resolver`.
+- `page_default` and `per_page_default` must be at least 1. Symfony: a lower value fails when the container is
+  built. A value from an env var, Laravel config and direct use fail when `PaginationConfigProvider` is created,
+  with `InvalidPageDefaultException` or `InvalidPerPageDefaultException`. Your own
+  `PaginationConfigProviderInterface` implementations must also return defaults of at least 1:
+  `FromHttpFoundationRequestPaginationResolver` no longer replaces a page size below 1.
 
 ### EasySecurity
 

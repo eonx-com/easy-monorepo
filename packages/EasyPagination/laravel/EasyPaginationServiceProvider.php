@@ -37,9 +37,7 @@ final class EasyPaginationServiceProvider extends ServiceProvider
      */
     private function registerDefaultResolver(): void
     {
-        // "user_default_resolver" is a misspelled key read before, still honoured for apps that set it
-        if (\config('easy-pagination.use_default_resolver', true) === false
-            || \config('easy-pagination.user_default_resolver', true) === false) {
+        if (\config('easy-pagination.use_default_resolver', true) === false) {
             return;
         }
 

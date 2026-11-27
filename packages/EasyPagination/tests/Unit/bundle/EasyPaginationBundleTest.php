@@ -10,6 +10,8 @@ use EonX\EasyPagination\Resolver\FromHttpFoundationRequestPaginationResolver;
 use EonX\EasyPagination\Tests\Stub\Kernel\KernelStub;
 use EonX\EasyPagination\Tests\Unit\AbstractUnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Request;
 
 final class EasyPaginationBundleTest extends AbstractUnitTestCase
@@ -45,6 +47,21 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
             2,
             50,
         ];
+    }
+
+    #[TestWith(['page_perPage_0_15.php', 'page_default'])]
+    #[TestWith(['page_perPage_1_0.php', 'per_page_default'])]
+    public function testItThrowsOnPageDefaultBelowOne(string $config, string $node): void
+    {
+        $kernel = new KernelStub(__DIR__ . '/../../Fixture/config/' . $config);
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage(\sprintf(
+            'The value 0 is too small for path "easy_pagination.pagination.%s". Should be greater than or equal to 1',
+            $node
+        ));
+
+        $kernel->boot();
     }
 
     #[DataProvider('providePaginationResolverData')]
