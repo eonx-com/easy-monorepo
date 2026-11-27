@@ -442,6 +442,8 @@ Laravel:
 ### EasyPagination
 
 - `PaginationFromRequestListener` priority changed from 10000 to 10010.
+- `PaginationConfigProviderInterface` declares `getPerPageMax(): ?int`. Implement it in custom config providers (return
+  `null` for no limit).
 
 ### EasySecurity
 
