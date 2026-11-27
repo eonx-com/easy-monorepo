@@ -23,8 +23,7 @@ final readonly class FromHttpFoundationRequestPaginationResolver
 
         $perPage = $this->getPositiveInt($config->getPerPageAttribute(), $config->getPerPageDefault());
 
-        // @todo Call it directly in 7.0, when the interface declares it
-        $perPageMax = \method_exists($config, 'getPerPageMax') ? $config->getPerPageMax() : null;
+        $perPageMax = $config->getPerPageMax();
 
         if ($perPageMax !== null && $perPage > $perPageMax) {
             $perPage = $perPageMax;

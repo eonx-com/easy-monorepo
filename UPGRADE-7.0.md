@@ -442,6 +442,8 @@ Laravel:
 ### EasyPagination
 
 - `PaginationFromRequestListener` priority changed from 10000 to 10010.
+- `PaginationConfigProviderInterface` declares `getPerPageMax(): ?int`. Implement it in custom config providers (return
+  `null` for no limit).
 - Laravel: the misspelled `user_default_resolver` config key is no longer read. Use `use_default_resolver`.
 - `page_default` and `per_page_default` must be at least 1. Symfony: a lower value fails when the container is
   built. A value from an env var, Laravel config and direct use fail when `PaginationConfigProvider` is created,
