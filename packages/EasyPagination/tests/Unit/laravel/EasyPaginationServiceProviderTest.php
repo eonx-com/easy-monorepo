@@ -31,6 +31,11 @@ final class EasyPaginationServiceProviderTest extends AbstractLaravelTestCase
             'config' => ['easy-pagination.use_default_resolver' => false],
             'expectedRegistered' => false,
         ];
+
+        yield 'misspelled user_default_resolver false is ignored' => [
+            'config' => ['easy-pagination.user_default_resolver' => false],
+            'expectedRegistered' => true,
+        ];
     }
 
     public function testItHasDefaultConfig(): void
