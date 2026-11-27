@@ -11,6 +11,7 @@ use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\HttpKernel\TerminableInterface;
 
 final class SymfonyHttpHandlerTest extends AbstractUnitTestCase
 {
@@ -26,6 +27,41 @@ final class SymfonyHttpHandlerTest extends AbstractUnitTestCase
         );
 
         parent::tearDown();
+    }
+
+    public function testAfterInvokeTerminatesKernelOncePerRequest(): void
+    {
+        $request = new Request();
+        $response = new Response();
+        /** @var \PHPUnit\Framework\MockObject\MockObject&\Symfony\Component\HttpKernel\KernelInterface&\Symfony\Component\HttpKernel\TerminableInterface $kernel */
+        $kernel = $this->createMockForIntersectionOfInterfaces([KernelInterface::class, TerminableInterface::class]);
+        $kernel
+            ->expects(self::once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+        $kernel
+            ->expects(self::once())
+            ->method('terminate')
+            ->with($request, $response);
+        $httpFoundationFactory = $this->createMock(HttpFoundationFactoryInterface::class);
+        $httpFoundationFactory
+            ->expects(self::once())
+            ->method('createRequest')
+            ->willReturn($request);
+        $sut = new SymfonyHttpHandler($kernel, $httpFoundationFactory);
+        $sut->handleRequest(
+            new HttpRequestEvent([
+                'headers' => [],
+                'httpMethod' => 'GET',
+                'path' => '/some-path',
+                'requestContext' => [],
+            ]),
+            Context::fake()
+        );
+
+        $sut->afterInvoke();
+        $sut->afterInvoke();
     }
 
     public function testHandleRequestDoesNotOverrideExplicitRuntimeMode(): void

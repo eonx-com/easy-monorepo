@@ -54,12 +54,20 @@ final class SymfonyHttpHandler extends HttpHandler
 
     public function afterInvoke(): void
     {
-        if ($this->symfonyRequest === null || $this->symfonyResponse === null) {
+        $symfonyRequest = $this->symfonyRequest;
+        $symfonyResponse = $this->symfonyResponse;
+
+        // Terminates the kernel once per request: Bref also calls afterInvoke() for the events that do not reach
+        // handleRequest(), e.g. the warmer events
+        $this->symfonyRequest = null;
+        $this->symfonyResponse = null;
+
+        if ($symfonyRequest === null || $symfonyResponse === null) {
             return;
         }
 
         if ($this->kernel instanceof TerminableInterface) {
-            $this->kernel->terminate($this->symfonyRequest, $this->symfonyResponse);
+            $this->kernel->terminate($symfonyRequest, $symfonyResponse);
         }
     }
 
