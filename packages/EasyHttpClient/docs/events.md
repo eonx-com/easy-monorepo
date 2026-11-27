@@ -95,8 +95,8 @@ replaces with `*REDACTED*`:
 
 - the `Authorization` and `X-Amz-Security-Token` headers
 - in the body: the recipients (`ToAddresses`, `CcAddresses`, `BccAddresses`, `ReplyToAddresses`, `Destinations`), the
-  subject (`Subject`), text and raw content of an e-mail (`Data`), the template data (`TemplateData`,
-  `ReplacementTemplateData`), the attachments (`RawContent`), the text of an SNS message (`Message`), the phone number
+  subject (`Subject`), text and raw content of an e-mail (`Data`), the inline template (`TemplateContent`), the
+  template data (`TemplateData`, `ReplacementTemplateData`), the attachments (`RawContent`), the text of an SNS message (`Message`), the phone number
   (`PhoneNumber`, `phoneNumber`), the e-mail address (`EmailAddress`), the subscription endpoint (`Endpoint`), the
   one-time password (`OneTimePassword`), the device token and user data of a push endpoint (`Token`,
   `CustomUserData`). These are the fields of the operations that send messages (SES `SendEmail`, `SendBulkEmail`,

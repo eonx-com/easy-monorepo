@@ -33,6 +33,11 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
     private array $keysToMask;
 
     /**
+     * Length of the longest normalized key to mask, a longer suffix of a key can not match and is not looked up
+     */
+    private int $maxNormalizedKeyToMaskLength;
+
+    /**
      * @var array<string, true>
      */
     private array $normalizedKeysToMask;
@@ -65,6 +70,7 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             static fn (string $keyToMask): string => \mb_strtolower($keyToMask),
             $keysToMask
         );
+        $maxNormalizedKeyToMaskLength = 0;
         $normalizedKeysToMask = [];
         $separatorOnlyKeysToMask = [];
 
@@ -77,9 +83,11 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
                 continue;
             }
 
+            $maxNormalizedKeyToMaskLength = \max($maxNormalizedKeyToMaskLength, \strlen($normalizedKeyToMask));
             $normalizedKeysToMask[$normalizedKeyToMask] = true;
         }
 
+        $this->maxNormalizedKeyToMaskLength = $maxNormalizedKeyToMaskLength;
         $this->normalizedKeysToMask = $normalizedKeysToMask;
         $this->separatorOnlyKeysToMask = $separatorOnlyKeysToMask;
         $this->objectTransformers = CollectorHelper::orderLowerPriorityFirstAsArray(
@@ -145,6 +153,10 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
         return \str_replace(self::KEY_SEPARATORS, '', \mb_strtolower($key));
     }
 
+    /**
+     * Prefixes are walked by offset and a suffix is built only when it is short enough to match, so the check stays
+     * linear for a long attacker-controlled key such as "redirectredirect..."
+     */
     private function isKeyToMask(string $key): bool
     {
         $normalizedKey = self::normalizeKey($key);
@@ -153,31 +165,43 @@ final readonly class SensitiveDataSanitizer implements SensitiveDataSanitizerInt
             return isset($this->separatorOnlyKeysToMask[\mb_strtolower($key)]);
         }
 
-        if (isset($this->normalizedKeysToMask[$normalizedKey])) {
+        if ($this->isNormalizedKeySuffixToMask($normalizedKey, 0)) {
             return true;
         }
 
-        while (\str_starts_with($normalizedKey, self::REPEATED_KEY_PREFIX)) {
-            $normalizedKey = \substr($normalizedKey, \strlen(self::REPEATED_KEY_PREFIX));
+        $offset = 0;
+        $repeatedKeyPrefixLength = \strlen(self::REPEATED_KEY_PREFIX);
 
-            if (isset($this->normalizedKeysToMask[$normalizedKey])) {
+        while (\substr_compare($normalizedKey, self::REPEATED_KEY_PREFIX, $offset, $repeatedKeyPrefixLength) === 0) {
+            $offset += $repeatedKeyPrefixLength;
+
+            if ($this->isNormalizedKeySuffixToMask($normalizedKey, $offset)) {
                 return true;
             }
         }
 
         foreach (self::KEY_PREFIXES as $prefix) {
-            if (\str_starts_with($normalizedKey, $prefix) === false) {
+            if (\substr_compare($normalizedKey, $prefix, $offset, \strlen($prefix)) !== 0) {
                 continue;
             }
 
-            $normalizedKey = \substr($normalizedKey, \strlen($prefix));
+            $offset += \strlen($prefix);
 
-            if (isset($this->normalizedKeysToMask[$normalizedKey])) {
+            if ($this->isNormalizedKeySuffixToMask($normalizedKey, $offset)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private function isNormalizedKeySuffixToMask(string $normalizedKey, int $offset): bool
+    {
+        if (\strlen($normalizedKey) - $offset > $this->maxNormalizedKeyToMaskLength) {
+            return false;
+        }
+
+        return isset($this->normalizedKeysToMask[\substr($normalizedKey, $offset)]);
     }
 
     private function sanitizeArray(array $data): array

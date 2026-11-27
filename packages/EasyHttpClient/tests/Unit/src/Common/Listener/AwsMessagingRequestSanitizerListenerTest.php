@@ -195,6 +195,18 @@ final class AwsMessagingRequestSanitizerListenerTest extends AbstractUnitTestCas
             ],
         ];
 
+        yield 'SES e-mail with an inline template' => [
+            'url' => 'https://email.ap-southeast-2.amazonaws.com/v2/email/outbound-emails',
+            'options' => [
+                'body' => '{"Content":{"Template":{"TemplateContent":{"Subject":"Your code",'
+                    . '"Text":"Your code is 123456","Html":"<p>Your code is 123456</p>"},'
+                    . '"TemplateData":"{}"}}}',
+            ],
+            'expectedOptions' => [
+                'body' => '{"Content":{"Template":{"TemplateContent":"*REDACTED*","TemplateData":"*REDACTED*"}}}',
+            ],
+        ];
+
         yield 'SNS SMS with a form body' => [
             'url' => 'https://sns.ap-southeast-2.amazonaws.com/',
             'options' => [
