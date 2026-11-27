@@ -645,7 +645,7 @@ final class SqsHandlerTest extends AbstractUnitTestCase
     private function createSqsEvent(int $receiveCount, array $stamps = []): array
     {
         $encodedEnvelope = new PhpSerializer()
-->encode(new Envelope(new stdClass(), $stamps));
+            ->encode(new Envelope(new stdClass(), $stamps));
 
         return [
             'Records' => [

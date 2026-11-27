@@ -92,7 +92,7 @@ final class HttpFoundationRequestTest extends AbstractUnitTestCase
     public function testGetMetaDataContent(Request $request, array $expectedContent): void
     {
         $metaData = new HttpFoundationRequest($request)
-->getMetaData();
+            ->getMetaData();
 
         $content = \array_intersect_key($metaData['request'], [
             'content' => true,
@@ -112,7 +112,7 @@ final class HttpFoundationRequestTest extends AbstractUnitTestCase
         ]);
 
         $metaData = new HttpFoundationRequest($request)
-->getMetaData();
+            ->getMetaData();
 
         self::assertArrayNotHasKey('content', $metaData['request']);
         self::assertSame([
@@ -134,7 +134,7 @@ final class HttpFoundationRequestTest extends AbstractUnitTestCase
         $request->setSession($session);
 
         $sessionData = new HttpFoundationRequest($request)
-->getSession();
+            ->getSession();
 
         self::assertSame([
             '_locale' => 'en',

@@ -41,7 +41,7 @@ final class EasyRequestIdBundleTest extends AbstractSymfonyTestCase
         ]));
 
         new EasyRequestIdBundle()
-->getContainerExtension()?->load([], $container);
+            ->getContainerExtension()?->load([], $container);
 
         self::assertSame(
             \class_exists($dependency) || \interface_exists($dependency),

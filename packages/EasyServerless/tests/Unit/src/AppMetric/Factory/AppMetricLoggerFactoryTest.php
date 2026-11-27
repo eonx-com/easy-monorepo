@@ -16,7 +16,7 @@ final class AppMetricLoggerFactoryTest extends AbstractUnitTestCase
     public function testCreateReturnsLoggerWritingDebugRecordsToStderrByDefault(): void
     {
         $logger = new AppMetricLoggerFactory()
-->create();
+            ->create();
 
         self::assertInstanceOf(Logger::class, $logger);
         self::assertSame(AppMetricLoggerFactory::LOGGER_NAME, $logger->getName());

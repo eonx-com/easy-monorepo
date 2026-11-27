@@ -91,7 +91,7 @@ final class EasyHttpClientServiceProviderTest extends AbstractLaravelTestCase
             \in_array(
                 HttpRequestSentBreadcrumbListener::class,
                 $app->make('events')
-->getRawListeners()[HttpRequestSentEvent::class],
+                    ->getRawListeners()[HttpRequestSentEvent::class],
                 true
             )
         );

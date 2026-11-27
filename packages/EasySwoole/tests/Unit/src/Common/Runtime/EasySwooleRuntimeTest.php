@@ -52,7 +52,7 @@ final class EasySwooleRuntimeTest extends AbstractUnitTestCase
         );
         OptionHelper::setOptions([]);
         new Filesystem()
-->remove($this->varDir);
+            ->remove($this->varDir);
 
         parent::tearDown();
     }

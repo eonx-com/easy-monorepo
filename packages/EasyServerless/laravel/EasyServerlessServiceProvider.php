@@ -84,7 +84,7 @@ final class EasyServerlessServiceProvider extends ServiceProvider
             ConfigServiceId::AppMetricLogger->value,
             static fn(Container $app): LoggerInterface => AppMetricLoggerFactory::isSupported()
                 ? new AppMetricLoggerFactory()
-->create()
+                    ->create()
                 : $app->make(LoggerInterface::class)
         );
 

@@ -37,7 +37,7 @@ final class AwsMessagingRequestSanitizerListener
 
     private const string HOST_PATTERN = '/^(email|sns)(-fips)?\.[a-z0-9-]+\.amazonaws\.com(\.cn)?$/';
 
-    private const JSON_ENCODE_FLAGS = \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE;
+    private const int JSON_ENCODE_FLAGS = \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE;
 
     private const string REDACTED = '*REDACTED*';
 

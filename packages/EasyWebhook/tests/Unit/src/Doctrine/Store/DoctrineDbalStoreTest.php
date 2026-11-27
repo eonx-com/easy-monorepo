@@ -79,7 +79,7 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
         yield 'explicit sendAfter after send_after, due' => [
             self::createWebhookForSendAfter($sendAfter),
             $sendAfter->copy()
-->addSecond(),
+                ->addSecond(),
             'Pacific/Kiritimati',
             1,
         ];
@@ -94,7 +94,7 @@ final class DoctrineDbalStoreTest extends AbstractDoctrineDbalStoreTestCase
         yield 'explicit sendAfter before send_after, not due' => [
             self::createWebhookForSendAfter($sendAfter),
             $sendAfter->copy()
-->subSecond(),
+                ->subSecond(),
             'Pacific/Kiritimati',
             0,
         ];
