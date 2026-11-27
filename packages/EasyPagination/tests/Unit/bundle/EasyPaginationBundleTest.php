@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyPagination\Tests\Unit\Bundle;
 
+use EonX\EasyPagination\Exception\InvalidPerPageDefaultException;
 use EonX\EasyPagination\Provider\PaginationConfigProviderInterface;
 use EonX\EasyPagination\Provider\PaginationProviderInterface;
 use EonX\EasyPagination\Resolver\DefaultPaginationResolver;
@@ -49,9 +50,20 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
         ];
     }
 
+    public function testItResolvesPerPageDefaultFromEnv(): void
+    {
+        $kernel = new KernelStub(__DIR__ . '/../../Fixture/config/page_perPage_1_env_30.php');
+        $kernel->boot();
+
+        $config = $kernel->getContainer()
+            ->get(PaginationConfigProviderInterface::class);
+
+        self::assertSame(30, $config->getPerPageDefault());
+    }
+
     #[TestWith(['page_perPage_0_15.php', 'page_default'])]
     #[TestWith(['page_perPage_1_0.php', 'per_page_default'])]
-    public function testItThrowsOnPageDefaultBelowOne(string $config, string $node): void
+    public function testItThrowsOnDefaultsBelowOne(string $config, string $node): void
     {
         $kernel = new KernelStub(__DIR__ . '/../../Fixture/config/' . $config);
 
@@ -62,6 +74,21 @@ final class EasyPaginationBundleTest extends AbstractUnitTestCase
         ));
 
         $kernel->boot();
+    }
+
+    /**
+     * Symfony does not check min() on env placeholders, so the config provider rejects the value at runtime
+     */
+    public function testItThrowsOnPerPageDefaultFromEnvBelowOne(): void
+    {
+        $kernel = new KernelStub(__DIR__ . '/../../Fixture/config/page_perPage_1_env_0.php');
+        $kernel->boot();
+
+        $this->expectException(InvalidPerPageDefaultException::class);
+        $this->expectExceptionMessage('The default page size must be at least 1, 0 given.');
+
+        $kernel->getContainer()
+            ->get(PaginationConfigProviderInterface::class);
     }
 
     #[DataProvider('providePaginationResolverData')]
