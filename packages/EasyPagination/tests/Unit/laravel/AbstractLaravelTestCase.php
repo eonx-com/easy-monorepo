@@ -21,7 +21,7 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
         self::assertInstanceOf($concrete, $this->getApplication()->get($abstract));
     }
 
-    protected function getApplication(?bool $pretendInConsole = null): Application
+    protected function getApplication(?bool $pretendInConsole = null, ?array $config = null): Application
     {
         if ($this->app !== null) {
             return $this->app;
@@ -29,6 +29,12 @@ abstract class AbstractLaravelTestCase extends AbstractUnitTestCase
 
         $this->app = $this->createApplication($pretendInConsole);
         $this->app->instance('config', new ConfigRepository());
+
+        if ($config !== null) {
+            $this->app->make('config')
+                ->set($config);
+        }
+
         $this->app->register(EasyPaginationServiceProvider::class);
 
         return $this->app;

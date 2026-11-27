@@ -11,6 +11,7 @@ use EonX\EasyUtils\SensitiveData\Sanitizer\SensitiveDataSanitizer;
 use EonX\EasyUtils\SensitiveData\Sanitizer\UrlStringSanitizer;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
@@ -18,7 +19,34 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 final class AccessLogListenerTest extends AbstractUnitTestCase
 {
-    public function testItSucceedsWithSensitiveDataSanitizer(): void
+    /**
+     * @see testItSucceedsWithSensitiveDataSanitizer
+     */
+    public static function provideSensitiveDataUris(): iterable
+    {
+        yield 'token in the query' => [
+            'uri' => '/forgot-password-confirm?token=abc',
+            'expectedUri' => '/forgot-password-confirm?token=*REDACTED*',
+        ];
+
+        yield 'nested key in the query' => [
+            'uri' => '/login?credentials[token]=abc',
+            'expectedUri' => '/login?credentials%5Btoken%5D=*REDACTED*',
+        ];
+
+        yield 'token as the last path segment' => [
+            'uri' => '/reset/token/abc',
+            'expectedUri' => '/reset/token/*REDACTED*',
+        ];
+
+        yield 'token in the middle of the path' => [
+            'uri' => '/reset/token/abc/confirm',
+            'expectedUri' => '/reset/token/*REDACTED*/confirm',
+        ];
+    }
+
+    #[DataProvider('provideSensitiveDataUris')]
+    public function testItSucceedsWithSensitiveDataSanitizer(string $uri, string $expectedUri): void
     {
         $handler = new TestHandler();
         $listener = new AccessLogListener(
@@ -28,13 +56,10 @@ final class AccessLogListenerTest extends AbstractUnitTestCase
             new SensitiveDataSanitizer(['token'], '*REDACTED*', [], [new UrlStringSanitizer()])
         );
 
-        $listener($this->createTerminateEvent('/forgot-password-confirm?token=abc'));
+        $listener($this->createTerminateEvent($uri));
 
         $records = $handler->getRecords();
-        self::assertSame(
-            '127.0.0.1 - "GET /forgot-password-confirm?token=*REDACTED* HTTP/1.1" 200 "Symfony"',
-            $records[0]->message
-        );
+        self::assertSame(\sprintf('127.0.0.1 - "GET %s HTTP/1.1" 200 "Symfony"', $expectedUri), $records[0]->message);
     }
 
     public function testItSucceedsWithoutSensitiveDataSanitizer(): void

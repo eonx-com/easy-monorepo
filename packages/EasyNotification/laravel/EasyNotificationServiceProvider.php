@@ -8,6 +8,7 @@ use EonX\EasyNotification\Bundle\Enum\ConfigServiceId;
 use EonX\EasyNotification\Bundle\Enum\ConfigTag;
 use EonX\EasyNotification\Client\NotificationClient;
 use EonX\EasyNotification\Client\NotificationClientInterface;
+use EonX\EasyNotification\Configurator\IdempotencyKeyQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\ProviderHeaderQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\PushBodyQueueMessageConfigurator;
 use EonX\EasyNotification\Configurator\QueueUrlQueueMessageConfigurator;
@@ -38,6 +39,7 @@ final class EasyNotificationServiceProvider extends ServiceProvider
         ProviderHeaderQueueMessageConfigurator::class,
         QueueUrlQueueMessageConfigurator::class,
         TypeQueueMessageConfigurator::class,
+        IdempotencyKeyQueueMessageConfigurator::class,
         SignatureQueueMessageConfigurator::class,
     ];
 

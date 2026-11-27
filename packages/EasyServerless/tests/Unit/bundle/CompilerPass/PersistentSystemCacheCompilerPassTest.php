@@ -69,11 +69,11 @@ final class PersistentSystemCacheCompilerPassTest extends AbstractUnitTestCase
         // Since Symfony 8.1, FrameworkBundle requires ServicesBundle, which registers ResettableServicePass
         if (\class_exists(ServicesBundle::class)) {
             new ServicesBundle()
-->build($container);
+                ->build($container);
         }
         // FrameworkBundle is registered before EasyServerlessBundle, as in applications
         new FrameworkBundle()
-->build($container);
+            ->build($container);
         $sut = new EasyServerlessBundle();
         // CachePoolPass adds the "kernel.reset" tags removed by the pass, and ResettableServicePass builds
         // "services_resetter" from the remaining ones

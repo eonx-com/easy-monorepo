@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyServerless\Bundle;
 
 use EasyCorp\Bundle\EasyAdminBundle\EventListener\AdminRouterSubscriber;
+use EonX\EasyServerless\Bundle\CompilerPass\AppMetricLoggerFallbackCompilerPass;
 use EonX\EasyServerless\Bundle\CompilerPass\DecoratePathPackagesToUseUrlCompilerPass;
 use EonX\EasyServerless\Bundle\CompilerPass\PersistentSystemCacheCompilerPass;
 use EonX\EasyServerless\Bundle\Enum\ConfigParam;
@@ -23,6 +24,8 @@ final class EasyServerlessBundle extends AbstractBundle
         parent::build($container);
 
         $container
+            // Must run after LoggerPass (-32) which registers the default application logger when there is none
+            ->addCompilerPass(new AppMetricLoggerFallbackCompilerPass(), priority: -33)
             ->addCompilerPass(new DecoratePathPackagesToUseUrlCompilerPass())
             // Must run after CachePoolPass (32) adds the "kernel.reset" tags, and before ResettableServicePass (-32)
             // collects them into "services_resetter"

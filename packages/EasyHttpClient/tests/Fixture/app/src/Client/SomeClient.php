@@ -16,8 +16,8 @@ final readonly class SomeClient
     /**
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function makeRequest(): ResponseInterface
+    public function makeRequest(?array $options = null): ResponseInterface
     {
-        return $this->httpClient->request(Request::METHOD_GET, 'https://eonx.com');
+        return $this->httpClient->request(Request::METHOD_GET, 'https://eonx.com', $options ?? []);
     }
 }

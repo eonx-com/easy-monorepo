@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyServerless\Tests\Unit\Laravel;
 
+use EonX\EasyServerless\AppMetric\Client\AppMetricClient;
+use EonX\EasyServerless\AppMetric\Client\AppMetricClientInterface;
+use EonX\EasyServerless\AppMetric\Factory\AppMetricLoggerFactory;
+use EonX\EasyServerless\Bundle\Enum\ConfigServiceId;
 use EonX\EasyServerless\Laravel\EasyServerlessServiceProvider;
 use EonX\EasyServerless\Laravel\Middleware\PhpRuntimeInfoMiddleware;
 use EonX\EasyServerless\Tests\Stub\Middleware\ShortCircuitMiddlewareStub;
@@ -11,8 +15,12 @@ use Illuminate\Contracts\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\Kernel as FoundationHttpKernel;
 use Illuminate\Queue\Events\JobProcessing;
+use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use ReflectionProperty;
 
 use function DDTrace\root_span;
 
@@ -34,6 +42,26 @@ final class EasyServerlessServiceProviderTest extends AbstractLaravelTestCase
     {
         yield 'kernel resolved before register, as in HTTP requests' => [true];
         yield 'kernel resolved after register' => [false];
+    }
+
+    public function testAppMetricClientUsesDedicatedLoggerInsteadOfApplicationLogger(): void
+    {
+        $app = $this->registerProvider([
+            'datadog' => [
+                'enabled' => false,
+            ],
+        ]);
+        $app->instance(LoggerInterface::class, new NullLogger());
+
+        $appMetricLogger = $app->make(ConfigServiceId::AppMetricLogger->value);
+        $appMetricClient = $app->make(AppMetricClientInterface::class);
+
+        self::assertInstanceOf(Logger::class, $appMetricLogger);
+        self::assertSame(AppMetricLoggerFactory::LOGGER_NAME, $appMetricLogger->getName());
+        self::assertSame(
+            $appMetricLogger,
+            new ReflectionProperty(AppMetricClient::class, 'logger')->getValue($appMetricClient)
+        );
     }
 
     #[DataProvider('provideEventData')]

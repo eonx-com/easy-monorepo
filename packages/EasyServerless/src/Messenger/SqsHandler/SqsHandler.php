@@ -49,7 +49,7 @@ final class SqsHandler extends AbstractSqsHandler
         private readonly ?ErrorHandlerInterface $errorHandler = null,
         private readonly ?EventDispatcherInterface $eventDispatcher = null,
         private readonly string $transportName = 'async',
-        int $appMaxRetries = 3,
+        int $appMaxRetries = 4,
         bool $partialBatchFailure = false,
         int $timeoutThresholdMilliseconds = 1000,
         iterable $stateCheckers = [],
